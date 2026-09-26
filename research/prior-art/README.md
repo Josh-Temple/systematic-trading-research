@@ -30,16 +30,48 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 14. transferable lessons
 15. choices not to copy
 
-## Initial research queue
+## Completed deep reviews
 
 | Repository | Primary question | Status |
 |---|---|---|
 | [Trading Second Brain](trading-second-brain.md) | 個人のTrading knowledgeをどう昇格・保持するか | PARTIAL — initial review complete; long-term history insufficient |
 | [zestoles/quant](zestoles-quant.md) | 失敗研究、事前登録、provenanceをどう残すか | PARTIAL — deep review complete; rich failure history, short development window |
 | [Epsilon Quant Research](epsilon-quant-research.md) | 大規模な研究群をどう整理・探索するか | PARTIAL — deep review complete; 7-month repo history, ~3-month knowledge-brain history |
-| Backtrader MCP | AIと再現可能なbacktest executionをどう分離するか | TODO |
-| mcp-strategy-research-db | 過去のstrategy resultをAIからどう検索するか | TODO |
-| Trade Terminal | agentによる研究loopとguardrailをどう設計するか | TODO |
+
+## Candidate scan
+
+Breadth scan: [CANDIDATE_SCAN.md](CANDIDATE_SCAN.md)
+
+21 repositories were screened to identify candidates that can test or contradict the provisional principles rather than merely resemble the current design.
+
+High-priority candidates from the scan:
+
+- microsoft/RD-Agent
+- treeverse/dvc
+- freqtrade/freqtrade
+- microsoft/qlib
+- kedro-org/kedro
+- nautechsystems/nautilus_trader
+- nkaz001/hftbacktest
+
+## Next deep reviews
+
+Current recommended order:
+
+1. **RD-Agent**
+   - Test the AI research-loop / holdout boundary.
+   - Reconstruct whether evaluation results flow back into proposal generation.
+   - Separate current main behavior from unmerged PR proposals.
+
+2. **DVC**
+   - Test what a run manifest / lockfile actually guarantees.
+   - Examine input-at-start identity, concurrent modification, external data drift, and lockfile timing.
+
+3. **Freqtrade**
+   - Test the sensitivity and limits of lookahead detection and simulation/live parity checks.
+   - Distinguish a passing diagnostic from proof that no temporal leakage exists.
+
+This replaces the earlier assumption that the next review should necessarily be Backtrader MCP. The candidate scan found stronger, more mature counterexamples for the current questions.
 
 ## Early observations — not yet synthesized principles
 
@@ -106,8 +138,6 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 
 ## Important tensions emerging
 
-まだ解決していない設計上の対立もある。
-
 ### A. Current state representation
 
 - Trading Second Brain: 少数のdurable summary files
@@ -128,6 +158,16 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 
 - artifact typeによって必要なimmutabilityが異なる。
 - “append-only repository”のような一括ルールではなく、experiment result、decision、forward evidence、current projectionごとに要件を定義する必要がある可能性が高い。
+
+### D. Reproducibility guarantees may be weaker than their artifacts suggest
+
+The candidate scan adds a new cross-cutting question:
+
+- a lockfile may not guarantee input-at-start identity,
+- a lookahead diagnostic may not prove absence of leakage,
+- an AI research loop may still leak holdout information back into proposal generation.
+
+The existence of a control artifact is therefore not enough; its actual guarantee must be tested.
 
 ## Synthesis questions
 
@@ -153,6 +193,9 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 - knowledge canon auditとevidence trust auditを独立工程として設計するか
 - datasetがCONDEMNEDになったときdownstream experimentをどうinvalidateするか
 - long-running AI handoffにNEXT / STATUS / LOG / reportの分離が必要か
+- run manifest / lockfileがinput-at-start identityを本当に保証するか
+- diagnostic PASSを「問題不存在の証明」と誤解しないために、検査の感度と既知のblind spotをどう保存するか
+- AI research loopでvalidation feedbackとfinal holdoutをどう隔離するか
 
 ## Exit condition
 
