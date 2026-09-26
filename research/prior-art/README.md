@@ -1,6 +1,6 @@
 # Prior Repository Research
 
-Updated: 2026-09-26
+Updated: 2026-09-27
 
 ## Purpose
 
@@ -36,7 +36,7 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 |---|---|---|
 | [Trading Second Brain](trading-second-brain.md) | 個人のTrading knowledgeをどう昇格・保持するか | PARTIAL — initial review complete; long-term history insufficient |
 | [zestoles/quant](zestoles-quant.md) | 失敗研究、事前登録、provenanceをどう残すか | PARTIAL — deep review complete; rich failure history, short development window |
-| Epsilon Quant Research | 大規模な研究群をどう整理・探索するか | TODO |
+| [Epsilon Quant Research](epsilon-quant-research.md) | 大規模な研究群をどう整理・探索するか | PARTIAL — deep review complete; 7-month repo history, ~3-month knowledge-brain history |
 | Backtrader MCP | AIと再現可能なbacktest executionをどう分離するか | TODO |
 | mcp-strategy-research-db | 過去のstrategy resultをAIからどう検索するか | TODO |
 | Trade Terminal | agentによる研究loopとguardrailをどう設計するか | TODO |
@@ -65,21 +65,69 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 - duplicated execution / collector pathがspec driftを起こし、single code pathへ統合された
 - “append-only”はartifact typeごとに保証強度が異なり、READMEの理念だけでは不十分
 
-### Two-repository convergence — still provisional
+### Observed in Epsilon Quant Research
 
-以下は2つの独立repositoryで方向性が一致したため、優先して次のrepositoryでも確認する。
+- VAULT_MAP → project map → strategy hub → findings/history の多段navigation
+- TODO / active canon / STATUS と、TODO_ARCHIVE / historical findings / LOG / reports の分離
+- generated hygiene indexとsemantic/graph retrievalをcanonical sourceにしない
+- duplicate basename、orphan、broken link、stale TODO等をscannerで監査する
+- large dataは個別shardではなくdataset family manifestでmapする
+- scratchとdurable findingを分離する
+- knowledge canon auditとevidence trust auditを別工程として扱う
+- read-only / disposableなAI retrieval indexを使う
+- NEXT / STATUS / LOG / reports でlong-running handoffの「現在」と「履歴」を分離する
+- well-organized knowledge baseでもunderlying evidenceが誤っている可能性があり、data / metric / provenanceを独立監査する
+- Obsidian Relay、flat note layout、overgrown TODO、scattered roots、first-corrupt-shard abort等を実運用上の問題から廃止・再設計した
+
+## Three-repository convergence — provisional but stronger
+
+以下は3つの独立repositoryで方向性が一致したため、Knowledge Base v0.1の有力候補原則として扱う。ただしschemaへはまだ固定しない。
 
 1. **Current valid knowledge と historical record を分離する**
-   - Trading Second Brain: durable memory / learning / dated decision history
+   - Trading Second Brain: MEMORY / LEARNINGS / dated decisions
    - zestoles/quant: current binding status / historical reports / archived invalid evidence
+   - Epsilon: TODO / active canon / STATUS と TODO_ARCHIVE / findings / LOG / reports
 
 2. **過去の証拠を現在の説明に合わせて消さない**
-   - contradictory evidence、old decision、invalidated resultを保持する。
+   - contradictory evidence、invalidated result、parked research、old decisionを保持する。
 
 3. **研究状態を段階化する**
-   - observationやexploratory findingを、そのままdurable rule / validated resultへ昇格させない。
+   - raw observation、exploratory finding、learning、decision、validated stateを同一視しない。
 
-ただし、両repositoryとも公開履歴が短く、Issue / PRによる長期的・複数人の運用証拠が弱い。現時点では STRONG_COMMON_PRINCIPLE と確定しない。
+4. **Navigation / retrieval layerをcanonical evidenceそのものにしない**
+   - Trading Second Brain: sourceをAI summaryで置換しない
+   - zestoles/quant: generated reports / current stateとmachine evidenceを分離
+   - Epsilon: generated indexes / gbrainをread-only derived layerに限定
+
+5. **Knowledge organization と evidence validity を別々に監査する**
+   - zestoles/quant: deterministic measurement implementation自体のbugが研究結論を変えた
+   - Epsilon: canon整理後でもmetric mismatch / derived dataset defectが発見された
+   - implication: 「整理されている」「再現できる」だけで科学的妥当性を保証しない
+
+## Important tensions emerging
+
+まだ解決していない設計上の対立もある。
+
+### A. Current state representation
+
+- Trading Second Brain: 少数のdurable summary files
+- zestoles/quant: binding current-status document
+- Epsilon: 複数のcanonical routing surfaces
+
+→ single current projectionとdomain-specific routing surfacesのどちらが適切か、さらに比較が必要。
+
+### B. Formal schema vs lightweight graph
+
+- zestoles/quant: preregistration / ledger / fingerprint等のmachine-readable modelが強い
+- Epsilon: Markdown metadata + wikilink + hubによる柔軟なknowledge graphが強い
+- Trading Second Brain: file hierarchy + promotion rulesが中心
+
+→ systematic-trading-researchでは、human readabilityとtyped lineageの両立方法が主要論点。
+
+### C. Immutability strength
+
+- artifact typeによって必要なimmutabilityが異なる。
+- “append-only repository”のような一括ルールではなく、experiment result、decision、forward evidence、current projectionごとに要件を定義する必要がある可能性が高い。
 
 ## Synthesis questions
 
@@ -88,18 +136,23 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 - 複数repositoryで共通して残っている設計は何か
 - 途中で撤回・簡素化された設計は何か
 - research artifactの最小単位は何か
-- current stateとhistoryをどう分けているか
-- negative/null resultをどう発見可能にしているか
-- provenanceをどこまで機械可読にしているか
+- current stateとhistoryをどう分けるか
+- negative/null resultをどう発見可能にするか
+- provenanceをどこまで機械可読にするか
 - schemaを厳格にしすぎると何が壊れるか
 - AIへ公開する知識と決定論的engineへ残す処理の境界はどこか
-- Web UI / search / MCPはどの段階で導入されたか
+- Web UI / search / MCPはどの段階で導入するか
 - 自分たちの研究規模で不要な複雑性は何か
-- current statusは手動文書か、canonical entitiesから生成するprojectionか
-- supersedes / invalidates / corrects / derived_from をmachine-readableに持つべきか
-- append-only / immutabilityをどのartifact typeまで要求するべきか
-- measurement implementation自体の検証をexperiment contractへ含めるべきか
+- current statusはsingle projectionか、複数domain routing surfaceか
+- supersedes / invalidates / corrects / derived_from をmachine-readable relationにするか
+- append-only / immutabilityをどのartifact typeまで要求するか
+- measurement implementationの検証をexperiment contractへ含めるか
 - AI retrieval時にhistorical positive resultとcurrent invalid stateの取り違えをどう防ぐか
+- generated index / semantic indexをcanonicalからどこまで切り離すか
+- graph hygiene scannerをどの規模から導入するか
+- knowledge canon auditとevidence trust auditを独立工程として設計するか
+- datasetがCONDEMNEDになったときdownstream experimentをどうinvalidateするか
+- long-running AI handoffにNEXT / STATUS / LOG / reportの分離が必要か
 
 ## Exit condition
 
