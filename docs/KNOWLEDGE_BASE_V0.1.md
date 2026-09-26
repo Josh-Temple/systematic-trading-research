@@ -544,7 +544,9 @@ This distinction is central to the pilot.
 
 ## 15. Pilot acceptance criteria
 
-Knowledge Base v0.1 passes Phase 2 only if the Horizontal Reaction pilot can be reconstructed from GitHub alone and the following questions have unambiguous answers:
+The schema design exits Phase 2 once the minimum structure and templates are defined. Full validation occurs in Phase 3.
+
+Knowledge Base v0.1 exits DRAFT_FOR_PILOT only if the Horizontal Reaction pilot can be reconstructed from GitHub alone and the following questions have unambiguous answers:
 
 1. Which specification governed each result?
 2. Which dataset role was used?
