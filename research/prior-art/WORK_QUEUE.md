@@ -10,233 +10,165 @@ Canonical design decisions, cross-repository synthesis, and schema changes remai
 
 ## Current state
 
-Deep reviews completed:
+Completed deep reviews:
 
 - Trading Second Brain
 - zestoles/quant
 - Epsilon Quant Research
+- DVC
 
-Breadth scan completed:
+Completed WORK:
 
 - WORK-PA-001 — 21-candidate prior-art scan
-- Result: `research/prior-art/CANDIDATE_SCAN.md`
-- Commit supplied by WORK: `0c99b2e3444e6bc8cbc27b64f40e62eb901ce760`
+- WORK-PA-002 — DVC reproducibility boundary review
 
-Current recommended deep-review sequence:
+Current priority:
 
-1. RD-Agent
-2. DVC
-3. Freqtrade
-
-Suggested split:
-
-- Separate Research session: RD-Agent deep review
-- WORK: DVC focused reproducibility / lockfile review
-- Later: Freqtrade deep review
-- Integration / synthesis: main project session
+1. RD-Agent — separate Research session
+2. Freqtrade — next focused engine/diagnostic review
+3. Cross-repository synthesis after RD-Agent
 
 ## WORK-PA-001 — Broad prior-art candidate scout
 
 Status: COMPLETE
 
-### Result
-
-21 repositories were screened.
-
-High-priority candidates included:
-
-- microsoft/RD-Agent
-- treeverse/dvc
-- freqtrade/freqtrade
-- microsoft/qlib
-- kedro-org/kedro
-- nautechsystems/nautilus_trader
-- nkaz001/hftbacktest
-
-See `CANDIDATE_SCAN.md`.
+Result:
+- `research/prior-art/CANDIDATE_SCAN.md`
+- 21 candidates screened
 
 ## WORK-PA-002 — DVC reproducibility boundary review
+
+Status: COMPLETE
+
+Result:
+- `research/prior-art/dvc.md`
+- Commit supplied by WORK: `6c11602d2dadd6941f1290c78b1094342c29ad7d`
+- Review status: PARTIAL
+
+Key verified findings:
+
+- Issue #11058 reproduced independently on DVC 3.67.1.
+- Output could be generated from old code while `dvc.lock` recorded the post-edit code hash.
+- A subsequent `dvc repro` skipped the stage as unchanged.
+- Frozen-stage + `--force` behavior also reproduced a dependency-hash update without command re-execution.
+- DVC strongly records declared pipeline definition and observed post-run dependency/output state.
+- DVC lock metadata does not by itself guarantee that recorded dependency identity is the exact identity that caused the output.
+
+## WORK-PA-003 — Freqtrade lookahead-diagnostic boundary review
 
 Status: READY
 
 ### Goal
 
-Deep-review `treeverse/dvc` as a counterexample to the assumption that a lockfile or run manifest automatically guarantees full experiment reproducibility.
-
-The main question is:
-
-> What does DVC actually guarantee about run identity, input identity, dependency state, and output provenance, and where do those guarantees stop?
+Deep-review `freqtrade/freqtrade` to determine what its lookahead-analysis and related backtest diagnostics actually detect, what they can miss, and whether passing the diagnostic can be mistaken for proof of no temporal leakage.
 
 ### Required fresh reads
 
 Before starting, fresh-read:
 
-- `Josh-Temple/systematic-trading-research` current main
-- `README.md`
+- current project main
 - `docs/ROADMAP.md`
 - `docs/RESEARCH_PRINCIPLES.md`
 - `research/prior-art/README.md`
 - `research/prior-art/TEMPLATE.md`
 - `research/prior-art/CANDIDATE_SCAN.md`
-- completed prior-art reviews
+- completed prior-art reviews including `dvc.md`
 
-Do not use past-chat repository state as current state.
+### Target repository
 
-### DVC evidence to inspect
+`freqtrade/freqtrade`
 
-At minimum:
+### Core questions
 
-- DVC pipeline / stage definition
-- `dvc.lock` semantics
-- dependency / output hashing
-- reproducibility / rerun mechanism
-- external / remote data behavior
-- cache semantics
-- experiment-related features if materially relevant
-- Issues and PRs involving lockfile correctness, concurrent modification, stale dependencies, or mis-associated outputs
-- relevant commit history and redesigns
+Evaluate separately:
 
-Start from, but do not blindly accept, the candidate-scan leads:
+1. What exact classes of lookahead bias does `lookahead-analysis` test?
+2. What assumptions does the test make about indicators, signals, resampling, informative pairs, and dataframe construction?
+3. Can a strategy pass lookahead-analysis while still containing temporal leakage?
+4. What known blind spots are documented or reported?
+5. What tests exist for the diagnostic itself?
+6. How are higher-timeframe / informative-candle boundaries handled?
+7. What differences are expected between backtest, dry-run, and live behavior?
+8. Which simulation assumptions are explicitly not guaranteed to match live execution?
+9. How are data timing, incomplete candles, pairlists, fills, and fees handled?
+10. Does the tool record diagnostic limitations or only PASS/FAIL output?
 
-- Issue #11058 — reported mismatch between execution-time dependency and recorded post-run hash
-- Issue #11004 — frozen-stage dependency hash concerns
-- older versioning / pipeline history where useful
+### Leads from candidate scan
 
-### Verification question
+Start from, but independently verify:
 
-Try to determine whether the following distinct properties are separately guaranteed:
+- official `lookahead-analysis` documentation
+- Issue #12507 — reported missed higher-timeframe leakage
+- Issue #12894 — reported signal mismatch after passing lookahead analysis
 
-1. **Definition identity**
-   - Which pipeline / command / params were intended?
+For each issue:
 
-2. **Input-at-start identity**
-   - Exactly which bytes / files / data versions were read when execution began?
-
-3. **Code-at-start identity**
-   - Which code version actually executed?
-
-4. **Concurrent-modification safety**
-   - What happens if code or dependency files change during a run?
-
-5. **Output identity**
-   - Which outputs were produced?
-
-6. **Recorded lineage correctness**
-   - Are recorded hashes guaranteed to correspond to the exact inputs that produced the outputs?
-
-7. **External-data identity**
-   - What happens when a dependency is outside Git or mutable remotely?
-
-8. **Environment identity**
-   - What is and is not captured about packages, OS, runtime, container, hardware?
-
-Do not collapse these into a single label such as “reproducible”.
-
-### Issue / bug handling
-
-For every reported bug:
-
-- distinguish reporter claim from independently confirmed behavior
-- inspect maintainers' responses
-- determine whether it was accepted, rejected, fixed, still open, or superseded
-- identify affected versions / branches where possible
-- inspect tests / fixes if merged
-
-If feasible in the WORK environment, perform a minimal local reproduction of a key issue.
-
-If not feasible, explicitly mark it `NOT_REPRODUCED` rather than implying confirmation.
+- inspect maintainer response
+- inspect related PR/fix/tests
+- determine current status
+- independently reproduce a minimal case if feasible
+- otherwise mark NOT_REPRODUCED
 
 ### Comparison target
 
-Use DVC to test these current provisional ideas:
+Test these emerging principles:
 
-- provenance artifact existence does not equal provenance correctness
-- immutable-ish metadata does not necessarily freeze the actual runtime input set
-- generated state should not automatically become canonical evidence
-- reproducibility controls need explicit guarantee boundaries
-- knowledge correctness, evidence correctness, and computation correctness are distinct
-
-Do not modify those principles; only evaluate them.
+- diagnostic PASS is not proof of problem absence
+- computation correctness and evidence correctness require separate tests
+- temporal data semantics must be explicit research assumptions
+- scientific guarantee boundaries should be stored with the diagnostic result
 
 ### Output
 
-Create:
+Create only:
 
-`research/prior-art/dvc.md`
+`research/prior-art/freqtrade.md`
 
-Use `TEMPLATE.md` as the base structure.
+Use `TEMPLATE.md` and add a section:
 
-Add a focused section:
+`Diagnostic Guarantee Matrix`
 
-`Guarantee Matrix`
+Rows:
 
-with rows for:
+- direct future-column access
+- full-dataframe aggregation leakage
+- shifted features
+- higher-timeframe/informative-pair leakage
+- incomplete candle usage
+- dynamic pairlist effects
+- backtest/live signal parity
+- fill/execution parity
+- cost parity
+- stateful/external side effects
 
-- pipeline definition
-- code identity
-- input identity
-- external data
-- environment
-- output identity
-- concurrent modification
-- rerun
-- failure recording
-
-For each, classify:
+Classify each:
 
 - STRONG
 - PARTIAL
 - NOT GUARANTEED
 - NOT VERIFIED
 
-with evidence.
-
-### Review status
-
-Use:
-
-- COMPLETE
-- PARTIAL
-- BLOCKED
-
-Do not use COMPLETE if central guarantees remain based only on documentation or unverified Issue claims.
-
-### Allowed changes
-
-Change only:
-
-- `research/prior-art/dvc.md`
-
-Do not change:
-
-- ROADMAP
-- RESEARCH_PRINCIPLES
-- prior-art README/index
-- existing reviews
-- Knowledge Base schema
-- Horizontal Reaction materials
-
 ### End report
 
 Report:
 
-- saved path
+- path
 - commit SHA
 - Review status
-- whether Issue #11058 was independently reproduced
-- strongest confirmed DVC guarantee
-- most important guarantee gap
-- any finding that contradicts the current provisional principles
+- whether #12507 was reproduced
+- whether #12894 was reproduced
+- strongest confirmed diagnostic guarantee
+- most important blind spot
+- any evidence that contradicts current provisional principles
 
 ## Later WORK candidates
 
-After WORK-PA-002 is reviewed:
+After WORK-PA-003:
 
-- collect material Issues / commits for Freqtrade
-- compare provenance fields across reviewed repositories
-- build a failure-pattern catalogue
-- test which proposed principles have independent support
-- identify counterexamples to current-state/history separation
-- compare DVC / DataLad / Kedro provenance boundaries
+- provenance-field comparison across DVC / zestoles / Epsilon
+- failure-pattern catalogue
+- DVC vs DataLad vs Kedro provenance boundary comparison
+- NautilusTrader / hftbacktest execution-semantics review
+- Qlib experiment-recorder review
 
-These tasks should not independently change canonical schema or scientific rules.
+Do not independently change canonical schema or scientific rules.
