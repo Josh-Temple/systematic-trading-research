@@ -1,6 +1,6 @@
 # Roadmap
 
-Updated: 2026-09-26
+Updated: 2026-09-27
 
 ## Goal
 
@@ -43,49 +43,74 @@ Result: **PASS**
 
 ## Phase 1 — Prior repository research
 
-Status: **IN PROGRESS**
+Status: **IN PROGRESS — synthesis v0.1 available**
 
 ### Purpose
 
 完成形だけを模倣せず、先人がどの問題に直面し、何を変更・廃止・維持したかを理解する。
 
-### Initial candidates
+### Completed evidence
 
-- Trading Second Brain — initial review recorded
+Deep reviews:
+
+- Trading Second Brain
 - zestoles/quant
 - Epsilon Quant Research
-- Backtrader MCP
-- mcp-strategy-research-db
-- Trade Terminal
-- その他、調査中に見つかる高品質な候補
+- DVC
+- RD-Agent
 
-### Minimum review scope
+Breadth scan:
 
-各repositoryについて、可能な範囲で以下を確認する。
+- 21 prior-art candidates screened
+- HIGH candidates included RD-Agent, DVC, Freqtrade, Qlib, Kedro, NautilusTrader, hftbacktest
 
-- README / docs
-- directory structure
-- data model / schema
-- experiment lifecycle
-- provenance
-- negative / failed experiment handling
-- current vs historical knowledge separation
-- issues / discussions
-- commit history
-- major redesigns / removed approaches
-- AI / agent boundary
-- deterministic execution boundary
-- strengths / limitations
-- transferable lessons
-- non-transferable project-specific choices
+Current synthesis:
 
-### Synthesis
+- `research/prior-art/SYNTHESIS_V0.1.md`
+- status: `PROVISIONAL_V0.1`
 
-個別事例の列挙では終わらせず、複数repositoryに共通する設計原則と、対立する設計選択を分けて記録する。
+### Strong principles currently supported
+
+- current valid knowledgeとhistorical researchを分ける
+- negative / rejected / invalidated / failed researchを残す
+- observation / hypothesis / experiment / result / interpretation / decisionを混同しない
+- provenance artifactの存在とcausal provenanceの正しさを分ける
+- knowledge correctness / evidence correctness / computation correctnessを別々に検査する
+- final holdoutをadaptive research loopの外へ置く
+- AIの権限制御には、write権限だけでなくdata visibilityとscientific decision rightsを含める
+- retrieval / navigation / generated indexをcanonical evidenceにしない
+
+これらはPhase 2の設計制約候補であり、最終schemaではない。
+
+### Remaining decisive review
+
+**Freqtrade**
+
+確認する主題:
+
+- lookahead-analysisが実際に検出する範囲
+- diagnostic PASSの保証境界
+- higher-timeframe / incomplete-candle leakage
+- backtest / dry-run / live parity
+- simulation assumptionsとexecution realityの差
+
+### Phase 1 remaining steps
+
+1. Freqtrade deep review
+2. `SYNTHESIS_V0.1.md` の短い更新
+3. Phase 2へ渡す最小experiment lineageと保証境界を決定
+4. Phase 1 exit conditionを判定
+
+必要が明確になった場合のみ、QlibまたはKedroを追加deep reviewする。
 
 ### Exit condition
 
-少なくとも複数の異なる設計思想を比較し、Knowledge Base v0.1を作るための根拠が揃っていること。
+以下を区別でき、Horizontal Reaction pilotへ適用可能な最小設計制約が揃うこと。
+
+- strong common principles
+- plausible but unverified patterns
+- conflicting design choices
+- project-specific choices
 
 ---
 
@@ -115,11 +140,41 @@ Concept
 → Interpretation
 → Decision
 
-重要: 最終schemaはPhase 1前に固定しない。
+重要: 最終schemaはPhase 1で得た証拠から決定し、事前候補をそのまま採用しない。
+
+### Current design constraints from Phase 1 — provisional
+
+v0.1は少なくとも以下を表現できる必要がある可能性が高い。
+
+- hypothesis
+- frozen strategy / experiment specification
+- dataset identity and role
+- run identity
+- result
+- interpretation
+- decision
+- current status
+- invalidation / correction relation
+- rejected / failed / insufficient-evidence states
+
+data role候補:
+
+- development / training
+- adaptive validation
+- final holdout
+- consumed holdout / historical sample
+
+resultは少なくとも、
+
+- execution status
+- evidence validity
+- scientific status
+
+を別々に扱う方向を検証する。
 
 ### Exit condition
 
-1本の研究lineageを無理なく表現できる最小構造が定義されていること。
+1本の研究lineageを無理なく表現でき、人間が理解しやすく、AIがcurrent/historical stateを取り違えず、provenanceの保証範囲を明示できる最小構造が定義されていること。
 
 ---
 
