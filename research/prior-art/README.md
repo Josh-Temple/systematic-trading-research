@@ -37,6 +37,7 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 | [Trading Second Brain](trading-second-brain.md) | 個人のTrading knowledgeをどう昇格・保持するか | PARTIAL — initial review complete; long-term history insufficient |
 | [zestoles/quant](zestoles-quant.md) | 失敗研究、事前登録、provenanceをどう残すか | PARTIAL — deep review complete; rich failure history, short development window |
 | [Epsilon Quant Research](epsilon-quant-research.md) | 大規模な研究群をどう整理・探索するか | PARTIAL — deep review complete; 7-month repo history, ~3-month knowledge-brain history |
+| [DVC](dvc.md) | lockfile / run manifestが実際に何を保証するか | PARTIAL — core lineage failures independently reproduced on DVC 3.67.1 |
 
 ## Candidate scan
 
@@ -63,147 +64,130 @@ Current recommended order:
    - Reconstruct whether evaluation results flow back into proposal generation.
    - Separate current main behavior from unmerged PR proposals.
 
-2. **DVC**
-   - Test what a run manifest / lockfile actually guarantees.
-   - Examine input-at-start identity, concurrent modification, external data drift, and lockfile timing.
-
-3. **Freqtrade**
+2. **Freqtrade**
    - Test the sensitivity and limits of lookahead detection and simulation/live parity checks.
    - Distinguish a passing diagnostic from proof that no temporal leakage exists.
 
-This replaces the earlier assumption that the next review should necessarily be Backtrader MCP. The candidate scan found stronger, more mature counterexamples for the current questions.
+3. **Qlib or Kedro**
+   - Use the result of RD-Agent / Freqtrade to choose whether the next gap is experiment tracking or provenance/versioning architecture.
 
-## Early observations — not yet synthesized principles
+DVC review is now complete enough for synthesis on its scoped question; further DVC work should target unresolved remote/environment guarantees only if needed.
 
-### Observed in Trading Second Brain
+## Cross-repository principles — evidence strengthening
 
-- raw observation → revisable learning → explicit decision → durable memory の段階的昇格
-- current durable knowledgeとhistorical decision logの分離
-- original sourceをAI summaryで置換しない
-- fact / observation / hypothesis / rule / decisionを分離する
-- repository rootだけをagent permission boundaryにする
-- humanが手動分類しすぎず、inboxからAIが整理する
+### Strong candidate: current valid knowledge and historical record should be separated
 
-### Observed in zestoles/quant
+Observed independently in Trading Second Brain, zestoles/quant, and Epsilon.
 
-- machine-readable preregistration + fingerprint
-- trial budgetをlineageと一緒に保持
-- outputごとのprovenance sidecar
-- negative / rejected / unresolvedを残す
-- invalid evidenceを削除せずarchiveする
-- current binding stateとhistorical resultを分離する
-- unmeasurable / incomplete evidenceをPASS扱いしないfail-closed gate
-- measurement implementation自体をknown-answer / sensitivity testで監査する
-- duplicated execution / collector pathがspec driftを起こし、single code pathへ統合された
-- “append-only”はartifact typeごとに保証強度が異なり、READMEの理念だけでは不十分
+Still open: whether current state should be a single projection or multiple domain-specific routing surfaces.
 
-### Observed in Epsilon Quant Research
+### Strong candidate: past evidence should not be erased to fit the current conclusion
 
-- VAULT_MAP → project map → strategy hub → findings/history の多段navigation
-- TODO / active canon / STATUS と、TODO_ARCHIVE / historical findings / LOG / reports の分離
-- generated hygiene indexとsemantic/graph retrievalをcanonical sourceにしない
-- duplicate basename、orphan、broken link、stale TODO等をscannerで監査する
-- large dataは個別shardではなくdataset family manifestでmapする
-- scratchとdurable findingを分離する
-- knowledge canon auditとevidence trust auditを別工程として扱う
-- read-only / disposableなAI retrieval indexを使う
-- NEXT / STATUS / LOG / reports でlong-running handoffの「現在」と「履歴」を分離する
-- well-organized knowledge baseでもunderlying evidenceが誤っている可能性があり、data / metric / provenanceを独立監査する
-- Obsidian Relay、flat note layout、overgrown TODO、scattered roots、first-corrupt-shard abort等を実運用上の問題から廃止・再設計した
+Observed through contradictory evidence retention, invalidated results, archived evidence, parked research, and dated decisions.
 
-## Three-repository convergence — provisional but stronger
+### Strong candidate: research state should be staged
 
-以下は3つの独立repositoryで方向性が一致したため、Knowledge Base v0.1の有力候補原則として扱う。ただしschemaへはまだ固定しない。
+Raw observation, exploratory finding, learning, decision, validated state, rejected state, and invalid evidence should not be treated as equivalent.
 
-1. **Current valid knowledge と historical record を分離する**
-   - Trading Second Brain: MEMORY / LEARNINGS / dated decisions
-   - zestoles/quant: current binding status / historical reports / archived invalid evidence
-   - Epsilon: TODO / active canon / STATUS と TODO_ARCHIVE / findings / LOG / reports
+### Strong candidate: retrieval/navigation should not become canonical evidence
 
-2. **過去の証拠を現在の説明に合わせて消さない**
-   - contradictory evidence、invalidated result、parked research、old decisionを保持する。
+Generated indexes, semantic retrieval, summaries, and lock/status surfaces are useful views, but they should not replace the underlying evidence.
 
-3. **研究状態を段階化する**
-   - raw observation、exploratory finding、learning、decision、validated stateを同一視しない。
+### Strong candidate: provenance artifact existence does not prove provenance correctness
 
-4. **Navigation / retrieval layerをcanonical evidenceそのものにしない**
-   - Trading Second Brain: sourceをAI summaryで置換しない
-   - zestoles/quant: generated reports / current stateとmachine evidenceを分離
-   - Epsilon: generated indexes / gbrainをread-only derived layerに限定
+This now has unusually strong evidence across multiple cases:
 
-5. **Knowledge organization と evidence validity を別々に監査する**
-   - zestoles/quant: deterministic measurement implementation自体のbugが研究結論を変えた
-   - Epsilon: canon整理後でもmetric mismatch / derived dataset defectが発見された
-   - implication: 「整理されている」「再現できる」だけで科学的妥当性を保証しない
+- zestoles/quant: deterministic measurement code and duplicated collectors produced invalid scientific conclusions despite structured records.
+- Epsilon: organized canon and derived datasets still required a separate trust audit that found metric/data defects.
+- DVC: on DVC 3.67.1, concurrent code modification was independently reproduced such that the output came from old code while `dvc.lock` recorded the new code hash; a subsequent repro was skipped.
+
+Implication:
+
+```text
+recorded provenance
+!=
+causal provenance
+```
+
+A system must state exactly when identity is observed:
+
+- definition time
+- execution start
+- actual read/use
+- save/record time
+
+and should not collapse these into one generic “reproducible” label.
+
+### Strong candidate: knowledge correctness, evidence correctness, and computation correctness require separate checks
+
+Evidence now comes from:
+
+- zestoles/quant — computation/measurement bugs
+- Epsilon — canon organization vs evidence trust
+- DVC — provenance record vs actual execution lineage
+
+This distinction is becoming central enough to test explicitly in future reviews.
 
 ## Important tensions emerging
 
 ### A. Current state representation
 
-- Trading Second Brain: 少数のdurable summary files
+- Trading Second Brain: few durable summary files
 - zestoles/quant: binding current-status document
-- Epsilon: 複数のcanonical routing surfaces
+- Epsilon: multiple canonical routing surfaces
 
-→ single current projectionとdomain-specific routing surfacesのどちらが適切か、さらに比較が必要。
+Open question: single current projection vs domain-specific routing surfaces.
 
 ### B. Formal schema vs lightweight graph
 
-- zestoles/quant: preregistration / ledger / fingerprint等のmachine-readable modelが強い
-- Epsilon: Markdown metadata + wikilink + hubによる柔軟なknowledge graphが強い
-- Trading Second Brain: file hierarchy + promotion rulesが中心
+- zestoles/quant: stronger machine-readable preregistration / ledger / fingerprint model
+- Epsilon: flexible Markdown metadata + wikilink + hub graph
+- Trading Second Brain: file hierarchy + promotion rules
 
-→ systematic-trading-researchでは、human readabilityとtyped lineageの両立方法が主要論点。
+Open question: how to combine typed lineage with low-friction human readability.
 
 ### C. Immutability strength
 
-- artifact typeによって必要なimmutabilityが異なる。
-- “append-only repository”のような一括ルールではなく、experiment result、decision、forward evidence、current projectionごとに要件を定義する必要がある可能性が高い。
+Artifact types need different guarantees.
 
-### D. Reproducibility guarantees may be weaker than their artifacts suggest
+Experiment result, decision, forward evidence, current projection, generated index, and raw source should not inherit one blanket “append-only” rule.
 
-The candidate scan adds a new cross-cutting question:
+### D. Reproducibility guarantee boundaries
 
-- a lockfile may not guarantee input-at-start identity,
-- a lookahead diagnostic may not prove absence of leakage,
-- an AI research loop may still leak holdout information back into proposal generation.
+DVC demonstrates that a useful lockfile can still have a causal-lineage gap.
 
-The existence of a control artifact is therefore not enough; its actual guarantee must be tested.
+Future designs must separate:
+
+- declared definition identity
+- input-at-start identity
+- actual bytes read
+- concurrent-mutation safety
+- output identity
+- environment identity
+- recorded lineage
+- rerun behavior
 
 ## Synthesis questions
 
-個別レビュー後、次を横断的に検討する。
-
-- 複数repositoryで共通して残っている設計は何か
-- 途中で撤回・簡素化された設計は何か
-- research artifactの最小単位は何か
-- current stateとhistoryをどう分けるか
-- negative/null resultをどう発見可能にするか
-- provenanceをどこまで機械可読にするか
-- schemaを厳格にしすぎると何が壊れるか
-- AIへ公開する知識と決定論的engineへ残す処理の境界はどこか
-- Web UI / search / MCPはどの段階で導入するか
-- 自分たちの研究規模で不要な複雑性は何か
-- current statusはsingle projectionか、複数domain routing surfaceか
-- supersedes / invalidates / corrects / derived_from をmachine-readable relationにするか
-- append-only / immutabilityをどのartifact typeまで要求するか
-- measurement implementationの検証をexperiment contractへ含めるか
-- AI retrieval時にhistorical positive resultとcurrent invalid stateの取り違えをどう防ぐか
-- generated index / semantic indexをcanonicalからどこまで切り離すか
-- graph hygiene scannerをどの規模から導入するか
-- knowledge canon auditとevidence trust auditを独立工程として設計するか
-- datasetがCONDEMNEDになったときdownstream experimentをどうinvalidateするか
-- long-running AI handoffにNEXT / STATUS / LOG / reportの分離が必要か
-- run manifest / lockfileがinput-at-start identityを本当に保証するか
-- diagnostic PASSを「問題不存在の証明」と誤解しないために、検査の感度と既知のblind spotをどう保存するか
-- AI research loopでvalidation feedbackとfinal holdoutをどう隔離するか
+- What is the smallest typed research lineage we need?
+- Which relations should be machine-readable: derived_from / supersedes / invalidates / corrects / uses_dataset?
+- Which artifacts need content hashes?
+- Which artifacts need actual immutable snapshots rather than post-run hashes?
+- Should run identity include code/data/environment snapshots?
+- How should external mutable data be pinned?
+- How should failed runs and scientific negative results be distinguished?
+- How should current valid knowledge be derived from history?
+- How do we prevent AI retrieval from surfacing historical positive results as current truth?
+- How do we record the guarantee boundary of diagnostics such as lookahead checks?
+- How do we keep research infrastructure small enough for a personal research repository?
 
 ## Exit condition
 
-複数の異なる先行例から、
+Move to Knowledge Base v0.1 design only after the evidence is sufficient to separate:
 
 - strong common principles
 - plausible but unverified patterns
 - conflicting design choices
 - project-specific choices
 
-を分けて記録できた時点で、Knowledge Base v0.1のschema設計へ進む。
+RD-Agent remains the most important missing review because the AI feedback / holdout boundary has not yet been tested deeply.
