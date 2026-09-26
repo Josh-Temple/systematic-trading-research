@@ -1,0 +1,36 @@
+run_id: RUN-<LINE>-NNN
+experiment_id: EXP-<LINE>-NNN
+specification_id: SPEC-<LINE>-NNN-vNN
+
+dataset_uses:
+  - dataset_id: DATA-<LINE>-NNN
+    role: DEVELOPMENT
+    may_influence_future_search: true
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+
+started_at: UNKNOWN
+completed_at: UNKNOWN
+
+execution_status: NOT_RUN
+
+environment:
+  ref: UNKNOWN
+
+outputs: []
+
+provenance_guarantees:
+  definition_identity: UNVERIFIED
+  code_at_start_identity: UNVERIFIED
+  input_snapshot_identity: UNVERIFIED
+  external_data_pinned: UNVERIFIED
+  environment_identity: UNVERIFIED
+  output_identity: UNVERIFIED
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: UNVERIFIED
+
+diagnostic_refs: []
+
+notes: ""
