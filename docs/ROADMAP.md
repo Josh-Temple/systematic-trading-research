@@ -43,7 +43,7 @@ Result: **PASS**
 
 ## Phase 1 — Prior repository research
 
-Status: **IN PROGRESS — synthesis v0.1 available**
+Status: **COMPLETE**
 
 ### Purpose
 
@@ -58,6 +58,7 @@ Deep reviews:
 - Epsilon Quant Research
 - DVC
 - RD-Agent
+- Freqtrade
 
 Breadth scan:
 
@@ -66,8 +67,8 @@ Breadth scan:
 
 Current synthesis:
 
-- `research/prior-art/SYNTHESIS_V0.1.md`
-- status: `PROVISIONAL_V0.1`
+- `research/prior-art/SYNTHESIS_V0.2.md`
+- status: `PHASE_1_FINAL_V0.2`
 
 ### Strong principles currently supported
 
@@ -82,26 +83,16 @@ Current synthesis:
 
 これらはPhase 2の設計制約候補であり、最終schemaではない。
 
-### Remaining decisive review
+### Phase 1 exit
 
-**Freqtrade**
+Result: **PASS**
 
-確認する主題:
+See:
 
-- lookahead-analysisが実際に検出する範囲
-- diagnostic PASSの保証境界
-- higher-timeframe / incomplete-candle leakage
-- backtest / dry-run / live parity
-- simulation assumptionsとexecution realityの差
+- `research/prior-art/PHASE1_EXIT_REVIEW.md`
+- `research/prior-art/SYNTHESIS_V0.2.md`
 
-### Phase 1 remaining steps
-
-1. Freqtrade deep review
-2. `SYNTHESIS_V0.1.md` の短い更新
-3. Phase 2へ渡す最小experiment lineageと保証境界を決定
-4. Phase 1 exit conditionを判定
-
-必要が明確になった場合のみ、QlibまたはKedroを追加deep reviewする。
+Qlib / Kedro / NautilusTrader / hftbacktest remain deferred references, not blockers.
 
 ### Exit condition
 
@@ -116,7 +107,7 @@ Current synthesis:
 
 ## Phase 2 — Knowledge Base v0.1
 
-Status: **PLANNED**
+Status: **IN PROGRESS**
 
 先行研究の結果から、最小schemaを設計する。
 
