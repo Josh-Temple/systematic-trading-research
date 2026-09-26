@@ -38,6 +38,7 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 | [zestoles/quant](zestoles-quant.md) | 失敗研究、事前登録、provenanceをどう残すか | PARTIAL — deep review complete; rich failure history, short development window |
 | [Epsilon Quant Research](epsilon-quant-research.md) | 大規模な研究群をどう整理・探索するか | PARTIAL — deep review complete; 7-month repo history, ~3-month knowledge-brain history |
 | [DVC](dvc.md) | lockfile / run manifestが実際に何を保証するか | PARTIAL — core lineage failures independently reproduced on DVC 3.67.1 |
+| [RD-Agent](rd-agent.md) | AI研究ループとfinal holdoutの境界 | PARTIAL — current-main source confirms test/backtest feedback enters adaptive loop |
 
 ## Candidate scan
 
@@ -59,16 +60,11 @@ High-priority candidates from the scan:
 
 Current recommended order:
 
-1. **RD-Agent**
-   - Test the AI research-loop / holdout boundary.
-   - Reconstruct whether evaluation results flow back into proposal generation.
-   - Separate current main behavior from unmerged PR proposals.
-
-2. **Freqtrade**
+1. **Freqtrade**
    - Test the sensitivity and limits of lookahead detection and simulation/live parity checks.
    - Distinguish a passing diagnostic from proof that no temporal leakage exists.
 
-3. **Qlib or Kedro**
+2. **Qlib or Kedro**
    - Use the result of RD-Agent / Freqtrade to choose whether the next gap is experiment tracking or provenance/versioning architecture.
 
 DVC review is now complete enough for synthesis on its scoped question; further DVC work should target unresolved remote/environment guarantees only if needed.
@@ -190,4 +186,4 @@ Move to Knowledge Base v0.1 design only after the evidence is sufficient to sepa
 - conflicting design choices
 - project-specific choices
 
-RD-Agent remains the most important missing review because the AI feedback / holdout boundary has not yet been tested deeply.
+RD-Agent is now reviewed deeply enough for the first cross-repository synthesis. Freqtrade remains the next diagnostic-boundary review.
