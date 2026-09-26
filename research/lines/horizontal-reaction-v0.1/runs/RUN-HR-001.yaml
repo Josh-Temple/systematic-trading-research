@@ -1,0 +1,45 @@
+run_id: RUN-HR-001
+experiment_id: EXP-HR-001
+specification_id: SPEC-HR-001-v01
+
+dataset_uses:
+  - dataset_id: DATA-HR-001
+    role: CONSUMED_HOLDOUT
+    role_at_execution: UNUSED_EVALUATION_AT_FREEZE
+    may_influence_future_search: false
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+
+started_at: 2026-09-11
+completed_at: 2026-09-11
+
+execution_status: SUCCESS
+
+environment:
+  ref: UNKNOWN
+
+outputs:
+  - kind: execution_result_document
+    ref: https://docs.google.com/document/d/17Etkil26A1xv8SqEzZW3t44FHz9TNxNWrzWm6O_WyTI/edit
+  - kind: outcome_record
+    sha256: 356462e6e823b392e3f97d6ca24f6d5355b1fe9f095e059aa71b8818215a5203
+    bytes: 5005228
+
+provenance_guarantees:
+  definition_identity: CAPTURED
+  code_at_start_identity: NOT_CAPTURED
+  input_snapshot_identity: CAPTURED
+  external_data_pinned: CAPTURED
+  environment_identity: NOT_CAPTURED
+  output_identity: CAPTURED
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: PARTIAL
+
+diagnostic_refs: []
+
+notes: >
+  Source identity was reported proven for selected M1 and required Tick hours using
+  recorded SHA-256 manifests. Later source-pack recovery independently matched
+  underlying per-file identities. Code/environment identity is not inferred.
