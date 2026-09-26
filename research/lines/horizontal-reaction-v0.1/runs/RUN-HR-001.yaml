@@ -35,7 +35,7 @@ provenance_guarantees:
   environment_identity: NOT_CAPTURED
   output_identity: CAPTURED
   concurrent_mutation_prevented: UNVERIFIED
-  causal_lineage_independently_checked: PARTIAL
+  causal_lineage_independently_checked: UNVERIFIED
 
 diagnostic_refs: []
 
