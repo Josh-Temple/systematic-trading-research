@@ -16,6 +16,7 @@ Completed deep reviews:
 - zestoles/quant
 - Epsilon Quant Research
 - DVC
+- RD-Agent
 
 Completed WORK:
 
@@ -24,9 +25,9 @@ Completed WORK:
 
 Current priority:
 
-1. RD-Agent — separate Research session
-2. Freqtrade — next focused engine/diagnostic review
-3. Cross-repository synthesis after RD-Agent
+1. Freqtrade — next focused engine/diagnostic review
+2. Cross-repository synthesis / Phase 1 exit review after Freqtrade
+3. Qlib or Kedro only if a material evidence gap remains
 
 ## WORK-PA-001 — Broad prior-art candidate scout
 
