@@ -34,12 +34,25 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 
 | Repository | Primary question | Status |
 |---|---|---|
-| Trading Second Brain | 個人のTrading knowledgeをどう昇格・保持するか | TODO |
+| [Trading Second Brain](trading-second-brain.md) | 個人のTrading knowledgeをどう昇格・保持するか | PARTIAL — initial review complete; long-term history insufficient |
 | zestoles/quant | 失敗研究、事前登録、provenanceをどう残すか | TODO |
 | Epsilon Quant Research | 大規模な研究群をどう整理・探索するか | TODO |
 | Backtrader MCP | AIと再現可能なbacktest executionをどう分離するか | TODO |
 | mcp-strategy-research-db | 過去のstrategy resultをAIからどう検索するか | TODO |
 | Trade Terminal | agentによる研究loopとguardrailをどう設計するか | TODO |
+
+## Early observations — not yet synthesized principles
+
+Trading Second Brainの初回レビューから、以下を比較候補として保持する。
+
+- raw observation → revisable learning → explicit decision → durable memory の段階的昇格
+- current durable knowledgeとhistorical decision logの分離
+- original sourceをAI summaryで置換しない
+- fact / observation / hypothesis / rule / decisionを分離する
+- repository rootだけをagent permission boundaryにする
+- humanが手動分類しすぎず、inboxからAIが整理する
+
+ただし同repositoryは履歴が短くIssueもないため、これらを一般原則とはまだ確定しない。
 
 ## Synthesis questions
 
