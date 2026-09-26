@@ -39,6 +39,7 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 | [Epsilon Quant Research](epsilon-quant-research.md) | 大規模な研究群をどう整理・探索するか | PARTIAL — deep review complete; 7-month repo history, ~3-month knowledge-brain history |
 | [DVC](dvc.md) | lockfile / run manifestが実際に何を保証するか | PARTIAL — core lineage failures independently reproduced on DVC 3.67.1 |
 | [RD-Agent](rd-agent.md) | AI研究ループとfinal holdoutの境界 | PARTIAL — current-main source confirms test/backtest feedback enters adaptive loop |
+| [Freqtrade](freqtrade.md) | lookahead diagnosticの保証境界 | PARTIAL — component blind spot reproduced; end-to-end reported issues not fully reproduced |
 
 ## Candidate scan
 
@@ -56,18 +57,17 @@ High-priority candidates from the scan:
 - nautechsystems/nautilus_trader
 - nkaz001/hftbacktest
 
-## Next deep reviews
+## Phase 1 status
 
-Current recommended order:
+Phase 1 prior-art research is **COMPLETE**.
 
-1. **Freqtrade**
-   - Test the sensitivity and limits of lookahead detection and simulation/live parity checks.
-   - Distinguish a passing diagnostic from proof that no temporal leakage exists.
+Current synthesis:
 
-2. **Qlib or Kedro**
-   - Use the result of RD-Agent / Freqtrade to choose whether the next gap is experiment tracking or provenance/versioning architecture.
+- [SYNTHESIS_V0.2.md](SYNTHESIS_V0.2.md)
+- [PHASE1_EXIT_REVIEW.md](PHASE1_EXIT_REVIEW.md)
 
-DVC review is now complete enough for synthesis on its scoped question; further DVC work should target unresolved remote/environment guarantees only if needed.
+Additional reviews such as Qlib or Kedro are deferred until a concrete Phase 2/3 design question requires them.
+
 
 ## Cross-repository principles — evidence strengthening
 
@@ -186,4 +186,4 @@ Move to Knowledge Base v0.1 design only after the evidence is sufficient to sepa
 - conflicting design choices
 - project-specific choices
 
-RD-Agent is now reviewed deeply enough for the first cross-repository synthesis. Freqtrade remains the next diagnostic-boundary review.
+Phase 1 exit review passed. Proceed to Knowledge Base v0.1 design.
