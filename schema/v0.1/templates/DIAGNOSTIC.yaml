@@ -1,0 +1,22 @@
+diagnostic_id: DIAG-<LINE>-NNN
+target_run: RUN-<LINE>-NNN
+
+diagnostic_type: UNKNOWN
+tool:
+  name: UNKNOWN
+  version: UNKNOWN
+
+checked_scope: []
+coverage:
+  description: UNKNOWN
+
+overrides: []
+
+result: UNKNOWN
+
+known_blind_spots: []
+not_tested: []
+
+evidence_refs: []
+
+notes: ""
