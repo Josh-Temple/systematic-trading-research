@@ -107,7 +107,7 @@ Qlib / Kedro / NautilusTrader / hftbacktest remain deferred references, not bloc
 
 ## Phase 2 — Knowledge Base v0.1
 
-Status: **IN PROGRESS**
+Status: **COMPLETE**
 
 先行研究の結果から、最小schemaを設計する。
 
@@ -163,15 +163,26 @@ resultは少なくとも、
 
 を別々に扱う方向を検証する。
 
+### Deliverables completed
+
+- `docs/KNOWLEDGE_BASE_V0.1.md`
+- `schema/v0.1/README.md`
+- entity / run / diagnostic / current projection templates
+- `schema/v0.1/PILOT_CHECKLIST.md`
+
+Result: **PASS — DRAFT_FOR_PILOT**
+
 ### Exit condition
 
 1本の研究lineageを無理なく表現でき、人間が理解しやすく、AIがcurrent/historical stateを取り違えず、provenanceの保証範囲を明示できる最小構造が定義されていること。
+
+Full schema validation is intentionally deferred to the Horizontal Reaction migration in Phase 3.
 
 ---
 
 ## Phase 3 — Horizontal Reaction pilot migration
 
-Status: **PLANNED**
+Status: **IN PROGRESS**
 
 Horizontal Reaction Strategy v0.1を最初の完全移植対象にする。
 
