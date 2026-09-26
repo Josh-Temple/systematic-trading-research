@@ -35,7 +35,7 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 | Repository | Primary question | Status |
 |---|---|---|
 | [Trading Second Brain](trading-second-brain.md) | 個人のTrading knowledgeをどう昇格・保持するか | PARTIAL — initial review complete; long-term history insufficient |
-| zestoles/quant | 失敗研究、事前登録、provenanceをどう残すか | TODO |
+| [zestoles/quant](zestoles-quant.md) | 失敗研究、事前登録、provenanceをどう残すか | PARTIAL — deep review complete; rich failure history, short development window |
 | Epsilon Quant Research | 大規模な研究群をどう整理・探索するか | TODO |
 | Backtrader MCP | AIと再現可能なbacktest executionをどう分離するか | TODO |
 | mcp-strategy-research-db | 過去のstrategy resultをAIからどう検索するか | TODO |
@@ -43,7 +43,7 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 
 ## Early observations — not yet synthesized principles
 
-Trading Second Brainの初回レビューから、以下を比較候補として保持する。
+### Observed in Trading Second Brain
 
 - raw observation → revisable learning → explicit decision → durable memory の段階的昇格
 - current durable knowledgeとhistorical decision logの分離
@@ -52,7 +52,34 @@ Trading Second Brainの初回レビューから、以下を比較候補として
 - repository rootだけをagent permission boundaryにする
 - humanが手動分類しすぎず、inboxからAIが整理する
 
-ただし同repositoryは履歴が短くIssueもないため、これらを一般原則とはまだ確定しない。
+### Observed in zestoles/quant
+
+- machine-readable preregistration + fingerprint
+- trial budgetをlineageと一緒に保持
+- outputごとのprovenance sidecar
+- negative / rejected / unresolvedを残す
+- invalid evidenceを削除せずarchiveする
+- current binding stateとhistorical resultを分離する
+- unmeasurable / incomplete evidenceをPASS扱いしないfail-closed gate
+- measurement implementation自体をknown-answer / sensitivity testで監査する
+- duplicated execution / collector pathがspec driftを起こし、single code pathへ統合された
+- “append-only”はartifact typeごとに保証強度が異なり、READMEの理念だけでは不十分
+
+### Two-repository convergence — still provisional
+
+以下は2つの独立repositoryで方向性が一致したため、優先して次のrepositoryでも確認する。
+
+1. **Current valid knowledge と historical record を分離する**
+   - Trading Second Brain: durable memory / learning / dated decision history
+   - zestoles/quant: current binding status / historical reports / archived invalid evidence
+
+2. **過去の証拠を現在の説明に合わせて消さない**
+   - contradictory evidence、old decision、invalidated resultを保持する。
+
+3. **研究状態を段階化する**
+   - observationやexploratory findingを、そのままdurable rule / validated resultへ昇格させない。
+
+ただし、両repositoryとも公開履歴が短く、Issue / PRによる長期的・複数人の運用証拠が弱い。現時点では STRONG_COMMON_PRINCIPLE と確定しない。
 
 ## Synthesis questions
 
@@ -68,6 +95,11 @@ Trading Second Brainの初回レビューから、以下を比較候補として
 - AIへ公開する知識と決定論的engineへ残す処理の境界はどこか
 - Web UI / search / MCPはどの段階で導入されたか
 - 自分たちの研究規模で不要な複雑性は何か
+- current statusは手動文書か、canonical entitiesから生成するprojectionか
+- supersedes / invalidates / corrects / derived_from をmachine-readableに持つべきか
+- append-only / immutabilityをどのartifact typeまで要求するべきか
+- measurement implementation自体の検証をexperiment contractへ含めるべきか
+- AI retrieval時にhistorical positive resultとcurrent invalid stateの取り違えをどう防ぐか
 
 ## Exit condition
 
