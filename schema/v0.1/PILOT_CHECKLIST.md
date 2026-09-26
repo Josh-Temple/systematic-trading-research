@@ -80,6 +80,6 @@ A fresh AI session reading only this research line should not:
 
 ## Exit
 
-Phase 2 passes only after this checklist is exercised on the real Horizontal Reaction migration.
+Phase 3 pilot passes only after this checklist is exercised on the real Horizontal Reaction migration.
 
 Schema changes discovered during the pilot must be recorded with the concrete failure they solve.
