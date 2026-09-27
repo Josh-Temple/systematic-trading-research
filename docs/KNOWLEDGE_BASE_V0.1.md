@@ -1,7 +1,7 @@
 # Knowledge Base v0.1 Design
 
 Updated: 2026-09-27
-Status: DRAFT_FOR_PILOT
+Status: PILOT_VALIDATED_V0.1
 Phase: 2
 
 ## 1. Purpose
@@ -212,7 +212,7 @@ Required fields:
 - `id`
 - `type: Experiment`
 - `research_line_id`
-- `tests_hypothesis`
+- `tests_hypothesis` when the Experiment actually tests a scientific hypothesis; otherwise use `NOT_APPLICABLE`
 - `uses_specification`
 - `planned_dataset_uses`
 - `created_at`
@@ -292,6 +292,9 @@ Initial independent status dimensions:
 - `NOT_SUPPORTED`
 - `INCONCLUSIVE`
 - `SUPERSEDED`
+- `NOT_APPLICABLE`
+
+`NOT_APPLICABLE` is used when a valid Result records source qualification, blocked execution, or another operational outcome without producing a scientific outcome.
 
 These labels are v0.1 candidates. The pilot may revise them.
 
@@ -398,7 +401,9 @@ SPEC-<LINE>-NNN-vNN
 DATA-<LINE>-NNN
 EXP-<LINE>-NNN
 RUN-<LINE>-NNN
+RUN-<LINE>-NNN-ATTEMPT-N
 RES-<LINE>-NNN
+RES-<LINE>-NNN-ATTEMPT-N
 INT-<LINE>-NNN
 DEC-<LINE>-NNN
 DIAG-<LINE>-NNN
@@ -418,6 +423,8 @@ RES-HR-001
 ```
 
 Do not encode mutable scientific status in the ID.
+
+The optional `-ATTEMPT-N` suffix is allowed only when preserving multiple concrete execution attempts for the same Experiment. It does not create a new Experiment.
 
 ## 10. Immutability policy
 
@@ -460,7 +467,10 @@ Candidate values for each guarantee:
 - `CAPTURED`
 - `NOT_CAPTURED`
 - `NOT_APPLICABLE`
+- `PARTIAL`
 - `UNVERIFIED`
+
+`PARTIAL` is allowed only when the captured and uncaptured parts are explicitly described in the Run notes or output metadata.
 
 Initial guarantee fields:
 
