@@ -1,6 +1,6 @@
 # Schema v0.1
 
-Status: DRAFT_FOR_PILOT
+Status: PILOT_VALIDATED_V0.1
 
 This folder contains the machine-addressable conventions for Knowledge Base v0.1.
 
@@ -38,6 +38,7 @@ Rules:
 - references use entity IDs.
 - status words must not replace the independent result status dimensions.
 - unknown values are written as `UNKNOWN` or omitted only when the field is optional; do not infer them.
+- use `NOT_APPLICABLE` when a required schema dimension genuinely does not apply; do not use `UNKNOWN` for non-applicability.
 
 ## Relation record
 
@@ -72,6 +73,8 @@ scientific_status: NOT_SUPPORTED
 ```
 
 These dimensions are independent.
+
+`scientific_status: NOT_APPLICABLE` is valid for source qualification, blocked execution, or other records that produce no scientific outcome.
 
 Do not encode:
 
@@ -119,3 +122,14 @@ v0.1 relies on human review plus simple future linting.
 No schema-validation framework is added yet.
 
 The first objective is to discover whether the structure is usable on Horizontal Reaction before automating validation.
+
+
+## Pilot refinements
+
+The Horizontal Reaction pilot established three v0.1 refinements:
+
+1. `tests_hypothesis` is conditional. For SOURCE_QUALIFICATION or descriptive/operational DIAGNOSTIC experiments that do not test a scientific hypothesis, write `NOT_APPLICABLE`.
+2. provenance guarantee values may use `PARTIAL` when the captured and uncaptured portions are explicitly explained.
+3. repeated concrete attempts for one Experiment may use `RUN-...-ATTEMPT-N` and matching Result IDs while preserving one Experiment identity.
+
+These refinements came from concrete migration cases and do not change the scientific record.
