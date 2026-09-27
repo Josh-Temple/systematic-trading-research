@@ -1,0 +1,46 @@
+name: Validate research and web consistency
+
+on:
+  pull_request:
+    paths:
+      - "research/lines/horizontal-reaction-v0.1/**"
+      - "web/**"
+      - "schema/v0.1/**"
+      - "docs/KNOWLEDGE_BASE_V0.1.md"
+      - ".github/scripts/validate-research-consistency.mjs"
+      - ".github/workflows/research-consistency.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "research/lines/horizontal-reaction-v0.1/**"
+      - "web/**"
+      - "schema/v0.1/**"
+      - "docs/KNOWLEDGE_BASE_V0.1.md"
+      - ".github/scripts/validate-research-consistency.mjs"
+      - ".github/workflows/research-consistency.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  consistency:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install YAML parser
+        run: npm install --no-save js-yaml@4.1.0
+
+      - name: Validate canonical records and Web projection
+        run: node .github/scripts/validate-research-consistency.mjs
