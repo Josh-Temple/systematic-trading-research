@@ -1,0 +1,49 @@
+run_id: RUN-HR-005
+experiment_id: EXP-HR-005
+specification_id: SPEC-HR-001-v01
+
+dataset_uses:
+  - dataset_id: DATA-HR-001
+    role: CONSUMED_HOLDOUT
+    may_influence_future_search: false
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+
+started_at: UNKNOWN
+completed_at: UNKNOWN
+
+execution_status: SUCCESS
+
+environment:
+  ref: UNKNOWN
+
+outputs:
+  - kind: diagnostic_report
+    ref: https://drive.google.com/file/d/1ODFl8jxY676iMfrRAPlMyqHSFjfAeUTD/view
+  - kind: exploratory_d1_d5_replay
+    ref: https://docs.google.com/document/d/1MreVcFJUz5sDu2w9-qdIAX7D2lGZ5aKeDoQZozZLHE4/edit
+  - kind: integrated_project_brief
+    ref: https://docs.google.com/document/d/1GMuRnL6ZPa_OR2tVY85dQujjk0EmgdJeOBsdbLytBnE/edit
+
+provenance_guarantees:
+  definition_identity: UNVERIFIED
+  code_at_start_identity: NOT_CAPTURED
+  input_snapshot_identity: CAPTURED
+  external_data_pinned: CAPTURED
+  environment_identity: NOT_CAPTURED
+  output_identity: PARTIAL
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: UNVERIFIED
+
+diagnostic_refs:
+  - DIAG-HR-003
+
+notes: >
+  SUCCESS applies to the execution described by the 2026-09-23 diagnostic
+  report. That report records exact archive/hash checks and a five-hour
+  correction artifact, but two +15-minute endpoint observations remained
+  unavailable. A separate 2026-09-13 Data replay document reports complete
+  endpoints and different D1-D5 values/classification. Both records are
+  preserved; this Run does not adjudicate that source conflict.
