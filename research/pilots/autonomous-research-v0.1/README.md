@@ -144,3 +144,22 @@ Phase B implementation now includes:
 - `phase_b_baselines.py` — random and deterministic adaptive baselines.
 
 No official Phase B benchmark result is recorded by these implementation tests.
+
+
+## Phase B official baseline preparation
+
+Before any official baseline result, seed-reveal timing was clarified by:
+
+- [PHASE_B_PROTOCOL_AMENDMENT_v0.1.1.md](PHASE_B_PROTOCOL_AMENDMENT_v0.1.1.md)
+- [phase_b_protocol_amendment_v0.1.1.json](phase_b_protocol_amendment_v0.1.1.json)
+
+The hidden seed remains unrevealed until random baseline, deterministic adaptive baseline, and AI adaptive researcher are all complete for the world, unless the run family is explicitly closed without the AI method.
+
+Official non-AI baseline execution is prepared by:
+
+- `phase_b_official_baselines.py`
+- `.github/workflows/phase-b-official-baselines.yml`
+
+The workflow is manual-only. It separates host state (raw seeds/checkpoint key) from metric-bearing baseline results into distinct artifacts and does not print baseline metrics to workflow logs.
+
+See [PHASE_B_OFFICIAL_RUN_STATUS.md](PHASE_B_OFFICIAL_RUN_STATUS.md).
