@@ -144,3 +144,18 @@ Phase B implementation now includes:
 - `phase_b_baselines.py` — random and deterministic adaptive baselines.
 
 No official Phase B benchmark result is recorded by these implementation tests.
+
+
+## Phase B execution readiness
+
+The frozen AI researcher contract and `RUN_MANIFEST_PHASE_B_AI_v0.1.json` are merged and CI-verified, but no official AI adaptive result has been produced.
+
+See [PHASE_B_EXECUTION_READINESS_2026-09-28.md](PHASE_B_EXECUTION_READINESS_2026-09-28.md).
+
+Current blocker:
+
+```text
+EXECUTION_BLOCKED_CLEAN_RESEARCHER_UNAVAILABLE
+```
+
+This is an execution-capability state, not a scientific negative result. The host-aware chat/session must not be reused as the official researcher after inspecting generator code.
