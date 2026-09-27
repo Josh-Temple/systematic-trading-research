@@ -157,6 +157,42 @@ The workflow listens to:
 - changes to .github/workflows/pages.yml
 - manual workflow_dispatch
 
+## Canonical-to-Web projection CI
+
+Added on 2026-09-28:
+
+- validator: `scripts/validate_research_projection.py`
+- workflow: `.github/workflows/research-projection-validation.yml`
+- verified pull-request run: `36330408060`
+- result: validation PASS and bounded negative self-tests PASS
+
+The validator checks:
+
+- YAML/front-matter parsing for the Horizontal Reaction entity records;
+- duplicate entity IDs;
+- explicit relation/reference targets;
+- the independent Result fields `execution_status`, `evidence_validity`, and `scientific_status`;
+- H1/H2 headline states and metrics represented in the Web projection;
+- H3 waiting status;
+- DATA-HR-001/002 consumed roles and DATA-HR-003 final-holdout/unused role;
+- the unresolved H1 source conflict;
+- whether canonical research paths changed after `meta.canonicalSnapshotCommit`.
+
+The Web projection exposes the recorded canonical snapshot commit in the UI.
+
+### Update procedure
+
+When a canonical Horizontal Reaction entity changes:
+
+1. update the derived Web projection only after re-reading the changed canonical records;
+2. set `meta.canonicalSnapshotCommit` to a commit that already contains the canonical state represented by the Web data;
+3. run the projection validation;
+4. deploy only after the validator passes.
+
+If a watched canonical research path changes without refreshing the Web snapshot, the validator fails closed as stale.
+
+A passing validator establishes structural/reference consistency and the checked projection values only. It does not establish scientific validity, absence of temporal leakage, or computational reproducibility.
+
 ## Phase 4 remaining checks after first successful deployment
 
 On the public URL:
