@@ -1,0 +1,42 @@
+name: Research projection validation
+
+on:
+  push:
+    paths:
+      - 'research/lines/horizontal-reaction-v0.1/**'
+      - 'web/data/horizontal-reaction-v0.1.js'
+      - 'scripts/validate_research_projection.py'
+      - '.github/workflows/research-projection-validation.yml'
+  pull_request:
+    paths:
+      - 'research/lines/horizontal-reaction-v0.1/**'
+      - 'web/data/horizontal-reaction-v0.1.js'
+      - 'scripts/validate_research_projection.py'
+      - '.github/workflows/research-projection-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install YAML parser
+        run: python -m pip install PyYAML==6.0.2
+
+      - name: Validate research records and Web projection
+        run: python scripts/validate_research_projection.py
+
+      - name: Run bounded negative self-tests
+        run: python scripts/validate_research_projection.py --self-test
