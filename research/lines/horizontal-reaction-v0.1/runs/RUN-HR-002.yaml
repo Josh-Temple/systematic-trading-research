@@ -1,0 +1,50 @@
+run_id: RUN-HR-002
+experiment_id: EXP-HR-002
+specification_id: SPEC-HR-001-v01
+
+dataset_uses:
+  - dataset_id: DATA-HR-001
+    role: CONSUMED_HOLDOUT
+    may_influence_future_search: false
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+
+started_at: UNKNOWN
+completed_at: UNKNOWN
+
+execution_status: SUCCESS
+
+environment:
+  ref: UNKNOWN
+
+outputs:
+  - kind: recovery_result_document
+    ref: https://docs.google.com/document/d/1MAYi0VwMhQo9zQIO6LGa0tidIlra4ITykwbU1wIplWc/edit
+    source_revision: ANLCKQn7pswb5Zm-YxTA13Ed6lfF_q654JOeNsIn7WmbvnXlw8Yc1EdxKrCnZltBeDpbd72AXtZH9YhuBphdoCvgV-EROEwDfP83YxWoGU0
+  - kind: source_pack_archive
+    ref: https://drive.google.com/file/d/1uCcOwyaWloeMSgDEhW9IfXlxAEgpbH8I/view
+    sha256: e243b306f2eaf67485d334cdf17497f260b30f705e5d67cd5937377d3106f491
+    bytes: 83114374
+  - kind: source_pack_folder
+    ref: https://drive.google.com/drive/folders/1dd9IL9--BxlwITVOoXHHuwB3TouNtslv
+
+provenance_guarantees:
+  definition_identity: UNVERIFIED
+  code_at_start_identity: NOT_CAPTURED
+  input_snapshot_identity: CAPTURED
+  external_data_pinned: CAPTURED
+  environment_identity: NOT_CAPTURED
+  output_identity: CAPTURED
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: UNVERIFIED
+
+diagnostic_refs: []
+
+notes: >
+  The source reports exact per-file SHA-256 matches for the recovered raw
+  M1/Tick identities despite different archive packaging. The prior aggregate
+  SHA canonicalization algorithm is unspecified. This run is source
+  qualification only; D1-D5 were deliberately NOT_RUN. Start/completion dates
+  and code/environment identities were not supplied by the source.
