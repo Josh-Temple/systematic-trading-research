@@ -66,7 +66,7 @@
 ## 2. 正本とWeb表示の整合性を最小限のCIで確認する
 
 優先度: 中
-状態: 未着手
+状態: 完了 — structural/reference/projection sync CIを実装・検証済み
 
 ### 確認した事実
 
@@ -89,6 +89,18 @@
 - 正本と表示が一致する状態では検証が成功する。
 - 正本更新から公開表示までの更新手順・失敗時の扱いが明文化される。
 - CI成功を科学的妥当性や再現計算の成功と同一視しない。
+
+### 2026-09-28 implementation result
+
+- `scripts/validate_research_projection.py` を追加した。
+- `.github/workflows/research-projection-validation.yml` を追加した。
+- YAML/front matter、entity ID重複、明示relation/reference切れ、Resultの独立status fieldsを検査する。
+- Web側のH1/H2/H3主要状態・数値、data role、SOURCE CONFLICTを正本から導出した期待値と照合する。
+- `web/data/horizontal-reaction-v0.1.js` に `canonicalSnapshotCommit` を追加し、監視対象のcanonical research pathがそのcommit以後に変わればstaleとしてFAILする。
+- Web画面からcanonical snapshot commitを確認できるようにした。
+- bounded negative self-testで意図的なprojection mismatchとmissing relation targetを検知することを確認した。
+- PR上のActions run `36330408060` は通常検査・negative self-testともPASS。
+- CIの意味はstructural/reference/projection consistencyに限定し、科学的妥当性・lookahead不存在・計算再現性の証明とはしない。
 
 ## 3. Webの根拠への導線を完成させる
 
