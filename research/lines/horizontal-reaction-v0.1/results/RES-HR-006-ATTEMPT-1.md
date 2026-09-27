@@ -6,7 +6,7 @@ run_id: RUN-HR-006-ATTEMPT-1
 observed_at: UNKNOWN
 execution_status: BLOCKED
 evidence_validity: VALID
-scientific_status: TESTING
+scientific_status: NOT_APPLICABLE
 headline_metrics:
   selected_session_count: 60
   source_identity_status: PARTIAL_PASS_METADATA_VERIFIED_RAW_PAYLOAD_UNAVAILABLE
@@ -34,7 +34,7 @@ No touch events or outcomes were computed. The preregistered result labels were 
 
 ## Status scope
 
-This is a blocked execution result, not a negative scientific result and not the preregistered statistical `INCONCLUSIVE` class. At this attempt the experiment remained unclassified and the fixed sample had not yet been consumed by HYP-HR-002 outcome access.
+This is a blocked execution result, not a negative scientific result and not the preregistered statistical `INCONCLUSIVE` class. `scientific_status: NOT_APPLICABLE` records that this attempt produced no scientific outcome. At this attempt the experiment remained unclassified and the fixed sample had not yet been consumed by HYP-HR-002 outcome access.
 
 ## Source
 
