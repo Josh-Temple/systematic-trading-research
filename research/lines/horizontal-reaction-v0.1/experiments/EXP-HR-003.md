@@ -24,7 +24,7 @@ Record the D1-D5 replay attempt that stopped before replay because the required 
 
 ## Fact / source basis
 
-Primary source: [Horizontal Reaction Strategy v0.1 — D1-D5 Diagnostic Replay Result (Chat Branch)](https://docs.google.com/document/d/1dbHCFmZOF2dYP7dcVmhJu1fKuY4U1jdf7RJHkZ94jX4/edit), Drive document ID `1dbHCFmZOF2dYP7dcVmhJu1fKuY4U1jdf7RJHkZ94jX4`, revision `ANLCKQn7pswb5Zm-YxTA13Ed6lfF_q654JOeNsIn7WmbvnXlw8Yc1EdxKrCnZltBeDpbd72AXtZH9YhuBphdoCvgV-EROEwDfP83YxWoGU0` is not asserted; exact revision for this source was not captured.
+Primary source: [Horizontal Reaction Strategy v0.1 — D1-D5 Diagnostic Replay Result (Chat Branch)](https://docs.google.com/document/d/1dbHCFmZOF2dYP7dcVmhJu1fKuY4U1jdf7RJHkZ94jX4/edit), Drive document ID `1dbHCFmZOF2dYP7dcVmhJu1fKuY4U1jdf7RJHkZ94jX4`. The exact source revision was not captured.
 
 The source reports a fixed 60-session list and the original 2,685-trade population. It states that the needed raw BID/ASK path and reconstructive values were unavailable in the existing result/ledger, and that reacquisition through the specified Official Dukascopy Historical Data Export / JETTA route was blocked with `ERR_BLOCKED_BY_CLIENT`.
 
