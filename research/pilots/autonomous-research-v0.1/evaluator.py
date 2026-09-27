@@ -379,7 +379,12 @@ def _base_receipt(
     rows: Iterable[dict[str, Any]],
     dataset_id: str,
 ) -> dict[str, Any]:
-    candidate_id = candidate.get("candidate_id") if isinstance(candidate, dict) else None
+    raw_candidate_id = candidate.get("candidate_id") if isinstance(candidate, dict) else None
+    try:
+        candidate_id = _text(raw_candidate_id, "candidate_id", 80, allow_empty=False)
+    except CandidateInvalid:
+        candidate_id = None
+
     try:
         candidate_hash = hash_json(candidate)
     except Exception:
