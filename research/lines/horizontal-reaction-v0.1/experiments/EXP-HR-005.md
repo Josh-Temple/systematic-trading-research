@@ -4,7 +4,7 @@ type: Experiment
 research_line_id: RL-HR-001
 created_at: 2026-09-27
 experiment_kind: DIAGNOSTIC
-tests_hypothesis: UNKNOWN
+tests_hypothesis: NOT_APPLICABLE
 uses_specification: SPEC-HR-001-v01
 planned_dataset_uses:
   - dataset_id: DATA-HR-001
@@ -40,7 +40,7 @@ Both sources classify their work as exploratory/diagnostic on consumed 2026H1 da
 
 ## Schema friction / UNKNOWN
 
-The required `tests_hypothesis` field cannot describe a diagnostic that decomposes a prior result without itself testing HYP-HR-001; it is `UNKNOWN`. Exact run start/end times, code commit, and environment identity are not captured in the source record. The two diagnostic source records disagree on endpoint availability, multiple D1-D5 values, and classification; no v0.1 field models competing source versions directly, so the discrepancy is preserved in Result and Diagnostic narrative.
+This diagnostic decomposes a prior result rather than directly testing HYP-HR-001, so `tests_hypothesis` is `NOT_APPLICABLE`. Exact run start/end times, code commit, and environment identity are not captured in the source record. The two diagnostic source records disagree on endpoint availability, multiple D1-D5 values, and classification; no v0.1 field models competing source versions directly, so the discrepancy is preserved in Result and Diagnostic narrative.
 
 ## Related artifacts
 
