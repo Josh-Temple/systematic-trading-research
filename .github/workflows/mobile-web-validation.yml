@@ -33,7 +33,7 @@ jobs:
       - name: Validate deployed public UI
         env:
           TARGET_URL: https://josh-temple.github.io/systematic-trading-research/
-        run: node web/validate-public.mjs
+        run: node .github/scripts/validate-public.mjs
 
       - name: Upload validation artifact
         if: always()
