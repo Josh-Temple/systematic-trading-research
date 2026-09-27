@@ -1,0 +1,40 @@
+diagnostic_id: DIAG-HR-001
+target_run: RUN-HR-003
+
+diagnostic_type: SOURCE_IDENTITY_AND_REPLAY_GATE
+tool:
+  name: UNKNOWN
+  version: UNKNOWN
+
+checked_scope:
+  - Fixed 60-session list and 2,685-trade population were reported in the source
+  - Required input-document, existing-result, and retrieval-manifest presence was checked according to the source
+  - Availability of the specified first-party Dukascopy JETTA access route was attempted
+coverage:
+  description: >
+    The source reports ERR_BLOCKED_BY_CLIENT on the specified route. Required
+    raw BID/ASK paths and reconstructive values were not available to this run.
+    No D1-D5 replay computation was performed.
+overrides: []
+
+result: SOURCE_IDENTITY_BLOCKED
+
+known_blind_spots:
+  - No D1-D5 metrics or scientific explanations were generated
+  - The source does not establish why the 2026H1 strategy result was negative
+  - No alternative explanation was assessed
+
+not_tested:
+  - D1 touch-to-confirmation
+  - D2 entry-to-15-minute no-barrier outcome
+  - D3 stopped-trade 15-minute counterfactual
+  - D4 touch-to-15-minute no-barrier outcome
+  - D5 matched cost decomposition
+
+evidence_refs:
+  - https://docs.google.com/document/d/1dbHCFmZOF2dYP7dcVmhJu1fKuY4U1jdf7RJHkZ94jX4/edit
+
+notes: >
+  This diagnostic records an operational/source-identity gate only. It is not
+  evidence that the trading hypothesis failed or that any market mechanism
+  explains the result.

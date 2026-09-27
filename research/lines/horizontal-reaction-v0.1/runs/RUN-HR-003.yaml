@@ -1,0 +1,43 @@
+run_id: RUN-HR-003
+experiment_id: EXP-HR-003
+specification_id: SPEC-HR-001-v01
+
+dataset_uses:
+  - dataset_id: DATA-HR-001
+    role: CONSUMED_HOLDOUT
+    may_influence_future_search: false
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+
+started_at: UNKNOWN
+completed_at: UNKNOWN
+
+execution_status: BLOCKED
+
+environment:
+  ref: UNKNOWN
+
+outputs:
+  - kind: blocked_replay_result_document
+    ref: https://docs.google.com/document/d/1dbHCFmZOF2dYP7dcVmhJu1fKuY4U1jdf7RJHkZ94jX4/edit
+
+provenance_guarantees:
+  definition_identity: CAPTURED
+  code_at_start_identity: NOT_CAPTURED
+  input_snapshot_identity: UNVERIFIED
+  external_data_pinned: UNVERIFIED
+  environment_identity: NOT_CAPTURED
+  output_identity: CAPTURED
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: UNVERIFIED
+
+diagnostic_refs:
+  - DIAG-HR-001
+
+notes: >
+  The run stopped before D1-D5 replay. The specified official Dukascopy
+  JETTA route returned ERR_BLOCKED_BY_CLIENT according to the source.
+  No substitute data were used. These statuses describe this execution
+  attempt only and do not describe later independent diagnostic work.
