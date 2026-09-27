@@ -1,0 +1,40 @@
+{
+  "run_family_id": "ARP-B-AI-v0.1-2026-09-28",
+  "status": "FROZEN_BEFORE_AI_RESULTS",
+  "model_provider": "OpenAI",
+  "model_identity": "GPT-5.6 Sol",
+  "researcher_execution_boundary": "CLEAN_EXTERNAL_MODEL_SESSION_NO_REPOSITORY_OR_HOST_TOOLS",
+  "researcher_instruction_path": "research/pilots/autonomous-research-v0.1/PHASE_B_AI_RESEARCHER_INSTRUCTION_v0.1.md",
+  "researcher_instruction_sha256": "6395c5957d447fd24a265177f2b05f68f835c60fed9d16ec836aed31e31b2f62",
+  "candidate_space_reference": {
+    "path": "research/pilots/autonomous-research-v0.1/phase_b_protocol.json",
+    "commit": "ab44b5a91233787d263d890a71086cd53dfd06dc",
+    "strategy_count": 240
+  },
+  "protocol_id": "ARP-B-v0.1",
+  "protocol_commit": "ab44b5a91233787d263d890a71086cd53dfd06dc",
+  "evaluator_commit": "f6e80707511ff4fa1622a439100b3ca97b11c5ea",
+  "world_ids": [
+    "STABLE-01",
+    "STABLE-02",
+    "WEAKENING-01",
+    "WEAKENING-02",
+    "BREAK-01",
+    "BREAK-02"
+  ],
+  "search_budget": {
+    "submissions_per_world_method": 16,
+    "rounds": 4,
+    "max_proposals_per_round": 4
+  },
+  "feedback_schema": [
+    "candidate_id",
+    "validity_status",
+    "duplicate",
+    "adaptive_mean_return",
+    "coarse_rejection_reason"
+  ],
+  "market_data_allowed": false,
+  "final_holdout_evaluations_per_method_world": 1,
+  "note": "This manifest freezes the intended clean researcher identity and visible contract before any official AI adaptive result. If this exact model/boundary cannot be used, start a new run family before observing AI adaptive feedback."
+}
