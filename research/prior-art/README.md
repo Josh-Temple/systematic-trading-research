@@ -41,6 +41,12 @@ systematic trading / quant research / AI-assisted researchの先行GitHubリポ�
 | [RD-Agent](rd-agent.md) | AI研究ループとfinal holdoutの境界 | PARTIAL — current-main source confirms test/backtest feedback enters adaptive loop |
 | [Freqtrade](freqtrade.md) | lookahead diagnosticの保証境界 | PARTIAL — component blind spot reproduced; end-to-end reported issues not fully reproduced |
 
+## Supplemental focused reviews
+
+Phase 1 completion is unchanged. Later concrete design questions may add focused evidence without reopening the Phase 1 exit decision.
+
+- [Autonomous AI Trading Research Methods — 2026](AUTONOMOUS_AI_RESEARCH_METHODS_2026.md) — AIによる仮説生成・実装・次実験選択・research-policy改善をどこまで許せるかを、RD-Agent / AlphaAgent / QuantaAlpha / AutoScientist-Quant / STAR / autoresearch / Validation Bottleneckから比較。特にevaluator isolation、model training cutoff、trial accounting、agent write boundaryを補強する。
+
 ## Candidate scan
 
 Breadth scan: [CANDIDATE_SCAN.md](CANDIDATE_SCAN.md)
