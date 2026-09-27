@@ -182,7 +182,7 @@ Full schema validation is intentionally deferred to the Horizontal Reaction migr
 
 ## Phase 3 — Horizontal Reaction pilot migration
 
-Status: **IN PROGRESS**
+Status: **COMPLETE**
 
 Horizontal Reaction Strategy v0.1を最初の完全移植対象にする。
 
@@ -206,9 +206,20 @@ Horizontal Reaction Strategy v0.1を最初の完全移植対象にする。
 
 「以前より、研究経緯・現在の知識・未解決点を人間とAIが正確に追いやすくなったか」
 
+### Result
+
+**PASS_WITH_RECORDED_SOURCE_CONFLICT**
+
+See:
+
+- `research/lines/horizontal-reaction-v0.1/PHASE3_EXIT_REVIEW.md`
+- `research/lines/horizontal-reaction-v0.1/CURRENT.md`
+
+The unresolved H1 D1-D5 source discrepancy is explicitly preserved rather than silently reconciled.
+
 ### Exit condition
 
-Horizontal ReactionをGitHubだけで追跡して、研究状態を誤解なく再構成できること。
+Horizontal ReactionをGitHubだけで追跡して、研究状態を誤解なく再構成できること.
 
 ---
 
