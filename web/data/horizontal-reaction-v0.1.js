@@ -2,7 +2,7 @@ window.RESEARCH_UI_DATA = {
   meta: {
     title: "Systematic Trading Research",
     subtitle: "研究状態を、現在・証拠・履歴・データ境界に分けて読む",
-    projectionGeneratedAt: "2026-09-27",
+    projectionGeneratedAt: "2026-09-28",
     authority: "Derived view. Canonical authority is the GitHub research record."
   },
   line: {
@@ -26,7 +26,7 @@ window.RESEARCH_UI_DATA = {
       label: "NEXT",
       title: "Post-H2 Confirmation Selection Effect",
       status: "WAITING FOR MATURITY",
-      body: "2026-07-10以降の最初の60 structurally eligible sessionsをfreezeし、source gateがPASSした後に1回だけ既存preregistrationを実行する。それまではoutcome-blindなsource/sample準備だけが許可される。",
+      body: "DEC-HR-004でexact H2 legacy generatorの実装同一性をoutcome-blindに固定済み。2026-07-10以降の最初の60 structurally eligible sessionsをfreezeし、source gateがPASSした後に1回だけ既存preregistrationを実行する。それまではoutcome-blindなsource/sample準備だけが許可される。",
       canonical: "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/experiments/EXP-HR-007.md"
     },
     forbidden: [
@@ -82,7 +82,7 @@ window.RESEARCH_UI_DATA = {
         ["Start", "2026-07-10"],
         ["Run", "NOT RUN"]
       ],
-      note: "60 eligible sessionsのfreezeとsource gate PASSまでoutcome accessは禁止。",
+      note: "60 eligible sessionsのfreezeとsource gate PASSまでoutcome accessは禁止。legacy Gammaのtemporal-information limitationはDEC-HR-004で明示的に保持。",
       canonical: "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/specifications/SPEC-HR-003-v01.md"
     }
   ],
@@ -96,7 +96,11 @@ window.RESEARCH_UI_DATA = {
       ["D3 stopped→+15m", "−1.034 R", "stop後反実仮想も平均では弱い"],
       ["Spread drag", "+0.1603 R", "same-exit timestamp midpoint比較。formal D5ではない"]
     ],
-    canonical: "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/interpretations/INT-HR-002.md"
+    canonical: "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/interpretations/INT-HR-002.md",
+    links: [
+      ["Current interpretation", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/interpretations/INT-HR-002.md"],
+      ["Source-conflict result", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/results/RES-HR-005.md"]
+    ]
   },
   datasets: [
     {
@@ -128,14 +132,63 @@ window.RESEARCH_UI_DATA = {
     }
   ],
   timeline: [
-    ["2026-09-11", "FREEZE", "v0.1 preregistration / H1 evaluation freeze", "SPEC-HR-001-v01"],
-    ["2026-09-11", "RESULT", "H1 execution-aware result: NOT SUPPORTED", "RES-HR-001"],
-    ["2026-09-12", "BLOCKED", "D1–D5 replay stopped before computation", "RES-HR-003"],
-    ["2026-09-13+", "EXPLORATORY", "H1 ledger / D1–D5 diagnostic work", "RES-HR-004 / RES-HR-005"],
-    ["2026-09-13+", "BLOCKED", "H2 first attempt stopped at source gate", "RES-HR-006-ATTEMPT-1"],
-    ["2026-09-13+", "RESULT", "H2 unconditional-touch replication completed", "RES-HR-006"],
-    ["2026-09-23", "FREEZE", "H3 confirmation-selection preregistered", "SPEC-HR-003-v01"],
-    ["2026-09-27", "CURRENT", "H3 WAITING FOR MATURITY / outcome access held", "DEC-HR-003"]
+    {
+      date: "2026-09-11",
+      kind: "FREEZE",
+      title: "v0.1 preregistration / H1 evaluation freeze",
+      refs: [["SPEC-HR-001-v01", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/specifications/SPEC-HR-001-v01.md"]]
+    },
+    {
+      date: "2026-09-11",
+      kind: "RESULT",
+      title: "H1 execution-aware result: NOT SUPPORTED",
+      refs: [["RES-HR-001", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/results/RES-HR-001.md"]]
+    },
+    {
+      date: "2026-09-12",
+      kind: "BLOCKED",
+      title: "D1–D5 replay stopped before computation",
+      refs: [["RES-HR-003", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/results/RES-HR-003.md"]]
+    },
+    {
+      date: "2026-09-13+",
+      kind: "EXPLORATORY",
+      title: "H1 ledger / D1–D5 diagnostic work",
+      refs: [
+        ["RES-HR-004", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/results/RES-HR-004.md"],
+        ["RES-HR-005", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/results/RES-HR-005.md"]
+      ]
+    },
+    {
+      date: "2026-09-13+",
+      kind: "BLOCKED",
+      title: "H2 first attempt stopped at source gate",
+      refs: [["RES-HR-006-ATTEMPT-1", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/results/RES-HR-006-ATTEMPT-1.md"]]
+    },
+    {
+      date: "2026-09-13+",
+      kind: "RESULT",
+      title: "H2 unconditional-touch replication completed",
+      refs: [["RES-HR-006", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/results/RES-HR-006.md"]]
+    },
+    {
+      date: "2026-09-23",
+      kind: "FREEZE",
+      title: "H3 confirmation-selection preregistered",
+      refs: [["SPEC-HR-003-v01", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/specifications/SPEC-HR-003-v01.md"]]
+    },
+    {
+      date: "2026-09-27",
+      kind: "CURRENT",
+      title: "H3 WAITING FOR MATURITY / outcome access held",
+      refs: [["DEC-HR-003", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/decisions/DEC-HR-003.md"]]
+    },
+    {
+      date: "2026-09-28",
+      kind: "DECISION",
+      title: "H3 legacy implementation identity frozen outcome-blind",
+      refs: [["DEC-HR-004", "https://github.com/Josh-Temple/systematic-trading-research/blob/main/research/lines/horizontal-reaction-v0.1/decisions/DEC-HR-004.md"]]
+    }
   ],
   canonicalBase: "https://github.com/Josh-Temple/systematic-trading-research/tree/main/research/lines/horizontal-reaction-v0.1"
 };
