@@ -283,16 +283,19 @@ Recorded in:
 
 Deployment status:
 
-- GitHub Pages workflow is ready
-- first-time Pages creation was attempted from Actions
-- GitHub rejected site creation with `Resource not accessible by integration`
-- one repository-admin Pages enablement action remains outside the current connector/workflow authority
+- initial first-time Pages creation attempts failed before repository-admin enablement
+- Pages was subsequently enabled with GitHub Actions as the publishing source
+- first successful public deployment completed in Actions run 36316165611
+- the deploy job completed Checkout / Configure Pages / Upload static site / Deploy with success
+- public URL: https://josh-temple.github.io/systematic-trading-research/
 
 Remaining:
 
-- first successful public deployment after Pages enablement
 - Android/mobile visual review on the public URL
+- confirm no unexpected horizontal overflow and that evidence/status distinctions remain readable
 - record Phase 4 exit review
+
+The successful deployment does not by itself close Phase 4 or establish scientific validity.
 
 ---
 
