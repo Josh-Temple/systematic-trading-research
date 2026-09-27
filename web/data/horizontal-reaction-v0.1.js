@@ -3,6 +3,7 @@ window.RESEARCH_UI_DATA = {
     title: "Systematic Trading Research",
     subtitle: "研究状態を、現在・証拠・履歴・データ境界に分けて読む",
     projectionGeneratedAt: "2026-09-28",
+    canonicalSourceCommit: "78a3f335a6c66bcfda605f53435d3ec72cde0743",
     authority: "Derived view. Canonical authority is the GitHub research record."
   },
   line: {
