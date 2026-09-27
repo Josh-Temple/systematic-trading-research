@@ -104,3 +104,7 @@ See [ADVERSARIAL_REVIEW_2026-09-27.md](ADVERSARIAL_REVIEW_2026-09-27.md) for con
 ## Deterministic fuzz/property review
 
 See [FUZZ_REVIEW_2026-09-27.md](FUZZ_REVIEW_2026-09-27.md). The current suite covers a 672-candidate declared-grammar grid, 1,000 seeded invalid mutations, and 300 valid strict-JSON round trips. It also preserves the known limitation that a self-contained local hash chain cannot detect deletion of its final suffix without an external checkpoint.
+
+## Source-informed model red-team
+
+See [MODEL_REDTEAM_REVIEW_2026-09-27.md](MODEL_REDTEAM_REVIEW_2026-09-27.md) and [MODEL_REDTEAM_ATTACKS_v01.json](MODEL_REDTEAM_ATTACKS_v01.json). Against the pre-fix baseline, the evidence run reproduced three uncaught failures: enum type confusion, huge-integer float conversion, and lone-surrogate receipt serialization. The repaired branch passes the 15-case model attack corpus. The corpus is explicitly NOT_INDEPENDENT.
