@@ -333,7 +333,7 @@ def run_self_test() -> list[str]:
     fake_registry = dict(registry)
     sample_id = next(iter(registry))
     fake_registry["BROKEN-REF-TEST"] = (
-        Path("self-test.yaml"),
+        ROOT / "self-test.yaml",
         {
             "id": "BROKEN-REF-TEST",
             "type": "SelfTest",
