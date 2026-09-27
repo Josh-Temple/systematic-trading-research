@@ -1,0 +1,29 @@
+name: Autonomous pilot Phase A
+
+on:
+  push:
+    paths:
+      - 'research/pilots/autonomous-research-v0.1/**'
+      - '.github/workflows/autonomous-pilot-phase-a.yml'
+  pull_request:
+    paths:
+      - 'research/pilots/autonomous-research-v0.1/**'
+      - '.github/workflows/autonomous-pilot-phase-a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evaluator-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run Phase A evaluator tests
+        working-directory: research/pilots/autonomous-research-v0.1
+        run: python -m unittest -v
