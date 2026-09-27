@@ -62,6 +62,9 @@
       <span>${n}</span>
     </div>
   `).join("");
+  $("diag-links").innerHTML = data.diagnostics.links
+    .map(([label, href]) => link(href, `${label} ↗`))
+    .join(" · ");
 
   $("datasets").innerHTML = data.datasets.map((d) => `
     <article class="data-row">
@@ -78,11 +81,14 @@
     </article>
   `).join("");
 
-  $("timeline-list").innerHTML = data.timeline.map(([date,kind,title,ref]) => `
+  $("timeline-list").innerHTML = data.timeline.map((item) => `
     <li>
-      <time>${date}</time>
-      <span class="kind">${kind}</span>
-      <span>${title}<span class="ref">${ref}</span></span>
+      <time>${item.date}</time>
+      <span class="kind">${item.kind}</span>
+      <span>
+        ${item.title}
+        <span class="ref">${item.refs.map(([label, href]) => link(href, `${label} ↗`)).join(" · ")}</span>
+      </span>
     </li>
   `).join("");
 })();
