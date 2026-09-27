@@ -1,7 +1,7 @@
 # Repository review follow-up — 2026-09-27
 
 記録日: 2026-09-27 JST
-状態: 対応中（H3実装同一性とWeb根拠導線は完了。正本/Web整合性CIは未完了）
+状態: 完了（H3実装同一性、正本/Web整合性CI、Web根拠導線、公開状態更新を完了）
 対象: Josh-Temple/systematic-trading-research
 レビュー対象main: `997c08a393d06b293c0f908870367f3f36344046`
 記録前のfresh readでも同じmainを確認。
@@ -75,7 +75,7 @@
 ## 2. 正本とWeb表示の整合性を最小限のCIで確認する
 
 優先度: 中
-状態: 未着手
+状態: 完了 — PR #16でfail-closed consistency CIを実装し、Actions run `36334117643` がSUCCESS
 
 ### 確認した事実
 
@@ -98,6 +98,18 @@
 - 正本と表示が一致する状態では検証が成功する。
 - 正本更新から公開表示までの更新手順・失敗時の扱いが明文化される。
 - CI成功を科学的妥当性や再現計算の成功と同一視しない。
+
+### 2026-09-28 implementation update
+
+- `.github/scripts/validate-research-consistency.mjs` と `.github/workflows/research-consistency.yml` を追加した。
+- Horizontal Reactionの構造化recordをYAML/frontmatterとして解析し、stable ID重複、structured ID参照切れ、Resultの `execution_status` / `evidence_validity` / `scientific_status` の独立性を検査する。
+- H1/H2/H3の主要状態・headline metrics、DATA-HR-001〜003の利用境界、H1 `SOURCE CONFLICT`、blocked Resultの `BLOCKED + NOT_APPLICABLE` をWeb projectionと照合する。
+- Web内のrepository-local canonical linkとtimeline ID→record path対応を検査する。
+- Web projectionへ `meta.canonicalSourceCommit` を追加し、公開画面のauthority sectionにも表示する。現在のprojection sourceは `78a3f335a6c66bcfda605f53435d3ec72cde0743`。
+- `canonicalSourceCommit` より後に `research/lines/horizontal-reaction-v0.1/` が変更されている場合、Webを更新するまでCIはfailする。正本変更とderived Web同期は二段階で行う手順を `docs/WEB_UI_V0.1.md` に明記した。
+- deliberate H1 trade-count mismatchと存在しないcanonical linkをメモリ上で注入するnegative self-testを組み込み、検出できなければCI自体を失敗させる。
+- PR #16の初回Actions run `36334117643` はSUCCESS。したがって、正しい現在状態がPASSすることと、上記2種類の意図的な不一致が検出されることを同一runで確認した。
+- このCIは科学計算を再実行しない。CI PASSをscientific validity、result recomputation、H3実行許可とは扱わない。
 
 ## 3. Webの根拠への導線を完成させる
 
