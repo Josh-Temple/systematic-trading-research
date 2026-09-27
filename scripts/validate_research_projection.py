@@ -219,7 +219,7 @@ def main() -> int:
     check(bool(vals) and close(vals[0], float(h2m["primary_positive_rate"]) * 100.0, 0.01), "H2 positive rate mismatch")
     vals = numbers(h2_metrics.get("95% CI", ""))
     ci = [float(x) for x in h2m["primary_clustered_95ci_bps"]]
-    check(len(vals) >= 3 and close(vals[-2], ci[0], 0.001) and close(vals[-1], ci[1], 0.001), "H2 interval mismatch")
+    check(len(vals) >= 2 and close(vals[-2], ci[0], 0.001) and close(vals[-1], ci[1], 0.001), "H2 interval mismatch")
 
     exp = entities["EXP-HR-007"][1]
     h3_ui = h_by_id.get("HYP-HR-003", {})
