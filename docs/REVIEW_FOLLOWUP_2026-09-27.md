@@ -1,7 +1,7 @@
 # Repository review follow-up — 2026-09-27
 
 記録日: 2026-09-27 JST
-状態: 未着手（レビュー指摘の記録のみ）
+状態: 対応中（2026-09-27 outcome-blind follow-up実施）
 対象: Josh-Temple/systematic-trading-research
 レビュー対象main: `997c08a393d06b293c0f908870367f3f36344046`
 記録前のfresh readでも同じmainを確認。
@@ -23,7 +23,7 @@
 ## 1. 次の実験前に、H3が参照する実行仕様・コードを確定する
 
 優先度: 高（次の実験の実行前）
-状態: 未着手
+状態: **HOLD — 仕様／保存コードの不一致を記録済み。H3実行前にversioned decisionが必要**
 
 ### 確認した事実
 
@@ -39,6 +39,26 @@
 - 凍結済みSpecificationを黙って書き換えず、必要なら既存の訂正・版管理方針に従い、原資料との対応を示す補足記録を作る。
 - 原資料でも確定できない条件は未解決として残す。新しい仕様を作って旧仕様の再現と扱わない。
 - H3の結果を見ずに、合成データ等による境界条件の確認が可能な範囲を整理する。
+
+### 2026-09-27 follow-up result
+
+Outcome-blindなfresh readで、Source Pack内の `run_v01.py` を回収し、stored manifestとSHA-256が完全一致することを確認した。
+
+- Drive file ID: `1nWSPnCI-cVn0miZuQZrgm9ihWc6ap3NO`
+- bytes: `24350`
+- SHA-256: `9d655d68424624167ac9fe07fd74602fab59d7c096c3a631f36c385d6257b1dd`
+- H2 reproducibility codeはこの `run_v01.py` の `build_session_events(...)["touches"]` を再利用している。
+
+exact codeから、60-bar S/R、approach/touch、pending confirmation、interaction lock/reset、D4 quote-side conventionは復元できた。
+
+一方、重要な不一致を確認した。凍結仕様とH1 Execution ResultはGammaをcandidate minuteより前のClose変化だけから計算すると記述するが、保存コードの実行pathは `abs_change_prefix[global_i]` を使用し、candidate bar CloseをGammaへ含める。さらにGammaは60-bar windowではなくexpanding prefix calculationである。outcome-free synthetic checkでもcandidate bar Closeだけを変えると実行Gammaが変化した。
+
+また、historical generatorが同一confirmation bar上の複数confirmationをambiguousとしてclean eventから除外する一方、H3は全eligible touchを `CONFIRMED` / `UNCONFIRMED` の二群へ分類するため、そのmappingも資料だけでは未確定。
+
+詳細:
+[H3 execution identity precheck](../research/lines/horizontal-reaction-v0.1/H3_EXECUTION_IDENTITY_PRECHECK_2026-09-27.md)
+
+結論: H3はmaturityだけでは実行準備完了にならない。Gamma authorityとambiguous confirmation mappingをversioned decisionで解消するまで、outcome計算はHOLD。H3 outcomeは閲覧・計算していない。
 
 ### 完了条件
 
@@ -79,7 +99,7 @@
 ## 3. Webの根拠への導線を完成させる
 
 優先度: 中
-状態: 未着手
+状態: 実装・静的検証済み（review branch）
 
 ### 確認した事実
 
@@ -98,7 +118,7 @@
 ## 4. READMEと公開・検証状態を更新する
 
 優先度: 低（短時間で対応可能）
-状態: 未着手
+状態: 実装・Actions再確認済み（Android実機確認は未完了）
 
 ### 確認した事実
 
@@ -120,6 +140,26 @@
 - H1 D1-D5の資料間不一致は[RES-HR-005](../research/lines/horizontal-reaction-v0.1/results/RES-HR-005.md)に保存され、CURRENTとWebでも明示されている。今回その不一致を解決したとはしていない。
 - Phase 3の「GitHubから再構成できる」は研究状態・経緯についての評価であり、同じ計算を再実行できることの証明ではない。
 - MCP、研究ライン拡大、自動研究の拡大より前に、上記の実行仕様・整合性維持を補強することを推奨する。これはレビュー上の提案であり、既存roadmapや研究権限を上書きしない。
+
+## 2026-09-27 follow-up implementation progress
+
+Review branch: `review-followup/h3-integrity-and-phase4-state`
+
+- H3 exact code identity / hash確認: 完了
+- H3 Gamma spec/code conflictの記録: 完了
+- CURRENTへのexecution boundary反映: 完了
+- Web diagnostics canonical link: 実装済み
+- Timeline artifact links: 実装済み
+- CURRENTリンク名を「現在の要約」へ変更: 実装済み
+- WebへH3 execution HOLD表示を追加: 実装済み
+- README / ROADMAP / web/VALIDATIONのPages公開状態更新: 実装済み
+- Actions run `36316165611`: fresh readで `SUCCESS`、deployment source `997c08a393d06b293c0f908870367f3f36344046` を再確認
+- JavaScript syntax: PASS
+- app.js参照DOM ID: 20、欠落0、重複0
+- Web projection内GitHub research path: 17/17をreview branchで解決確認
+- Android実機visual review: 未実施
+- Phase 4 exit review: 未作成
+- Follow-up 2（canonical/Web同期CI）: 未着手
 
 ## 今回実施した確認
 
