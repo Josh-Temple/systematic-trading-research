@@ -1,0 +1,101 @@
+{
+  "protocol_id": "ARP-B-v0.1",
+  "status": "FROZEN_BEFORE_PHASE_B_RESULTS",
+  "frozen_date": "2026-09-28",
+  "market_data_allowed": false,
+  "candidate_space": {
+    "sources": [
+      "feature_a",
+      "feature_b"
+    ],
+    "transforms": [
+      {
+        "name": "identity",
+        "lags": [
+          0
+        ]
+      },
+      {
+        "name": "lag_diff",
+        "lags": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "operators": [
+      "gt",
+      "lt"
+    ],
+    "thresholds": [
+      -1,
+      -0.5,
+      0,
+      0.5,
+      1
+    ],
+    "sides": [
+      "long",
+      "short"
+    ],
+    "position_sizes": [
+      1
+    ],
+    "strategy_count": 240
+  },
+  "search": {
+    "submissions_per_world_method": 16,
+    "rounds": 4,
+    "max_proposals_per_round": 4,
+    "invalid_consumes_budget": true,
+    "duplicate_consumes_budget": true
+  },
+  "worlds": {
+    "archetypes": [
+      "STABLE",
+      "WEAKENING",
+      "BREAK"
+    ],
+    "seeds_per_archetype": 2,
+    "total_worlds": 6,
+    "adaptive_rows": 512,
+    "final_rows": 512,
+    "seed_commitment": "SHA-256",
+    "seed_reveal_after_final": true
+  },
+  "feedback": {
+    "fields": [
+      "candidate_id",
+      "validity_status",
+      "duplicate",
+      "adaptive_mean_return",
+      "coarse_rejection_reason"
+    ],
+    "raw_adaptive_outcomes": false,
+    "final_before_search_close": false
+  },
+  "final_selection": {
+    "primary": "highest adaptive mean_return among VALID non-duplicate submissions",
+    "tiebreak": "lexicographically smallest strategy_fingerprint",
+    "final_evaluations_per_method_world": 1
+  },
+  "baselines": {
+    "random_repetitions_per_world": 200,
+    "deterministic_adaptive": true
+  },
+  "ai_researcher": {
+    "run_manifest_required": true,
+    "repository_access": false,
+    "hidden_file_access": false,
+    "arbitrary_candidate_code": false
+  },
+  "ledger": {
+    "host_writer_only": true,
+    "hash_chain": true,
+    "hmac_checkpoint": true,
+    "missing_or_unverifiable_run_interpretable": false
+  }
+}

@@ -1,7 +1,7 @@
 # Phase A implementation status
 
 Date: 2026-09-28  
-Status: PARTIAL — PROCESS_BOUNDARY_AND_SECOND_IMPLEMENTATION_CI_VERIFIED
+Status: EXIT_PASS — PHASE_B_SYNTHETIC_ONLY
 
 ## Scope
 
@@ -203,3 +203,22 @@ This does not create immutable storage by itself. The assurance exists only if t
 See `BOUNDARY_REVIEW_2026-09-28.md`.
 
 Phase A remains PARTIAL. Phase B is not authorized by this status record.
+
+
+## Phase A exit review
+
+Phase A exit was reviewed against the original pass conditions after main commit `f6e80707511ff4fa1622a439100b3ca97b11c5ea`.
+
+Decision:
+
+~~~text
+PHASE A: PASS_FOR_PHASE_B_SYNTHETIC_ONLY
+PHASE B IMPLEMENTATION: AUTHORIZED
+PHASE B SYNTHETIC RUN: AUTHORIZED ONLY AFTER PROTOCOL FREEZE
+PHASE C / MARKET DATA: NOT AUTHORIZED
+LIVE / BROKER EXECUTION: NOT AUTHORIZED
+~~~
+
+See `PHASE_A_EXIT_REVIEW_2026-09-28.md`.
+
+This status does not close the known limitations around independent review, durable checkpoint persistence, or arbitrary-code sandboxing. Those limitations are explicitly carried forward.
