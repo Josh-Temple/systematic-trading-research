@@ -1,7 +1,7 @@
 # Repository review follow-up — 2026-09-27
 
 記録日: 2026-09-27 JST
-状態: 対応中（H3実装同一性のoutcome-blind固定は完了。その他follow-upは未完了）
+状態: 対応中（H3実装同一性とWeb根拠導線は完了。正本/Web整合性CIは未完了）
 対象: Josh-Temple/systematic-trading-research
 レビュー対象main: `997c08a393d06b293c0f908870367f3f36344046`
 記録前のfresh readでも同じmainを確認。
@@ -102,7 +102,7 @@
 ## 3. Webの根拠への導線を完成させる
 
 優先度: 中
-状態: 未着手
+状態: 完了 — PR #13で根拠導線を実装し、public mobile validationで操作確認済み
 
 ### 確認した事実
 
@@ -118,10 +118,19 @@
 - スマートフォン幅でリンクの操作・折返しを確認する。Android実機での確認ができない場合は、その限界を記録する。
 - SOURCE CONFLICT、BLOCKED、NOT SUPPORTED、CONSUMED、UNUSEDの区別を維持する。
 
+### 2026-09-28 implementation update
+
+- PR #13 で上部リンクの表記を `Canonical` から `Current summary` に変更し、CURRENTがderived projectionである境界と整合させた。
+- H1 diagnosticsから `INT-HR-002` と `RES-HR-005` へ直接移動できるリンクを追加した。
+- timelineのrecord IDを各Specification / Result / Decisionへの直接リンクへ変更し、複数recordの行も個別リンクにした。
+- `DEC-HR-004` をWeb projectionへ同期した。
+- Actions run `36333283755` で360 / 390 / 412px幅のpublic mobile Chromium validationを実行し、current-summaryのtap、diagnostic links、timeline links、状態区別、overflowを確認した。
+- 物理Android端末では未確認である。この限界は `web/VALIDATION.md` とPhase 4 exit reviewへ明記した。
+
 ## 4. READMEと公開・検証状態を更新する
 
 優先度: 低（短時間で対応可能）
-状態: 完了 — 公開成功をREADME / ROADMAP / VALIDATIONへ反映。Android視覚確認はPhase 4 exitの未完了項目として維持
+状態: 完了 — README / ROADMAP / VALIDATIONを現在の公開・mobile validation・Phase 4 exit状態へ更新
 
 ### 確認した事実
 
@@ -143,7 +152,14 @@
 - ROADMAPとweb/VALIDATIONへ初回公開成功とpublic URLを反映した。
 - 過去のPages作成失敗は履歴として残した。
 - 公開成功とAndroid/mobile視覚確認を分離し、Phase 4は閉じていない。
-- このセッションの直接Web取得機能ではpublic URLを開けなかったため、新しい視覚確認を実施済みとは記録していない。
+- このセッションの直接Web取得機能ではpublic URLを開けなかったため、この時点では新しい視覚確認を実施済みとは記録していない。
+
+### 2026-09-28 later update
+
+- PR #13 のWeb同期後、Pages run `36333169298` が成功した。
+- PR #14 でpublic mobile validationを追加し、run `36333283755` が成功した。
+- 360 / 390 / 412pxのChromium mobile renderingについて、overflow、状態区別、リンク操作を機械確認し、生成スクリーンショットも目視確認した。
+- `web/PHASE4_EXIT_REVIEW.md` でPhase 4 v0.1をPASSとして閉じる。物理Android端末を別途実行していない点は限界として保持する。
 
 ## 保持すべき良い点・既知の限界
 

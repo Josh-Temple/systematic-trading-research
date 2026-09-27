@@ -19,17 +19,18 @@
 - Phase 1 — Prior repository research: **COMPLETE**
 - Phase 2 — Knowledge Base v0.1: **COMPLETE**
 - Phase 3 — Horizontal Reaction pilot migration: **COMPLETE**
-- Phase 4 — Human-facing web UI: **IN PROGRESS**
+- Phase 4 — Human-facing web UI: **COMPLETE**
 
 Horizontal Reaction Strategy v0.1 は、仮説・仕様・データ・実験・Run・Result・Interpretation・Decision・current projectionまでGitHubへ移植済みです。H1/H2のnegative result、blocked execution、consumed/unused境界、H1 D1-D5 source conflictも分離して保持しています。
 
-Human-facing Web UI はGitHub Pagesへ初回公開済みです。
+Human-facing Web UI はGitHub Pagesへ公開済みで、公開URLに対するモバイル幅のブラウザ検証まで完了しています。
 
 - Public URL: https://josh-temple.github.io/systematic-trading-research/
 - Current research projection: [research/lines/horizontal-reaction-v0.1/CURRENT.md](research/lines/horizontal-reaction-v0.1/CURRENT.md)
 - Repository review follow-up: [docs/REVIEW_FOLLOWUP_2026-09-27.md](docs/REVIEW_FOLLOWUP_2026-09-27.md)
+- Phase 4 exit review: [web/PHASE4_EXIT_REVIEW.md](web/PHASE4_EXIT_REVIEW.md)
 
-Phase 4は、Android/mobileでの最終視覚確認とexit reviewが残っています。
+Phase 4のpublic mobile validationは、GitHub Actions上のChromiumを360 / 390 / 412px幅・touch有効で実行し、スクリーンショットも目視確認しています。物理Android端末そのものでは別途確認していないため、その差はexit reviewに限界として残しています。
 
 Separately, research/pilots/autonomous-research-v0.1/ では synthetic data only の evaluator-integrity pilot を進めています。これはHorizontal Reactionのunused holdoutを消費せず、既存研究結果を変更しません。
 
