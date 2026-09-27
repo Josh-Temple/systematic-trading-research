@@ -4,7 +4,7 @@ type: Experiment
 research_line_id: RL-HR-001
 created_at: 2026-09-27
 experiment_kind: SOURCE_QUALIFICATION
-tests_hypothesis: UNKNOWN
+tests_hypothesis: NOT_APPLICABLE
 uses_specification: SPEC-HR-001-v01
 planned_dataset_uses:
   - dataset_id: DATA-HR-001
@@ -50,7 +50,7 @@ D1-D5 were deliberately not run in this work (`D1_D5_RUN=NO`; each D1-D5 item is
 
 ## Schema friction / UNKNOWN
 
-The v0.1 Experiment entity requires `tests_hypothesis`, but this source-qualification task does not test a trading hypothesis. The field is retained as `UNKNOWN` rather than falsely linking HYP-HR-001. The source does not specify the run start/completion timestamps or result observation timestamp; these remain `UNKNOWN` in the associated Run and Result.
+This Experiment does not directly test a scientific hypothesis, so `tests_hypothesis` is `NOT_APPLICABLE` under the pilot-refined v0.1 schema.
 
 ## Related artifacts
 
