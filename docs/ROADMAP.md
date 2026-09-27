@@ -266,12 +266,32 @@ The first screen is intentionally scoped to Horizontal Reaction v0.1 and present
 
 The web projection is noncanonical. Phase 5 will address generated indexes / automated projection.
 
-### Remaining Phase 4 validation
+### Validation state
 
-- enable/deploy GitHub Pages or equivalent static hosting
-- mobile/Android visual review
-- canonical-link verification
-- check that the UI makes blocked vs negative-result and consumed vs unused distinctions clear
+Completed:
+
+- static UI implementation
+- scientific projection cross-check against canonical H1/H2/H3 records
+- all embedded canonical GitHub links verified
+- JavaScript syntax checks
+- DOM target/reference checks
+- mobile overflow correction for long status labels
+
+Recorded in:
+
+- `web/VALIDATION.md`
+
+Deployment status:
+
+- GitHub Pages workflow is ready
+- first-time Pages creation was attempted from Actions
+- GitHub rejected site creation with `Resource not accessible by integration`
+- one repository-admin Pages enablement action remains outside the current connector/workflow authority
+
+Remaining:
+
+- first successful public deployment after Pages enablement
+- Android/mobile visual review on the public URL
 - record Phase 4 exit review
 
 ---
