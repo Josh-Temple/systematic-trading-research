@@ -1,7 +1,7 @@
 # Phase A implementation status
 
 Date: 2026-09-27  
-Status: PARTIAL — CORE_EVALUATOR_CI_VERIFIED
+Status: PARTIAL — CORE_EVALUATOR_HARDENED_CI_VERIFIED
 
 ## Scope
 
@@ -76,3 +76,35 @@ PHASE A EXIT
 2. inspect any CI discrepancy;
 3. add an adversarial model-driven evaluator attack harness without market data;
 4. only after evaluator-integrity review, consider Phase B synthetic autonomous search.
+
+## Adversarial hardening round
+
+After the first CI pass, the evaluator was reviewed from the perspective of an optimizing researcher. Three concrete weaknesses were identified before any market-data use:
+
+1. raw JSON duplicate keys / Python-style NaN or Infinity were not explicitly rejected at the input boundary;
+2. signed zero could create different canonical fingerprints for behaviorally identical thresholds;
+3. the public evaluator function accepted a dataset-row argument, which expressed more dataset-selection authority than the intended researcher interface should have.
+
+The hardening branch also adds a hash-chained ledger check and transformed-feature overflow rejection.
+
+Local hardening test result before repository CI:
+
+```text
+Ran 25 tests
+OK
+```
+
+This section records an engineering/evaluator finding, not a trading result.
+
+## Hardening CI verification
+
+Verified run:
+
+- workflow: `Autonomous pilot Phase A`
+- run: https://github.com/Josh-Temple/systematic-trading-research/actions/runs/36323723347
+- head: `898c27131627765bcc166282c3fdc3d7e063b450`
+- result: `25 tests / OK`
+
+This strengthens evidence for the tested parser, identity, duplicate, numerical-finiteness, and local-ledger integrity invariants.
+
+It does **not** change the overall Phase A status from PARTIAL. Process-level hidden-data isolation, an actual model-driven adversarial attack, stronger persistence, and independent evaluator reproduction remain open.
