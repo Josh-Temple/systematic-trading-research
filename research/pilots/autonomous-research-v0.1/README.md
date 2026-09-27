@@ -11,6 +11,7 @@ The purpose is to test evaluator integrity before autonomous search is allowed t
 ## What is implemented
 
 - declarative candidate grammar
+- strict JSON input parser that rejects duplicate keys and non-standard NaN/Infinity constants
 - strict rejection of unknown fields
 - bounded feature/operator/lag/position choices
 - finite-number checks
@@ -23,10 +24,10 @@ The purpose is to test evaluator integrity before autonomous search is allowed t
 - evaluator source identity
 - dataset identity
 - structured evaluation receipt
-- append-only-by-API JSONL ledger helper
+- hash-chained JSONL ledger helper with integrity verification before append
 - adversarial unit tests
 
-The evaluator does not execute candidate-supplied Python, shell commands, paths, or URLs.
+The evaluator does not execute candidate-supplied Python, shell commands, paths, or URLs. The public `evaluate()` entrypoint also does not accept dataset rows; dataset selection belongs to the host-side evaluator authority.
 
 ## Explicitly tested attack classes
 
@@ -82,7 +83,7 @@ This is not yet a full Phase A exit.
 Not yet demonstrated here:
 
 - OS/process-level isolation between a future researcher agent and hidden evaluator data
-- immutable ledger storage; `append_ledger()` is append-only by API convention but a filesystem owner can still rewrite the file
+- immutable ledger storage; the ledger is now locally hash-chained and detects ordinary edits, but a filesystem owner can still rewrite the whole file and recompute the chain
 - sandboxing of arbitrary generated Python, because v0.1 deliberately does not execute arbitrary candidate code
 - adversarial testing by an actual autonomous model against the evaluator source
 - independent second implementation of the evaluator
@@ -94,3 +95,7 @@ These limits must remain visible. Passing this test suite is evidence about the 
 This code does not read or modify Horizontal Reaction datasets, results, specifications, or holdout status.
 
 In particular, it does not access `DATA-HR-003`.
+
+## Adversarial self-review
+
+See [ADVERSARIAL_REVIEW_2026-09-27.md](ADVERSARIAL_REVIEW_2026-09-27.md) for concrete weaknesses found after the first 18-test implementation passed CI and the hardening changes that followed.
