@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/systematic-trading-research/autonomous-pilot-v0.1-candidate.schema.json",
+  "title": "Autonomous Research Pilot v0.1 Phase A Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["candidate_id", "feature", "operator", "threshold", "side", "position_size"],
+  "properties": {
+    "candidate_id": {"type": "string", "minLength": 1, "maxLength": 80},
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "transform", "lag"],
+      "properties": {
+        "source": {"enum": ["feature_a", "feature_b"]},
+        "transform": {"enum": ["identity", "lag_diff"]},
+        "lag": {"type": "integer", "minimum": 0, "maximum": 5}
+      }
+    },
+    "operator": {"enum": ["gt", "lt"]},
+    "threshold": {"type": "number"},
+    "side": {"enum": ["long", "short"]},
+    "position_size": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+    "researcher_note": {"type": "string", "maxLength": 1000}
+  }
+}
