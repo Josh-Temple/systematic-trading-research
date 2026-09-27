@@ -1,7 +1,7 @@
 # Repository review follow-up — 2026-09-27
 
 記録日: 2026-09-27 JST
-状態: 未着手（レビュー指摘の記録のみ）
+状態: 対応中（H3実装同一性監査を開始。その他follow-upは未完了）
 対象: Josh-Temple/systematic-trading-research
 レビュー対象main: `997c08a393d06b293c0f908870367f3f36344046`
 記録前のfresh readでも同じmainを確認。
@@ -23,7 +23,9 @@
 ## 1. 次の実験前に、H3が参照する実行仕様・コードを確定する
 
 優先度: 高（次の実験の実行前）
-状態: 未着手
+状態: 対応中 — 実装同一性を回収したが、H3実行を止める不一致が残る
+
+監査記録: [H3_IMPLEMENTATION_IDENTITY_AUDIT_2026-09-28.md](../research/lines/horizontal-reaction-v0.1/H3_IMPLEMENTATION_IDENTITY_AUDIT_2026-09-28.md)
 
 ### 確認した事実
 
@@ -48,6 +50,18 @@
 - H3の60 eligible sessionsのfreezeとsource gate PASS前に、touch outcome、群間比較、primary contrast、bootstrapを計算・閲覧していない。
 
 この作業一覧はH3の実行許可を与えない。実行可否は着手時の正本と既存gateで確認する。
+
+### 2026-09-28 fresh audit update
+
+- Drive上の exact `run_v01.py` を回収し、SHA-256 `9d655d68424624167ac9fe07fd74602fab59d7c096c3a631f36c385d6257b1dd` を確認した。
+- 2026-09-23 SHA manifest の `H2_frozen_touch_generator_run_v01.py` と同一hashで、H2 frozen replayがこのgeneratorを読み込んでいたことを確認した。
+- touch / reset / confirmation / D4-H2 quote-side conventionはコードから再構成できた。
+- 一方、legacy Gamma実装はcandidate barのClose変化を含む累積値を使い、H2では同じminute内のtouch tickを後から探索している。凍結文言「candidate minuteより前の観測だけ」とのtemporal-information mismatchがある。
+- Gammaは全履歴prefixに依存するため、現行source-preparation handoffの「60-bar warm-up」だけではlegacy generatorを再現できない。
+- legacy codeのsame-confirmation-bar ambiguityを、H3の二値 CONFIRMED / UNCONFIRMED のどちらへ写像するかも既存H3文書では未確定。
+- 以上を結果前に解消するまで、H3 outcome実行準備完了とはしない。
+- この監査ではDATA-HR-003 outcome、群間比較、primary contrast、bootstrapを閲覧・計算していない。
+
 
 ## 2. 正本とWeb表示の整合性を最小限のCIで確認する
 
