@@ -12,6 +12,8 @@
   $("canonical-link").href = data.line.current;
   $("all-files-link").href = data.canonicalBase;
   $("generated-at").textContent = data.meta.projectionGeneratedAt;
+  $("source-commit").textContent = data.meta.canonicalSnapshotCommit.slice(0, 12);
+  $("snapshot-commit-link").href = `https://github.com/Josh-Temple/systematic-trading-research/commit/${data.meta.canonicalSnapshotCommit}`;
 
   $("current-status").innerHTML = data.hypotheses.map((h) => `
     <div class="current-row">
