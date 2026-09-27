@@ -3,7 +3,7 @@
   if (!data) return;
 
   const $ = (id) => document.getElementById(id);
-  const link = (href, label = "Canonical ↗") =>
+  const link = (href, label = "Research record ↗") =>
     `<a class="text-link" href="${href}" target="_blank" rel="noreferrer">${label}</a>`;
 
   $("line-id").textContent = data.line.id;
@@ -12,6 +12,8 @@
   $("canonical-link").href = data.line.current;
   $("all-files-link").href = data.canonicalBase;
   $("generated-at").textContent = data.meta.projectionGeneratedAt;
+  $("source-commit").textContent = data.meta.sourceCommit.slice(0, 12);
+  $("source-commit-link").href = data.meta.sourceCommitUrl;
 
   $("current-status").innerHTML = data.hypotheses.map((h) => `
     <div class="current-row">
@@ -31,7 +33,7 @@
 
   $("next-title").textContent = data.current.nextTest.title;
   $("next-body").textContent = data.current.nextTest.body;
-  $("next-status").textContent = data.current.nextTest.status;
+  $("next-status").innerHTML = `${data.current.nextTest.status} · ${link(data.current.nextTest.canonical, "Experiment record ↗")}`;
   $("forbidden-list").innerHTML = data.current.forbidden.map((x) => `<li>${x}</li>`).join("");
 
   $("hypotheses").innerHTML = data.hypotheses.map((h) => `
@@ -62,6 +64,9 @@
       <span>${n}</span>
     </div>
   `).join("");
+  $("diag-records").innerHTML = data.diagnostics.records
+    .map(([label, href]) => link(href, `${label} ↗`))
+    .join(" ");
 
   $("datasets").innerHTML = data.datasets.map((d) => `
     <article class="data-row">
@@ -78,11 +83,11 @@
     </article>
   `).join("");
 
-  $("timeline-list").innerHTML = data.timeline.map(([date,kind,title,ref]) => `
+  $("timeline-list").innerHTML = data.timeline.map(([date,kind,title,refs]) => `
     <li>
       <time>${date}</time>
       <span class="kind">${kind}</span>
-      <span>${title}<span class="ref">${ref}</span></span>
+      <span>${title}<span class="ref">${refs.map(([id, href]) => link(href, id)).join(" · ")}</span></span>
     </li>
   `).join("");
 })();
