@@ -24,7 +24,7 @@ outputs:
     ref: https://docs.google.com/document/d/1dbHCFmZOF2dYP7dcVmhJu1fKuY4U1jdf7RJHkZ94jX4/edit
 
 provenance_guarantees:
-  definition_identity: CAPTURED
+  definition_identity: UNVERIFIED
   code_at_start_identity: NOT_CAPTURED
   input_snapshot_identity: UNVERIFIED
   external_data_pinned: UNVERIFIED
