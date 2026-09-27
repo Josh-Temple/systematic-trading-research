@@ -225,7 +225,7 @@ Horizontal ReactionをGitHubだけで追跡して、研究状態を誤解なく�
 
 ## Phase 4 — Human-facing web UI
 
-Status: **PLANNED**
+Status: **IN PROGRESS**
 
 Phase 3でKnowledge Base自体の価値が確認できた後に着手する。
 
@@ -241,6 +241,38 @@ Phase 3でKnowledge Base自体の価値が確認できた後に着手する。
 - Failed / Rejected
 
 目的は見栄えではなく、研究経緯・根拠・現在状態を短時間で理解できること。
+
+### v0.1 implementation
+
+Initial implementation:
+
+- `docs/WEB_UI_V0.1.md`
+- `web/index.html`
+- `web/styles.css`
+- `web/app.js`
+- `web/data/horizontal-reaction-v0.1.js`
+- manual-ready GitHub Pages workflow at `.github/workflows/pages.yml`
+
+The first screen is intentionally scoped to Horizontal Reaction v0.1 and presents:
+
+- current scientific state
+- unresolved source conflict
+- next admissible test
+- forbidden sample reuse
+- H1/H2/H3 evidence
+- data consumption boundaries
+- historical blocked vs scientific results
+- canonical links
+
+The web projection is noncanonical. Phase 5 will address generated indexes / automated projection.
+
+### Remaining Phase 4 validation
+
+- enable/deploy GitHub Pages or equivalent static hosting
+- mobile/Android visual review
+- canonical-link verification
+- check that the UI makes blocked vs negative-result and consumed vs unused distinctions clear
+- record Phase 4 exit review
 
 ---
 
