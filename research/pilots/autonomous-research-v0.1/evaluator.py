@@ -128,6 +128,35 @@ def load_candidate_json(text: str) -> dict[str, Any]:
     return validate_candidate(candidate)
 
 
+def _strict_ledger_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in out:
+            raise EvaluatorFailure(f"duplicate ledger JSON key: {key}")
+        out[key] = value
+    return out
+
+
+def _reject_ledger_json_constant(value: str) -> None:
+    raise EvaluatorFailure(f"non-standard ledger JSON constant is forbidden: {value}")
+
+
+def _load_ledger_json(text: str, line_no: int) -> dict[str, Any]:
+    try:
+        record = json.loads(
+            text,
+            object_pairs_hook=_strict_ledger_object,
+            parse_constant=_reject_ledger_json_constant,
+        )
+    except EvaluatorFailure:
+        raise
+    except (json.JSONDecodeError, TypeError, ValueError) as exc:
+        raise EvaluatorFailure(f"ledger line {line_no} is not valid strict JSON") from exc
+    if not isinstance(record, dict):
+        raise EvaluatorFailure(f"ledger line {line_no} must be an object")
+    return record
+
+
 def validate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(candidate, dict):
         raise CandidateInvalid("candidate must be an object")
@@ -414,6 +443,19 @@ def evaluate(
     )
 
 
+def evaluate_json(
+    text: str,
+    *,
+    known_strategy_fingerprints: set[str] | None = None,
+) -> dict[str, Any]:
+    """Researcher-facing text boundary: strict-parse JSON, then evaluate host-owned data."""
+    candidate = load_candidate_json(text)
+    return evaluate(
+        candidate,
+        known_strategy_fingerprints=known_strategy_fingerprints,
+    )
+
+
 def _event_hash_payload(record: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in record.items() if k != "event_hash"}
 
@@ -427,12 +469,7 @@ def verify_ledger(path: str | Path) -> dict[str, Any]:
     previous = None
     count = 0
     for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-        try:
-            record = json.loads(line)
-        except json.JSONDecodeError as exc:
-            raise EvaluatorFailure(f"ledger line {line_no} is not valid JSON") from exc
-        if not isinstance(record, dict):
-            raise EvaluatorFailure(f"ledger line {line_no} must be an object")
+        record = _load_ledger_json(line, line_no)
         if record.get("previous_event_hash") != previous:
             raise EvaluatorFailure(f"ledger chain mismatch at line {line_no}")
         expected = hash_json(_event_hash_payload(record))

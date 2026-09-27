@@ -26,6 +26,7 @@ The purpose is to test evaluator integrity before autonomous search is allowed t
 - structured evaluation receipt
 - hash-chained JSONL ledger helper with integrity verification before append
 - adversarial unit tests
+- deterministic grammar enumeration and seeded mutation/property tests
 
 The evaluator does not execute candidate-supplied Python, shell commands, paths, or URLs. The public `evaluate()` entrypoint also does not accept dataset rows; dataset selection belongs to the host-side evaluator authority.
 
@@ -99,3 +100,7 @@ In particular, it does not access `DATA-HR-003`.
 ## Adversarial self-review
 
 See [ADVERSARIAL_REVIEW_2026-09-27.md](ADVERSARIAL_REVIEW_2026-09-27.md) for concrete weaknesses found after the first 18-test implementation passed CI and the hardening changes that followed.
+
+## Deterministic fuzz/property review
+
+See [FUZZ_REVIEW_2026-09-27.md](FUZZ_REVIEW_2026-09-27.md). The current suite covers a 672-candidate declared-grammar grid, 1,000 seeded invalid mutations, and 300 valid strict-JSON round trips. It also preserves the known limitation that a self-contained local hash chain cannot detect deletion of its final suffix without an external checkpoint.
