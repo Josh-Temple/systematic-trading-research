@@ -71,7 +71,7 @@ if [[ ! -S "$SOCKET_PATH" ]]; then
   exit 1
 fi
 
-sudo -u nobody env PYTHONDONTWRITEBYTECODE=1   python "$HERE/researcher_probe.py"   --socket "$SOCKET_PATH"   --hidden-dataset "$HIDDEN_PATH"   --expected-dataset-id "$DATASET_ID"
+sudo -u nobody env PYTHONDONTWRITEBYTECODE=1   python "$TMP/researcher_probe.py"   --socket "$SOCKET_PATH"   --hidden-dataset "$HIDDEN_PATH"   --expected-dataset-id "$DATASET_ID"
 
 python - "$SOCKET_PATH" <<'PY'
 import socket
