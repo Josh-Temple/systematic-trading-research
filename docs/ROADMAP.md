@@ -1,6 +1,6 @@
 # Roadmap
 
-Updated: 2026-09-27
+Updated: 2026-09-28
 
 ## Goal
 
@@ -225,7 +225,7 @@ Horizontal ReactionをGitHubだけで追跡して、研究状態を誤解なく�
 
 ## Phase 4 — Human-facing web UI
 
-Status: **IN PROGRESS**
+Status: **COMPLETE**
 
 Phase 3でKnowledge Base自体の価値が確認できた後に着手する。
 
@@ -252,6 +252,7 @@ Initial implementation:
 - `web/app.js`
 - `web/data/horizontal-reaction-v0.1.js`
 - manual-ready GitHub Pages workflow at `.github/workflows/pages.yml`
+- public mobile validation at `.github/workflows/mobile-web-validation.yml` and `.github/scripts/validate-public.mjs`
 
 The first screen is intentionally scoped to Horizontal Reaction v0.1 and presents:
 
@@ -289,13 +290,25 @@ Deployment status:
 - the deploy job completed Checkout / Configure Pages / Upload static site / Deploy with success
 - public URL: https://josh-temple.github.io/systematic-trading-research/
 
-Remaining:
+Final validation:
 
-- Android/mobile visual review on the public URL
-- confirm no unexpected horizontal overflow and that evidence/status distinctions remain readable
-- record Phase 4 exit review
+- Pages deployment for the synchronized web projection succeeded in Actions run `36333169298`.
+- Public mobile-browser validation succeeded in Actions run `36333283755`.
+- Chromium mobile emulation used 360×800, 390×844, and 412×915 viewports with touch enabled.
+- All three returned HTTP 200 and had no page-level horizontal overflow.
+- H1 `NOT SUPPORTED`, H2 `NO UNCONDITIONAL TOUCH SUPPORT`, H3 `WAITING FOR MATURITY`, `SOURCE CONFLICT`, `BLOCKED`, `CONSUMED HOLDOUT`, and `FINAL HOLDOUT / UNUSED` remained explicit text.
+- The current-summary link opened the GitHub research record; diagnostic and timeline evidence links were present.
+- Full-page screenshots were reviewed, including the 360px rendering. No clipping or hierarchy failure that blocks use was observed.
+- This is mobile Chromium emulation, not a physical Android-device run. That limitation is recorded rather than hidden.
 
-The successful deployment does not by itself close Phase 4 or establish scientific validity.
+Result: **PASS**
+
+See:
+
+- `web/VALIDATION.md`
+- `web/PHASE4_EXIT_REVIEW.md`
+
+Deployment or UI validation does not establish scientific validity; the Web remains a derived navigation layer.
 
 ---
 
