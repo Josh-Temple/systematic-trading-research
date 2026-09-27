@@ -1,7 +1,7 @@
 # Repository review follow-up — 2026-09-27
 
 記録日: 2026-09-27 JST
-状態: 対応中（H3実装同一性監査を開始。その他follow-upは未完了）
+状態: 対応中（H3実装同一性のoutcome-blind固定は完了。その他follow-upは未完了）
 対象: Josh-Temple/systematic-trading-research
 レビュー対象main: `997c08a393d06b293c0f908870367f3f36344046`
 記録前のfresh readでも同じmainを確認。
@@ -23,7 +23,7 @@
 ## 1. 次の実験前に、H3が参照する実行仕様・コードを確定する
 
 優先度: 高（次の実験の実行前）
-状態: 対応中 — 実装同一性を回収したが、H3実行を止める不一致が残る
+状態: 完了 — `DEC-HR-004` で実装参照をoutcome-blindに固定。H3自体は引き続き `WAITING_FOR_MATURITY`
 
 監査記録: [H3_IMPLEMENTATION_IDENTITY_AUDIT_2026-09-28.md](../research/lines/horizontal-reaction-v0.1/H3_IMPLEMENTATION_IDENTITY_AUDIT_2026-09-28.md)
 
@@ -61,6 +61,15 @@
 - legacy codeのsame-confirmation-bar ambiguityを、H3の二値 CONFIRMED / UNCONFIRMED のどちらへ写像するかも既存H3文書では未確定。
 - 以上を結果前に解消するまで、H3 outcome実行準備完了とはしない。
 - この監査ではDATA-HR-003 outcome、群間比較、primary contrast、bootstrapを閲覧・計算していない。
+
+### 2026-09-28 implementation-resolution update
+
+- 新規Decision `DEC-HR-004` で、H3が参照する実装を exact legacy H2 generator に固定した。対象は `run_v01.py` SHA-256 `9d655d68424624167ac9fe07fd74602fab59d7c096c3a631f36c385d6257b1dd`。
+- Gammaのstrict-before proseとlegacy codeの不一致は訂正して消していない。H3 v0.1では「exact H2 generatorを無変更で使用する」という凍結済み参照を優先し、candidate-bar Close変化を含むlegacy Gammaをそのまま使う。将来結果の解釈ではtemporal-information limitationを明示する。
+- generator historyは、2025-12-31から2026-07-09までのexact H2 135-file inputを固定prefixとし、その後のfirst-party BID M1 sourceをcandidate scan順にselected-session filtering前で時系列追加する。2026-07-10でGamma履歴をresetしない。
+- same-confirmation-barでは、元コードがconfirmation成立後にclean execution-event listから除外していることと、H3がexecution statusに依存せずconfirmation ruleで二値分類することを分離した。機械的confirmation条件を満たしたtouchは、同一barで別touchもconfirmしていてもH3では `CONFIRMED` とする。
+- 上記はDATA-HR-003 outcomeを見ずに固定した。H3 outcome、CONFIRMED/UNCONFIRMED比較、primary contrast、bootstrapは未閲覧・未計算。
+- したがって「実装条件の未解決」は解消したが、60 structurally eligible sessionsの成熟とsource gate PASSは別の既存gateとして残る。これらを満たすまでH3 runは作成しない。
 
 
 ## 2. 正本とWeb表示の整合性を最小限のCIで確認する
