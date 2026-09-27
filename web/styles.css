@@ -252,6 +252,8 @@ h3 {
 .timeline time { font-variant-numeric: tabular-nums; font-size: 13px; }
 .timeline .kind { font-size: 10px; font-weight: 900; letter-spacing: .09em; }
 .timeline .ref { display: block; color: var(--muted); font-size: 12px; }
+.timeline .ref a { margin-right: 4px; }
+.record-links { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px 18px; }
 
 .sources .snapshot { margin-top: 32px; color: var(--muted); font-size: 12px; }
 .site-foot {
