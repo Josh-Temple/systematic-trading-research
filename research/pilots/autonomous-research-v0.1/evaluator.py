@@ -92,7 +92,40 @@ def _finite_number(value: Any, field: str) -> float:
     value = float(value)
     if not math.isfinite(value):
         raise CandidateInvalid(f"{field} must be finite")
-    return value
+    # Normalize signed zero so semantically identical strategies share a fingerprint.
+    return 0.0 if value == 0.0 else value
+
+
+def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in out:
+            raise CandidateInvalid(f"duplicate JSON key: {key}")
+        out[key] = value
+    return out
+
+
+def _reject_json_constant(value: str) -> None:
+    raise CandidateInvalid(f"non-standard JSON constant is forbidden: {value}")
+
+
+def load_candidate_json(text: str) -> dict[str, Any]:
+    """Parse candidate JSON without duplicate keys or NaN/Infinity extensions."""
+    if not isinstance(text, str):
+        raise CandidateInvalid("candidate JSON must be text")
+    try:
+        candidate = json.loads(
+            text,
+            object_pairs_hook=_strict_object,
+            parse_constant=_reject_json_constant,
+        )
+    except CandidateInvalid:
+        raise
+    except (json.JSONDecodeError, TypeError, ValueError) as exc:
+        raise CandidateInvalid("invalid candidate JSON") from exc
+    if not isinstance(candidate, dict):
+        raise CandidateInvalid("candidate JSON root must be an object")
+    return validate_candidate(candidate)
 
 
 def validate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
@@ -228,6 +261,8 @@ def compile_signal(candidate: dict[str, Any], rows: list[dict[str, Any]]) -> lis
                 continue
             value = row[f["source"]] - rows[i - lag][f["source"]]
 
+        if not math.isfinite(value):
+            raise CandidateInvalid("transformed feature must be finite")
         cond = value > c["threshold"] if c["operator"] == "gt" else value < c["threshold"]
         signal.append(side * c["position_size"] if cond else 0.0)
 
@@ -281,7 +316,11 @@ def _result_hash_payload(receipt: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in receipt.items() if k not in {"created_at", "result_hash"}}
 
 
-def _base_receipt(candidate: Any, rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
+def _base_receipt(
+    candidate: Any,
+    rows: Iterable[dict[str, Any]],
+    dataset_id: str,
+) -> dict[str, Any]:
     candidate_id = candidate.get("candidate_id") if isinstance(candidate, dict) else None
     try:
         candidate_hash = hash_json(candidate)
@@ -301,7 +340,7 @@ def _base_receipt(candidate: Any, rows: Iterable[dict[str, Any]]) -> dict[str, A
         "candidate_hash": candidate_hash,
         "strategy_fingerprint": None,
         "evaluator_identity": evaluator_identity(),
-        "dataset_id": DATASET_ID,
+        "dataset_id": dataset_id,
         "dataset_hash": d_hash,
         "execution_status": "NOT_RUN",
         "validity_status": "UNVERIFIED",
@@ -311,15 +350,16 @@ def _base_receipt(candidate: Any, rows: Iterable[dict[str, Any]]) -> dict[str, A
     }
 
 
-def evaluate(
+def _evaluate_on_rows(
     candidate: dict[str, Any],
-    rows: Iterable[dict[str, Any]] = SYNTHETIC_ROWS,
+    rows: Iterable[dict[str, Any]],
     *,
+    dataset_id: str,
     known_strategy_fingerprints: set[str] | None = None,
 ) -> dict[str, Any]:
-    """Evaluate one declarative candidate and return a structured receipt."""
+    """Host-only evaluation primitive with explicit dataset authority."""
     rows_list = list(rows)
-    receipt = _base_receipt(candidate, rows_list)
+    receipt = _base_receipt(candidate, rows_list, dataset_id)
 
     try:
         clean_rows = validate_dataset(rows_list)
@@ -360,9 +400,61 @@ def evaluate(
     return receipt
 
 
-def append_ledger(path: str | Path, event: dict[str, Any]) -> None:
-    """Append one canonical JSON event. This is append-only by API convention, not immutable storage."""
+def evaluate(
+    candidate: dict[str, Any],
+    *,
+    known_strategy_fingerprints: set[str] | None = None,
+) -> dict[str, Any]:
+    """Evaluate against the Phase A host-owned dataset. Candidate cannot select rows."""
+    return _evaluate_on_rows(
+        candidate,
+        SYNTHETIC_ROWS,
+        dataset_id=DATASET_ID,
+        known_strategy_fingerprints=known_strategy_fingerprints,
+    )
+
+
+def _event_hash_payload(record: dict[str, Any]) -> dict[str, Any]:
+    return {k: v for k, v in record.items() if k != "event_hash"}
+
+
+def verify_ledger(path: str | Path) -> dict[str, Any]:
+    """Verify the local hash chain. This detects edits; it does not prevent full-file rewrite."""
+    path = Path(path)
+    if not path.exists():
+        return {"events": 0, "last_event_hash": None}
+
+    previous = None
+    count = 0
+    for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise EvaluatorFailure(f"ledger line {line_no} is not valid JSON") from exc
+        if not isinstance(record, dict):
+            raise EvaluatorFailure(f"ledger line {line_no} must be an object")
+        if record.get("previous_event_hash") != previous:
+            raise EvaluatorFailure(f"ledger chain mismatch at line {line_no}")
+        expected = hash_json(_event_hash_payload(record))
+        if record.get("event_hash") != expected:
+            raise EvaluatorFailure(f"ledger event hash mismatch at line {line_no}")
+        previous = expected
+        count += 1
+    return {"events": count, "last_event_hash": previous}
+
+
+def append_ledger(path: str | Path, event: dict[str, Any]) -> dict[str, Any]:
+    """Append a hash-chained canonical JSON event and return the stored record."""
+    if not isinstance(event, dict):
+        raise EvaluatorFailure("ledger event must be an object")
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    state = verify_ledger(path)
+    record = {
+        "previous_event_hash": state["last_event_hash"],
+        "event": event,
+    }
+    record["event_hash"] = hash_json(record)
     with path.open("a", encoding="utf-8") as f:
-        f.write(_canonical_json(event).decode("utf-8") + "\n")
+        f.write(_canonical_json(record).decode("utf-8") + "\n")
+    return record
