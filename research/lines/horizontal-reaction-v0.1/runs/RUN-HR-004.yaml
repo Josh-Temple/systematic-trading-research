@@ -1,0 +1,45 @@
+run_id: RUN-HR-004
+experiment_id: EXP-HR-004
+specification_id: SPEC-HR-001-v01
+
+dataset_uses:
+  - dataset_id: DATA-HR-001
+    role: CONSUMED_HOLDOUT
+    may_influence_future_search: false
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+
+started_at: UNKNOWN
+completed_at: UNKNOWN
+
+execution_status: SUCCESS
+
+environment:
+  ref: UNKNOWN
+
+outputs:
+  - kind: exploratory_diagnostic_report
+    ref: https://docs.google.com/document/d/1PfMQ9_rENQU6MttmH2A3CmGYk41G5SlFIPVFNv48bHo/edit
+  - kind: analyzed_artifact_reported
+    ref: https://drive.google.com/drive/folders/1dd9IL9--BxlwITVOoXHHuwB3TouNtslv
+
+provenance_guarantees:
+  definition_identity: UNVERIFIED
+  code_at_start_identity: NOT_CAPTURED
+  input_snapshot_identity: UNVERIFIED
+  external_data_pinned: UNVERIFIED
+  environment_identity: NOT_CAPTURED
+  output_identity: PARTIAL
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: UNVERIFIED
+
+diagnostic_refs:
+  - DIAG-HR-002
+
+notes: >
+  SUCCESS describes the analysis as reported in the source document, not a
+  rerun by this migration. The original executed 35-code-cell notebook was
+  not located as a retrievable artifact. The source explicitly labels the
+  diagnostic exploratory and non-confirmatory.

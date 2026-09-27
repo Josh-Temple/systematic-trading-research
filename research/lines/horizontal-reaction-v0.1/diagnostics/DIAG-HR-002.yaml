@@ -1,0 +1,49 @@
+diagnostic_id: DIAG-HR-002
+target_run: RUN-HR-004
+
+diagnostic_type: EXPLORATORY_LEDGER_DIAGNOSTIC
+tool:
+  name: ChatGPT Data session (as reported)
+  version: UNKNOWN
+
+checked_scope:
+  - Fixed 2,685-trade, 60-session 2026H1 population
+  - Trade/event identifiers, duplicated rows, missing cells, reported ordering and arithmetic checks
+  - PnL distribution and loss concentration
+  - Rolling-window, chronological-block, session-cluster and existing-subgroup descriptions
+  - Stop/time-stop path summaries from reported stored fields
+  - Same-timestamp midpoint comparison and fixed additional-cost sensitivity
+coverage:
+  description: >
+    The source describes an exploratory report on the fixed consumed trade/event
+    artifact. The report's scope is ledger and stored-field diagnostics. The
+    same-timestamp midpoint comparison uses actual spread-aware exits and is
+    explicitly not formal D5.
+overrides: []
+
+result: EXPLORATORY_DIAGNOSTIC
+
+known_blind_spots:
+  - The executed 35-code-cell notebook was not located as a retrievable artifact
+  - The preservation step did not rerun the Data analysis
+  - Stored MAE/MFE fields do not provide complete within-trade event ordering
+  - The diagnostic does not establish touch-level reaction or its timing
+  - It does not establish future profitability, live fillability, or broker economics
+  - It does not identify a causal driver of the negative result
+
+not_tested:
+  - Formal D1 touch-to-confirmation replay
+  - Formal D2 entry-to-15-minute no-barrier replay
+  - Formal D3 stopped-trade 15-minute counterfactual
+  - Formal D4 touch-to-15-minute no-barrier replay
+  - Formal D5 matched-timestamp cost decomposition
+  - Any new filter, threshold, parameter, or strategy rule
+
+evidence_refs:
+  - https://docs.google.com/document/d/1PfMQ9_rENQU6MttmH2A3CmGYk41G5SlFIPVFNv48bHo/edit
+  - https://drive.google.com/drive/folders/1dd9IL9--BxlwITVOoXHHuwB3TouNtslv
+
+notes: >
+  These diagnostic boundaries and statuses are reported by the source. The
+  later D1-D5 replay (MIG-HR-004) is a separate result and does not retroactively
+  upgrade this exploratory artifact.
