@@ -1,7 +1,7 @@
 # Phase A implementation status
 
 Date: 2026-09-27  
-Status: PARTIAL — CORE_EVALUATOR_HARDENING_CI_PENDING
+Status: PARTIAL — CORE_EVALUATOR_HARDENED_CI_VERIFIED
 
 ## Scope
 
@@ -95,3 +95,16 @@ OK
 ```
 
 This section records an engineering/evaluator finding, not a trading result.
+
+## Hardening CI verification
+
+Verified run:
+
+- workflow: `Autonomous pilot Phase A`
+- run: https://github.com/Josh-Temple/systematic-trading-research/actions/runs/36323723347
+- head: `898c27131627765bcc166282c3fdc3d7e063b450`
+- result: `25 tests / OK`
+
+This strengthens evidence for the tested parser, identity, duplicate, numerical-finiteness, and local-ledger integrity invariants.
+
+It does **not** change the overall Phase A status from PARTIAL. Process-level hidden-data isolation, an actual model-driven adversarial attack, stronger persistence, and independent evaluator reproduction remain open.
