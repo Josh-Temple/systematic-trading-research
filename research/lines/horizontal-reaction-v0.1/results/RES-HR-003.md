@@ -6,7 +6,7 @@ run_id: RUN-HR-003
 observed_at: UNKNOWN
 execution_status: BLOCKED
 evidence_validity: VALID
-scientific_status: INCONCLUSIVE
+scientific_status: NOT_APPLICABLE
 headline_metrics:
   selected_session_count: 60
   authoritative_trade_population: 2685
@@ -37,7 +37,7 @@ The primary source records failure to retrieve the required first-party raw sour
 
 - `execution_status: BLOCKED` records the failed access/replay attempt.
 - `evidence_validity: VALID` applies to the persisted record of that blocked attempt.
-- `scientific_status: INCONCLUSIVE` means no D1-D5 scientific outcome was produced. It is not a strategy-level inconclusive or negative finding.
+- `scientific_status: NOT_APPLICABLE` means this blocked attempt produced no scientific outcome. It is not a strategy-level inconclusive or negative finding.
 
 D1-D5 are all `NOT_RUN`. No substitute data were used and no mechanism was assessed.
 
