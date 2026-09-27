@@ -1,0 +1,51 @@
+run_id: RUN-HR-006
+experiment_id: EXP-HR-006
+specification_id: SPEC-HR-002-v01
+
+dataset_uses:
+  - dataset_id: DATA-HR-002
+    role: CONSUMED_HOLDOUT
+    role_at_execution: UNUSED_EVALUATION_AT_FREEZE
+    may_influence_future_search: false
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+  script_name: run_unconditional_replication_fast.py
+  script_sha256: 6e881b417ee7d211b995404222f59fa3f4888af5c6fa5d5fa6e2dd370600f540
+
+started_at: UNKNOWN
+completed_at: UNKNOWN
+
+execution_status: SUCCESS
+
+environment:
+  ref: UNKNOWN
+
+outputs:
+  - kind: completed_result_v3
+    ref: https://docs.google.com/document/d/1V65WyLaecRTPPMtZZTb5Q-5rPLnYN9RLq-fyORXTwWM/edit
+  - kind: reproducibility_code_and_result_v3
+    ref: https://docs.google.com/document/d/1j_tpgHdw6CdXbe7rNwC2PTxxZUB1MOKs85Z4QQ-xDFM/edit
+  - kind: preregistered_session_list
+    ref: https://docs.google.com/spreadsheets/d/1fuebVQ5nr2vvU0YQWbtrabtHHyZ-EldHbXhcZYDOJLs/edit
+
+provenance_guarantees:
+  definition_identity: CAPTURED
+  code_at_start_identity: CAPTURED
+  input_snapshot_identity: CAPTURED
+  external_data_pinned: CAPTURED
+  environment_identity: NOT_CAPTURED
+  output_identity: PARTIAL
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: UNVERIFIED
+
+diagnostic_refs: []
+
+notes: >
+  The Result v3 reports source identity PASS for fixed 60-session M1 and raw
+  Tick coverage, exact preregistered seed/replication count, and exact-match
+  independent recomputation. The reproducibility code/result document reports
+  the calculation script SHA-256. Exact environment identity, run timestamps,
+  and all final raw Tick per-file hash values are not stated in the retrieved
+  result text and remain unknown/unverified.

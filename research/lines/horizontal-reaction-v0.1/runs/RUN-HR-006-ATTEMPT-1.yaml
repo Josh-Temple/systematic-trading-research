@@ -1,0 +1,47 @@
+run_id: RUN-HR-006-ATTEMPT-1
+experiment_id: EXP-HR-006
+specification_id: SPEC-HR-002-v01
+
+dataset_uses:
+  - dataset_id: DATA-HR-002
+    role: CONSUMED_HOLDOUT
+    role_at_execution: UNUSED_EVALUATION_AT_FREEZE
+    may_influence_future_search: false
+
+code_identity:
+  repository: UNKNOWN
+  commit: UNKNOWN
+
+started_at: UNKNOWN
+completed_at: UNKNOWN
+
+execution_status: BLOCKED
+
+environment:
+  ref: UNKNOWN
+
+outputs:
+  - kind: fail_closed_result
+    ref: https://docs.google.com/document/d/1b-NTHxj2owdqma55rxTXhGftofTtO0odLU6n3m1zg_0/edit
+  - kind: preoutcome_reproducibility_artifact
+    ref: https://docs.google.com/spreadsheets/d/1fuebVQ5nr2vvU0YQWbtrabtHHyZ-EldHbXhcZYDOJLs/edit
+
+provenance_guarantees:
+  definition_identity: CAPTURED
+  code_at_start_identity: NOT_CAPTURED
+  input_snapshot_identity: PARTIAL
+  external_data_pinned: PARTIAL
+  environment_identity: NOT_CAPTURED
+  output_identity: CAPTURED
+  concurrent_mutation_prevented: UNVERIFIED
+  causal_lineage_independently_checked: UNVERIFIED
+
+diagnostic_refs: []
+
+notes: >
+  This attempt stopped at the pre-outcome source-data gate. Exact sample and
+  touch generator were frozen/recovered, but required July raw M1 and raw
+  BID/ASK Tick payloads were unavailable. No touch population, touch outcome,
+  bootstrap, or interpretation was computed. The dataset is now consumed by
+  the later completed run; this manifest preserves its role at the attempted
+  execution and current no-reuse boundary.
