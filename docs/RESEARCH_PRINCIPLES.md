@@ -1,6 +1,6 @@
 # Research Principles
 
-Updated: 2026-09-26
+Updated: 2026-09-27
 
 ## 1. Separate research states
 
@@ -135,3 +135,59 @@ Knowledge Base v0.1の最初の移植対象は Horizontal Reaction Strategy v0.1
 初期のknowledge/research基盤では、ブローカーへの注文送信、自動売買、ライブ資金の自動ポジションサイズ決定を行わない。
 
 実証研究とexecution infrastructureの境界を維持する。
+
+
+## 15. Separate state reconstruction from computational reproducibility
+
+「研究状態を後から再構成できる」と「同じ計算を同じ条件で再実行できる」は別の保証である。
+
+GitHub上でHypothesis、Specification、Dataset、Run、Result、Interpretation、Decisionを追跡できても、次が欠ければ計算再現性は成立しないことがある。
+
+- executable code identity
+- exact calculation semantics
+- environment identity
+- source/input identity
+- runtime boundary conditions
+
+Phase exitやレビューでは、どちらの保証を確認したのかを明示する。
+
+## 16. Preserve unresolved source conflicts as first-class evidence
+
+複数の一次資料が同じ実験について異なる数値、sample count、classification、解釈を示し、どちらが後者を無効化したか確認できない場合、無理に統合しない。
+
+- 両方をhistorical evidenceとして残す
+- current projectionではconflictの存在を明示する
+- どの資料をcurrent interpretationの根拠に使っているかを示す
+- 明示的なcorrection / invalidation evidenceなしに古い記録を削除しない
+
+「矛盾が残っていること」自体が研究状態の一部である。
+
+## 17. Distinguish UNKNOWN from NOT_APPLICABLE
+
+欠測と非適用を同じ値で表さない。
+
+- `UNKNOWN` / `UNVERIFIED`: 本来必要な情報だが、現在の証拠では確定できない
+- `NOT_APPLICABLE`: そのdimension自体がそのartifactには適用されない
+
+例:
+
+- source qualificationが科学的仮説を検定しない場合の `tests_hypothesis`
+- blocked runが科学的outcomeを生成していない場合の `scientific_status`
+
+この区別により、後から「調べれば埋められる未確定情報」と「埋める必要がない項目」を混同しない。
+
+## 18. Derived interfaces must expose authority and freshness
+
+Web UI、CURRENT projection、index、search、MCP responseは、canonical evidenceそのものではなくderived interfaceとして扱う。
+
+derived interfaceは少なくとも次を確認可能にする。
+
+- canonical sourceへの導線
+- どのresearch stateを要約しているか
+- source commit / generation pointなどのfreshness情報
+- unresolved conflict
+- historical / blocked / exploratory / consumed / unused の区別
+
+derived viewが古いままでも正常表示できる状態は、科学的には危険である。可能な範囲でcanonical updateとderived projectionの不一致をCIや生成処理で検出する。
+
+UIの表示成功、workflow成功、deployment成功は、研究結果の科学的妥当性を意味しない。
