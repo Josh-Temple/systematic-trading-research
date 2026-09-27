@@ -84,9 +84,9 @@ The researcher may:
 
 The researcher may not:
 
-- read evaluator source during a frozen run;
 - read hidden evaluation data;
-- change the scoring function;
+- change the frozen evaluator or scoring function;
+- substitute a different evaluator execution path;
 - change dataset roles;
 - change the search budget after observing results;
 - directly mark a candidate as scientifically accepted.
@@ -127,7 +127,9 @@ If later research requires custom Python, free-form code should be a later privi
 
 ### 4.4 Trusted evaluator
 
-The evaluator is a separate deterministic process controlled by the host, not by the researcher.
+The evaluator is a separate deterministic authority controlled by the host, not by the researcher.
+
+Its source and scoring contract may be inspectable. Security must not depend on hiding evaluator logic. What is frozen is the evaluator identity and what remains hidden is evaluation data/outcomes that the research role is not permitted to observe.
 
 It:
 
@@ -183,6 +185,8 @@ The receipt states its assurance scope. A local receipt is causal/process eviden
 No market edge search occurs in this phase.
 
 Use synthetic or toy inputs and deliberately construct candidates intended to stress the evaluator.
+
+For this phase, the researcher may be given the evaluator contract and, where practical, the evaluator source itself. The challenge is stronger if a candidate cannot exploit the evaluator even when its logic is known.
 
 Required challenge classes:
 
