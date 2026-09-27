@@ -1,7 +1,7 @@
 # Phase A implementation status
 
 Date: 2026-09-27  
-Status: PARTIAL — CORE_EVALUATOR_TESTS_IMPLEMENTED
+Status: PARTIAL — CORE_EVALUATOR_CI_VERIFIED
 
 ## Scope
 
@@ -42,7 +42,16 @@ Ran 18 tests
 OK
 ```
 
-This local result is not the final repository/CI verification. GitHub Actions must run the committed bytes before this slice is marked CI-verified.
+GitHub Actions subsequently ran the committed bytes successfully.
+
+Verified run:
+
+- workflow: `Autonomous pilot Phase A`
+- run: https://github.com/Josh-Temple/systematic-trading-research/actions/runs/36323323224
+- head: `461685e84491b980a171226ff5fda69e97e6a9db`
+- result: `18 tests / OK`
+
+This establishes the tested code-path invariants at that commit. It does not establish full evaluator isolation or Phase A exit.
 
 ## Why status remains PARTIAL
 
