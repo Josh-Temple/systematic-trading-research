@@ -25,6 +25,9 @@ The purpose is to test evaluator integrity before autonomous search is allowed t
 - dataset identity
 - structured evaluation receipt
 - hash-chained JSONL ledger helper with integrity verification before append
+- HMAC-signed ledger checkpoint for exact tail/count verification when the key is protected outside researcher authority
+- second evaluator implementation for cross-code-path reproduction
+- Unix-user process-boundary integration test with runtime-hidden synthetic data
 - adversarial unit tests
 - deterministic grammar enumeration and seeded mutation/property tests
 
@@ -81,13 +84,12 @@ because the test concerns evaluator integrity, not market edge.
 
 This is not yet a full Phase A exit.
 
-Not yet demonstrated here:
+Not yet fully demonstrated here:
 
-- OS/process-level isolation between a future researcher agent and hidden evaluator data
-- immutable ledger storage; the ledger is now locally hash-chained and detects ordinary edits, but a filesystem owner can still rewrite the whole file and recompute the chain
+- strong sandbox / VM / container isolation for arbitrary adversarial researcher code; a narrower separate-Unix-UID boundary is now CI-tested
+- immutable durable ledger storage; HMAC checkpoints detect tail/count mismatch only while the checkpoint/key remain separately protected
 - sandboxing of arbitrary generated Python, because v0.1 deliberately does not execute arbitrary candidate code
-- adversarial testing by an actual autonomous model against the evaluator source
-- independent second implementation of the evaluator
+- an independently authored/model-reviewed second evaluator; current second implementation provides implementation diversity only
 
 These limits must remain visible. Passing this test suite is evidence about the tested invariants only.
 
@@ -108,3 +110,16 @@ See [FUZZ_REVIEW_2026-09-27.md](FUZZ_REVIEW_2026-09-27.md). The current suite co
 ## Source-informed model red-team
 
 See [MODEL_REDTEAM_REVIEW_2026-09-27.md](MODEL_REDTEAM_REVIEW_2026-09-27.md) and [MODEL_REDTEAM_ATTACKS_v01.json](MODEL_REDTEAM_ATTACKS_v01.json). Against the pre-fix baseline, the evidence run reproduced three uncaught failures: enum type confusion, huge-integer float conversion, and lone-surrogate receipt serialization. The repaired branch passes the 15-case model attack corpus. The corpus is explicitly NOT_INDEPENDENT.
+
+## Process boundary and second implementation
+
+See [BOUNDARY_REVIEW_2026-09-28.md](BOUNDARY_REVIEW_2026-09-28.md).
+
+Current evidence includes:
+
+- 672-candidate agreement between two separately coded evaluator implementations;
+- runtime-hidden synthetic data unreadable by a researcher probe running under a separate Unix UID;
+- candidate API still available while dataset-selection injection and future-outcome feature access are rejected;
+- signed ledger checkpoint tests that detect the previously documented suffix-truncation condition when the key/checkpoint are protected outside researcher authority.
+
+These are narrow engineering results. They do not establish a market edge, full sandbox security, durable immutable storage, or independent reviewer/model replication.
