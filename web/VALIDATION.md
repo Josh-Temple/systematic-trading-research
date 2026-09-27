@@ -18,7 +18,8 @@ Confirmed UI values include:
 - H2 mean: -1.379343686609 bps
 - H2 positive rate: 46.9494358546%
 - H2 clustered 95% interval: [-1.908681505831, -0.862084588075] bps
-- H3: WAITING_FOR_MATURITY
+- H3 scientific state: WAITING_FOR_MATURITY
+- H3 execution boundary: implementation/specification conflict must be resolved before outcome computation
 - DATA-HR-001 / DATA-HR-002: CONSUMED_HOLDOUT
 - DATA-HR-003: FINAL_HOLDOUT / UNUSED
 - H1 source conflict remains explicitly visible
@@ -27,22 +28,11 @@ The UI does not resolve the H1 D1-D5 source discrepancy.
 
 ## Canonical-link check
 
-Every GitHub canonical reference currently embedded in the projection was fresh-fetched successfully:
+All GitHub research-record links embedded in the current projection were resolved against the review branch, including the newly added H3 execution-identity precheck and Timeline links.
 
-- LINE.md
-- CURRENT.md
-- RES-HR-001
-- RES-HR-005
-- RES-HR-006
-- EXP-HR-007
-- SPEC-HR-003-v01
-- INT-HR-002
-- DATA-HR-001
-- DATA-HR-002
-- DATA-HR-003
-- research-line directory
+Result: **17 / 17 unique research paths accessible**
 
-Result: **12 / 12 accessible**
+The top-right link now points to `CURRENT.md` as **現在の要約** rather than labeling that derived projection as canonical.
 
 ## Static implementation check
 
@@ -50,8 +40,11 @@ Local static checks:
 
 - `web/app.js`: JavaScript syntax PASS
 - `web/data/horizontal-reaction-v0.1.js`: JavaScript syntax PASS
+- DOM IDs referenced by app.js: **20**
 - DOM IDs referenced by app.js but absent from index.html: **0**
 - duplicate IDs: **0**
+- diagnostic canonical link: rendered
+- Timeline record links: rendered
 
 A potential mobile overflow risk from the long H2 status label was corrected by allowing Current-section status tags to wrap on narrow screens.
 
