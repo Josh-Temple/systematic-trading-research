@@ -15,13 +15,19 @@
 
 ## Current stage
 
-**Phase 0 — Foundation**
+**Phase 4 — Human-facing web UI: IN PROGRESS**
 
-まず先行するsystematic trading / quant researchのGitHubリポジトリを研究し、READMEだけでなく、構造、Issue、commit履歴、設計変更、失敗例まで確認します。
+Phase 0 Foundation、Phase 1 prior repository research、Phase 2 Knowledge Base v0.1、Phase 3 Horizontal Reaction pilot migration は完了しています。
 
-複数の先行例から共通する設計原則を抽出した後、最小のKnowledge Base schemaを設計します。最初から大規模な独自設計には進みません。
+Horizontal Reaction Strategy v0.1 は現在、H1/H2の消費済み結果と、未使用のH3 holdoutを分離して管理しています。H3は科学的には `WAITING_FOR_MATURITY` のままですが、2026-09-27のoutcome-blindな実行コード監査でGammaの凍結仕様と保存コードの不一致が確認されたため、maturityだけでは実行できません。詳細は [H3 execution identity precheck](research/lines/horizontal-reaction-v0.1/H3_EXECUTION_IDENTITY_PRECHECK_2026-09-27.md) と [CURRENT](research/lines/horizontal-reaction-v0.1/CURRENT.md) を参照してください。
 
-その後、既存研究のうち **Horizontal Reaction Strategy v0.1** を最初の完全移植対象として、構造が実際に使いやすいかを検証します。
+Human-facing Web UIはGitHub Pagesへ初回公開済みです。
+
+- Public Web: https://josh-temple.github.io/systematic-trading-research/
+- Current research projection: [research/lines/horizontal-reaction-v0.1/CURRENT.md](research/lines/horizontal-reaction-v0.1/CURRENT.md)
+- Repository review follow-up: [docs/REVIEW_FOLLOWUP_2026-09-27.md](docs/REVIEW_FOLLOWUP_2026-09-27.md)
+
+GitHub Pagesの公開成功とAndroid実機での視覚確認は別管理です。Android実機確認とPhase 4 exit reviewは未完了のため、Phase 4は閉じていません。
 
 ## Research rules
 
