@@ -1,7 +1,7 @@
 # Phase A implementation status
 
 Date: 2026-09-27  
-Status: PARTIAL — CORE_EVALUATOR_HARDENED_CI_VERIFIED
+Status: PARTIAL — DETERMINISTIC_FUZZ_CI_VERIFIED
 
 ## Scope
 
@@ -108,3 +108,20 @@ Verified run:
 This strengthens evidence for the tested parser, identity, duplicate, numerical-finiteness, and local-ledger integrity invariants.
 
 It does **not** change the overall Phase A status from PARTIAL. Process-level hidden-data isolation, an actual model-driven adversarial attack, stronger persistence, and independent evaluator reproduction remain open.
+
+## Deterministic fuzz/property round
+
+GitHub Actions run `36324025330` passed `31 tests / OK` on commit `a2762f17593c1af789f90504ebe506b224556be2`.
+
+The expanded suite includes:
+
+- 672 combinations from the declared candidate grammar;
+- 300 seeded valid JSON round trips;
+- 1,000 seeded invalid candidate mutations;
+- result-hash stability checks;
+- strict ledger duplicate-key / NaN rejection;
+- an explicit test demonstrating that local hash-chain suffix truncation is **not** detectable without an external anchor.
+
+See `FUZZ_REVIEW_2026-09-27.md`.
+
+This is stronger engineering evidence, but Phase A remains PARTIAL.
