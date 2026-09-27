@@ -1,3 +1,4 @@
+import inspect
 import json
 import math
 import tempfile
@@ -99,7 +100,9 @@ class PhaseAEvaluatorTests(unittest.TestCase):
     def test_invalid_timestamp_is_evaluator_failure_not_scientific_negative(self):
         rows = [dict(r) for r in evaluator.SYNTHETIC_ROWS]
         rows[3]["timestamp"] = rows[2]["timestamp"]
-        r = evaluator.evaluate(valid_candidate(), rows)
+        r = evaluator._evaluate_on_rows(
+            valid_candidate(), rows, dataset_id="BROKEN-TEST-DATASET"
+        )
         self.assertEqual(r["execution_status"], "FAILED")
         self.assertEqual(r["validity_status"], "UNVERIFIED")
         self.assertEqual(r["scientific_status"], "NOT_APPLICABLE")
@@ -142,12 +145,67 @@ class PhaseAEvaluatorTests(unittest.TestCase):
             path = Path(td) / "ledger.jsonl"
             r1 = evaluator.evaluate(valid_candidate("A"))
             r2 = evaluator.evaluate(valid_candidate("B"))
-            evaluator.append_ledger(path, {"event": "evaluation", "receipt": r1})
-            evaluator.append_ledger(path, {"event": "evaluation", "receipt": r2})
+            first = evaluator.append_ledger(path, {"kind": "evaluation", "receipt": r1})
+            second = evaluator.append_ledger(path, {"kind": "evaluation", "receipt": r2})
             lines = path.read_text(encoding="utf-8").splitlines()
             self.assertEqual(len(lines), 2)
-            self.assertEqual(json.loads(lines[0])["receipt"]["candidate_id"], "A")
-            self.assertEqual(json.loads(lines[1])["receipt"]["candidate_id"], "B")
+            self.assertIsNone(first["previous_event_hash"])
+            self.assertEqual(second["previous_event_hash"], first["event_hash"])
+            self.assertEqual(json.loads(lines[0])["event"]["receipt"]["candidate_id"], "A")
+            self.assertEqual(json.loads(lines[1])["event"]["receipt"]["candidate_id"], "B")
+            self.assertEqual(evaluator.verify_ledger(path)["events"], 2)
+
+    def test_public_evaluate_does_not_accept_dataset_rows(self):
+        self.assertNotIn("rows", inspect.signature(evaluator.evaluate).parameters)
+
+    def test_strict_json_rejects_duplicate_top_level_key(self):
+        text = '{"candidate_id":"A","candidate_id":"B","feature":{"source":"feature_a","transform":"identity","lag":0},"operator":"gt","threshold":0,"side":"long","position_size":1}'
+        with self.assertRaises(evaluator.CandidateInvalid):
+            evaluator.load_candidate_json(text)
+
+    def test_strict_json_rejects_duplicate_nested_key(self):
+        text = '{"candidate_id":"A","feature":{"source":"feature_a","source":"feature_b","transform":"identity","lag":0},"operator":"gt","threshold":0,"side":"long","position_size":1}'
+        with self.assertRaises(evaluator.CandidateInvalid):
+            evaluator.load_candidate_json(text)
+
+    def test_strict_json_rejects_nonstandard_nan_and_infinity(self):
+        for token in ("NaN", "Infinity", "-Infinity"):
+            text = '{"candidate_id":"A","feature":{"source":"feature_a","transform":"identity","lag":0},"operator":"gt","threshold":' + token + ',"side":"long","position_size":1}'
+            with self.assertRaises(evaluator.CandidateInvalid):
+                evaluator.load_candidate_json(text)
+
+    def test_negative_zero_cannot_evade_duplicate_fingerprint(self):
+        a = valid_candidate("A")
+        b = valid_candidate("B")
+        a["threshold"] = 0.0
+        b["threshold"] = -0.0
+        self.assertEqual(evaluator.strategy_fingerprint(a), evaluator.strategy_fingerprint(b))
+
+    def test_transformed_feature_overflow_is_rejected(self):
+        rows = [dict(r) for r in evaluator.SYNTHETIC_ROWS]
+        rows[0]["feature_a"] = -1e308
+        rows[1]["feature_a"] = 1e308
+        c = valid_candidate()
+        c["feature"] = {"source": "feature_a", "transform": "lag_diff", "lag": 1}
+        r = evaluator._evaluate_on_rows(c, rows, dataset_id="OVERFLOW-TEST")
+        self.assertEqual(r["validity_status"], "INVALID")
+        self.assertEqual(r["scientific_status"], "NOT_APPLICABLE")
+
+    def test_ledger_tampering_is_detected_before_next_append(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "ledger.jsonl"
+            evaluator.append_ledger(path, {"kind": "evaluation", "n": 1})
+            records = path.read_text(encoding="utf-8").splitlines()
+            obj = json.loads(records[0])
+            obj["event"]["n"] = 999
+            path.write_text(
+                json.dumps(obj, sort_keys=True, separators=(",", ":")) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaises(evaluator.EvaluatorFailure):
+                evaluator.verify_ledger(path)
+            with self.assertRaises(evaluator.EvaluatorFailure):
+                evaluator.append_ledger(path, {"kind": "evaluation", "n": 2})
 
 
 if __name__ == "__main__":
