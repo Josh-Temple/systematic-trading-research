@@ -1,7 +1,7 @@
 # Web UI v0.1 Validation
 
-Updated: 2026-09-27
-Status: PUBLIC_DEPLOYED_VISUAL_REVIEW_PENDING
+Updated: 2026-09-28
+Status: COMPLETE
 Scope: Horizontal Reaction Strategy v0.1
 
 ## Scientific projection check
@@ -157,16 +157,66 @@ The workflow listens to:
 - changes to .github/workflows/pages.yml
 - manual workflow_dispatch
 
-## Phase 4 remaining checks after first successful deployment
+## Public mobile browser validation — 2026-09-28
 
-On the public URL:
+A reusable GitHub Actions validation was added:
 
-- Android/mobile visual review
-- no unexpected horizontal page overflow
-- canonical-link tap test
-- CURRENT section readable without scrolling through historical detail first
-- SOURCE CONFLICT visible and not mistaken for resolved evidence
-- BLOCKED records distinguishable from NOT SUPPORTED scientific results
-- CONSUMED vs UNUSED data roles obvious without relying only on color
+- workflow: `.github/workflows/mobile-web-validation.yml`
+- validation script: `.github/scripts/validate-public.mjs`
+- successful run: `36333283755`
+- artifact: `mobile-web-validation`
+- artifact ID: `10937040439`
+- artifact digest: `sha256:99fb138ab10070ca34540daaf8f6013064d46874645ca458920809a3886a027c`
 
-Phase 4 should not be closed until those checks are completed.
+The test used the deployed public URL, not a local file or localhost.
+
+Mobile Chromium contexts:
+
+- 360×800
+- 390×844
+- 412×915
+- `isMobile=true`
+- `hasTouch=true`
+
+All three checks reported:
+
+- HTTP 200
+- title `Horizontal Reaction Strategy v0.1`
+- no document/body horizontal overflow
+- `SOURCE CONFLICT` present
+- `BLOCKED` text present
+- `NOT SUPPORTED` text present
+- `CONSUMED HOLDOUT` text present
+- `FINAL HOLDOUT / UNUSED` text present
+- `DEC-HR-004` present
+- Current section precedes the historical timeline
+- `Current summary ↗` points to `CURRENT.md` and a tap opens the GitHub repository
+- 2 direct diagnostic evidence links
+- 10 direct timeline evidence links
+
+The generated full-page screenshots were downloaded and visually reviewed. The 360px screenshot was also inspected in vertical sections. The main title, current-state rows, long H2 status, source-conflict panel, H1/H2/H3 evidence, diagnostics, data roles, history, and authority section remain readable without clipping or unexpected page-level overflow.
+
+### Physical-device limitation
+
+This validation is Chromium mobile emulation on a GitHub-hosted runner. It is not a physical Android handset and does not prove device-specific Chrome rendering, OEM font substitution, browser-toolbar behavior, or accessibility behavior on every Android device.
+
+For Phase 4 v0.1, the mobile-browser rendering plus screenshot review is sufficient to close the web implementation phase. A later physical-device spot check can be performed if device-specific behavior becomes relevant; it is not treated as scientific evidence.
+
+## Phase 4 exit
+
+The remaining Phase 4 UI checks are complete for v0.1:
+
+- public deployment: PASS
+- mobile-width visual/browser validation: PASS
+- no unexpected horizontal overflow: PASS
+- current-state-before-history ordering: PASS
+- source conflict remains explicit: PASS
+- blocked execution vs negative scientific result remains textually distinct: PASS
+- consumed vs unused data role remains textually distinct: PASS
+- current-summary and evidence navigation links: PASS
+
+Phase 4 result: **PASS**
+
+See `web/PHASE4_EXIT_REVIEW.md`.
+
+This result concerns the human-facing derived interface only. It does not validate the underlying trading hypotheses, resolve the H1 source conflict, or authorize H3 outcome access.
