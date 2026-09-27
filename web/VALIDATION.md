@@ -202,6 +202,36 @@ This validation is Chromium mobile emulation on a GitHub-hosted runner. It is no
 
 For Phase 4 v0.1, the mobile-browser rendering plus screenshot review is sufficient to close the web implementation phase. A later physical-device spot check can be performed if device-specific behavior becomes relevant; it is not treated as scientific evidence.
 
+
+## Canonical research / Web projection consistency CI — 2026-09-28
+
+A fail-closed repository consistency check was added:
+
+- workflow: `.github/workflows/research-consistency.yml`
+- validator: `.github/scripts/validate-research-consistency.mjs`
+- first successful PR run: `36334117643`
+- projection canonical source commit: `78a3f335a6c66bcfda605f53435d3ec72cde0743`
+
+The validator checks:
+
+- YAML/frontmatter parsing for structured Horizontal Reaction records;
+- duplicate stable IDs and missing structured ID references;
+- independent Result status dimensions and allowed values;
+- H1/H2/H3 projected headline state and selected headline metrics;
+- DATA-HR-001 / 002 consumed roles and DATA-HR-003 final-holdout / unused role;
+- unresolved H1 source conflict;
+- blocked execution records remaining distinct from scientific `NOT_SUPPORTED` results;
+- repository-local Web evidence links and timeline record targets;
+- whether canonical Horizontal Reaction records changed after the Web projection's recorded source commit.
+
+The same run executes negative self-tests. It deliberately changes the projected H1 trade count and deliberately inserts a missing canonical link in memory. The validator requires both mutations to fail validation; otherwise the CI job fails.
+
+Result: **PASS**
+
+Update behavior is intentionally fail-closed. A canonical research change may temporarily make main's consistency check fail until a separate Web synchronization change is refreshed from the newly merged canonical commit. The update procedure is documented in `docs/WEB_UI_V0.1.md`.
+
+This check verifies repository structure and derived-projection consistency only. It does not recompute trading results, establish scientific validity, resolve the H1 source conflict, or authorize H3 outcome access.
+
 ## Phase 4 exit
 
 The remaining Phase 4 UI checks are complete for v0.1:
