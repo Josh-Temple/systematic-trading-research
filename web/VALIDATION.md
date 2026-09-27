@@ -1,7 +1,7 @@
 # Web UI v0.1 Validation
 
 Updated: 2026-09-27
-Status: READY_FOR_FIRST_PUBLIC_DEPLOY
+Status: PUBLIC_DEPLOYED_VISUAL_REVIEW_PENDING
 Scope: Horizontal Reaction Strategy v0.1
 
 ## Scientific projection check
@@ -124,19 +124,38 @@ Exact GitHub API error:
 
 This establishes that the repository workflow token can deploy to an existing Pages site but cannot create the Pages site for the first time.
 
-## External enablement boundary
+## Pages enablement and successful deployment
 
-One repository-admin action remains outside the available GitHub connector / workflow token authority:
+The earlier repository-admin Pages enablement boundary was resolved outside the failed workflow attempts.
 
-Enable GitHub Pages for the repository with GitHub Actions as the publishing source.
+A later manual deployment succeeded:
 
-After that one-time action, the existing workflow is ready to deploy `web/`.
+GitHub Actions run:
+
+36316165611
+
+Result:
+
+SUCCESS
+
+Fresh GitHub Actions read on 2026-09-28 confirmed the deploy job and all relevant steps completed successfully:
+
+- Checkout: success
+- Configure Pages: success
+- Upload static site: success
+- Deploy: success
+
+Public URL recorded for the deployment:
+
+https://josh-temple.github.io/systematic-trading-research/
+
+In this 2026-09-28 session, the available direct web-fetch tool could not open the public URL, so this entry does not claim a new visual/browser revalidation of the rendered page. The deployment success itself is confirmed from GitHub Actions; Android/mobile visual validation remains separate.
 
 The workflow listens to:
 
-- pushes to main affecting `web/**`
-- changes to `.github/workflows/pages.yml`
-- manual `workflow_dispatch`
+- pushes to main affecting web/**
+- changes to .github/workflows/pages.yml
+- manual workflow_dispatch
 
 ## Phase 4 remaining checks after first successful deployment
 
