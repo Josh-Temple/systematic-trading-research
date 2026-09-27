@@ -4,7 +4,7 @@ type: Experiment
 research_line_id: RL-HR-001
 created_at: 2026-09-27
 experiment_kind: DIAGNOSTIC
-tests_hypothesis: UNKNOWN
+tests_hypothesis: NOT_APPLICABLE
 uses_specification: SPEC-HR-001-v01
 planned_dataset_uses:
   - dataset_id: DATA-HR-001
@@ -42,7 +42,7 @@ This is a blocked execution and source-access record. It is not a negative scien
 
 ## Schema friction / UNKNOWN
 
-The v0.1 Experiment entity requires `tests_hypothesis`, but this blocked diagnostic did not produce a test of HYP-HR-001. The field is `UNKNOWN` rather than implying a hypothesis test. Run start/completion timestamps, exact code identity, environment, and exact source revision are not provided by the primary source and remain unknown.
+This Experiment does not directly test a scientific hypothesis, so `tests_hypothesis` is `NOT_APPLICABLE` under the pilot-refined v0.1 schema. Run start/completion timestamps, exact code identity, environment, and exact source revision are not provided by the primary source and remain unknown.
 
 ## Related artifacts
 
