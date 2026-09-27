@@ -6,7 +6,7 @@ run_id: RUN-HR-002
 observed_at: UNKNOWN
 execution_status: SUCCESS
 evidence_validity: VALID
-scientific_status: SUPPORTED
+scientific_status: NOT_APPLICABLE
 headline_metrics:
   selected_m1_per_file_identity: MATCH_60_OF_60
   raw_m1_files_reported_valid: 129
@@ -37,7 +37,7 @@ The primary source reports that the persistent Source Pack was recovered and rea
 
 ## Result status scope
 
-`scientific_status: SUPPORTED` refers only to the source-identity qualification reported by this source. It does not support or reject HYP-HR-001 and is not a trading-performance result.
+`scientific_status: NOT_APPLICABLE` records that source qualification produced no scientific hypothesis outcome. It neither supports nor rejects HYP-HR-001.
 
 ## Evidence boundary
 
