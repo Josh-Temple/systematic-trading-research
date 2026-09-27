@@ -1,6 +1,6 @@
 # Phase B AI Researcher Instruction v0.1
 
-Status: FROZEN_INPUT_CANDIDATE
+Status: FROZEN_BEFORE_AI_RESULTS
 Protocol: ARP-B-v0.1
 Market data: FORBIDDEN
 
