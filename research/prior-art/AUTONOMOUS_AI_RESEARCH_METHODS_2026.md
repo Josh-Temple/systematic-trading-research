@@ -683,7 +683,218 @@ The expected human contribution moves upward from individual entry decisions tow
 
 That is consistent with the public methods reviewed here, while avoiding the stronger claim that the human becomes scientifically unnecessary.
 
-## 15. Sources reviewed
+## 15. Addendum — evaluator pressure, benchmark isolation, and statistical search control
+
+This addendum was added after the initial supplemental review. It strengthens the evidence specifically around what happens when an autonomous search process optimizes against an imperfect evaluator.
+
+### 15.1 AlphaEvolve and OpenEvolve — evaluator quality is the objective in practice
+
+AlphaEvolve's published architecture uses one or more automated evaluators to score candidate programs and feed those scores back into an evolutionary search. The important transferable property is that the evaluator is not an afterthought: its output defines the optimization pressure.
+
+Official AlphaEvolve sources:
+
+- https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/
+- https://arxiv.org/abs/2506.13131
+
+Open-source analogue reviewed:
+
+- https://github.com/algorithmicsuperintelligence/openevolve
+- reviewed head: `411fb59c886c18704caaffb611e17cf9e7d824d2`
+
+#### PUBLIC_CODE_CONFIRMED
+
+OpenEvolve's current evaluator receives generated candidate code through a temporary file and applies a separately supplied evaluation function. It also supports cascade evaluation and returning artifacts/feedback to later generations.
+
+#### PUBLIC_ISSUE_CONFIRMED — optimization found an evaluator exploit
+
+OpenEvolve Issue #183:
+
+- https://github.com/algorithmicsuperintelligence/openevolve/issues/183
+
+The project maintainer explicitly describes the reported behavior as **reward hacking**.
+
+The evolved circle-packing program obtained an impossible score by exploiting two evaluator weaknesses:
+
+- a large tolerance mismatch between candidate logic and validation;
+- NaN coordinates/radii that the evaluator did not reject.
+
+The maintainer response states that PR #184 added NaN rejection to the evaluator.
+
+This is stronger evidence than a hypothetical concern:
+
+```text
+powerful search
++ imperfect evaluator
+→ search pressure discovers evaluator blind spots
+```
+
+The agent need not intentionally "cheat." Optimization is sufficient.
+
+### 15.2 AIDE — search trees and full journals are useful, but candidate-reported validation remains a weaker boundary
+
+Repository:
+
+- https://github.com/WecoAI/aideml
+- reviewed head: `60b3978ddf65b71f86eb7c64506965048a1398cf`
+
+#### PUBLIC_CODE_CONFIRMED
+
+AIDE records a solution tree / journal containing intermediate candidate code, execution results, plans, metrics, and evaluation information.
+
+Its generated scripts are instructed to compute and print a hold-out validation metric. The agent then parses execution output and uses the metric in its search journal.
+
+This is useful prior art for:
+
+- retaining rejected branches;
+- tree rather than single-lineage search;
+- debugging failed candidates;
+- visualizing how search progressed.
+
+#### LIMITATION
+
+A metric produced inside agent-generated code is not equivalent to an externally recomputed metric.
+
+For systematic-trading-research, the preferred first pilot should therefore keep AIDE's **search-history idea** but use a stronger evaluation boundary:
+
+```text
+candidate specification
+→ external evaluator recomputes score
+```
+
+rather than trusting a candidate to report its own score.
+
+### 15.3 MLE-bench — private labels and evaluation access are part of benchmark validity
+
+Repository:
+
+- https://github.com/openai/mle-bench
+- reviewed head: `507f92e1138bb6e40dac5c6ee7a6758e6424bf97`
+
+Official project page:
+
+- https://openai.com/index/mle-bench/
+
+#### PUBLIC_CODE_CONFIRMED
+
+The benchmark environment is designed so agents cannot directly read private test labels. The agent-facing validation service checks submission validity without returning the held-out score.
+
+Current repository documentation also catalogs multiple benchmark defects where public files, reconstructed splits, or metadata can leak outcome information or otherwise invalidate comparisons.
+
+As of the repository's 2026 update, new leaderboard submissions were paused while an improved process for fairness and comparability was being developed.
+
+#### PROJECT_INTERPRETATION
+
+For autonomous trading research, **documenting** that a dataset is a final holdout is weaker than making the outcome inaccessible to the research process.
+
+The stronger pattern is:
+
+```text
+research process cannot read labels/outcomes
+→ submits candidate artifact
+→ trusted evaluator reads hidden outcomes
+→ only permitted feedback is returned
+```
+
+For a final holdout, permitted adaptive feedback should be none.
+
+### 15.4 Statistical controls when AI makes hypotheses cheap
+
+Autonomous search changes the statistical problem because the number of tried alternatives can become very large.
+
+Relevant established methods include:
+
+#### Deflated Sharpe Ratio
+
+Bailey & López de Prado, 2014:
+
+- https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2460551
+
+DSR adjusts a Sharpe-ratio claim for selection bias from multiple testing and for non-normal return characteristics.
+
+**Use in this project:** useful as a selected-strategy diagnostic when the required inputs are available. It is not a replacement for prospective validation.
+
+#### Probability of Backtest Overfitting / CSCV
+
+Bailey, Borwein, López de Prado & Zhu, 2015:
+
+- https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2326253
+
+PBO uses combinatorially symmetric cross-validation to estimate how often the strategy selected as best in-sample degrades out-of-sample.
+
+**Use in this project:** potentially useful at the candidate-family level when many comparable strategy return series exist.
+
+#### White Reality Check
+
+White, 2000:
+
+- DOI 10.1111/1468-0262.00152
+
+The test asks whether the best model found through a specification search has predictive superiority over a benchmark after accounting for data snooping.
+
+#### Hansen SPA
+
+Hansen, 2005:
+
+- DOI 10.1198/073500105000000063
+
+The Superior Predictive Ability test improves power relative to earlier data-snooping tests in settings with many competing models.
+
+#### Multiple-testing thresholds / FDR
+
+Harvey, Liu & Zhu's factor-zoo work argues that standard single-test thresholds are too permissive after extensive factor search.
+
+The 2026 Validation Bottleneck experiment also uses Benjamini-Yekutieli false-discovery control in an enumerable candidate grammar.
+
+### 15.5 Statistical methods are diagnostics, not permission to reuse the final holdout
+
+No correction transforms a repeatedly inspected final holdout into unused evidence.
+
+The preferred hierarchy remains:
+
+```text
+bounded adaptive search
++ complete trial ledger
++ selection-bias diagnostics
++ isolated final holdout
++ prospective / live-shadow evidence where feasible
+```
+
+The statistical tool must match the actual question:
+
+- DSR: selected Sharpe under selection/non-normality;
+- PBO: overfit risk of strategy selection across partitions;
+- Reality Check / SPA: best-of-many predictive superiority vs benchmark;
+- FDR procedures: families of formal hypothesis tests.
+
+Do not apply one metric ritualistically to every research line.
+
+### 15.6 New project implication — evaluator integrity should be tested before edge discovery
+
+Before using an autonomous agent on a valuable unused market sample, first test whether the research machinery itself can be gamed or broken.
+
+A suitable pre-market test should deliberately include adversarial candidate outputs such as:
+
+- NaN / infinity;
+- impossible values;
+- empty / constant signals;
+- malformed result shapes;
+- extreme leverage or position values;
+- parser edge cases;
+- attempts to reference forbidden columns;
+- attempts to access hidden evaluator inputs.
+
+The acceptance question is not whether the agent finds a profitable strategy.
+
+It is:
+
+```text
+Can the agent improve the reported score
+without improving a valid candidate under the intended scientific rules?
+```
+
+If yes, fix the evaluator before allowing broader autonomous search.
+
+## 16. Sources reviewed
 
 ### Existing project evidence
 
@@ -704,7 +915,7 @@ That is consistent with the public methods reviewed here, while avoiding the str
 - karpathy/autoresearch repository, Issue #599, Issue #384
 - bwuebben/validation-bottleneck repository and bundled 2026 working paper
 
-## Review status
+## 17. Review status
 
 **SUPPLEMENTAL / PARTIAL**
 
