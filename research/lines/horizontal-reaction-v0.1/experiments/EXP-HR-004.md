@@ -4,7 +4,7 @@ type: Experiment
 research_line_id: RL-HR-001
 created_at: 2026-09-27
 experiment_kind: DIAGNOSTIC
-tests_hypothesis: UNKNOWN
+tests_hypothesis: NOT_APPLICABLE
 uses_specification: SPEC-HR-001-v01
 planned_dataset_uses:
   - dataset_id: DATA-HR-001
@@ -46,7 +46,7 @@ The source reports that the executed 35-code-cell notebook was not located as a 
 
 ## Schema friction / UNKNOWN
 
-The v0.1 Experiment entity requires `tests_hypothesis`, but this descriptive diagnostic does not test HYP-HR-001. The field is `UNKNOWN`. Exact run timestamps, code commit, environment, raw notebook artifact, and independently reproducible code identity are not available from the source and remain unknown or unverified.
+This Experiment does not directly test a scientific hypothesis, so `tests_hypothesis` is `NOT_APPLICABLE` under the pilot-refined v0.1 schema. Exact run timestamps, code commit, environment, raw notebook artifact, and independently reproducible code identity are not available from the source and remain unknown or unverified.
 
 ## Related artifacts
 
