@@ -123,3 +123,24 @@ Current evidence includes:
 - signed ledger checkpoint tests that detect the previously documented suffix-truncation condition when the key/checkpoint are protected outside researcher authority.
 
 These are narrow engineering results. They do not establish a market edge, full sandbox security, durable immutable storage, or independent reviewer/model replication.
+
+
+## Phase A exit / Phase B protocol
+
+Phase A exit decision:
+
+- [PHASE_A_EXIT_REVIEW_2026-09-28.md](PHASE_A_EXIT_REVIEW_2026-09-28.md)
+- status: `PASS_FOR_PHASE_B_SYNTHETIC_ONLY`
+
+Frozen Phase B protocol:
+
+- [PHASE_B_PROTOCOL_v0.1.md](PHASE_B_PROTOCOL_v0.1.md)
+- machine-readable freeze: [phase_b_protocol.json](phase_b_protocol.json)
+
+Phase B implementation now includes:
+
+- `phase_b_core.py` — 240-strategy space and hidden-seed STABLE / WEAKENING / BREAK synthetic worlds;
+- `phase_b_search.py` — host-owned budget, round, ledger, selection, and one-shot final gate;
+- `phase_b_baselines.py` — random and deterministic adaptive baselines.
+
+No official Phase B benchmark result is recorded by these implementation tests.
