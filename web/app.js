@@ -29,6 +29,14 @@
     ${link(conflict.canonical, "Conflict record ↗")}
   ` : "";
 
+  const integrity = data.current.integrity;
+  $("integrity").innerHTML = integrity?.active ? `
+    <p class="eyebrow label">${integrity.label}</p>
+    <h3>${integrity.title}</h3>
+    <p>${integrity.body}</p>
+    ${link(integrity.canonical, "Pre-execution audit ↗")}
+  ` : "";
+
   $("next-title").textContent = data.current.nextTest.title;
   $("next-body").textContent = data.current.nextTest.body;
   $("next-status").textContent = data.current.nextTest.status;
@@ -62,6 +70,7 @@
       <span>${n}</span>
     </div>
   `).join("");
+  $("diag-canonical").innerHTML = link(data.diagnostics.canonical, "Current H1 interpretation ↗");
 
   $("datasets").innerHTML = data.datasets.map((d) => `
     <article class="data-row">
@@ -78,11 +87,11 @@
     </article>
   `).join("");
 
-  $("timeline-list").innerHTML = data.timeline.map(([date,kind,title,ref]) => `
+  $("timeline-list").innerHTML = data.timeline.map(([date,kind,title,ref,url]) => `
     <li>
       <time>${date}</time>
       <span class="kind">${kind}</span>
-      <span>${title}<span class="ref">${ref}</span></span>
+      <span>${title}${url ? `<a class="ref" href="${url}" target="_blank" rel="noreferrer">${ref} ↗</a>` : `<span class="ref">${ref}</span>`}</span>
     </li>
   `).join("");
 })();
