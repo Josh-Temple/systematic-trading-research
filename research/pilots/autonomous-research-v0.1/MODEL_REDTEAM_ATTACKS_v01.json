@@ -1,0 +1,114 @@
+{
+  "corpus_id": "AUTONOMOUS-PHASE-A-MODEL-REDTEAM-v01",
+  "generated_at": "2026-09-27",
+  "generator": {
+    "system": "ChatGPT",
+    "model": "GPT-5.6 Sol",
+    "method": "source-informed adversarial review"
+  },
+  "independence": "NOT_INDEPENDENT",
+  "target_main_commit_before_redteam": "dd62d8b541cf95e0f5bb85faf96cfe7ab03ae449",
+  "scientific_effect": "NONE",
+  "market_data_used": false,
+  "cases": [
+    {
+      "id": "RT-001",
+      "kind": "field_value",
+      "path": "feature.source",
+      "value": [],
+      "hypothesis": "An unhashable enum value could trigger TypeError in set membership instead of clean candidate rejection."
+    },
+    {
+      "id": "RT-002",
+      "kind": "field_value",
+      "path": "feature.source",
+      "value": {},
+      "hypothesis": "Object-valued source could turn malformed researcher input into evaluator failure."
+    },
+    {
+      "id": "RT-003",
+      "kind": "field_value",
+      "path": "feature.transform",
+      "value": [],
+      "hypothesis": "Unhashable transform could bypass the intended INVALID classification via exception."
+    },
+    {
+      "id": "RT-004",
+      "kind": "field_value",
+      "path": "operator",
+      "value": {},
+      "hypothesis": "Object-valued operator could fail before deterministic rejection."
+    },
+    {
+      "id": "RT-005",
+      "kind": "field_value",
+      "path": "side",
+      "value": [],
+      "hypothesis": "Array-valued side could fail before deterministic rejection."
+    },
+    {
+      "id": "RT-006",
+      "kind": "huge_integer",
+      "field": "threshold",
+      "digits": 1000,
+      "hypothesis": "A syntactically valid integer can overflow during float conversion."
+    },
+    {
+      "id": "RT-007",
+      "kind": "huge_integer",
+      "field": "position_size",
+      "digits": 1000,
+      "hypothesis": "A huge position integer can overflow float conversion before range checks."
+    },
+    {
+      "id": "RT-008",
+      "kind": "exponent_overflow",
+      "field": "threshold",
+      "literal": "1e309",
+      "hypothesis": "JSON exponent overflow may become infinity even without using the Infinity token."
+    },
+    {
+      "id": "RT-009",
+      "kind": "lone_surrogate_id",
+      "hypothesis": "A lone UTF-16 surrogate in candidate_id can break UTF-8 hashing or persistence."
+    },
+    {
+      "id": "RT-010",
+      "kind": "oversized_note",
+      "chars": 20000,
+      "hypothesis": "A large but simple payload can consume parser resources before semantic validation."
+    },
+    {
+      "id": "RT-011",
+      "kind": "deep_unknown_array",
+      "depth": 1500,
+      "hypothesis": "A small deeply nested payload can trigger parser recursion before unknown-field rejection."
+    },
+    {
+      "id": "RT-012",
+      "kind": "raw",
+      "raw": "[]",
+      "hypothesis": "A valid JSON non-object root must not enter candidate evaluation."
+    },
+    {
+      "id": "RT-013",
+      "kind": "field_value",
+      "path": "feature",
+      "value": [],
+      "hypothesis": "Feature container type confusion must be classified as invalid input."
+    },
+    {
+      "id": "RT-014",
+      "kind": "field_value",
+      "path": "threshold",
+      "value": {},
+      "hypothesis": "Object-valued numeric field must be rejected without evaluator failure."
+    },
+    {
+      "id": "RT-015",
+      "kind": "candidate_id_nonstring",
+      "value": ["not", "an", "id"],
+      "hypothesis": "Invalid candidate_id must not make the result receipt itself unserializable."
+    }
+  ]
+}

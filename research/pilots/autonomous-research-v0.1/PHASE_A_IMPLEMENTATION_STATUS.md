@@ -1,7 +1,7 @@
 # Phase A implementation status
 
 Date: 2026-09-27  
-Status: PARTIAL — DETERMINISTIC_FUZZ_CI_VERIFIED
+Status: PARTIAL — SOURCE_INFORMED_MODEL_REDTEAM_CI_VERIFIED
 
 ## Scope
 
@@ -125,3 +125,21 @@ The expanded suite includes:
 See `FUZZ_REVIEW_2026-09-27.md`.
 
 This is stronger engineering evidence, but Phase A remains PARTIAL.
+
+## Source-informed model red-team round
+
+A source-informed GPT-5.6 Sol attack pass generated `MODEL_REDTEAM_ATTACKS_v01.json` with 15 cases. The corpus is explicitly `NOT_INDEPENDENT`.
+
+Historical baseline reproduction from `dd62d8b541cf95e0f5bb85faf96cfe7ab03ae449` produced an intentionally failing Actions run (`36324571918`) with three reproduced uncaught errors:
+
+- unhashable enum value -> `TypeError`;
+- ~1,000-digit threshold -> `OverflowError`;
+- lone-surrogate candidate ID -> `UnicodeEncodeError` during receipt hashing.
+
+A deep-nesting attack did **not** reproduce as a new defect; the existing parser boundary already rejected it.
+
+After hardening, Actions run `36324471014` passed `35 tests / OK` including the 15-case model attack corpus.
+
+See `MODEL_REDTEAM_REVIEW_2026-09-27.md`.
+
+Phase A remains PARTIAL because process isolation, stronger ledger persistence, and independent evaluator reproduction are still open.

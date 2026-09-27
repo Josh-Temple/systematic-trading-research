@@ -15,6 +15,7 @@ from typing import Any, Iterable
 PILOT_ID = "AUTONOMOUS-RESEARCH-PILOT-v0.1-PHASE-A"
 RECEIPT_VERSION = "0.1"
 DATASET_ID = "SYNTHETIC-PHASE-A-v01"
+MAX_CANDIDATE_JSON_BYTES = 16 * 1024
 
 _ALLOWED_TOP = {
     "candidate_id",
@@ -89,11 +90,28 @@ def dataset_hash(rows: Iterable[dict[str, Any]]) -> str:
 def _finite_number(value: Any, field: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise CandidateInvalid(f"{field} must be a number")
-    value = float(value)
+    try:
+        value = float(value)
+    except (OverflowError, ValueError) as exc:
+        raise CandidateInvalid(f"{field} cannot be represented as a finite float") from exc
     if not math.isfinite(value):
         raise CandidateInvalid(f"{field} must be finite")
     # Normalize signed zero so semantically identical strategies share a fingerprint.
     return 0.0 if value == 0.0 else value
+
+
+def _text(value: Any, field: str, max_chars: int, *, allow_empty: bool) -> str:
+    if not isinstance(value, str):
+        raise CandidateInvalid(f"{field} must be a string")
+    if not allow_empty and not value:
+        raise CandidateInvalid(f"{field} must not be empty")
+    if len(value) > max_chars:
+        raise CandidateInvalid(f"{field} exceeds maximum length {max_chars}")
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise CandidateInvalid(f"{field} must be valid UTF-8 text") from exc
+    return value
 
 
 def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -110,9 +128,17 @@ def _reject_json_constant(value: str) -> None:
 
 
 def load_candidate_json(text: str) -> dict[str, Any]:
-    """Parse candidate JSON without duplicate keys or NaN/Infinity extensions."""
+    """Parse bounded candidate JSON without duplicate keys or NaN/Infinity extensions."""
     if not isinstance(text, str):
         raise CandidateInvalid("candidate JSON must be text")
+    try:
+        encoded = text.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise CandidateInvalid("candidate JSON must be valid UTF-8 text") from exc
+    if len(encoded) > MAX_CANDIDATE_JSON_BYTES:
+        raise CandidateInvalid(
+            f"candidate JSON exceeds {MAX_CANDIDATE_JSON_BYTES} byte limit"
+        )
     try:
         candidate = json.loads(
             text,
@@ -121,7 +147,7 @@ def load_candidate_json(text: str) -> dict[str, Any]:
         )
     except CandidateInvalid:
         raise
-    except (json.JSONDecodeError, TypeError, ValueError) as exc:
+    except (json.JSONDecodeError, TypeError, ValueError, RecursionError) as exc:
         raise CandidateInvalid("invalid candidate JSON") from exc
     if not isinstance(candidate, dict):
         raise CandidateInvalid("candidate JSON root must be an object")
@@ -168,13 +194,11 @@ def validate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
     if missing:
         raise CandidateInvalid(f"missing required fields: {sorted(missing)}")
 
-    cid = candidate["candidate_id"]
-    if not isinstance(cid, str) or not cid or len(cid) > 80:
-        raise CandidateInvalid("candidate_id must be a non-empty string up to 80 chars")
+    cid = _text(candidate["candidate_id"], "candidate_id", 80, allow_empty=False)
 
     note = candidate.get("researcher_note")
-    if note is not None and (not isinstance(note, str) or len(note) > 1000):
-        raise CandidateInvalid("researcher_note must be a string up to 1000 chars")
+    if note is not None:
+        note = _text(note, "researcher_note", 1000, allow_empty=True)
 
     feature = candidate["feature"]
     if not isinstance(feature, dict):
@@ -190,9 +214,9 @@ def validate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
     transform = feature["transform"]
     lag = feature["lag"]
 
-    if source not in _ALLOWED_SOURCES:
+    if not isinstance(source, str) or source not in _ALLOWED_SOURCES:
         raise CandidateInvalid("feature.source is not allowed")
-    if transform not in _ALLOWED_TRANSFORMS:
+    if not isinstance(transform, str) or transform not in _ALLOWED_TRANSFORMS:
         raise CandidateInvalid("feature.transform is not allowed")
     if isinstance(lag, bool) or not isinstance(lag, int):
         raise CandidateInvalid("feature.lag must be an integer")
@@ -203,9 +227,9 @@ def validate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
 
     operator = candidate["operator"]
     side = candidate["side"]
-    if operator not in _ALLOWED_OPERATORS:
+    if not isinstance(operator, str) or operator not in _ALLOWED_OPERATORS:
         raise CandidateInvalid("operator is not allowed")
-    if side not in _ALLOWED_SIDES:
+    if not isinstance(side, str) or side not in _ALLOWED_SIDES:
         raise CandidateInvalid("side is not allowed")
 
     threshold = _finite_number(candidate["threshold"], "threshold")
@@ -266,7 +290,12 @@ def validate_dataset(rows: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
             value = row[field]
             if isinstance(value, bool) or not isinstance(value, (int, float)):
                 raise EvaluatorFailure(f"row {idx} {field} must be numeric")
-            value = float(value)
+            try:
+                value = float(value)
+            except (OverflowError, ValueError) as exc:
+                raise EvaluatorFailure(
+                    f"row {idx} {field} cannot be represented as a finite float"
+                ) from exc
             if not math.isfinite(value):
                 raise EvaluatorFailure(f"row {idx} {field} must be finite")
             clean[field] = value
@@ -350,7 +379,12 @@ def _base_receipt(
     rows: Iterable[dict[str, Any]],
     dataset_id: str,
 ) -> dict[str, Any]:
-    candidate_id = candidate.get("candidate_id") if isinstance(candidate, dict) else None
+    raw_candidate_id = candidate.get("candidate_id") if isinstance(candidate, dict) else None
+    try:
+        candidate_id = _text(raw_candidate_id, "candidate_id", 80, allow_empty=False)
+    except CandidateInvalid:
+        candidate_id = None
+
     try:
         candidate_hash = hash_json(candidate)
     except Exception:
