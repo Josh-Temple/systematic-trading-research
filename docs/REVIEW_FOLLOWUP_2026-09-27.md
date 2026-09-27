@@ -112,7 +112,7 @@
 ## 4. READMEと公開・検証状態を更新する
 
 優先度: 低（短時間で対応可能）
-状態: 未着手
+状態: 完了 — 公開成功をREADME / ROADMAP / VALIDATIONへ反映。Android視覚確認はPhase 4 exitの未完了項目として維持
 
 ### 確認した事実
 
@@ -126,6 +126,15 @@
 - READMEから現在の段階、公開URL、現在の研究要約、この作業一覧へ辿れるようにする。
 - 過去の公開失敗は履歴として保持し、その後の成功を追記する。
 - 公開成功と、Android視覚確認・Phase 4 exit review完了を区別する。未実施の確認を完了扱いにしない。
+
+### 2026-09-28 update
+
+- Actions run 36316165611 をfresh readし、deploy jobと Checkout / Configure Pages / Upload static site / Deploy がすべて success であることを再確認した。
+- READMEのCurrent stageをPhase 0表記から現在のPhase 0–3 COMPLETE / Phase 4 IN PROGRESSへ更新した。
+- ROADMAPとweb/VALIDATIONへ初回公開成功とpublic URLを反映した。
+- 過去のPages作成失敗は履歴として残した。
+- 公開成功とAndroid/mobile視覚確認を分離し、Phase 4は閉じていない。
+- このセッションの直接Web取得機能ではpublic URLを開けなかったため、新しい視覚確認を実施済みとは記録していない。
 
 ## 保持すべき良い点・既知の限界
 
