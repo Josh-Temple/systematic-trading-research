@@ -17,6 +17,8 @@ cleanup() {
 trap cleanup EXIT
 
 chmod 755 "$TMP"
+cp "$HERE/researcher_probe.py" "$TMP/researcher_probe.py"
+chmod 644 "$TMP/researcher_probe.py"
 
 python - "$HIDDEN_PATH" <<'PY'
 import json
