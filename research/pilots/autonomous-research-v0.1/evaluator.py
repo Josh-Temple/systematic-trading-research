@@ -6,6 +6,7 @@ Standard-library only. No market data is used.
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import math
 from datetime import datetime, timezone
@@ -529,3 +530,71 @@ def append_ledger(path: str | Path, event: dict[str, Any]) -> dict[str, Any]:
     with path.open("a", encoding="utf-8") as f:
         f.write(_canonical_json(record).decode("utf-8") + "\n")
     return record
+
+
+def create_ledger_checkpoint(
+    path: str | Path,
+    key: bytes,
+) -> dict[str, Any]:
+    """Bind the exact current ledger tail/count with an HMAC key held outside researcher control."""
+    if not isinstance(key, bytes) or len(key) < 16:
+        raise EvaluatorFailure("checkpoint key must be at least 16 bytes")
+    state = verify_ledger(path)
+    payload = {
+        "checkpoint_version": "0.1",
+        "algorithm": "HMAC-SHA256",
+        "events": state["events"],
+        "last_event_hash": state["last_event_hash"],
+    }
+    signature = hmac.new(key, _canonical_json(payload), hashlib.sha256).hexdigest()
+    return {**payload, "signature": signature}
+
+
+def verify_ledger_checkpoint(
+    path: str | Path,
+    checkpoint: dict[str, Any],
+    key: bytes,
+) -> dict[str, Any]:
+    """Verify signature and require the ledger to match the checkpointed exact state."""
+    if not isinstance(key, bytes) or len(key) < 16:
+        raise EvaluatorFailure("checkpoint key must be at least 16 bytes")
+    if not isinstance(checkpoint, dict):
+        raise EvaluatorFailure("checkpoint must be an object")
+
+    expected_fields = {
+        "checkpoint_version",
+        "algorithm",
+        "events",
+        "last_event_hash",
+        "signature",
+    }
+    if set(checkpoint) != expected_fields:
+        raise EvaluatorFailure("checkpoint fields are invalid")
+    if checkpoint["checkpoint_version"] != "0.1":
+        raise EvaluatorFailure("unsupported checkpoint version")
+    if checkpoint["algorithm"] != "HMAC-SHA256":
+        raise EvaluatorFailure("unsupported checkpoint algorithm")
+    if isinstance(checkpoint["events"], bool) or not isinstance(checkpoint["events"], int):
+        raise EvaluatorFailure("checkpoint events must be integer")
+    if checkpoint["events"] < 0:
+        raise EvaluatorFailure("checkpoint events must be non-negative")
+    if checkpoint["last_event_hash"] is not None and not isinstance(
+        checkpoint["last_event_hash"], str
+    ):
+        raise EvaluatorFailure("checkpoint last_event_hash must be string or null")
+    if not isinstance(checkpoint["signature"], str):
+        raise EvaluatorFailure("checkpoint signature must be string")
+
+    payload = {k: checkpoint[k] for k in expected_fields if k != "signature"}
+    expected_signature = hmac.new(
+        key, _canonical_json(payload), hashlib.sha256
+    ).hexdigest()
+    if not hmac.compare_digest(checkpoint["signature"], expected_signature):
+        raise EvaluatorFailure("checkpoint signature mismatch")
+
+    state = verify_ledger(path)
+    if state["events"] != checkpoint["events"]:
+        raise EvaluatorFailure("ledger event count differs from checkpoint")
+    if state["last_event_hash"] != checkpoint["last_event_hash"]:
+        raise EvaluatorFailure("ledger tail differs from checkpoint")
+    return state

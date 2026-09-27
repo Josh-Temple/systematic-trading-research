@@ -1,7 +1,7 @@
 # Phase A implementation status
 
-Date: 2026-09-27  
-Status: PARTIAL — SOURCE_INFORMED_MODEL_REDTEAM_CI_VERIFIED
+Date: 2026-09-28  
+Status: PARTIAL — PROCESS_BOUNDARY_AND_SECOND_IMPLEMENTATION_CI_VERIFIED
 
 ## Scope
 
@@ -55,12 +55,12 @@ This establishes the tested code-path invariants at that commit. It does not est
 
 ## Why status remains PARTIAL
 
-The following Phase A questions are still open:
+The following Phase A questions remain open or only partially resolved:
 
-- can a real researcher agent, after inspecting evaluator logic, find an untested scoring exploit?
-- can hidden evaluator data be isolated at the process/container boundary in the eventual runner?
-- can the ledger be made tamper-evident or otherwise strongly persisted?
-- does a second independent evaluator reproduce the same valid-candidate score?
+- the source-informed model red-team is not independent;
+- a separate-Unix-UID hidden-data boundary is demonstrated, but stronger sandbox/container/VM isolation is not;
+- HMAC checkpoints detect ledger tail/count mismatch only while the key/checkpoint are separately protected; durable immutable persistence is not established;
+- a second implementation reproduces the current grammar, but it was authored in the same research session and is not an independent reviewer/model replication;
 
 Therefore:
 
@@ -143,3 +143,63 @@ After hardening, Actions run `36324471014` passed `35 tests / OK` including the 
 See `MODEL_REDTEAM_REVIEW_2026-09-27.md`.
 
 Phase A remains PARTIAL because process isolation, stronger ledger persistence, and independent evaluator reproduction are still open.
+
+## Process boundary, second implementation, and checkpoint round
+
+Starting main for this round:
+
+- `ef73fc5941d54c6d65e4408b838c327d7dafe800`
+
+### Second implementation
+
+`independent_evaluator.py` implements the current Phase A grammar through a separate code path and does not import `evaluator.py`.
+
+Cross-implementation tests compare the full 672-candidate declared grammar grid and selected invalid candidates.
+
+Result on the combined suite:
+
+```text
+Ran 43 tests
+OK
+```
+
+This is implementation diversity only. It is not clean-room or independently authored/model-reviewed validation.
+
+### Process boundary
+
+GitHub Actions run `36329764162` succeeded with a runtime-generated hidden synthetic dataset.
+
+The researcher probe ran as Unix user `nobody` and observed:
+
+- hidden dataset direct read: DENIED;
+- valid candidate API: AVAILABLE;
+- dataset-selection injection: REJECTED;
+- future-outcome feature source: REJECTED;
+- `scientific_status: NOT_APPLICABLE`.
+
+Two preceding runs (`36329677330`, `36329709767`) failed before the probe could execute because the `nobody` user could not traverse the GitHub Actions workspace path to open the probe script. The fix copied only the public probe to a traversable temporary directory. The hidden dataset remained permission-restricted.
+
+These are implementation/debugging failures, not scientific negative results.
+
+### Signed ledger checkpoint
+
+The evaluator now supports an HMAC-SHA256 checkpoint binding exact event count and last event hash.
+
+Tests verify that:
+
+- unchanged ledger state passes;
+- suffix truncation fails checkpoint verification;
+- appended tail fails;
+- wrong key fails;
+- tampered checkpoint fails.
+
+This does not create immutable storage by itself. The assurance exists only if the key and trusted checkpoint remain outside researcher authority.
+
+### Latest verified branch CI
+
+- run: https://github.com/Josh-Temple/systematic-trading-research/actions/runs/36329864992
+- result: `43 tests / OK`
+
+See `BOUNDARY_REVIEW_2026-09-28.md`.
+
+Phase A remains PARTIAL. Phase B is not authorized by this status record.

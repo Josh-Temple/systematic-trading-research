@@ -27,3 +27,6 @@ jobs:
       - name: Run Phase A evaluator tests
         working-directory: research/pilots/autonomous-research-v0.1
         run: python -m unittest -v
+      - name: Run Phase A process boundary test
+        working-directory: research/pilots/autonomous-research-v0.1
+        run: bash run_process_boundary_test.sh
