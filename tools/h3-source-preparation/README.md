@@ -44,12 +44,12 @@ separate checks. No row in these manifests is a frozen selected session.
 to source-gate PASS or access outcomes from them.
 
 For the acquired 2026-07-10–2026-09-25 summer dates, the separate
-`classify_m1_structure.py` applies an explicit reconstructed minute set:
+`classify_m1_structure.py` applies the documented minute set:
 Monday–Thursday 00:00–20:59 and 22:00–23:59 UTC, Friday 00:00–20:59 UTC.
 The H1 frozen sample records expected counts of 1,380/1,260 and excludes a
-1,229-row summer Monday for 151 missing expected minutes. It does not itself
-enumerate the minute set, so this reconstruction's schedule provenance is
-still open. Run it only on the verified raw M1 inventory:
+1,229-row summer Monday for 151 missing expected minutes. The earlier sealed
+Stage A result explicitly records these hours and cites the first-party
+Dukascopy XAU/USD hours table. Run it only on the verified raw M1 inventory:
 
 ```sh
 python tools/h3-source-preparation/classify_m1_structure.py --source /path/to/source-folder --output /path/to/new/structural-manifest.json
