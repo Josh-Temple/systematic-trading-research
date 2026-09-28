@@ -177,3 +177,15 @@ Official non-AI baseline execution is prepared by:
 The workflow is manual-only. It separates host state (raw seeds/checkpoint key) from metric-bearing baseline results into distinct artifacts and does not print baseline metrics to workflow logs.
 
 See [PHASE_B_OFFICIAL_RUN_STATUS.md](PHASE_B_OFFICIAL_RUN_STATUS.md).
+
+## Phase B official AI relay preparation
+
+The official non-AI baselines are complete and remain sealed from the AI researcher. A host-side clean-researcher relay is now prepared by:
+
+- `PHASE_B_AI_HOST_BINDING_v0.1.json` — binds the AI run family to the exact official baseline host state without exposing baseline metrics;
+- `phase_b_official_ai_relay.py` — fail-closed interactive relay that exposes only the frozen researcher instruction / round packets and keeps final metrics private;
+- `test_phase_b_official_ai_relay.py` — boundary, host-binding, restart-lock, and metric-privacy tests.
+
+See [PHASE_B_AI_RELAY_PREP_STATUS_2026-09-29.md](PHASE_B_AI_RELAY_PREP_STATUS_2026-09-29.md).
+
+No official AI adaptive result has been produced by this preparation. The relay must be operated with a genuinely clean external GPT-5.6 Sol researcher session; the host-aware repository session is not eligible to act as that researcher.
