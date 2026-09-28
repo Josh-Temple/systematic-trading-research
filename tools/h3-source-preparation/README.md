@@ -43,6 +43,21 @@ separate checks. No row in these manifests is a frozen selected session.
 `DATA-HR-003` remains `FINAL_HOLDOUT / UNUSED`. Do not promote the inventories
 to source-gate PASS or access outcomes from them.
 
+For the acquired 2026-07-10–2026-09-25 summer dates, the separate
+`classify_m1_structure.py` applies an explicit reconstructed minute set:
+Monday–Thursday 00:00–20:59 and 22:00–23:59 UTC, Friday 00:00–20:59 UTC.
+The H1 frozen sample records expected counts of 1,380/1,260 and excludes a
+1,229-row summer Monday for 151 missing expected minutes. It does not itself
+enumerate the minute set, so this reconstruction's schedule provenance is
+still open. Run it only on the verified raw M1 inventory:
+
+```sh
+python tools/h3-source-preparation/classify_m1_structure.py --source /path/to/source-folder --output /path/to/new/structural-manifest.json
+```
+
+The script verifies raw hashes before classifying dates and does not alter
+the source inventory, freeze a sample or evaluate the Tick source gate.
+
 Persist raw responses and the manifests together. Recompute each raw SHA-256
 from the persisted copy, rather than accepting a manifest alone. The eventual
 60-session sample must be fixed by the frozen structural gate in chronological
