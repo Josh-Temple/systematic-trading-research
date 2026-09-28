@@ -1,0 +1,96 @@
+{
+  "record_type": "H3_PREOUTCOME_EXECUTION_PREP_STATUS",
+  "record_date": "2026-09-28",
+  "research_line_id": "RL-HR-001",
+  "hypothesis_id": "HYP-HR-003",
+  "specification_id": "SPEC-HR-003-v01",
+  "decision_id": "DEC-HR-004",
+  "dataset_id": "DATA-HR-003",
+  "status": "WAITING_FOR_MATURITY",
+  "source_gate": "NOT_EVALUATED_PENDING_MATURITY",
+  "holdout_role": "FINAL_HOLDOUT",
+  "holdout_consumption_status": "UNUSED",
+  "candidate_start": "2026-07-10",
+  "latest_candidate_date_checked": "2026-09-25",
+  "calendar_candidate_count": 56,
+  "structurally_eligible_count": 55,
+  "structurally_ineligible": [
+    {
+      "date": "2026-09-07",
+      "reason": "missing_expected_tradable_minutes=151",
+      "observed_m1_rows": 1229,
+      "expected_m1_rows": 1380
+    }
+  ],
+  "frozen_selected_count": 0,
+  "sessions_remaining_to_maturity": 5,
+  "source_component_verification": {
+    "legacy_generator_sha256": {
+      "expected": "9d655d68424624167ac9fe07fd74602fab59d7c096c3a631f36c385d6257b1dd",
+      "status": "PASS"
+    },
+    "h2_fixed_prefix": {
+      "record_count": 135,
+      "first_date": "2025-12-31",
+      "last_date": "2026-07-09",
+      "raw_identity_status": "PASS_135_EXACT_RAW_MATCH"
+    },
+    "post_h2_m1": {
+      "record_count": 56,
+      "basic_validation_pass": 56,
+      "persisted_readback_status": "PASS"
+    },
+    "combined_generator_history": {
+      "file_count": 191,
+      "decoded_m1_row_count": 257315,
+      "prefix_last_date": "2026-07-09",
+      "post_prefix_first_date": "2026-07-10",
+      "latest_date": "2026-09-25",
+      "global_timestamp_order": "PASS",
+      "gamma_history_reset": false
+    },
+    "tick": {
+      "candidate_dates": 56,
+      "hour_records_expected": 1344,
+      "hour_records_verified": 1344,
+      "original_retrieval_timestamp_count": 224,
+      "exact_refetch_receipt_count": 1120,
+      "empty_bucket_count": 82,
+      "raw_quote_validation": "PASS"
+    }
+  },
+  "classifier_identity_validation": {
+    "data_boundary": "CONSUMED_H2_M1_ONLY",
+    "selected_h2_sessions": 60,
+    "crosschecked_sessions": 60,
+    "legacy_touch_population_match": "PASS",
+    "legacy_clean_confirmation_match": "PASS",
+    "h3_post_h2_source_accessed": false,
+    "tick_outcome_accessed": false
+  },
+  "execution_preparation": {
+    "full_source_gate_tool": "tools/h3-source-preparation/build_h3_source_gate.py",
+    "h3_one_shot_runner": "tools/h3-source-preparation/run_h3_once.py",
+    "consumed_h2_classifier_validator": "tools/h3-source-preparation/validate_h3_classifier_h2.py",
+    "dedicated_ci": ".github/workflows/h3-source-preparation.yml",
+    "runner_executed_on_h3": false,
+    "freeze_packet_created": false,
+    "independence_attestation_created": false
+  },
+  "outcome_access": {
+    "h3_touch_outcome_computed": false,
+    "confirmation_outcome_comparison": false,
+    "primary_contrast_computed": false,
+    "bootstrap_run": false,
+    "h3_result_created": false
+  },
+  "frozen_inference": {
+    "bootstrap_seed": 20260913,
+    "bootstrap_replications": 10000,
+    "bootstrap_engine_to_freeze_at_maturity": "numpy.random.default_rng/PCG64"
+  },
+  "protocol_changed": false,
+  "parameter_search": false,
+  "sample_reselection": false,
+  "next_action": "After each fully completed UTC candidate weekday, acquire first-party M1 and all 24 Tick buckets, apply the frozen structural gate without outcome access, and stop immediately when the first 60 structurally eligible sessions exist. Then perform the exact-sample independence review, rebuild the full gate to create the freeze packet, and only if every gate passes run the existing preregistration once."
+}
