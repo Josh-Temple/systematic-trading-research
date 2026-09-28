@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Apply the reconstructed summer UTC M1 trading-minute gate without outcomes.
+"""Apply the documented summer UTC M1 trading-minute gate without outcomes.
 
 This gate is limited to the July–September 2026 summer schedule. Its expected
 minute sets (Mon–Thu 00:00–20:59 and 22:00–23:59; Fri 00:00–20:59 UTC)
 reproduce the H1 frozen sample's 1,380 / 1,260 expected-minute counts and
-the 151-minute exclusion of a shortened Monday. The H1 freeze records counts
-and reasons but does not itself enumerate the minute set. This implementation
-therefore records an explicit reconstruction for review. It does not choose a H3 sample
+the 151-minute exclusion of a shortened Monday. The earlier Stage A seal
+explicitly documents the same summer hours and cites Dukascopy's XAU/USD
+trading-hours table. It does not choose a H3 sample
 or inspect Tick prices, touches, confirmation or outcomes.
 """
 
@@ -69,14 +69,16 @@ def main() -> None:
     count = sum(item["eligible"] for item in records)
     result = {
         "scope": "H3_OUTCOME_BLIND_SUMMER_M1_STRUCTURAL_GATE",
-        "basis": "Reconstructed summer UTC minute set from H1 frozen sample_freeze.json expected counts and observed source intervals; exact schedule provenance pending",
+        "basis": "Prior Stage A sealed official-hours interpretation, Dukascopy XAU/USD trading-hours table, and H1 frozen expected-minute counts",
         "basis_url": "https://drive.google.com/file/d/1k69iHCQwQ2GMQahPFYHTY1bQKrdz4daR/view",
+        "prior_seal_url": "https://docs.google.com/document/d/1OAd1WPSBhf98wfG5IkEqb4nS11rV0MpfIsfTTFXrKr0/edit",
+        "provider_hours_url": "https://www.dukascopy.com/swiss/english/forex/forex-trading-accounts/link/",
         "input_manifest_sha256": hashlib.sha256(source_raw).hexdigest(),
         "candidate_start": source["candidate_start"],
         "latest_candidate_date_checked": source["latest_candidate_date_checked"],
         "calendar_candidate_count": len(records),
         "structurally_eligible_count": count,
-        "classification_status": "RECONSTRUCTED_SCHEDULE_PENDING_PROVENANCE",
+        "classification_status": "DOCUMENTED_SUMMER_MINUTE_SET_PASS",
         "frozen_selected_count": 0,
         "source_gate": "NOT_EVALUATED",
         "current_state": "WAITING_FOR_MATURITY",

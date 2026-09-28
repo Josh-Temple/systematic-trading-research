@@ -16,4 +16,4 @@ The frozen [H2 135-file generator-input CSV](https://drive.google.com/file/d/1Zu
 | H3 selected sample / full source gate | Not frozen / NOT_EVALUATED |
 | Current state | WAITING_FOR_MATURITY |
 
-For H3, preserve this exact ordered prefix and append later valid first-party BID M1 files chronologically before filtering selected sessions. Do not reset expanding Gamma at 2026-07-10. The source bytes match; no H3 generator output or temporal-leakage resolution is implied. The [summer M1 structural check](H3_M1_STRUCTURE_2026-09-28.md) is separately limited to the 56 later weekday candidates and its reconstructed minute set. `DATA-HR-003` remains `FINAL_HOLDOUT / UNUSED`.
+For H3, preserve this exact ordered prefix and append later valid first-party BID M1 files chronologically before filtering selected sessions. Do not reset expanding Gamma at 2026-07-10. The source bytes match; no H3 generator output or temporal-leakage resolution is implied. The [summer M1 structural check](H3_M1_STRUCTURE_2026-09-28.md) is separately limited to the 56 later weekday candidates. `DATA-HR-003` remains `FINAL_HOLDOUT / UNUSED`.
