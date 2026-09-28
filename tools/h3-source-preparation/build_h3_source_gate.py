@@ -21,6 +21,7 @@ import argparse
 import hashlib
 import json
 import math
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -257,6 +258,72 @@ def load_verification_receipts(
     return receipts
 
 
+def inspect_tick_raw(raw: bytes, day: str, hour: int) -> dict[str, Any]:
+    payload = json.loads(raw)
+    require(isinstance(payload, dict), "tick_payload_not_object")
+    times = payload.get("times") or []
+    asks = payload.get("asks") or []
+    bids = payload.get("bids") or []
+    require(
+        len(times) == len(asks) == len(bids),
+        "inconsistent_tick_lengths",
+    )
+
+    mult = float(payload.get("multiplier") or 1)
+    stamp = int(payload.get("timestamp") or 0)
+    ask = float(payload.get("ask") or 0)
+    bid = float(payload.get("bid") or 0)
+    parsed_day = date.fromisoformat(day)
+    start = int(
+        datetime(
+            parsed_day.year,
+            parsed_day.month,
+            parsed_day.day,
+            hour,
+            tzinfo=timezone.utc,
+        ).timestamp()
+        * 1000
+    )
+    previous = None
+    duplicate = 0
+    reversed_count = 0
+    invalid_quote = 0
+    nonpositive_spread = 0
+    outside_hour = 0
+
+    for delta, ask_delta, bid_delta in zip(times, asks, bids):
+        stamp += int(delta)
+        ask = round(ask + float(ask_delta) * mult, 10)
+        bid = round(bid + float(bid_delta) * mult, 10)
+        if previous is not None:
+            duplicate += stamp == previous
+            reversed_count += stamp < previous
+        previous = stamp
+        invalid_quote += not (
+            math.isfinite(ask) and math.isfinite(bid)
+        )
+        nonpositive_spread += ask <= bid
+        outside_hour += not (start <= stamp < start + 3_600_000)
+
+    return {
+        "quote_count": len(times),
+        "duplicate_timestamp_count": duplicate,
+        "reversed_timestamp_count": reversed_count,
+        "invalid_bid_ask_count": invalid_quote,
+        "nonpositive_spread_count": nonpositive_spread,
+        "outside_hour_count": outside_hour,
+        "validation": "PASS"
+        if not (
+            duplicate
+            or reversed_count
+            or invalid_quote
+            or nonpositive_spread
+            or outside_hour
+        )
+        else "FAIL",
+    }
+
+
 def verify_ticks(
     root: Path,
     verification_root: Path,
@@ -319,15 +386,31 @@ def verify_ticks(
                 failures.append(
                     {"date": day, "hour": hour, "reason": "raw_identity_mismatch"}
                 )
+
+            try:
+                recomputed = inspect_tick_raw(raw, day, hour)
+            except (ValueError, TypeError, OverflowError, json.JSONDecodeError) as exc:
+                failures.append(
+                    {
+                        "date": day,
+                        "hour": hour,
+                        "reason": f"tick_recompute_failed:{type(exc).__name__}",
+                    }
+                )
+                recomputed = None
+
             if (
                 record.get("json_and_quote_validation") != "PASS"
                 or record.get("status") != "SOURCE_RECORDED"
+                or recomputed is None
+                or recomputed["validation"] != "PASS"
+                or recomputed["quote_count"] != record.get("quote_count")
             ):
                 failures.append(
                     {"date": day, "hour": hour, "reason": "tick_validation_not_pass"}
                 )
 
-            if record.get("quote_count") == 0:
+            if recomputed is not None and recomputed["quote_count"] == 0:
                 empty_bucket_count += 1
 
             if record.get("retrieved_at_utc"):
