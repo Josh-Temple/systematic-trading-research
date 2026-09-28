@@ -672,8 +672,12 @@ def verify_freeze_packet(packet: dict[str, Any]) -> None:
     if (
         packet.get("bootstrap_seed") != 20260913
         or packet.get("bootstrap_replications") != 10_000
+        or packet.get("bootstrap_engine")
+        != "numpy.random.default_rng/PCG64"
     ):
         raise ValueError("freeze_packet_bootstrap_identity_invalid")
+    if packet.get("h3_runner_sha256") != sha256_file(Path(__file__)):
+        raise ValueError("freeze_packet_runner_identity_mismatch")
 
     expected = packet.get("freeze_packet_sha256")
     without_hash = dict(packet)
@@ -705,6 +709,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             structural_manifest=args.structural_manifest,
             tick_root=args.tick_root,
             tick_verification_root=args.tick_verification_root,
+            h3_runner=Path(__file__),
+            independence_attestation=args.independence_attestation,
         )
     )
     if (
@@ -999,6 +1005,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             source_gate.EXPECTED_GENERATOR_SHA256
         ),
         "runner_sha256": sha256_file(Path(__file__)),
+        "bootstrap_engine": "numpy.random.default_rng/PCG64",
         "no_parameter_search": True,
         "no_sample_reselection": True,
         "no_protocol_change": True,
@@ -1090,6 +1097,11 @@ def main() -> None:
     )
     parser.add_argument(
         "--legacy-generator",
+        type=Path,
+        required=True,
+    )
+    parser.add_argument(
+        "--independence-attestation",
         type=Path,
         required=True,
     )
