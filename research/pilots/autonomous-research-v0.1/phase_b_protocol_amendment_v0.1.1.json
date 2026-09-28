@@ -1,0 +1,17 @@
+{
+  "amendment_id": "ARP-B-v0.1.1-A1",
+  "parent_protocol_id": "ARP-B-v0.1",
+  "status": "FROZEN_BEFORE_OFFICIAL_PHASE_B_RESULTS",
+  "frozen_date": "2026-09-28",
+  "changes": {
+    "seed_reveal": "AFTER_ALL_PLANNED_METHODS_COMPLETE_OR_EXPLICIT_RUN_FAMILY_CLOSURE",
+    "planned_methods": [
+      "RANDOM_BASELINE_DISTRIBUTION",
+      "DETERMINISTIC_ADAPTIVE_BASELINE",
+      "AI_ADAPTIVE_RESEARCHER"
+    ],
+    "baseline_result_visibility_to_ai": false,
+    "host_state_visibility_to_ai": false
+  },
+  "unchanged_parent_terms": true
+}
