@@ -11,6 +11,7 @@ from pathlib import Path
 
 import build_h3_source_gate as gate
 import classify_m1_structure as structure
+import run_h3_once as runner
 
 
 class H3FullSourceGateTests(unittest.TestCase):
@@ -142,6 +143,67 @@ class H3FullSourceGateTests(unittest.TestCase):
             self.assertEqual(result["original_retrieval_timestamp_count"], 23)
             self.assertEqual(result["exact_refetch_receipt_count"], 1)
             self.assertEqual(result["empty_bucket_count"], 24)
+
+    def test_independence_attestation_is_bound_to_exact_selected_dates(self):
+        selected = [f"2026-10-{day:02d}" for day in range(1, 31)] + [
+            f"2026-11-{day:02d}" for day in range(1, 31)
+        ]
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "independence.json"
+            attestation = {
+                "scope": "H3_EXACT_OUTCOME_INDEPENDENCE_REVIEW",
+                "status": "PASS_NO_PRIOR_EXACT_H3_OUTCOME_FOUND",
+                "selected_dates_sha256": gate.selected_dates_sha256(selected),
+                "outcome_accessed": False,
+                "reviewed_at_utc": "2026-10-02T23:59:00Z",
+            }
+            path.write_text(json.dumps(attestation))
+            result = gate.verify_independence_attestation(path, selected)
+            self.assertEqual(result["status"], "PASS")
+            with self.assertRaises(ValueError):
+                gate.verify_independence_attestation(
+                    path,
+                    selected[:-1] + ["2026-12-01"],
+                )
+
+    def test_runner_rejects_missing_freeze_packet_before_any_output(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            gate_path = root / "gate.json"
+            gate_path.write_text(json.dumps({"freeze_packet": None}))
+            args = type("Args", (), {"gate_result": gate_path})()
+            with self.assertRaisesRegex(
+                ValueError,
+                "no_frozen_60_session_packet",
+            ):
+                runner.run(args)
+
+    def test_runner_freeze_packet_binds_runner_and_bootstrap_engine(self):
+        selected = [f"D{index:02d}" for index in range(60)]
+        packet = {
+            "status": "FROZEN_BEFORE_H3_OUTCOME_ACCESS",
+            "selected_session_count": 60,
+            "selected_dates": selected,
+            "bootstrap_seed": 20260913,
+            "bootstrap_replications": 10000,
+            "bootstrap_engine": "numpy.random.default_rng/PCG64",
+            "h3_runner_sha256": runner.sha256_file(Path(runner.__file__)),
+            "outcome_computed": False,
+            "bootstrap_run": False,
+        }
+        packet["freeze_packet_sha256"] = gate.canonical_sha256(packet)
+        runner.verify_freeze_packet(packet)
+
+        changed = dict(packet)
+        changed["h3_runner_sha256"] = "0" * 64
+        without = dict(changed)
+        without.pop("freeze_packet_sha256")
+        changed["freeze_packet_sha256"] = gate.canonical_sha256(without)
+        with self.assertRaisesRegex(
+            ValueError,
+            "freeze_packet_runner_identity_mismatch",
+        ):
+            runner.verify_freeze_packet(changed)
 
 
 if __name__ == "__main__":
