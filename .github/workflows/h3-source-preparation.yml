@@ -1,0 +1,29 @@
+name: H3 source preparation
+
+on:
+  push:
+    paths:
+      - 'tools/h3-source-preparation/**'
+      - '.github/workflows/h3-source-preparation.yml'
+  pull_request:
+    paths:
+      - 'tools/h3-source-preparation/**'
+      - '.github/workflows/h3-source-preparation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  outcome-blind-source-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run H3 source-preparation tests
+        working-directory: tools/h3-source-preparation
+        run: python -m unittest -v
