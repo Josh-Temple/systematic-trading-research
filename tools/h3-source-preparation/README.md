@@ -18,6 +18,19 @@ Each exact HTTP response is saved once. The manifests record URL, time, byte
 count, SHA-256, decode metadata, basic validation, and independent local
 readback. Existing bytes are not replaced on a later run.
 
+If an interrupted run left raw Tick responses before its daily manifests were
+written, their original retrieval timestamps are unavailable. Run:
+
+```sh
+python tools/h3-source-preparation/verify_existing_ticks.py --source-root /path/to/source-folder
+```
+
+This re-fetches only responses with missing original retrieval timestamps,
+compares exact bytes by size and SHA-256, and saves an immediate per-hour
+verification receipt with the **new** retrieval time. It never fills in an
+unknown original timestamp or replaces a stored response. A changed response
+is a HOLD for separate source-identity review.
+
 The M1 decoder is copied from the byte-identified legacy `run_v01.py` with
 SHA-256 `9d655d68424624167ac9fe07fd74602fab59d7c096c3a631f36c385d6257b1dd`.
 That decoder is used only for source validation. This inventory does not run
