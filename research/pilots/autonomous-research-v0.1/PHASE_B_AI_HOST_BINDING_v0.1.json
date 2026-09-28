@@ -1,0 +1,32 @@
+{
+  "binding_id": "ARP-B-AI-HOST-BIND-v0.1",
+  "status": "FROZEN_BEFORE_AI_RESULTS",
+  "run_family_id": "ARP-B-AI-v0.1-2026-09-28",
+  "protocol_id": "ARP-B-v0.1",
+  "amendment_id": "ARP-B-v0.1.1-A1",
+  "baseline_workflow_run_id": 36440428881,
+  "baseline_execution_commit": "82a1731751396383cbf7b20d52b50b07c0b4643f",
+  "host_state_artifact": {
+    "id": 10978375830,
+    "name": "phase-b-host-state-36440428881",
+    "digest": "sha256:bd4c6f3152dc9ade13cb9f8eaa742d249176bcebfc2fc7089717db9c3f1b6e3b"
+  },
+  "host_state_hash": "8636d5a696987a12a5db76fdd696fa4ff7916d4d5eb2521fd13c56e5019bdf4d",
+  "forbidden_baseline_result_artifact": {
+    "id": 10978125983,
+    "name": "phase-b-baseline-results-36440428881",
+    "digest": "sha256:79c6c38fc0aa85e9f2ff168ecbb75bbeeafd4713fe8eddda72cdfa0db6a7910d"
+  },
+  "world_ids": [
+    "STABLE-01",
+    "STABLE-02",
+    "WEAKENING-01",
+    "WEAKENING-02",
+    "BREAK-01",
+    "BREAK-02"
+  ],
+  "market_data_allowed": false,
+  "baseline_result_visibility_to_researcher": false,
+  "host_state_visibility_to_researcher": false,
+  "note": "Operational binding only. It binds the frozen AI run family to the exact synthetic worlds used by the completed official non-AI baselines without exposing baseline metrics or host secrets."
+}

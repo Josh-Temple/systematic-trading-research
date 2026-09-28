@@ -142,13 +142,7 @@ def run_ai_search(
                 round_number=round_number,
                 candidate=candidate,
             ).as_dict()
-            prior_feedback.append(
-                {
-                    "round": round_number,
-                    "submission_index": host.submission_count,
-                    **feedback,
-                }
-            )
+            prior_feedback.append(feedback)
 
         reason = "RESEARCHER_STOP" if stop else "COMPLETE"
         host.close_round(round_number, reason=reason)

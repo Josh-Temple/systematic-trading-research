@@ -58,6 +58,42 @@ class PhaseBAITests(unittest.TestCase):
         self.assertEqual(len(result["researcher_visible_round_packets"]), 4)
         self.assertEqual(len(result["researcher_feedback_history"]), 16)
 
+    def test_researcher_feedback_history_matches_frozen_schema_exactly(self):
+        world = phase_b_core.generate_world(
+            world_id="STABLE-AI-FEEDBACK-SCHEMA",
+            archetype="STABLE",
+            seed=SEED,
+        )
+        candidate = phase_b_core.enumerate_strategy_space()[20]
+        seen_packets = []
+
+        def researcher(packet):
+            seen_packets.append(packet)
+            if packet["round"] == 1:
+                return {"stop": False, "proposals": [candidate]}
+            return {"stop": True, "proposals": []}
+
+        with tempfile.TemporaryDirectory() as td:
+            result = phase_b_ai.run_ai_search(
+                world=world,
+                run_id="AI-FEEDBACK-SCHEMA",
+                ledger_path=Path(td) / "ledger.jsonl",
+                checkpoint_key=KEY,
+                researcher=researcher,
+            )
+
+        expected = {
+            "candidate_id",
+            "validity_status",
+            "duplicate",
+            "adaptive_mean_return",
+            "coarse_rejection_reason",
+        }
+        self.assertEqual(set(result["researcher_feedback_history"][0]), expected)
+        self.assertEqual(set(seen_packets[1]["prior_feedback"][0]), expected)
+        self.assertNotIn("round", seen_packets[1]["prior_feedback"][0])
+        self.assertNotIn("submission_index", seen_packets[1]["prior_feedback"][0])
+
     def test_malformed_researcher_response_does_not_gain_extra_budget(self):
         world = phase_b_core.generate_world(
             world_id="STABLE-AI-MALFORMED",
