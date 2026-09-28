@@ -58,6 +58,20 @@ python tools/h3-source-preparation/classify_m1_structure.py --source /path/to/so
 The script verifies raw hashes before classifying dates and does not alter
 the source inventory, freeze a sample or evaluate the Tick source gate.
 
+The H2 generator's fixed 135-file M1 prefix can be independently re-fetched
+and byte-checked against the frozen manifest (75 context files and 60 selected
+H2 sessions). Supply the exact frozen CSV whose SHA-256 is embedded in the
+script:
+
+```sh
+python tools/h3-source-preparation/verify_h2_prefix.py --frozen-manifest /path/to/H2_M1_Generator_Input_Manifest_135files_v1.csv --output /path/to/new/prefix-folder
+```
+
+This saves raw responses once, checks per-file size and SHA-256 against the
+frozen list, and reports any mismatch as HOLD. It never generates events or
+computes outcomes. The prefix must still be concatenated with later source
+chronologically in the eventual gated H3 run, without resetting Gamma.
+
 Persist raw responses and the manifests together. Recompute each raw SHA-256
 from the persisted copy, rather than accepting a manifest alone. The eventual
 60-session sample must be fixed by the frozen structural gate in chronological
