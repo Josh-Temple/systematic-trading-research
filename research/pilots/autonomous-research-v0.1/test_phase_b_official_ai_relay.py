@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import phase_b_core
 import phase_b_official_ai_relay as relay
@@ -98,12 +99,13 @@ class PhaseBOfficialAIRelayTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as td:
             root = Path(td) / "official-ai"
-            status = relay.run_official_ai_session(
-                host_state=host_state,
-                commitments=commitments,
-                output_root=root,
-                researcher=researcher,
-            )
+            with mock.patch.object(relay, "load_json", return_value=binding):
+                status = relay.run_official_ai_session(
+                    host_state=host_state,
+                    commitments=commitments,
+                    output_root=root,
+                    researcher=researcher,
+                )
             public_text = (
                 root / "public" / "session_status.json"
             ).read_text(encoding="utf-8")
