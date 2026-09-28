@@ -21,6 +21,21 @@ Prepared components:
 - host-state / result artifact separation;
 - manual-only GitHub Actions workflow.
 
+## Dispatch readiness update — 2026-09-28
+
+Preparation has now been merged to `main` and the merged revision passed the repository's Phase A / Phase B regression suite.
+
+- preparation merge commit: `5ce3cebd2dbc7e8f31bc08ee6e0800e21bcea2a7`
+- merged-main CI run: `36432824632`
+- CI conclusion: `SUCCESS`
+- observed test count: `75 tests`
+- process-boundary check: PASS
+- official baseline workflow run: NOT YET STARTED
+- metric-bearing baseline result: NONE
+- market data: CLOSED
+
+All launch conditions that can be satisfied before manual workflow dispatch are now met. The next valid action is to invoke `.github/workflows/phase-b-official-baselines.yml` on the exact merged `main` revision above. Do not inspect or disclose the resulting baseline metric artifact to the later AI adaptive researcher.
+
 ## Official baseline scope
 
 When explicitly started, the official batch will create six synthetic worlds:
