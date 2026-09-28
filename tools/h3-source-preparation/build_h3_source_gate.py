@@ -543,6 +543,54 @@ def verify_combined_m1_continuity(
     }
 
 
+def selected_dates_sha256(selected: list[str]) -> str:
+    return sha256_bytes(("\n".join(selected) + "\n").encode("utf-8"))
+
+
+def verify_independence_attestation(
+    path: Path | None,
+    selected: list[str],
+) -> dict[str, Any]:
+    if path is None:
+        return {
+            "status": "HOLD_MISSING",
+            "attestation_sha256": None,
+        }
+
+    require(path.is_file(), "independence_attestation_missing")
+    raw = path.read_bytes()
+    attestation = json.loads(raw)
+    require(
+        attestation.get("scope")
+        == "H3_EXACT_OUTCOME_INDEPENDENCE_REVIEW",
+        "independence_attestation_scope_mismatch",
+    )
+    require(
+        attestation.get("status")
+        == "PASS_NO_PRIOR_EXACT_H3_OUTCOME_FOUND",
+        "independence_attestation_not_pass",
+    )
+    require(
+        attestation.get("selected_dates_sha256")
+        == selected_dates_sha256(selected),
+        "independence_attestation_sample_mismatch",
+    )
+    require(
+        attestation.get("outcome_accessed") is False,
+        "independence_attestation_outcome_flag",
+    )
+    require(
+        isinstance(attestation.get("reviewed_at_utc"), str)
+        and attestation["reviewed_at_utc"],
+        "independence_attestation_review_time_missing",
+    )
+    return {
+        "status": "PASS",
+        "attestation_sha256": sha256_bytes(raw),
+        "reviewed_at_utc": attestation["reviewed_at_utc"],
+    }
+
+
 def gate_state(
     *,
     eligible_count: int,
@@ -565,6 +613,12 @@ def gate_state(
 
 def build(args: argparse.Namespace) -> dict[str, Any]:
     generator = verify_generator(args.legacy_generator)
+    require(args.h3_runner.is_file(), "h3_runner_missing")
+    runner_identity = {
+        "path": str(args.h3_runner),
+        "sha256": sha256_file(args.h3_runner),
+        "status": "PASS",
+    }
     h2 = verify_h2_prefix(args.h2_prefix_root)
     m1 = verify_m1_inventory(args.m1_root)
     structural = verify_structural_manifest(args.structural_manifest, m1)
@@ -582,6 +636,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
     component_status = {
         "legacy_generator_identity": generator["identity"],
+        "h3_runner_identity": runner_identity["status"],
         "h2_prefix_identity": h2["status"],
         "post_h2_m1_identity": m1["status"],
         "m1_structural_gate": structural["status"],
@@ -592,6 +647,20 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     eligible = structural["eligible_dates"]
     maturity = len(eligible) >= 60
     selected = eligible[:60] if maturity else []
+    independence = (
+        verify_independence_attestation(
+            args.independence_attestation,
+            selected,
+        )
+        if maturity
+        else {
+            "status": "PENDING_MATURITY",
+            "attestation_sha256": None,
+        }
+    )
+    if maturity:
+        component_status["independence_review"] = independence["status"]
+
     all_components_pass = all(
         value == "PASS" for value in component_status.values()
     )
@@ -629,10 +698,13 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             "candidate_start": CANDIDATE_START,
             "selected_session_count": 60,
             "selected_dates": selected,
-            "selected_dates_sha256": sha256_bytes(
-                ("\n".join(selected) + "\n").encode("utf-8")
-            ),
+            "selected_dates_sha256": selected_dates_sha256(selected),
             "legacy_generator_sha256": generator["sha256"],
+            "h3_runner_sha256": runner_identity["sha256"],
+            "bootstrap_engine": "numpy.random.default_rng/PCG64",
+            "independence_attestation_sha256": independence[
+                "attestation_sha256"
+            ],
             "generator_history_source_chain_sha256": continuity[
                 "source_chain_sha256"
             ],
@@ -673,6 +745,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "sessions_remaining_to_maturity": max(0, 60 - len(eligible)),
         "component_status": component_status,
         "generator_identity": generator,
+        "h3_runner_identity": runner_identity,
+        "independence_review": independence,
         "h2_prefix": {
             key: h2[key]
             for key in (
@@ -726,6 +800,12 @@ def main() -> None:
     parser.add_argument("--tick-verification-root", type=Path, required=True)
     parser.add_argument("--structural-manifest", type=Path, required=True)
     parser.add_argument("--legacy-generator", type=Path, required=True)
+    parser.add_argument("--h3-runner", type=Path, required=True)
+    parser.add_argument(
+        "--independence-attestation",
+        type=Path,
+        default=None,
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
