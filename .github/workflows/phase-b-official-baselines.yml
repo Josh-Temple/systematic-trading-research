@@ -1,0 +1,56 @@
+name: Phase B official non-AI baselines
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  official-baselines:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout frozen implementation
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify pilot tests before official batch
+        working-directory: research/pilots/autonomous-research-v0.1
+        run: python -m unittest -v
+
+      - name: Run official synthetic non-AI baselines
+        working-directory: research/pilots/autonomous-research-v0.1
+        run: |
+          rm -rf phase_b_official_out
+          PYTHONDONTWRITEBYTECODE=1 python phase_b_official_baselines.py \
+            --output-root phase_b_official_out \
+            --run-label "GH-${{ github.run_id }}"
+
+      - name: Show non-secret commitments
+        working-directory: research/pilots/autonomous-research-v0.1
+        run: cat phase_b_official_out/public/commitments.json
+
+      - name: Upload host state
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-b-host-state-${{ github.run_id }}
+          path: |
+            research/pilots/autonomous-research-v0.1/phase_b_official_out/host_state/host_state.json
+            research/pilots/autonomous-research-v0.1/phase_b_official_out/public/commitments.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload baseline results
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-b-baseline-results-${{ github.run_id }}
+          path: |
+            research/pilots/autonomous-research-v0.1/phase_b_official_out/results
+            research/pilots/autonomous-research-v0.1/phase_b_official_out/public/commitments.json
+          if-no-files-found: error
+          retention-days: 90
