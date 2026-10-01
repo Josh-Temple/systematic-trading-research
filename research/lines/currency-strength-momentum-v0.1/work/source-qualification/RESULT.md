@@ -21,7 +21,7 @@ Fresh required reads: repository README, `docs/RESEARCH_PRINCIPLES.md`, `schema/
 
 The minimal candidate is the official ECB EXR SDMX route for the seven daily series in `source-lock.json`. In the official dataset metadata, the foreign currency is `CURRENCY`, the euro is `CURRENCY_DENOM`, and the rate is therefore foreign-currency units per one EUR. ECB codelists resolve `SP00` as Spot, suffix `A` as the code label “Average”, and status `A` as a normal value. “Average” is only the codelist label; this review does not interpret it as an average of bid and ask or as an intraday averaging rule.
 
-For all seven probe responses, `SOURCE_AGENCY=4F0`; the official ECB `CL_ORGANISATION` codelist maps `4F0` to European Central Bank (ECB). The probe found the expected frequency, currency/base dimensions, unit label, multiplier, precision metadata, and 32-column CSV schema. Each series returned all 21 expected operating dates in November 2009, each with status `A`.
+If the API transport is unavailable, the official ECB Data Portal offers bulk CSV or SDMX 2.1 downloads for whole datasets; any fallback export must still match this series identity/schema lock before acceptance. For all seven probe responses, `SOURCE_AGENCY=4F0`; the official ECB `CL_ORGANISATION` codelist maps `4F0` to European Central Bank (ECB). The probe found the expected frequency, currency/base dimensions, unit label, multiplier, precision metadata, and 32-column CSV schema. Each series returned all 21 expected operating dates in November 2009, each with status `A`.
 
 This qualifies the source identity, schema, and a bounded route/calendar example. It does **not** qualify complete coverage from November 2009 through September 2026.
 
@@ -79,6 +79,7 @@ Separately, an official ECB currency-converter search result and a FRED series s
 - `probe-metadata.json`
 - `build_expected_calendar.py`
 - `probe_ecb_metadata.py`
+- `SHA256SUMS.txt` (SHA-256 hashes for the other eight deliverables; the manifest self-hash is omitted)
 
 ## Source references
 
@@ -86,6 +87,7 @@ Separately, an official ECB currency-converter search result and a FRED series s
 - ECB long-term TARGET calendar decision (14 December 2000): https://www.ecb.europa.eu/press/pr/date/2000/html/pr001214_4.en.html
 - ECB T2: https://www.ecb.europa.eu/paym/target/t2/html/index.en.html
 - ECB SDMX API: https://data.ecb.europa.eu/help/api/data
+- ECB bulk-download fallback: https://data.ecb.europa.eu/help/bulk-download
 - ECB EXR data API: https://data-api.ecb.europa.eu/service/data/EXR/
 - ECB organization codelist, including agency code 4F0: https://data-api.ecb.europa.eu/service/codelist/ECB/CL_ORGANISATION/1.0?references=none
 - ECB/ESCB statistics reuse policy: https://www.ecb.europa.eu/stats/ecb_statistics/governance_and_quality_framework/html/usage_policy.en.html

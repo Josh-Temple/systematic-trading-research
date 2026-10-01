@@ -18,7 +18,16 @@
     "organization_code": "4F0",
     "organization_label": "European Central Bank (ECB)",
     "organization_codelist": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_ORGANISATION/1.0?references=none",
-    "provenance": "Official ECB series; ECB response SOURCE_AGENCY 4F0 resolved through ECB CL_ORGANISATION."
+    "provenance": "Official ECB series; ECB response SOURCE_AGENCY 4F0 resolved through ECB CL_ORGANISATION.",
+    "fallback_transport": {
+      "provider": "Official ECB Data Portal bulk dataset download",
+      "formats": [
+        "CSV",
+        "SDMX 2.1"
+      ],
+      "documentation": "https://data.ecb.europa.eu/help/bulk-download",
+      "acceptance": "Fallback export is not assumed byte/schema-identical to API csvdata; must match series identity, dimensions, dates, and locked schema before use."
+    }
   },
   "series": [
     {
