@@ -1,27 +1,59 @@
-# Packet E test log
+Packet E independent re-audit execution log
+Audit ID: AUDIT-CSM-E-20261002-REAUDIT-01
+Status: PARTIAL_WITH_GAPS; scientific_status NOT_APPLICABLE; recommendation BLOCKED
+Current I2 state: BLOCKED / CLOSED; market_outcome_access false.
 
-Audit date: 2026-10-02 (JST)  
-Repository: `Josh-Temple/systematic-trading-research`  
-D input: PR #34 head `4f739d9cc2b21c138771afec4a728bf2b57060ba`  
-C metadata inputs: PR #35 head `9870c710c3cba7bb9226c9eee8ec36687b96fd9d`
+Input binding:
+- D PR #34 exact head: 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779; all nine D artifact Git blob SHA-1 and SHA-256 identities matched the supplied values. The complete identity table is in RESULT.md.
+- I PR #37 exact head: c2fdbc1f2a9fcccc32717b130a36433819aaa2fa.
+- I work/integration/gate.json blob bd6db786a3a1aafe7ce0864def41d5e13123447c; SHA-256 036498e34b85ecbe9fef4c9a6c452b906ee6e680ffe4a08924cb3e3b11fdcbb3.
+- I work/integration/GATE.md blob 28ef6e0c006c08fb721ca6100323f283d5cb84c3; SHA-256 4c8bd37622e412eac5ae806841f40bb61e9ce8b4de2d2ede834ff0521988d387.
+- Frozen SPEC at I head: blob 7fe114e2fcfa33b0565b51c717455abd8837d5d9; SHA-256 a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2.
+- C reads were restricted to source-lock.json, probe-metadata.json and expected-calendar.json at PR #35 head 9870c710c3cba7bb9226c9eee8ec36687b96fd9d. Their exact identities are in RESULT.md.
+- Old E AUDIT-CSM-E-20261002 and its result/matrix are historical only and remain unchanged.
 
-## Scope controls
+Access scope:
+- D source/tests/docs/fixtures, current I gate and contract/freeze metadata, A/B supporting evidence, and only the three permitted C metadata files were read.
+- Local execution used the exact fetched D artifacts in /tmp/csm_packet_e_replay, permitted C metadata in /tmp/csm_packet_e_inputs, and synthetic-only E test cases.
+- C RESULT, raw probe CSV and OBS_VALUE were not read. No market prices/history, ranking, forward return, strategy result, P/L, Sharpe, or performance plot was accessed, generated or calculated. No H3, DATA-HR-003, Autonomous Pilot, broker, live/paper input, or X instruction was touched.
+- No production trust key or live source credential was loaded.
 
-- Recreated the exact D `csm.py`, `test_csm.py`, `config.json`, and synthetic fixture from the remote D head in a temporary directory.
-- Used only C `source-lock.json`, `probe-metadata.json`, and `expected-calendar.json`; each matched the listed remote Git blob.
-- Did not fetch or read C's probe response CSV, any observation values, or raw market data.
-- All oracle vectors and test CSV rows were synthetic. No strategy outcome, ranking, market return, performance statistic, or plot was calculated.
+Runtime:
+- 2026-10-02T08:27:51+09:00
+- Python 3.12.14
+- Linux x86_64, kernel 6.18.44
 
-## Commands and results
+Independent D regression run:
+1. python3 -m py_compile csm.py test_csm.py
+   Result: PASS.
+2. CSM_PACKET_C_SOURCE_LOCK=/tmp/csm_packet_e_inputs/C_source-lock.json CSM_PACKET_C_PROBE_METADATA=/tmp/csm_packet_e_inputs/C_probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=/tmp/csm_packet_e_inputs/C_expected-calendar.json python3 -m unittest -v test_csm.py
+   Result: Ran 53 tests; 53 passed; 0 failed; 0 skipped.
+   This independently reproduces D's 53/53 claim on the exact D snapshot. It is a synthetic/code test result only.
+3. Initial pytest discovery was attempted with python3 -m pytest -q and could not start because pytest is not installed in this environment. An initial incomplete replay copy also lacked exact D runtime documentation files required by a test and failed during harness setup. After all nine exact D artifacts were staged, command 2 above completed successfully. Neither setup failure is a D behavior finding.
 
-1. `python3 -m py_compile csm.py test_csm.py` — PASS.
-2. `CSM_PACKET_C_SOURCE_LOCK=/tmp/csm_e_audit_20261001/source/source-lock.json CSM_PACKET_C_PROBE_METADATA=/tmp/csm_e_audit_20261001/source/probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=/tmp/csm_e_audit_20261001/source/expected-calendar.json python3 -m unittest -v test_csm.py` — **42 passed, 0 failed, 0 skipped**. The integration case generated its own synthetic CSV rows.
-3. `python3 toy_oracle.py --calendar /tmp/csm_e_audit_20261001/source/expected-calendar.json --source-lock /tmp/csm_e_audit_20261001/source/source-lock.json` — **5/5 passed**:
-   - Exact common-numeraire and all-56-pair identity; log-return and quote-direction algebra.
-   - EUR/USD, both extrema roles, and exact tie handling.
-   - Fixed monthly slots, missing endpoint without date compression, and future-suffix isolation.
-   - Circular 12-slot bootstrap, 10,000 replicates, seed 20261001, type-7 interpolation, missing slots, zero-valid failure, and decision boundaries.
-   - Independent weekday/holiday reconstruction of the expected TARGET date sequence, month-end mapping, and the C artifact hashes.
-4. Compared D's `select_extrema`, `max_directed_pair`, `pair_log_return`, and fixed bootstrap output against the E oracle using hand-authored synthetic inputs — PASS.
+E-authored oracle:
+Command:
+python3 /tmp/csm_packet_e_outputs/toy_oracle.py --d-root /tmp/csm_packet_e_replay --i-gate-json /tmp/csm_packet_e_inputs/I_gate.json --i-gate-md /tmp/csm_packet_e_inputs/I_GATE.md --frozen-spec /tmp/csm_packet_e_inputs/FROZEN_SPEC.md --source-lock /tmp/csm_packet_e_inputs/C_source-lock.json --probe-metadata /tmp/csm_packet_e_inputs/C_probe-metadata.json --expected-calendar /tmp/csm_packet_e_inputs/C_expected-calendar.json
 
-D test assertions are evidence about those synthetic cases only. They do not establish source coverage, historical availability, vintage stability, execution timing, or trading performance. The current I2 receipt was not changed or treated as authorization.
+Output:
+PASS: synthetic formula, 56-pair, quote, tie, numeraire, and baseline oracle
+PASS: formation score ledger target-value and availability invariance
+PASS: trusted key, role, principal, signature, revocation, and expiry checks
+PASS: no-gate, unfrozen, and current E identity rejection
+PASS: raw source-lock bytes and current I identity rejection
+PASS: fault-injected atomic persistence and promotion
+PASS: independent fixed circular bootstrap and decision boundaries
+PASS: exact permitted C metadata identity and internal validation
+GAP_REPRODUCED: final directory fsync error plus rollback deletion error leaves run-receipt.json
+AUDIT_ID: AUDIT-CSM-E-20261002-REAUDIT-01
+BOUND_D_HEAD: 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779
+BOUND_I_HEAD: c2fdbc1f2a9fcccc32717b130a36433819aaa2fa
+CURRENT_I_GATE_STATE: CLOSED False
+
+The compound persistence GAP was induced only with temporary synthetic directories; leftover test output was removed after observation. The oracle exits successfully when expected controls behave as specified, while reporting the reproduced compound-failure GAP explicitly.
+
+Staged E artifact identities:
+- AUDIT_MATRIX.csv Git blob 0f66ee9a73b13f6c74c6e342c807049f1da79040; SHA-256 d3e8c2fcda5a209774d297b08d14a6fabc6aecb63ededb2a61a5e609a68034f5.
+- toy_oracle.py Git blob a489c6feddfe3fd8787bc253cc08004a1a9ff325; SHA-256 973eb3d70859f00c9d5da42dddf2c899d408a64dcd4867396b6ce129fbe3e514.
+
+Remote branch update and exact-head readback are a separate completion check. Before the audit is treated as complete, read all four allowlisted files back from the exact updated remote E head and compare raw bytes, Git blob SHA-1 and SHA-256 with the staged artifacts. Keep PR #38 draft and do not merge.
