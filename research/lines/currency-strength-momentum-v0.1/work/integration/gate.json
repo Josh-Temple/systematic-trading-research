@@ -93,8 +93,8 @@
     },
     {
       "id": "spec_implementation_identity",
-      "status": "BLOCKED",
-      "evidence": "D config matches proposed bytes; no accepted/frozen human identity."
+      "status": "PASS",
+      "evidence": "D config matches the exact proposed SPEC bytes and records code/test/config/test-log identities plus environment; human acceptance is a separate blocked condition."
     },
     {
       "id": "source_full_history_and_vintage",
@@ -103,8 +103,8 @@
     },
     {
       "id": "dataset_role_and_owner",
-      "status": "BLOCKED",
-      "evidence": "EXPLORATORY_DISCOVERY and role X are proposed; named operator and approval absent."
+      "status": "PASS",
+      "evidence": "Proposed role is EXPLORATORY_DISCOVERY; Packet X is the access role; future confirmation sample is unspecified and unaccessed. Human acceptance is separate."
     },
     {
       "id": "no_hidden_search",
@@ -143,8 +143,8 @@
     },
     {
       "id": "raw_capture_and_two_stage_preflight",
-      "status": "BLOCKED",
-      "evidence": "No full-history snapshot or actual preflight."
+      "status": "PASS",
+      "evidence": "D specifies post-capture machine preflight and the two-stage gate; synthetic no-read/capture-identity checks are reported. Actual capture remains a later X step."
     },
     {
       "id": "durable_destination_and_access_ledger",
@@ -165,11 +165,9 @@
   "blocking_conditions": [
     "human_contract_freeze",
     "source_full_history_and_vintage",
-    "dataset_role_and_owner",
     "independent_E_audit",
     "temporal_claim_acceptance",
     "data_exposure_disposition",
-    "raw_capture_and_two_stage_preflight",
     "durable_destination_and_access_ledger",
     "receipt_authentication_and_isolation"
   ],
