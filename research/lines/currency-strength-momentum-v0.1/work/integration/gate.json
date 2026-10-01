@@ -3,7 +3,7 @@
   "research_line_id": "RL-CSM-001",
   "created_at": "2026-10-01",
   "stage": "I2_PRE_OUTCOME",
-  "state": "HUMAN_BOUNDARY",
+  "state": "BLOCKED",
   "gate_status": "CLOSED",
   "market_outcome_access": false,
   "scientific_status": "NOT_APPLICABLE",
@@ -12,15 +12,23 @@
   "main_sha": "a765b33fc0915fdfdcf21287a4418aca4f5b8b7c",
   "specification": {
     "id": "SPEC-CSM-002-v01",
-    "proposal_status": "PROPOSED_NOT_FROZEN",
-    "freeze_status": "NOT_APPROVED",
-    "git_blob_sha1": "a073e77dec14337ee20609ed6136e50a8c1e76e2",
-    "sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90"
+    "proposal_status": "FROZEN",
+    "freeze_status": "FROZEN",
+    "git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
+    "sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
+    "accepted_pre_freeze_git_blob_sha1": "a073e77dec14337ee20609ed6136e50a8c1e76e2",
+    "accepted_pre_freeze_sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90",
+    "frozen_at": "2026-10-01T21:35:55+09:00",
+    "human_decision_ref": "DEC-CSM-003-FREEZE-20261001"
   },
   "human_contract": {
-    "decision": "NOT_APPROVED",
-    "decision_id": null,
-    "accepted_spec_sha256": null,
+    "decision": "ACCEPTED",
+    "decision_id": "HDEC-CSM-002-20261001",
+    "accepted_spec_sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90",
+    "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
+    "acceptance_time": "2026-10-01T21:35:55+09:00",
+    "accepting_human": "Current human user; repository-linked GitHub login Josh-Temple",
+    "acceptance_source": "Direct reply to the exact-SHA request; receipt in HUMAN_CONTRACT.md",
     "original_instruction_ref": null
   },
   "outcome_access_owner": {
@@ -83,28 +91,32 @@
     "test_log_git_blob_sha1": "0d168ef8f5d3f73a5c98cf542e109e3d9697b094",
     "test_log_sha256": "2bb7c59b82f22b14e04151bdb2b2d6b8e69cdf72967c3e4ffea41d30a4433fd5",
     "reported_test_result": "42 passed",
-    "independent_audit": "NOT_RUN"
+    "independent_audit": "NOT_RUN",
+    "config_pinned_spec_git_blob_sha1": "a073e77dec14337ee20609ed6136e50a8c1e76e2",
+    "config_pinned_spec_sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90",
+    "frozen_spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
+    "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2"
   },
   "conditions": [
     {
       "id": "human_contract_freeze",
-      "status": "BLOCKED",
-      "evidence": "No exact-byte acceptance receipt."
+      "status": "PASS",
+      "evidence": "Exact pre-freeze SHA-256 accepted; HUMAN_CONTRACT.md and freeze Decision record reply, timestamp, account reference and pre/post identities."
     },
     {
       "id": "spec_implementation_identity",
-      "status": "PASS",
-      "evidence": "D config matches the exact proposed SPEC bytes and records code/test/config/test-log identities plus environment; human acceptance is a separate blocked condition."
+      "status": "BLOCKED",
+      "evidence": "D config still pins the accepted pre-freeze SPEC hash/blob and PROPOSED_NOT_FROZEN; refresh and verify config against the frozen SPEC, then have E audit final identities."
     },
     {
       "id": "source_full_history_and_vintage",
       "status": "BLOCKED",
-      "evidence": "C qualified the bounded route/schema/calendar. The 23 June 2026 ECB framework documents current correction timing and five-year record retention, but not applicability across the entire target sample or historical-vintage retrieval. Full-history coverage and historical availability remain UNKNOWN."
+      "evidence": "C qualified a bounded route/schema/calendar probe only. Full-history coverage and actual missing/status distribution are UNKNOWN. The accepted estimand is latest-vintage reference association; historical availability/original vintage remain UNKNOWN."
     },
     {
       "id": "dataset_role_and_owner",
       "status": "PASS",
-      "evidence": "Proposed role is EXPLORATORY_DISCOVERY; Packet X is the access role; future confirmation sample is unspecified and unaccessed. Human acceptance is separate."
+      "evidence": "The human-approved role is EXPLORATORY_DISCOVERY; Packet X is the access role; future confirmation sample is unspecified and unaccessed."
     },
     {
       "id": "no_hidden_search",
@@ -114,7 +126,7 @@
     {
       "id": "synthetic_tests",
       "status": "PASS",
-      "evidence": "D log reports 42 synthetic/component tests passed; E audit remains separate."
+      "evidence": "D log reports 42 synthetic/component tests passed; I did not rerun them. D's post-freeze config identity must be refreshed and E review remains separate."
     },
     {
       "id": "independent_E_audit",
@@ -123,13 +135,13 @@
     },
     {
       "id": "temporal_claim_acceptance",
-      "status": "BLOCKED",
-      "evidence": "Reference association only is proposed; human acceptance absent; AVAILABLE_AT UNKNOWN."
+      "status": "PASS",
+      "evidence": "Exact human-accepted SPEC restricts the claim to retrospective latest-vintage reference association and keeps availability UNKNOWN; no causal/executable claim."
     },
     {
       "id": "data_exposure_disposition",
       "status": "BLOCKED",
-      "evidence": "C disclosed individual current observations in search-result snippets; the Integrator's 2026-10-01 ECB page fetch also returned a current daily observation table. Values were not transcribed into integration artifacts or used; independent human/E disposition is pending."
+      "evidence": "C disclosed current observations in search-result snippets; the Integrator's 2026-10-01 ECB page fetch also returned a current daily observation table. Values were not transcribed into integration artifacts or used; human/E disposition is pending."
     },
     {
       "id": "bounded_probe_receipt",
@@ -139,7 +151,7 @@
     {
       "id": "baseline_and_decision_rule",
       "status": "PASS",
-      "evidence": "Fixed by proposed SPEC and synthetic D tests."
+      "evidence": "Fixed by the frozen SPEC and synthetic D tests."
     },
     {
       "id": "raw_capture_and_two_stage_preflight",
@@ -163,10 +175,9 @@
     }
   ],
   "blocking_conditions": [
-    "human_contract_freeze",
+    "spec_implementation_identity",
     "source_full_history_and_vintage",
     "independent_E_audit",
-    "temporal_claim_acceptance",
     "data_exposure_disposition",
     "durable_destination_and_access_ledger",
     "receipt_authentication_and_isolation"
@@ -187,6 +198,9 @@
       "values_transcribed_into_integration_artifacts": false,
       "values_compared_calculated_or_used": false,
       "disposition": "BLOCKED_PENDING_HUMAN_AND_E_REVIEW"
-    }
+    },
+    "human_approval_authorizes_market_outcome_access": false,
+    "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
+    "human_decision_id": "HDEC-CSM-002-20261001"
   }
 }
