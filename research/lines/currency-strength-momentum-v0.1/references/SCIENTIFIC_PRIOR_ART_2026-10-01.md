@@ -60,6 +60,17 @@ Conditional currency momentum portfolios, IRFA 99, 103964. DOI route [publisher]
 
 **LIMITATION:** exact crisis split、currency coverage、cost、conditioningの学習/評価分離は未確認。post-GFCとZIRPとpost-2010は同義ではない。conditional手法を模倣して同じsampleを救済しない。
 
+
+## Hutchinson et al. (2022) — post-2010 adverse prior
+
+Are carry, momentum and value still there in currencies? *International Review of Financial Analysis* 83 (2022), 102245. DOI: 10.1016/j.irfa.2022.102245. [Author-accepted full text at Queen's University Belfast](https://pureadmin.qub.ac.uk/ws/portalfiles/portal/359418115/1_s2.0_S1057521922002058_main.pdf).
+
+**FACT:** The study examines highly liquid G11 currencies against USD and reports that the performance of currency carry, cross-sectional momentum and time-series momentum weakens/disappears out of sample. Its post-publication analysis includes January 2010–April 2020; its cross-sectional momentum signal sorts cumulative currency excess returns and constructs currency portfolios, with a three-month formation/one-month holding core specification and a broader set of parameterizations. The authors also report no relation between past and future currency excess returns in their out-of-sample pooled tests.
+
+**INTERPRETATION:** This is a material adverse prior for a post-2010 momentum proposition. The planned 2010–2026 window overlaps known published outcome evidence, so it is a narrow historical replication/translation of the single-extreme spot-reference question, not an independent or novel confirmation. The reason to retain one fixed screen is to examine this materially different definition at low cost.
+
+**LIMITATION:** The study's portfolio construction, excess-return predictor/payoff, USD reference, data sources, and portfolio aggregation are not the exact raw spot strongest-versus-weakest pair on ECB reference rates. Its aggregate deterioration and currency-level regressions do not directly settle the planned single-extreme specification. Worker A must report the precise specifications and avoid treating the published aggregate result as the exact answer here.
+
 ## Recent-study search receipt
 
 2026-10-01、"currency momentum" + post/2010/2024/2025、"G10"、原論文名を検索。2025のbasis-momentum、currency carry/global interest-rate volatility、conditional momentum、2026のmaximizing FX momentumの候補が見つかった。いずれも今回の8通貨1/1単一pairの最新replicationとして確認できていない。title/snippetからscopeを推測して結果を採用しない。

@@ -2,7 +2,8 @@
 
 Review date: 2026-10-01  
 Repository: Josh-Temple/systematic-trading-research  
-Reviewed proposal commit: 36240da15fc83120d12d081c227f3e0dd8badaaa  
+User-supplied packet/proposal commit: 36240da15fc83120d12d081c227f3e0dd8badaaa  
+Proposal branch head at final review: research/csm-architecture-review-20261001 @ e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff  
 Main snapshot read at start: 1bba695ea252863c3b7366b8b910aa36e211c325  
 Search mode: web search for discovery and primary-source retrieval. Secondary-index pages were used only to locate publication or author records; factual findings in RESULT.md are attributed to paper/publisher/author records. No market dataset was downloaded or calculated.
 
@@ -32,6 +33,10 @@ The following exact query strings were sent to the web search service. System 1 
 4. `"Cross-momentum strategies in equity futures and currency markets" 2024 publisher`
    - Found the publisher page and an author-hosted working-paper result for Iwanaga & Sakemoto (2024).
 
+## Fresh-read update after proposal branch advanced
+
+The architecture branch moved six commits beyond the user-supplied SHA during this task. The diff from 36240da15fc83120d12d081c227f3e0dd8badaaa to e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff modified the architecture review, validation note, scientific prior-art note, source review, Packet A, and Packet C. These updated documents were fetched/read before finalizing the deliverables. Packet A now has nine numbered tasks and specifically requires a full-text read of Hutchinson et al. (2022).
+
 ## Primary-source retrieval and access log
 
 | Source | Primary/first-party route checked | Retrieval outcome | Use in result |
@@ -40,7 +45,7 @@ The following exact query strings were sent to the web search service. System 1 
 | Moskowitz, Ooi & Pedersen (2012), Time Series Momentum | Yale/university-hosted journal PDF, https://fairmodel.econ.yale.edu/ec439/mosk.pdf | Full PDF retrieved and searched; §§2.1-2.4, 3.2, 4.1, 6.3 reviewed. | TS signal/payoff, lagged volatility scaling and spot/roll decomposition. |
 | Zhang (2022), Dissecting Currency Momentum | ScienceDirect publisher abstract; author page https://sites.google.com/view/zhangshaojun/data; SSRN PDF attempt at https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3643855 | Publisher abstract and author data page retrieved; SSRN PDF returned 403. | Abstract-only summary; sample, regression and estimation-timing details marked unverified. |
 | Iwanaga & Sakemoto (2025), Conditional currency momentum portfolios | ScienceDirect publisher article/abstract; SSRN #4411616 attempted. | Publisher abstract and indexed preview retrieved; publisher/SSRN full-text routes unavailable in this review. | Abstract-level strategy and post-GFC claim; all unverified method details flagged. |
-| Hutchinson et al. (2022), Are carry, momentum and value still there in currencies? | ScienceDirect publisher page; university repository record/PDF route attempted. | Publisher abstract/repository record found; PDF retrieval returned 403. | Abstract-level reassessment only. |
+| Hutchinson et al. (2022), Are carry, momentum and value still there in currencies? | ScienceDirect publisher page; QUB repository publisher-version PDF https://pureadmin.qub.ac.uk/ws/portalfiles/portal/359418115/1_s2.0_S1057521922002058_main.pdf | Full 12-page publisher version of record retrieved and reviewed, including §2, §3.2, §4.1, Tables 2-3, §5.2 and Fig. 2. | Detailed G11 2010-2020 adverse basket evidence, signal/payoff/cost design, parameter variants, and serial-correlation test. |
 | Harris, Shen & Yilmaz (2022), Maximally predictable currency portfolios | ScienceDirect publisher page; University of Bristol publication page and PDF. | Publisher/repository abstract and indexed text found; PDF retrieval returned 403. | G10 counterpoint; details beyond abstract/indexed text not audited. |
 | Fan et al. (2025), Understanding the Performance of Currency Basis-Momentum | Full Wiley Online Library article, https://onlinelibrary.wiley.com/doi/full/10.1111/eufm.12555 | Full HTML text retrieved; data/sample and Tables 1-2/post-2011 split inspected. | Full-text adjacent basis-momentum and ordinary momentum benchmark evidence. |
 | Zeng (2025), Currency Carry, Momentum, and Global Interest Rate Volatility | Cambridge University Press article page. | Publisher abstract retrieved; full text not retrieved. | Abstract-level factor-risk context only. |
@@ -51,7 +56,7 @@ The following exact query strings were sent to the web search service. System 1 
 
 ## Search boundaries and interpretation rules
 
-- The exact 2020-2026 query set above is a targeted screen, not an exhaustive search of every finance journal, working-paper repository, or non-English database.
+- The exact 2020-2026 query set above is a targeted screen, not an exhaustive search of every finance journal, working-paper repository, or non-English database. Following the updated Packet A, the QUB-hosted Hutchinson publisher PDF linked by the current architecture review was opened directly and supplied full-text access after earlier publisher-PDF routes failed.
 - Full-text gaps are explicit. Abstracts and search snippets were not used to invent sample dates, train/evaluation separation, cost details, or point-in-time estimation methods.
 - One 2026 paper and several modern candidates remain abstract-only or indexed-snippet-only; their reported results are leads, not independently audited estimates.
 - Historical evidence is kept separate by construct: cross-sectional basket WML, own-series TSMOM, conditional WML, basis momentum, optimized multivariate portfolios, and spot-only single-pair association.

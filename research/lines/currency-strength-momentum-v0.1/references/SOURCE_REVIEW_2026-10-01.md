@@ -32,7 +32,8 @@ relations: []
 
 - [ECB reference-rate page](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html)。current webpageにrate levelsが付随して表示されたがranking/return/candidate選択には使用していない。
 - [ECB framework, 23 June2026](https://www.ecb.europa.eu/stats/pdf/exchange/Frameworkfortheeuroforeignexchangereferencerates.en.pdf)。referenceはtransaction向けでなく、再公表の可能性もある。quoted sourceを使う場合はmid、他の場合trade/order等も使うので、全historyを一律bid/ask平均と断定しない。
-- [ECB copyright](https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html)。source attributionと変換明示が必要。working-paper再出版の別扱いをrate dataへ混同しない。
+- [ECB copyright](https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html)。直接取得した情報は正確に複製してECBを出典表示し、統計処理や成長率計算など変更を加えた場合は明示する。working-paper再出版の別扱いをrate dataへ混同しない。
+- [ESCB statistics reuse policy](https://www.ecb.europa.eu/stats/ecb_statistics/governance_and_quality_framework/html/usage_policy.en.html)。公開統計はsource citationと統計/metadataを変更しない条件でfree reuseできる一方、revisions/updatesで値が変わる可能性がある。Xは原source bytesを改変せず保存し、全変換系列を別artifactとして出典・変換を明示する。Cは7 seriesのprovenance、standard-format条件、GitHub公開snapshotの適否を確認し、曖昧なら公開captureをBLOCKする。
 - [ECB API overview](https://data.ecb.europa.eu/help/api/overview) / data help / USD EXR series画面は503。source readiness PASSの根拠にできない。
 - [BIS EER metadata](https://data.bis.org/topics/EER)。[legal](https://data.bis.org/help/legal) の詳細はCの確認対象。
 - [Fed H.10](https://www.federalreserve.gov/releases/h10/)、[FRED DEXUSEU](https://fred.stlouisfed.org/series/DEXUSEU)。全7 seriesやnoon定義は未確認。
