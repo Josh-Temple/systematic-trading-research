@@ -9,6 +9,7 @@ capture_status: NOT_CAPTURED_FOR_EXPERIMENT
 relations:
   - type: uses_specification
     target: SPEC-CSM-002-v01
+updated_at: 2026-10-02
 ---
 
 # ECB EXR monthly reference association dataset — planned, not captured
@@ -40,3 +41,10 @@ During a separate Integrator documentation review, the official public ECB curre
 - Any later source, calendar, transport, unit, status, or vintage change requires a fresh source identity and downstream audit.
 
 No full-history dataset, rankings, returns, or performance metrics have been generated for this planned record. The human freeze does not authorize a capture or analysis.
+
+## Independent audit update — 2026-10-02
+
+Packet E at PR #38 head `d1335b29eeb01cdd4b71cd5ded62033b8468e539` completed with status PARTIAL_WITH_GAPS and recommendation BLOCKED. E read only C's source-lock, probe-metadata and expected-calendar artifacts; it did not read C's RESULT, raw probe CSV, OBS_VALUE values or full-history market data. E verified the declared calendar sequence and hashes internally, but did not independently retrieve an external calendar authority. Full-history coverage, actual missing/status distribution, historical publication time and revision/vintage availability remain UNKNOWN.
+
+E also confirmed that the current I2 gate remains closed and made no market-result calculation. C's search-result exposure and the Integrator's separate ECB page exposure remain pending human disposition; no individual values are repeated here. The durable output destination, access/attempt ledger, named operator, trusted isolation controls and gate receipt authentication are still unassigned or unauthenticated. DATA-CSM-002 remains PLANNED and NOT_CAPTURED_FOR_EXPERIMENT.
+

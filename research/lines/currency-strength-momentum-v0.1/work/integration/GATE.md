@@ -3,6 +3,7 @@ id: GATE-CSM-I2-20261001
 type: Diagnostic
 research_line_id: RL-CSM-001
 created_at: 2026-10-01
+updated_at: 2026-10-02
 status: BLOCKED
 relations:
   - type: uses_specification
@@ -10,55 +11,96 @@ relations:
   - type: derived_from
     target: INT-CSM-I1-20261001
   - type: derived_from
-    target: DEC-CSM-003-FREEZE-20261001
+    target: AUDIT-CSM-E-20261002
+  - type: derived_from
+    target: DEC-CSM-003-POST-E-20261002
 ---
 
-# Packet I outcome-access gate — CLOSED
+# Packet I outcome-access gate — BLOCKED / CLOSED
 
-## Gate decision
+## Decision
 
-- I1 reconciliation: PARTIAL_WITH_GAPS.
-- Current I2 state: BLOCKED.
-- Gate status: CLOSED.
-- Market outcome access: false.
-- Scientific status: NOT_APPLICABLE.
+- I1 reconciliation: **PARTIAL_WITH_GAPS**.
+- Packet E audit: **PARTIAL_WITH_GAPS**, recommendation **BLOCKED**.
+- I2 state: **BLOCKED**.
+- Gate status: **CLOSED**.
+- Market outcome access: **false**.
+- Scientific status: **NOT_APPLICABLE**.
+- Hypothesis: **UNTESTED**.
 - No run instruction is issued to X.
 
-The human accepted and froze the exact science contract. That resolves the contract-freeze and temporal-scope decisions; it does not clear technical, source, audit, exposure, or access-control conditions. No outcome access is authorized by the acceptance alone.
+The exact SPEC freeze remains verified. D's current config now matches the frozen SPEC identity; that resolves the previous stale-config statement. It does not clear the remaining D contract and access-control gaps. The audit used synthetic vectors only. No market outcomes were read or calculated.
+
+## Current input identities
+
+| Input | Ref / identity |
+|---|---|
+| main | `a765b33fc0915fdfdcf21287a4418aca4f5b8b7c` |
+| Proposal / PR #31 | `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff` (open, unmerged architecture head) |
+| Frozen SPEC | blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`; SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2` |
+| D / PR #34 | `4f739d9cc2b21c138771afec4a728bf2b57060ba` |
+| C / PR #35 | `9870c710c3cba7bb9226c9eee8ec36687b96fd9d` |
+| E / PR #38 | `d1335b29eeb01cdd4b71cd5ded62033b8468e539`; audit `AUDIT-CSM-E-20261002` |
+| I source snapshot / PR #37 | `677341e8185bf38b5cc6d4490260ddefb72eb561` (inputs read before this update) |
+
+### D implementation identity audited by E
+
+| Artifact | Git blob SHA-1 | SHA-256 |
+|---|---|---|
+| `csm.py` | `f1eddb69b988c57a3ce39e654261e94f5c5e7d52` | `5a47700f7024e19a39f4dd1688bf343a132a21946672ac4a034aa51d0d8ebdd2` |
+| `test_csm.py` | `f3e5006c2931e9d459504142f270253571d3fb82` | `70650ded3dec9e94d78f88f14691454cebf63a2b0155de5cb11df7bd2fe1a5ff` |
+| `config.json` | `a1c1e140f8c0844fc554ae6fcd975bcb5e610770` | `9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1` |
+| `TEST_LOG.txt` | `2cdf9f479c6294fd0f5d44300b3d834c3b5462a3` | `d8431198a09c8d343bdbf01ea330de75286373495331d0acb9cb92d3069816f2` |
+
+Current config says `FROZEN` and pins the frozen SPEC identities above. E reran the D suite (42/42) and its own synthetic oracle (5/5); these are not market evidence.
+
+### E audit identity
+
+PR #38 `work/csm-independent-audit-20261001`, head `d1335b29eeb01cdd4b71cd5ded62033b8468e539`, based on `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`, is open/draft/unmerged.
+
+| E artifact | Git blob SHA-1 | SHA-256 |
+|---|---|---|
+| `RESULT.md` | `f29a5d38b16b54734a47c719c09922a461ee3fe4` | `c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35` |
+| `AUDIT_MATRIX.csv` | `3ada00d887bc76f88c777d2a40ea410077e3e594` | `a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7` |
+| `toy_oracle.py` | `7cefc34a2f7a3c63af9a5b6a0b6e814f2271b62a` | `06dc7c3798e1a3a813dd4a7e3a9b06f38f4d327a999efb33d09eb36aca32bfe5` |
+| `TEST_LOG.txt` | `899c73221598ea34b55fc43f2213eaf276a5bb97` | `be7cfff4cc8279062adfcf830dcc38c53736b99e5ea63f5db0ade95a175927f1` |
 
 ## Condition matrix
 
 | Condition | Status | Evidence and remaining gap |
 |---|---|---|
-| Human contract decision and exact freeze receipt | PASS | HDEC-CSM-002-20261001 accepts pre-freeze SPEC SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`. HUMAN_CONTRACT.md and DEC-CSM-003-FREEZE-20261001 record the exact user reply, timestamp, accepting account reference, and pre/post byte identities. |
-| SPEC bytes, implementation commit/file hashes and locked config agree | BLOCKED | Frozen SPEC is SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`, blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`. D config still pins the accepted pre-freeze file (`e395…ed90`, blob `a073…76e2`) and says PROPOSED_NOT_FROZEN. D must refresh config and verify code/test/config/environment identities against the frozen SPEC; E must audit those final bytes. |
-| Source route, series, units, statuses, transport, full range, vintage and expected calendar | BLOCKED | C qualified exact series/schema and a 2009-11 bounded probe. The 23 June 2026 ECB framework describes current publication and correction policy; it does not establish full-history coverage or retrieve historical vintages. Coverage and actual missing/status distribution remain UNKNOWN. The accepted estimand is latest-vintage reference association only; AVAILABLE_AT and original vintage remain UNKNOWN. |
-| Dataset role, access owner X, unused future confirmation sample | PASS | Human accepted EXPLORATORY_DISCOVERY. Packet X is the access role; no future confirmation sample is designated or accessed. |
-| Single empirical family and no hidden search | PASS | Frozen SPEC fixes one family, one period/universe/horizon/inference and disallows performance-driven search. No outcome-driven search was performed by A–D or I. |
-| Synthetic test matrix, negative tests and environment record | PASS | D TEST_LOG reports 42 tests passed in Python 3.12.14 with standard library only. I did not rerun them. They are synthetic/component tests; D's post-freeze config identity must be refreshed, and E must audit the final inputs. |
-| Independent E audit of frozen inputs | BLOCKED | No E branch or result exists. I has not acted as E. |
-| Temporal scope is accepted as reference association only | PASS | The exact accepted SPEC limits the claim to retrospective latest-vintage reference-to-reference association, leaves historical availability UNKNOWN, and disallows causal or executable claims. |
-| No unresolved data-derived exposure | BLOCKED | C disclosed individual current observations in search-result snippets. In this I continuation, the official current ECB reference-rates page also returned an individual-observation table in tool output. Values were not transcribed into integration artifacts, compared, calculated, or used. Human and independent E disposition remain pending. |
-| Bounded source-probe receipt, schema/calendar metadata and no value output | PASS | C receipt records the fixed 2009-11 probe; code/result report that OBS_VALUE was not extracted or emitted. This does not clear either exposure incident or qualify the full period. |
-| Analytical baseline, pair identity, fixed inference, coverage and decision rules | PASS | Frozen SPEC sets the analytical-zero ordered-pair baseline, pair identity, fixed inference and decision rules; D synthetic tests report coverage of implementation cases. |
-| Raw-capture preflight and two-stage gate procedure | PASS | D defines post-capture machine preflight and a two-stage gate. Synthetic no-read and capture-identity checks are reported. Actual capture belongs to a later authorized X step and has not occurred. |
-| Durable destination, access/attempt ledger, retry and correction semantics, R owner | BLOCKED | Packet R defines a role, but a durable execution destination and trusted access ledger are not assigned. No actual attempt exists. |
-| Trusted receipt channel and file/process isolation | BLOCKED | D reports that JSON checks do not authenticate the human/auditor/Integrator and do not provide OS-level isolation. |
-| No H3, DATA-HR-003, Pilot inputs, live/paper orders or broker use | PASS | A–D reports and this I session record no such access or mutation. |
+| Exact human contract acceptance and frozen SPEC bytes | PASS | HDEC-CSM-002-20261001 accepts the exact pre-freeze SPEC; freeze metadata changed only lifecycle fields. Accepted/frozen hashes remain recorded in HUMAN_CONTRACT.md. |
+| Frozen SPEC to D config identity | PASS | Current D config blob `a1c1e140f8c0844fc554ae6fcd975bcb5e610770` pins frozen SPEC blob/hash and `FROZEN`. |
+| SPEC implementation conformance | BLOCKED | E found D's event ledger omits SPEC section 4 formation score identities. D must record stable score identities before outcomes; changed code/tests/config require new hashes and E re-audit. |
+| Source route, calendar, full history, status and vintage | BLOCKED | C qualifies bounded route/schema/calendar metadata only. E reconstructed the expected calendar internally, but did not re-verify external authority. Full-history coverage, missing/status distribution and historical availability/vintage remain UNKNOWN. |
+| Dataset role and unused confirmation sample | PASS | Frozen role is `EXPLORATORY_DISCOVERY`; no confirmation sample is designated or accessed. |
+| Named outcome-access operator | BLOCKED | X is a role; no named operator is assigned. |
+| Single empirical family and no hidden search | PASS | Frozen SPEC fixes one candidate and the inference; E found no search path in reviewed code. |
+| Synthetic math, time handling and inference checks | PASS | D's current tests passed 42/42; E's synthetic oracle passed 5/5. No market inputs were used. |
+| Independent E audit satisfies gate | BLOCKED | E is complete as an audit task but its status is `PARTIAL_WITH_GAPS`, recommendation `BLOCKED`; it did not issue PASS. |
+| Accepted temporal claim | PASS | Claim remains retrospective latest-vintage reference association only; no causal or executable inference. |
+| C and Integrator exposure dispositions | BLOCKED | Two disclosed observation exposures remain pending human disposition. No observation values are reproduced in these records; E did not inspect C's RESULT, raw CSV, or OBS_VALUE fields. |
+| B evidence path/base conformance | GAP | B's five artifacts remain at repository root `work/github-prior-art/**`, outside line-relative paths; its head is five ahead/six behind with older merge base `36240da15fc83120d12d081c227f3e0dd8badaaa`. Remediation belongs to B's owner. |
+| Bounded probe receipt | PASS | C receipt identifies the fixed 2009-11 metadata probe. This does not establish target-period coverage. |
+| Baseline, pair identity and fixed decision rules | PASS | Frozen SPEC and E synthetic oracle agree on the analytical-zero baseline and fixed rules. |
+| Raw capture preflight and write-failure safety | BLOCKED | Hash-to-parser byte-buffer checks exist, but source-lock raw bytes are not authenticated against a trusted gate; writes are non-atomic and injected storage-failure behavior is untested. |
+| Durable destination and access/attempt ledger | BLOCKED | No durable capture destination or trusted access ledger is assigned. |
+| Trusted receipt and OS isolation | BLOCKED | Receipt fields/IDs are not cryptographically authenticated or pinned to current I2/E identities; process audit hooks are not OS-level isolation or file ACLs. |
+| Original upstream human brief traceability | GAP | E could not find the original pre-proposal brief in repository receipts. The exact SPEC acceptance is verified; the earlier mapping is not reconstructed. |
+| Restricted boundaries | PASS | No market-outcome work or H3/Pilot/live/broker input access occurred. |
 
-## Integrator source-document follow-up (2026-10-01)
+## Conditions before any I2 reconsideration
 
-The official ECB framework dated 23 June 2026 says reference rates are for information and describes current setting/publication timing. It allows amendment or republication in specified circumstances until the following business day's rate is published, and says amendment/republication records are retained for at least five years. This current document does not establish that policy's applicability throughout the target sample or recover original historical vintages.
+1. D addresses score identity in the signal event ledger, binds exact source-lock bytes, authenticates the current gate receipt, and adds injected save-failure tests; D reruns the full synthetic suite and records new code/test/config hashes.
+2. E audits the changed final D inputs. Any change to code, tests, config, environment, source lock, calendar, or SPEC invalidates dependent audit identities.
+3. A trusted isolated execution environment, explicit filesystem allowlist, durable output/access-attempt ledger and named X operator are assigned.
+4. An approved metadata-only verification establishes the calendar authority and full-history/source status/vintage readiness for the accepted reference-association scope.
+5. Human disposition is recorded for both exposure disclosures without reproducing the values.
+6. Re-read B's path/base issue from its owner if it is to be treated as canonical line-local evidence.
 
-ECB API help documents start/end-period filters and an updated-after filter. These establish date-range queries and update filtering, not an historical-vintage retrieval guarantee. No series API request or historical data retrieval was made in this follow-up.
+No external execution or data capture is approved by this record. Human acceptance and E's synthetic PASS items do not open the gate.
 
-During the documentation review, the official public current reference-rates page returned a daily observation table in the tool output. This exceeded the metadata-only review scope. No individual value was copied into a deliverable, quoted, compared, calculated, or used. Record this as an additional exposure incident; independent human/E disposition is required.
+## Scope and no-result receipt
 
-Sources:
-- [ECB framework, 23 June 2026](https://www.ecb.europa.eu/stats/pdf/exchange/Frameworkfortheeuroforeignexchangereferencerates.en.pdf)
-- [ECB Data Portal API help](https://data.ecb.europa.eu/help/api/data)
-- [ECB euro foreign exchange reference rates page](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.eu.html)
+This gate is pre-outcome only. No market price/history, ranking, forward return, strategy metric, P/L, Sharpe, performance plot, or run/result record exists in this integration. E did not fetch C's raw probe CSV, read OBS_VALUE values, or access full-history market data. Changes to any pinned input invalidate the corresponding gate decision.
 
-## Scope
-
-This is a pre-outcome readiness record only. It does not approve a data pull, a metric calculation, a source substitution, or a run. C's bounded metadata probe remains source qualification only; C's search-result exposure and the additional Integrator page exposure remain unresolved pending human/E review. Any change to SPEC, source lock, code, config, environment, or audit input invalidates downstream identities until refreshed.

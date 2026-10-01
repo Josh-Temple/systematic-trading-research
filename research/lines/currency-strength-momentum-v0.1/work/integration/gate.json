@@ -56,14 +56,19 @@
     },
     "D": {
       "branch": "work/csm-implementation-20261001",
-      "head": "2271ce68039e295aa3cd50b5b2431e1a03d5dfdc",
+      "head": "4f739d9cc2b21c138771afec4a728bf2b57060ba",
       "pr": 34
     },
     "E": {
-      "branch": null,
-      "head": null,
-      "result": null
-    }
+      "branch": "work/csm-independent-audit-20261001",
+      "head": "d1335b29eeb01cdd4b71cd5ded62033b8468e539",
+      "pr": 38,
+      "base": "e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff",
+      "audit_id": "AUDIT-CSM-E-20261002",
+      "status": "PARTIAL_WITH_GAPS",
+      "recommendation": "BLOCKED"
+    },
+    "I_reviewed_pre_refresh_head": "677341e8185bf38b5cc6d4490260ddefb72eb561"
   },
   "source_identities": {
     "source_lock_id": "CSM-SOURCE-LOCK-ECB-001",
@@ -78,109 +83,143 @@
     "historical_publication_time": "UNKNOWN",
     "revision_vintage_availability": "UNKNOWN",
     "expected_open_dates": 4331,
-    "expected_month_ends": 203
+    "expected_month_ends": 203,
+    "calendar_rule_external_authority": "NOT_INDEPENDENTLY_VERIFIED",
+    "calendar_internal_reconstruction_by_E": "PASS",
+    "actual_missing_status_distribution": "UNKNOWN"
   },
   "implementation_identities": {
-    "D_head": "2271ce68039e295aa3cd50b5b2431e1a03d5dfdc",
-    "code_git_blob_sha1": "11e4fa7729e5ec1c271a9b4b54c76de4cf049466",
-    "code_sha256": "dfd42a29e4cd042ad44ce9461d29246c0609bee401463cd21b82e0f0d6a37267",
-    "tests_git_blob_sha1": "965e8f49ee9d5678d1022dfb45a313d79b4655b8",
-    "tests_sha256": "69693bba8efbfa37e64c0fe08be332d583a15b9f8f4d3c99652e70acba634171",
-    "config_git_blob_sha1": "a1e49571ae30d48a502c4964c14f36cf556d15bb",
-    "config_sha256": "5624c22c2ccad339cacc72b34d877eea5b0160ac7715f10d269ea984aa443ad1",
-    "test_log_git_blob_sha1": "0d168ef8f5d3f73a5c98cf542e109e3d9697b094",
-    "test_log_sha256": "2bb7c59b82f22b14e04151bdb2b2d6b8e69cdf72967c3e4ffea41d30a4433fd5",
-    "reported_test_result": "42 passed",
-    "independent_audit": "NOT_RUN",
-    "config_pinned_spec_git_blob_sha1": "a073e77dec14337ee20609ed6136e50a8c1e76e2",
-    "config_pinned_spec_sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90",
+    "D_head": "4f739d9cc2b21c138771afec4a728bf2b57060ba",
+    "code_git_blob_sha1": "f1eddb69b988c57a3ce39e654261e94f5c5e7d52",
+    "code_sha256": "5a47700f7024e19a39f4dd1688bf343a132a21946672ac4a034aa51d0d8ebdd2",
+    "tests_git_blob_sha1": "f3e5006c2931e9d459504142f270253571d3fb82",
+    "tests_sha256": "70650ded3dec9e94d78f88f14691454cebf63a2b0155de5cb11df7bd2fe1a5ff",
+    "config_git_blob_sha1": "a1c1e140f8c0844fc554ae6fcd975bcb5e610770",
+    "config_sha256": "9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1",
+    "test_log_git_blob_sha1": "2cdf9f479c6294fd0f5d44300b3d834c3b5462a3",
+    "test_log_sha256": "d8431198a09c8d343bdbf01ea330de75286373495331d0acb9cb92d3069816f2",
+    "reported_test_result": "42 passed, 0 failed, 0 skipped; independently rerun by E",
+    "independent_audit": "PARTIAL_WITH_GAPS; recommendation BLOCKED",
+    "config_pinned_spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
+    "config_pinned_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
     "frozen_spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
-    "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2"
+    "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
+    "environment_git_blob_sha1": "7313a07849b8104bd154bf991c27a85049b5fa04",
+    "result_git_blob_sha1": "19db0847eb0e2cbd629e4072f7e658eb7919d7d4",
+    "spec_implementation_conformance": "BLOCKED: SPEC-required formation score identities absent from event ledger"
   },
   "conditions": [
     {
       "id": "human_contract_freeze",
       "status": "PASS",
-      "evidence": "Exact pre-freeze SHA-256 accepted; HUMAN_CONTRACT.md and freeze Decision record reply, timestamp, account reference and pre/post identities."
+      "evidence": "HDEC-CSM-002-20261001 accepts the exact pre-freeze SPEC; frozen metadata changes do not alter the scientific body."
     },
     {
-      "id": "spec_implementation_identity",
-      "status": "BLOCKED",
-      "evidence": "D config still pins the accepted pre-freeze SPEC hash/blob and PROPOSED_NOT_FROZEN; refresh and verify config against the frozen SPEC, then have E audit final identities."
-    },
-    {
-      "id": "source_full_history_and_vintage",
-      "status": "BLOCKED",
-      "evidence": "C qualified a bounded route/schema/calendar probe only. Full-history coverage and actual missing/status distribution are UNKNOWN. The accepted estimand is latest-vintage reference association; historical availability/original vintage remain UNKNOWN."
-    },
-    {
-      "id": "dataset_role_and_owner",
+      "id": "frozen_config_identity",
       "status": "PASS",
-      "evidence": "The human-approved role is EXPLORATORY_DISCOVERY; Packet X is the access role; future confirmation sample is unspecified and unaccessed."
+      "evidence": "Current D config at PR #34 head 4f739d9 pins frozen SPEC blob 7fe114e and SHA-256 a1ba23f0; config says FROZEN."
+    },
+    {
+      "id": "spec_implementation_conformance",
+      "status": "BLOCKED",
+      "evidence": "E found D's event ledger omits SPEC section 4 formation score identities; D change and fresh E audit required."
+    },
+    {
+      "id": "source_full_history_vintage_and_calendar_authority",
+      "status": "BLOCKED",
+      "evidence": "E reconstructed the calendar internally but did not independently verify external authority; full-history coverage, missing/status distribution, publication time and vintage remain UNKNOWN."
+    },
+    {
+      "id": "dataset_role_and_confirmation_sample",
+      "status": "PASS",
+      "evidence": "Role is EXPLORATORY_DISCOVERY; no confirmation sample is designated or accessed."
+    },
+    {
+      "id": "named_outcome_access_operator",
+      "status": "BLOCKED",
+      "evidence": "X is identified only as a role; named operator is null."
     },
     {
       "id": "no_hidden_search",
       "status": "PASS",
-      "evidence": "One fixed empirical candidate; no outcome-driven search recorded."
+      "evidence": "One fixed family; E found no hidden search in reviewed D implementation."
     },
     {
-      "id": "synthetic_tests",
+      "id": "synthetic_tests_and_oracle",
       "status": "PASS",
-      "evidence": "D log reports 42 synthetic/component tests passed; I did not rerun them. D's post-freeze config identity must be refreshed and E review remains separate."
+      "evidence": "E reran D's current tests: 42/42; independent E synthetic oracle: 5/5. These are synthetic-only."
     },
     {
       "id": "independent_E_audit",
       "status": "BLOCKED",
-      "evidence": "No E result/head."
+      "evidence": "E completed with PARTIAL_WITH_GAPS and recommendation BLOCKED; this does not satisfy the gate's required E PASS."
     },
     {
       "id": "temporal_claim_acceptance",
       "status": "PASS",
-      "evidence": "Exact human-accepted SPEC restricts the claim to retrospective latest-vintage reference association and keeps availability UNKNOWN; no causal/executable claim."
+      "evidence": "Frozen scope is retrospective latest-vintage reference association only; no causal or executable claim."
     },
     {
       "id": "data_exposure_disposition",
       "status": "BLOCKED",
-      "evidence": "C disclosed current observations in search-result snippets; the Integrator's 2026-10-01 ECB page fetch also returned a current daily observation table. Values were not transcribed into integration artifacts or used; human/E disposition is pending."
+      "evidence": "C's search-result and Integrator's ECB page exposure disclosures remain pending human disposition; values are not repeated."
     },
     {
       "id": "bounded_probe_receipt",
       "status": "PASS",
-      "evidence": "Fixed 2009-11 probe metadata receipt; no value output reported."
+      "evidence": "C's fixed 2009-11 metadata probe receipt is recorded; no raw C values were read by E."
     },
     {
       "id": "baseline_and_decision_rule",
       "status": "PASS",
-      "evidence": "Fixed by the frozen SPEC and synthetic D tests."
+      "evidence": "Frozen SPEC and E synthetic oracle agree on baseline, pair identity and fixed decision rules."
     },
     {
-      "id": "raw_capture_and_two_stage_preflight",
-      "status": "PASS",
-      "evidence": "D specifies post-capture machine preflight and the two-stage gate; synthetic no-read/capture-identity checks are reported. Actual capture remains a later X step."
+      "id": "source_lock_exact_raw_bytes",
+      "status": "BLOCKED",
+      "evidence": "Runtime identity is canonical-object based; raw source-lock bytes are not pinned to a trusted current gate receipt."
+    },
+    {
+      "id": "capture_save_failure_semantics",
+      "status": "BLOCKED",
+      "evidence": "Writes are exclusive but non-atomic; no injected storage-failure test establishes safe promotion after partial/write failure."
     },
     {
       "id": "durable_destination_and_access_ledger",
       "status": "BLOCKED",
-      "evidence": "No durable destination or trusted attempt/access ledger assigned."
+      "evidence": "Durable capture destination and trusted attempt/access ledger are unassigned."
     },
     {
-      "id": "receipt_authentication_and_isolation",
+      "id": "receipt_authentication_and_OS_isolation",
       "status": "BLOCKED",
-      "evidence": "D reports no cryptographic identity authentication or OS file/process isolation."
+      "evidence": "Placeholder audit/Integrator IDs can pass structural checks; no trusted signature/current gate binding or OS file/process isolation."
+    },
+    {
+      "id": "B_path_base_conformance",
+      "status": "GAP",
+      "evidence": "B artifacts are outside line-relative paths and branch is 5 ahead/6 behind from an older merge base; B owner must decide path/base remediation."
+    },
+    {
+      "id": "original_brief_lineage",
+      "status": "GAP",
+      "evidence": "Original pre-proposal brief is absent from repository receipts; exact accepted SPEC bytes are independently verified."
     },
     {
       "id": "restricted_boundaries",
       "status": "PASS",
-      "evidence": "No H3, DATA-HR-003, Autonomous Pilot, live/paper orders, or broker access."
+      "evidence": "No market-outcome work or H3/Pilot/live/broker input access occurred."
     }
   ],
   "blocking_conditions": [
-    "spec_implementation_identity",
-    "source_full_history_and_vintage",
+    "spec_implementation_conformance",
+    "source_full_history_vintage_and_calendar_authority",
+    "named_outcome_access_operator",
     "independent_E_audit",
     "data_exposure_disposition",
+    "source_lock_exact_raw_bytes",
+    "capture_save_failure_semantics",
     "durable_destination_and_access_ledger",
-    "receipt_authentication_and_isolation"
+    "receipt_authentication_and_OS_isolation"
   ],
   "no_result_receipt": {
     "actual_market_history_read_or_used_by_integrator": false,
@@ -201,6 +240,56 @@
     },
     "human_approval_authorizes_market_outcome_access": false,
     "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
-    "human_decision_id": "HDEC-CSM-002-20261001"
+    "human_decision_id": "HDEC-CSM-002-20261001",
+    "e_market_outcome_calculation": false,
+    "e_market_history_access": false,
+    "e_read_C_result_or_raw_probe_csv": false,
+    "e_read_OBS_VALUE_values": false,
+    "data_exposure_disclosures": [
+      {
+        "source": "C source-discovery search results",
+        "values_reproduced": false,
+        "disposition": "PENDING_HUMAN_DISPOSITION"
+      },
+      {
+        "source": "Integrator ECB current reference-rates page review",
+        "values_reproduced": false,
+        "disposition": "PENDING_HUMAN_DISPOSITION"
+      }
+    ],
+    "e_audit_id": "AUDIT-CSM-E-20261002",
+    "e_audit_recommendation": "BLOCKED"
+  },
+  "updated_at": "2026-10-02",
+  "recommendation": "BLOCKED",
+  "e_audit": {
+    "audit_id": "AUDIT-CSM-E-20261002",
+    "status": "PARTIAL_WITH_GAPS",
+    "recommendation": "BLOCKED",
+    "branch": "work/csm-independent-audit-20261001",
+    "head": "d1335b29eeb01cdd4b71cd5ded62033b8468e539",
+    "pr": 38,
+    "result_blob_sha1": "f29a5d38b16b54734a47c719c09922a461ee3fe4",
+    "result_sha256": "c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35",
+    "audit_matrix_blob_sha1": "3ada00d887bc76f88c777d2a40ea410077e3e594",
+    "audit_matrix_sha256": "a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7",
+    "toy_oracle_blob_sha1": "7cefc34a2f7a3c63af9a5b6a0b6e814f2271b62a",
+    "toy_oracle_sha256": "06dc7c3798e1a3a813dd4a7e3a9b06f38f4d327a999efb33d09eb36aca32bfe5",
+    "test_log_blob_sha1": "899c73221598ea34b55fc43f2213eaf276a5bb97",
+    "test_log_sha256": "be7cfff4cc8279062adfcf830dcc38c53736b99e5ea63f5db0ade95a175927f1",
+    "task_statuses": [
+      "GAP",
+      "PASS",
+      "GAP",
+      "PASS",
+      "PASS",
+      "GAP",
+      "GAP",
+      "GAP",
+      "PASS"
+    ],
+    "d_tests": "42 passed, 0 failed, 0 skipped",
+    "e_oracle": "5/5 synthetic checks passed",
+    "market_outcomes_accessed": false
   }
 }

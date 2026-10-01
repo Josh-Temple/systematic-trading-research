@@ -14,6 +14,7 @@ relations:
     target: SPEC-CSM-002-v01
   - type: uses_dataset
     target: DATA-CSM-002
+updated_at: 2026-10-02
 ---
 
 # Fixed monthly reference-rate Discovery screen — frozen, not run
@@ -43,6 +44,6 @@ The science contract is frozen under HDEC-CSM-002-20261001. No experiment run, R
 - Integrator read of market history, currency-strength ranking, forward returns, strategy metrics, or performance plots: none.
 - Packet C's 2009-11 bounded source-qualification probe and its separately disclosed search-result exposure are recorded in DATA-CSM-002.md. They are not an EXP-CSM-002 outcome.
 - During the Integrator's separate ECB documentation follow-up, the current reference-rates page returned individual current observations in the tool output. This exceeded metadata-only scope; the exposure is recorded in GATE.md and remains pending human/E disposition. Values were not transcribed into integration artifacts, compared, calculated, or used.
-- D's reported 42 synthetic/component tests are implementation checks, not an experiment result. D's current config is pinned to the accepted pre-freeze SPEC hash and must be refreshed/verified against the frozen SPEC identity.
+- D's 42 synthetic/component tests are implementation checks, not an experiment result. At current PR #34 head `4f739d9cc2b21c138771afec4a728bf2b57060ba`, config blob `a1c1e140f8c0844fc554ae6fcd975bcb5e610770` matches the frozen SPEC identity; E independently reran the suite (42/42). E still found the event ledger lacks SPEC-required formation score identities, and gate-authentication, source-lock raw-byte, save-failure, and isolation gaps remain.
 
-Execution remains closed until source/data readiness, D's post-freeze identity refresh, an independent E audit, every I2 condition PASS, and a separate X instruction. The human acceptance alone does not open the gate.
+Execution remains closed. E audit `AUDIT-CSM-E-20261002` is PARTIAL_WITH_GAPS with recommendation BLOCKED. Before any I2 reconsideration: D must fix the event-ledger score identity and gate/capture safeguards, then publish new code/test/config identities; E must audit changed inputs; source readiness, exposure disposition, isolation, durable ledger/destination and named operator must be resolved; and every I2 condition must PASS. The human acceptance alone does not open the gate.
