@@ -8,18 +8,26 @@ remain required.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import csv
 import hashlib
+import hmac
 import json
+import os
 import platform
 import random
+import re
+import shutil
+import stat
 import sys
-from dataclasses import asdict, dataclass
-from datetime import date, datetime
+import tempfile
+from dataclasses import asdict, dataclass, field
+from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation, localcontext
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Callable, Iterable, Mapping, Sequence
 
 
 SPEC_ID = "SPEC-CSM-002-v01"
@@ -48,6 +56,37 @@ BOOTSTRAP_SEED = 20_261_001
 MIN_ELIGIBLE = 120
 MIN_COVERAGE = Decimal("0.80")
 CONFIG_PATH = Path(__file__).with_name("config.json")
+TRUST_STORE_PATH = Path("/etc/csm-002/trusted-keys.json")
+MAX_RECEIPT_TTL_SECONDS = 86_400
+SCORE_IDENTITY_SPEC = "CSM-002-EXACT-RATIO-SCORE-IDENTITY-V1"
+RSA_SHA256_DIGEST_INFO_PREFIX = bytes.fromhex(
+    "3031300d060960864801650304020105000420"
+)
+
+# These are the current repository identities reviewed for this D correction.
+# The I gate is CLOSED and the current E audit is BLOCKED; the values intentionally
+# cause default validation to fail closed until I and E publish new identities.
+CURRENT_I2_GATE_EXPECTED = {
+    "pr_number": 37,
+    "head_sha": "677341e8185bf38b5cc6d4490260ddefb72eb561",
+    "gate_blob_sha1": "ba1670b0c13ec58e806838949a80574a5cbab6c4",
+    "gate_sha256": "54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6",
+    "gate_markdown_blob_sha1": "03707f1aa346945a368e98881e8aa6f99ae91fb9",
+    "gate_markdown_sha256": "d901a7726355916088ade7ed32e129a241a360cbbcd220a01319413650d9465d",
+    "gate_status": "CLOSED",
+    "market_outcome_access": False,
+}
+CURRENT_E_AUDIT_EXPECTED = {
+    "audit_id": "AUDIT-CSM-E-20261002",
+    "pr_number": 38,
+    "head_sha": "d1335b29eeb01cdd4b71cd5ded62033b8468e539",
+    "result_blob_sha1": "f29a5d38b16b54734a47c719c09922a461ee3fe4",
+    "result_sha256": "c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35",
+    "matrix_blob_sha1": "3ada00d887bc76f88c777d2a40ea410077e3e594",
+    "matrix_sha256": "a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7",
+    "status": "PARTIAL_WITH_GAPS",
+    "recommendation": "BLOCKED",
+}
 
 
 class DataError(ValueError):
@@ -86,6 +125,7 @@ class SignalEvent:
     loser: str | None
     status: str
     skip_reason: str | None
+    score_identities: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -159,6 +199,11 @@ def parse_iso_date(value: Any, *, field: str = "date") -> date:
 
 def is_packet_c_source_lock(source_lock: Mapping[str, Any]) -> bool:
     return source_lock.get("source_lock_id") == PACKET_C_LOCK_ID
+
+
+def is_synthetic_source_lock(source_lock: Mapping[str, Any]) -> bool:
+    return (source_lock.get("fixture_status") == "SYNTHETIC"
+            or source_lock.get("source_transport") == "SYNTHETIC_FIXTURE_ONLY")
 
 
 def source_lock_id(source_lock: Mapping[str, Any]) -> Any:
@@ -318,103 +363,249 @@ def validate_series_identity(source_lock: Mapping[str, Any]) -> None:
         raise GateError("source lock status mappings overlap")
 
 
+def _is_placeholder(value: Any) -> bool:
+    if not isinstance(value, str) or not value.strip():
+        return True
+    normalized = re.sub(r"[^a-z0-9]+", " ", value.casefold()).strip()
+    forbidden = {"unknown", "none", "null", "placeholder", "tbd", "todo", "test", "example"}
+    return (normalized in forbidden or "synthetic" in normalized
+            or "placeholder" in normalized or normalized.startswith("test "))
+
+
+def _require_identity(value: Any, field: str) -> str:
+    if _is_placeholder(value) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}", value):
+        raise GateError(f"gate has missing or placeholder {field}")
+    return value
+
+
+def _parse_aware_time(value: Any, field: str) -> datetime:
+    if not isinstance(value, str):
+        raise GateError(f"signed receipt missing {field}")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise GateError(f"signed receipt has invalid {field}") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise GateError(f"signed receipt {field} must include a timezone")
+    return parsed.astimezone(timezone.utc)
+
+
+def _rsa_sha256_verify(message: bytes, signature_b64: str, public_key: Mapping[str, Any]) -> None:
+    try:
+        modulus = int(str(public_key["n_hex"]), 16)
+        exponent = int(public_key["e"])
+        signature = base64.b64decode(signature_b64, validate=True)
+    except (KeyError, TypeError, ValueError, binascii.Error) as exc:
+        raise GateError("receipt signature or trusted public key is malformed") from exc
+    length = (modulus.bit_length() + 7) // 8
+    if modulus.bit_length() < 2048 or exponent < 3 or exponent % 2 == 0:
+        raise GateError("trusted RSA key is below the required security floor")
+    if len(signature) != length or int.from_bytes(signature, "big") >= modulus:
+        raise GateError("receipt signature has invalid length or range")
+    encoded = pow(int.from_bytes(signature, "big"), exponent, modulus).to_bytes(length, "big")
+    digest_info = RSA_SHA256_DIGEST_INFO_PREFIX + hashlib.sha256(message).digest()
+    padding_length = length - len(digest_info) - 3
+    if padding_length < 8:
+        raise GateError("trusted RSA key is too short for SHA-256")
+    expected = b"\x00\x01" + b"\xff" * padding_length + b"\x00" + digest_info
+    if not hmac.compare_digest(encoded, expected):
+        raise GateError("receipt signature verification failed")
+
+
+def _verify_signed_envelope(
+    envelope: Mapping[str, Any], trusted_keys: Mapping[str, Mapping[str, Any]],
+    *, required_role: str, now: datetime,
+) -> Mapping[str, Any]:
+    payload = envelope.get("payload")
+    signature_doc = envelope.get("signature")
+    if not isinstance(payload, Mapping) or not isinstance(signature_doc, Mapping):
+        raise GateError("gate receipt is not a signed envelope")
+    key_id = _require_identity(signature_doc.get("key_id"), "signing key ID")
+    if signature_doc.get("algorithm") != "RSASSA-PKCS1-v1_5-SHA256":
+        raise GateError("unsupported receipt signature algorithm")
+    key = trusted_keys.get(key_id)
+    if not isinstance(key, Mapping):
+        raise GateError("receipt signer is not in the trusted key store")
+    if key.get("role") != required_role or key.get("revoked") is True:
+        raise GateError("receipt signer role is not trusted or key is revoked")
+    principal = _require_identity(key.get("principal_id"), "trusted principal ID")
+    if payload.get("signer_principal_id") != principal:
+        raise GateError("receipt signer principal does not match trusted key")
+    issued_at = _parse_aware_time(signature_doc.get("issued_at"), "issued_at")
+    expires_at = _parse_aware_time(signature_doc.get("expires_at"), "expires_at")
+    current = now.astimezone(timezone.utc)
+    if issued_at > current or expires_at <= current:
+        raise GateError("receipt is not currently valid or has expired")
+    if expires_at <= issued_at or (expires_at - issued_at).total_seconds() > MAX_RECEIPT_TTL_SECONDS:
+        raise GateError("receipt validity window is invalid or exceeds 24 hours")
+    for field, bound in (("valid_from", issued_at), ("valid_until", expires_at)):
+        if key.get(field) is not None:
+            key_time = _parse_aware_time(key[field], f"trusted key {field}")
+            if (field == "valid_from" and bound < key_time) or (field == "valid_until" and bound > key_time):
+                raise GateError("receipt validity exceeds signing key validity")
+    signed = {
+        "payload": payload,
+        "key_id": key_id,
+        "algorithm": signature_doc["algorithm"],
+        "issued_at": signature_doc["issued_at"],
+        "expires_at": signature_doc["expires_at"],
+    }
+    value = signature_doc.get("signature_b64")
+    if not isinstance(value, str) or not value:
+        raise GateError("signed receipt is missing its signature")
+    _rsa_sha256_verify(canonical_json_bytes(signed), value, key)
+    return payload
+
+
+def load_protected_trust_store(path: Path = TRUST_STORE_PATH) -> dict[str, Mapping[str, Any]]:
+    """Load only a root-provisioned, root-owned trust store from the fixed path."""
+    if path != TRUST_STORE_PATH:
+        raise GateError("production trust store path is fixed")
+    try:
+        info = path.lstat()
+        if (not stat.S_ISREG(info.st_mode) or info.st_uid != 0
+                or info.st_mode & 0o022 or path.is_symlink()):
+            raise GateError("trusted key store is not a protected root-owned regular file")
+        document = json.loads(path.read_bytes().decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GateError("protected trusted key store is unavailable") from exc
+    records = document.get("keys") if isinstance(document, Mapping) else None
+    if not isinstance(records, list) or not records:
+        raise GateError("protected trusted key store has no configured keys")
+    result: dict[str, Mapping[str, Any]] = {}
+    for record in records:
+        if not isinstance(record, Mapping):
+            raise GateError("trusted key store contains a malformed key")
+        key_id = _require_identity(record.get("key_id"), "trusted key ID")
+        if key_id in result:
+            raise GateError("trusted key store contains duplicate key IDs")
+        result[key_id] = record
+    return result
+
+
 def validate_gate_receipt(
-    receipt: Mapping[str, Any], source_lock: Mapping[str, Any],
-    *, expected_file_hashes: Mapping[str, str] | None = None,
-    expected_environment_sha256: str | None = None,
-    expected_probe_metadata_sha256: str | None = None,
-) -> None:
-    """Fail closed unless every exact contract, source, and access identity agrees."""
+    receipt: Mapping[str, Any], source_lock: Mapping[str, Any], *,
+    source_lock_raw_bytes: bytes,
+    trusted_keys: Mapping[str, Mapping[str, Any]] | None = None,
+    expected_file_hashes: Mapping[str, str],
+    expected_environment_sha256: str,
+    expected_probe_metadata_sha256: str | None,
+    expected_calendar_sha256: str,
+    now: datetime | None = None,
+    expected_current_i2_gate: Mapping[str, Any] = CURRENT_I2_GATE_EXPECTED,
+    expected_e_audit: Mapping[str, Any] = CURRENT_E_AUDIT_EXPECTED,
+    allow_synthetic_test_fixtures: bool = False,
+) -> Mapping[str, Any]:
+    """Verify signed E and I2 evidence and every byte identity; reject by default."""
     validate_series_identity(source_lock)
-    if receipt.get("gate_status") != "PASS":
-        raise GateError("market-outcome gate is not PASS")
-    if receipt.get("human_freeze_status") != "FROZEN":
+    if not source_lock_raw_bytes:
+        raise GateError("exact source-lock file bytes are required")
+    try:
+        parsed_lock = json.loads(source_lock_raw_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GateError("source-lock bytes are not valid UTF-8 JSON") from exc
+    if parsed_lock != source_lock:
+        raise GateError("source-lock bytes do not parse to the supplied object")
+    if is_synthetic_source_lock(source_lock) and not allow_synthetic_test_fixtures:
+        raise GateError("synthetic source lock cannot authorize market access")
+    payload = receipt.get("payload") if isinstance(receipt, Mapping) else None
+    if not isinstance(payload, Mapping):
+        raise GateError("gate receipt is not a signed envelope")
+    if payload.get("human_freeze_status") != "FROZEN":
         raise GateError("human has not frozen the exact research contract")
-    if receipt.get("market_outcome_access_authorized") is not True:
+    if payload.get("gate_status") != "PASS":
+        raise GateError("market-outcome gate is not PASS")
+    if payload.get("market_outcome_access_authorized") is not True:
         raise GateError("market-outcome access is not explicitly authorized")
-    if receipt.get("data_role") != "EXPLORATORY_DISCOVERY":
+    if payload.get("data_role") != "EXPLORATORY_DISCOVERY":
         raise GateError("dataset role mismatch")
-    if receipt.get("spec_id") != SPEC_ID:
-        raise GateError("gate SPEC identity mismatch")
-    if receipt.get("spec_git_blob_sha1") != SPEC_GIT_BLOB_SHA1:
-        raise GateError("gate SPEC bytes differ from implementation target")
-    if receipt.get("hypothesis_id") != HYPOTHESIS_ID:
-        raise GateError("gate hypothesis identity mismatch")
-    if receipt.get("source_lock_id") != source_lock_id(source_lock):
+    for field, expected in (("spec_id", SPEC_ID), ("spec_git_blob_sha1", SPEC_GIT_BLOB_SHA1),
+                            ("spec_sha256", SPEC_SHA256), ("hypothesis_id", HYPOTHESIS_ID)):
+        if payload.get(field) != expected:
+            raise GateError(f"gate {field} identity mismatch")
+    for field in ("human_contract_decision_id", "gate_id", "integrator_principal_id", "run_id",
+                  "raw_capture_process_id", "access_ledger_id", "outcome_access_operator_id"):
+        _require_identity(payload.get(field), field)
+    operator_name = payload.get("outcome_access_operator_name")
+    if (not isinstance(operator_name, str) or _is_placeholder(operator_name)
+            or len(operator_name.split()) < 2):
+        raise GateError("gate lacks a named outcome-access operator")
+    if payload.get("source_lock_id") != source_lock_id(source_lock):
         raise GateError("gate source-lock identity mismatch")
-    required_text = (
-        "human_contract_decision_id",
-        "spec_sha256",
-        "source_transport",
-        "source_lock_sha256",
-        "unit_status_map_sha256",
-        "expected_calendar_sha256",
-        "raw_capture_process_id",
-        "access_ledger_id",
-        "code_commit",
-        "synthetic_test_log_sha256",
-        "environment_identity_sha256",
-        "independent_audit_id",
-        "integrator_gate_id",
-        "run_id",
-        "outcome_access_owner",
-    )
-    for field in required_text:
-        value = receipt.get(field)
-        if not isinstance(value, str) or not value.strip():
-            raise GateError(f"gate receipt missing {field}")
+    if payload.get("source_transport") != source_transport(source_lock):
+        raise GateError("gate source transport does not match source lock")
+    object_hash = sha256_bytes(canonical_json_bytes(source_lock))
+    raw_lock_hash = sha256_bytes(source_lock_raw_bytes)
+    if payload.get("source_lock_sha256") != object_hash:
+        raise GateError("gate source-lock canonical object identity mismatch")
+    if payload.get("source_lock_raw_sha256") != raw_lock_hash:
+        raise GateError("gate source-lock raw-byte identity mismatch")
+    unit_status_hash = sha256_bytes(canonical_json_bytes(source_unit_status_map(source_lock)))
+    if payload.get("unit_status_map_sha256") != unit_status_hash:
+        raise GateError("gate unit/status identity mismatch")
+    if payload.get("expected_calendar_sha256") != expected_calendar_sha256:
+        raise GateError("gate calendar identity mismatch")
     if is_packet_c_source_lock(source_lock):
         if expected_probe_metadata_sha256 is None:
             raise GateError("exact Packet C probe-metadata bytes are required for gate validation")
-        metadata_hash = receipt.get("probe_metadata_sha256")
-        if not isinstance(metadata_hash, str) or len(metadata_hash) != 64:
-            raise GateError("gate receipt missing Packet C probe-metadata identity")
-        if metadata_hash != expected_probe_metadata_sha256:
+        if payload.get("probe_metadata_sha256") != expected_probe_metadata_sha256:
             raise GateError("gate Packet C probe-metadata identity mismatch")
-        if receipt.get("expected_calendar_sha256") != source_lock["calendar"].get("sha256"):
-            raise GateError("gate Packet C calendar identity mismatch")
-    for field in ("spec_sha256", "source_lock_sha256", "unit_status_map_sha256", "expected_calendar_sha256",
-                  "synthetic_test_log_sha256", "environment_identity_sha256"):
-        value = receipt[field]
-        if len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value.lower()):
-            raise GateError(f"gate receipt has invalid {field}")
-    if is_packet_c_source_lock(source_lock):
-        value = receipt["probe_metadata_sha256"]
-        if any(ch not in "0123456789abcdef" for ch in value.lower()):
-            raise GateError("gate receipt has invalid probe-metadata hash")
-    if receipt.get("spec_sha256") != SPEC_SHA256:
-        raise GateError("gate SPEC SHA-256 differs from frozen exact bytes")
-    if receipt.get("source_series_keys") != list(EXPECTED_SERIES_BY_CURRENCY.values()):
-        raise GateError("gate series keys mismatch")
-    if receipt.get("source_transport") != source_transport(source_lock):
-        raise GateError("gate source transport does not match source lock")
-    if receipt.get("source_lock_sha256") != sha256_bytes(canonical_json_bytes(source_lock)):
-        raise GateError("gate source-lock content identity mismatch")
-    status_unit_hash = sha256_bytes(canonical_json_bytes(
-        source_unit_status_map(source_lock)
-    ))
-    if receipt.get("unit_status_map_sha256") != status_unit_hash:
-        raise GateError("gate unit/status identity mismatch")
-    expected_time_range = {
-        "source_start": SOURCE_START,
-        "source_end": SOURCE_END,
-        "target_start": TARGET_START,
-        "target_end": TARGET_END,
-    }
-    if receipt.get("time_range") != expected_time_range:
+        if expected_calendar_sha256 != source_lock["calendar"].get("sha256"):
+            raise GateError("expected calendar differs from source-lock identity")
+    expected_range = {"source_start": SOURCE_START, "source_end": SOURCE_END,
+                      "target_start": TARGET_START, "target_end": TARGET_END}
+    if payload.get("time_range") != expected_range:
         raise GateError("gate time-range identity mismatch")
-    if expected_file_hashes is not None and receipt.get("code_file_hashes") != dict(expected_file_hashes):
-        raise GateError("gate code/config/test identity mismatch")
-    if (expected_environment_sha256 is not None
-            and receipt.get("environment_identity_sha256") != expected_environment_sha256):
+    if payload.get("source_series_keys") != list(EXPECTED_SERIES_BY_CURRENCY.values()):
+        raise GateError("gate series keys mismatch")
+    if payload.get("code_file_hashes") != dict(expected_file_hashes):
+        raise GateError("gate D code/test/config/environment file identity mismatch")
+    if payload.get("environment_identity_sha256") != expected_environment_sha256:
         raise GateError("gate environment identity mismatch")
-    if receipt.get("full_history_run_authorized") is not True:
+    for field, digest in expected_file_hashes.items():
+        if not re.fullmatch(r"[0-9a-f]{64}", str(digest)):
+            raise GateError(f"expected D file digest is invalid: {field}")
+    if payload.get("synthetic_test_log_sha256") != expected_file_hashes.get("TEST_LOG.txt"):
+        raise GateError("gate test-log identity mismatch")
+    if payload.get("full_history_run_authorized") is not True:
         raise GateError("full-history execution is not explicitly authorized")
+    if payload.get("current_i2_gate_identity") != dict(expected_current_i2_gate):
+        raise GateError("signed receipt does not identify the current I2 gate")
+    if payload.get("independent_audit_identity") != dict(expected_e_audit):
+        raise GateError("signed receipt does not identify the current E audit")
+
+    key_store = trusted_keys
+    if key_store is None:
+        key_store = load_protected_trust_store()
+    current_time = now or datetime.now(timezone.utc)
+    e_envelope = payload.get("independent_audit_attestation")
+    if not isinstance(e_envelope, Mapping):
+        raise GateError("current independent E audit attestation is missing")
+    e_payload = _verify_signed_envelope(
+        e_envelope, key_store, required_role="independent_auditor", now=current_time
+    )
+    if any(e_payload.get(key) != value for key, value in expected_e_audit.items()):
+        raise GateError("signed E audit identity or content does not match current audit")
+    if e_payload.get("status") != "PASS" or e_payload.get("recommendation") != "ALLOW_I2":
+        raise GateError("current E audit does not authorize I2 reconsideration")
+    if payload.get("independent_audit_envelope_sha256") != sha256_bytes(canonical_json_bytes(e_envelope)):
+        raise GateError("signed gate receipt does not bind the E audit signature bytes")
+    i2_payload = _verify_signed_envelope(
+        receipt, key_store, required_role="integrator", now=current_time
+    )
+    if i2_payload is not payload:
+        raise GateError("signed I2 payload changed during validation")
+    trusted_integrator = key_store.get(str(receipt["signature"].get("key_id")), {})
+    if payload.get("integrator_principal_id") != trusted_integrator.get("principal_id"):
+        raise GateError("integrator identity does not match the trusted signer")
+    if expected_current_i2_gate.get("gate_status") != "PASS" or expected_current_i2_gate.get("market_outcome_access") is not True:
+        raise GateError("current I2 gate is CLOSED; outcome access remains blocked")
+    return payload
 
 
 def validate_capture_manifest(
     manifest: Mapping[str, Any], raw_bytes: bytes, source_lock: Mapping[str, Any],
-    *, expected_metadata_sha256: str | None = None,
+    *, source_lock_raw_bytes: bytes, expected_metadata_sha256: str | None = None,
 ) -> None:
     if manifest.get("capture_status") != "CAPTURED":
         raise GateError("raw-capture preflight is not complete")
@@ -422,6 +613,13 @@ def validate_capture_manifest(
         raise GateError("raw-capture source identity mismatch")
     if manifest.get("source_lock_sha256") != sha256_bytes(canonical_json_bytes(source_lock)):
         raise GateError("raw-capture source-lock content identity mismatch")
+    if manifest.get("source_lock_raw_sha256") != sha256_bytes(source_lock_raw_bytes):
+        raise GateError("raw-capture source-lock raw-byte identity mismatch")
+    try:
+        if json.loads(source_lock_raw_bytes.decode("utf-8")) != source_lock:
+            raise GateError("source-lock raw bytes do not parse to the supplied object")
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GateError("source-lock bytes are not valid UTF-8 JSON") from exc
     if manifest.get("spec_id") != SPEC_ID:
         raise GateError("raw-capture SPEC identity mismatch")
     if manifest.get("data_role") != "EXPLORATORY_DISCOVERY":
@@ -814,6 +1012,85 @@ def _endpoint_reason(
     return f"MISSING_CURRENCY:{currency}@{endpoint_month}"
 
 
+def _score_input_record(table: QuoteTable, day: date, currency: str) -> dict[str, Any]:
+    if currency == "EUR":
+        return {"date": day.isoformat(), "currency": currency,
+                "value": "1", "status": "SYNTHETIC_NUMERAIRE"}
+    value = table.values.get(day, {}).get(currency)
+    status = table.statuses.get(day, {}).get(currency)
+    return {
+        "date": day.isoformat(),
+        "currency": currency,
+        "value": str(value) if value is not None else None,
+        "status": status if status is not None else ("PRESENT" if value is not None else "MISSING"),
+    }
+
+
+def formation_score_identities(
+    table: QuoteTable, formation_start: date | None, formation_end: date | None
+) -> dict[str, dict[str, Any]]:
+    """Identify each exact formation score without consulting a target endpoint."""
+    identities: dict[str, dict[str, Any]] = {}
+    for currency in CURRENCIES:
+        if formation_start is None or formation_end is None:
+            missing_input_hash = sha256_bytes(canonical_json_bytes({
+                "identity_type": "FORMATION_SCORE_INPUTS_UNAVAILABLE",
+                "score_spec": SCORE_IDENTITY_SPEC,
+                "currency": currency,
+                "formation_start": formation_start.isoformat() if formation_start else None,
+                "formation_end": formation_end.isoformat() if formation_end else None,
+                "reason": "NO_EXPECTED_FORMATION_ENDPOINT",
+            }))
+            identities[currency] = {
+                "status": "UNAVAILABLE",
+                "identity_sha256": sha256_bytes(canonical_json_bytes({
+                    "identity_type": "FORMATION_SCORE_UNAVAILABLE",
+                    "score_spec": SCORE_IDENTITY_SPEC,
+                    "currency": currency,
+                    "formation_start": formation_start.isoformat() if formation_start else None,
+                    "formation_end": formation_end.isoformat() if formation_end else None,
+                    "input_identity_sha256": missing_input_hash,
+                    "reason": "NO_EXPECTED_FORMATION_ENDPOINT",
+                })),
+                "input_identity_sha256": missing_input_hash,
+                "exact_growth_ratio": None,
+                "score_spec": SCORE_IDENTITY_SPEC,
+            }
+            continue
+        start_input = _score_input_record(table, formation_start, currency)
+        end_input = _score_input_record(table, formation_end, currency)
+        input_hash = sha256_bytes(canonical_json_bytes({
+            "identity_type": "FORMATION_SCORE_INPUTS",
+            "formation_start": start_input,
+            "formation_end": end_input,
+        }))
+        start_value = start_input["value"]
+        end_value = end_input["value"]
+        ratio: Fraction | None = None
+        if start_value is not None and end_value is not None:
+            ratio = Fraction(Decimal(start_value)) / Fraction(Decimal(end_value))
+        score_doc = {
+            "identity_type": "FORMATION_SCORE",
+            "spec_id": SPEC_ID,
+            "spec_sha256": SPEC_SHA256,
+            "score_spec": SCORE_IDENTITY_SPEC,
+            "score_definition": "s_i=ln(q_i(formation_start)/q_i(formation_end)); exact ratio used for ordering",
+            "currency": currency,
+            "formation_start": formation_start.isoformat(),
+            "formation_end": formation_end.isoformat(),
+            "input_identity_sha256": input_hash,
+            "exact_growth_ratio": ratio,
+        }
+        identities[currency] = {
+            "status": "AVAILABLE" if ratio is not None else "UNAVAILABLE",
+            "identity_sha256": sha256_bytes(canonical_json_bytes(score_doc)),
+            "input_identity_sha256": input_hash,
+            "exact_growth_ratio": ratio,
+            "score_spec": SCORE_IDENTITY_SPEC,
+        }
+    return identities
+
+
 def build_signal_events(
     target_months: Sequence[str],
     month_end_dates: Mapping[str, str],
@@ -831,7 +1108,7 @@ def build_signal_events(
         needed_months = (formation_start_month, formation_end_month, target_month)
         dates: list[date | None] = []
         reason: str | None = None
-        for month in needed_months:
+        for index, month in enumerate(needed_months):
             raw_day = month_end_dates.get(month)
             if raw_day is None:
                 reason = f"NO_EXPECTED_ENDPOINT:{month}"
@@ -841,11 +1118,14 @@ def build_signal_events(
             if day.strftime("%Y-%m") != month:
                 raise DataError("calendar endpoint does not belong to its month")
             dates.append(day)
-            endpoint_problem = _endpoint_reason(table, day, month)
-            if endpoint_problem and reason is None:
-                reason = endpoint_problem
+            # Only the two formation endpoints may influence the pre-outcome ledger.
+            if index < 2:
+                endpoint_problem = _endpoint_reason(table, day, month)
+                if endpoint_problem and reason is None:
+                    reason = endpoint_problem
 
         start_day, formation_day, target_day = dates
+        score_identities = formation_score_identities(table, start_day, formation_day)
         winner: str | None = None
         loser: str | None = None
         signal_status = "UNAVAILABLE"
@@ -874,30 +1154,34 @@ def build_signal_events(
                 loser=loser,
                 status=status,
                 skip_reason=reason,
+                score_identities=score_identities,
             )
         )
     return tuple(events)
 
 
 def event_ledger_payload(events: Sequence[SignalEvent]) -> dict[str, Any]:
+    rows = []
+    for event in events:
+        row = asdict(event)
+        row["a"] = event.winner
+        row["b"] = event.loser
+        rows.append(row)
     return {
         "record_type": "PRE_OUTCOME_EVENT_LEDGER",
         "spec_id": SPEC_ID,
         "data_role": "EXPLORATORY_DISCOVERY",
         "temporal_claim": "REFERENCE_ASSOCIATION_ONLY",
-        "events": [asdict(event) for event in events],
+        "events": rows,
     }
 
 
-def persist_event_ledger(events: Sequence[SignalEvent], path: Path) -> str:
+def persist_event_ledger(
+    events: Sequence[SignalEvent], path: Path,
+    *, fault_injector: Callable[[str], None] | None = None,
+) -> str:
     payload = canonical_json_bytes(event_ledger_payload(events))
-    path.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        with path.open("xb") as stream:
-            stream.write(payload)
-    except FileExistsError as exc:
-        raise GateError("event-ledger path already exists; preserve the attempt") from exc
-    return sha256_bytes(payload)
+    return atomic_write_verified(path, payload, fault_injector=fault_injector)
 
 
 def calculate_outcomes_after_ledger(
@@ -926,8 +1210,11 @@ def calculate_outcomes_after_ledger(
         target_end = parse_iso_date(event.target_end_date)
         start_prices = price_vector(table, formation_end)
         end_prices = price_vector(table, target_end)
-        if start_prices is None or end_prices is None:
-            raise DataError("READY event target became unavailable")
+        if start_prices is None:
+            raise DataError("READY event formation endpoint became unavailable")
+        if end_prices is None:
+            outcomes.append(None)
+            continue
         outcomes.append(pair_log_return(event.winner, event.loser, start_prices, end_prices))
     return tuple(outcomes)
 
@@ -998,9 +1285,12 @@ def summarize_metrics(
         raise DataError("outcome grid no longer matches scheduled calendar grid")
     valid = [value for value in outcome_grid if value is not None]
     skip_reasons: dict[str, int] = {}
-    for event in events:
+    for event, outcome in zip(events, outcome_grid):
         if event.status != "READY":
             key = event.skip_reason or "UNKNOWN_SKIP"
+            skip_reasons[key] = skip_reasons.get(key, 0) + 1
+        elif outcome is None:
+            key = f"TARGET_ENDPOINT_UNAVAILABLE:{event.target_month}"
             skip_reasons[key] = skip_reasons.get(key, 0) + 1
     if not valid:
         mean_bps = median_bps = positive_proportion = None
@@ -1167,6 +1457,193 @@ def _read_json(path: Path) -> dict[str, Any]:
     return value
 
 
+def _read_json_with_bytes(path: Path) -> tuple[dict[str, Any], bytes]:
+    try:
+        raw = path.read_bytes()
+        value = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GateError(f"required JSON artifact unavailable: {path.name}") from exc
+    if not isinstance(value, dict):
+        raise GateError(f"required JSON artifact is not an object: {path.name}")
+    return value, raw
+
+
+def _inject_fault(fault_injector: Callable[[str], None] | None, point: str) -> None:
+    if fault_injector is not None:
+        fault_injector(point)
+
+
+def _fsync_directory(path: Path) -> None:
+    flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+    fd = os.open(path, flags)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def atomic_write_verified(
+    path: Path, payload: bytes, *, validator: Callable[[bytes], None] | None = None,
+    fault_injector: Callable[[str], None] | None = None,
+) -> str:
+    """Write, flush, fsync, verify, then atomically publish a new immutable file."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists() or path.is_symlink():
+        raise GateError("artifact path already exists; preserve the attempt")
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.stage-", dir=path.parent)
+    temp_path = Path(temp_name)
+    promoted = False
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            _inject_fault(fault_injector, "write")
+            written = stream.write(payload)
+            if written != len(payload):
+                raise OSError("short write while staging artifact")
+            _inject_fault(fault_injector, "flush")
+            stream.flush()
+            _inject_fault(fault_injector, "file_fsync")
+            os.fsync(stream.fileno())
+        raw = temp_path.read_bytes()
+        if raw != payload:
+            raise GateError("staged artifact bytes differ from requested payload")
+        if validator is not None:
+            validator(raw)
+        _inject_fault(fault_injector, "promotion")
+        os.link(temp_path, path)
+        promoted = True
+        temp_path.unlink()
+        _inject_fault(fault_injector, "parent_fsync")
+        _fsync_directory(path.parent)
+        return sha256_bytes(raw)
+    except Exception as exc:
+        if promoted:
+            try:
+                path.unlink(missing_ok=True)
+                _fsync_directory(path.parent)
+            except OSError:
+                pass
+        try:
+            temp_path.unlink(missing_ok=True)
+        except OSError:
+            pass
+        if isinstance(exc, GateError):
+            raise
+        raise GateError(f"artifact staging or promotion failed: {exc.__class__.__name__}") from exc
+
+
+def atomic_capture_bytes(
+    payload: bytes, destination: Path, *, expected_sha256: str,
+    validator: Callable[[bytes], None],
+    fault_injector: Callable[[str], None] | None = None,
+) -> str:
+    """Safely promote captured bytes only after identity and content validation."""
+    def validate(raw: bytes) -> None:
+        if sha256_bytes(raw) != expected_sha256:
+            raise GateError("staged capture raw-byte hash mismatch")
+        validator(raw)
+    return atomic_write_verified(
+        destination, payload, validator=validate, fault_injector=fault_injector
+    )
+
+
+def _validate_staged_output(stage: Path) -> None:
+    entries = list(stage.iterdir())
+    if any(not stat.S_ISREG(item.lstat().st_mode) for item in entries):
+        raise GateError("staged output must contain regular files only")
+    receipt_path = stage / "_completion-pending.json"
+    if not receipt_path.is_file() or receipt_path.is_symlink():
+        raise GateError("staged output lacks its pending completion manifest")
+    try:
+        receipt = json.loads(receipt_path.read_bytes().decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GateError("staged success receipt is invalid") from exc
+    if not isinstance(receipt, Mapping) or receipt.get("promotion_status") != "READY_TO_PROMOTE":
+        raise GateError("staged output completion manifest is not ready")
+    success_receipt = receipt.get("success_receipt")
+    if not isinstance(success_receipt, Mapping) or success_receipt.get("execution_status") != "SUCCESS":
+        raise GateError("staged completion manifest lacks the final success receipt")
+    expected = success_receipt.get("output_file_sha256")
+    if not isinstance(expected, Mapping) or not expected:
+        raise GateError("staged success receipt lacks output hashes")
+    actual_files = {item.name for item in entries if item.name != "_completion-pending.json"}
+    if actual_files != set(expected):
+        raise GateError("staged output file set differs from its receipt")
+    for name, digest in expected.items():
+        if not isinstance(name, str) or Path(name).name != name:
+            raise GateError("staged output contains an unsafe receipt path")
+        if sha256_file(stage / name) != digest:
+            raise GateError("staged output file hash mismatch")
+
+
+def _fsync_staged_tree(stage: Path) -> None:
+    for path in stage.rglob("*"):
+        if path.is_symlink():
+            raise GateError("staged output may not contain symbolic links")
+        if path.is_file():
+            with path.open("rb") as stream:
+                os.fsync(stream.fileno())
+    for path in sorted((p for p in stage.rglob("*") if p.is_dir()), reverse=True):
+        _fsync_directory(path)
+    _fsync_directory(stage)
+
+
+def promote_output_directory(
+    stage: Path, destination: Path, *,
+    fault_injector: Callable[[str], None] | None = None,
+) -> None:
+    """Promote a complete staged run as one directory rename, rolling back failures."""
+    if stage.parent.resolve() != destination.parent.resolve():
+        raise GateError("staging and output must share a filesystem parent")
+    if destination.exists() or destination.is_symlink():
+        raise GateError("output destination already exists; preserve the attempt")
+    _validate_staged_output(stage)
+    _fsync_staged_tree(stage)
+    _validate_staged_output(stage)
+    lock_path = destination.parent / f".{destination.name}.promotion.lock"
+    lock_fd: int | None = None
+    promoted = False
+    try:
+        lock_fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        if destination.exists() or destination.is_symlink():
+            raise GateError("output destination appeared during promotion")
+        _inject_fault(fault_injector, "rename")
+        os.rename(stage, destination)
+        promoted = True
+        _inject_fault(fault_injector, "parent_fsync")
+        _fsync_directory(destination.parent)
+        pending_path = destination / "_completion-pending.json"
+        pending = json.loads(pending_path.read_bytes().decode("utf-8"))
+        _inject_fault(fault_injector, "success_receipt")
+        success_bytes = canonical_json_bytes(pending["success_receipt"])
+        atomic_write_verified(
+            destination / "run-receipt.json", success_bytes,
+            fault_injector=(
+                (lambda point: _inject_fault(fault_injector, f"success_{point}"))
+                if fault_injector is not None else None
+            ),
+        )
+        pending_path.unlink()
+        _fsync_directory(destination)
+    except Exception as exc:
+        if promoted:
+            try:
+                shutil.rmtree(destination)
+                _fsync_directory(destination.parent)
+            except OSError:
+                pass
+        if isinstance(exc, GateError):
+            raise
+        raise GateError(f"output promotion failed: {exc.__class__.__name__}") from exc
+    finally:
+        if lock_fd is not None:
+            os.close(lock_fd)
+            try:
+                lock_path.unlink(missing_ok=True)
+                _fsync_directory(destination.parent)
+            except OSError:
+                pass
+
+
 def _block_network_audit(event: str, args: tuple[Any, ...]) -> None:
     if event.startswith(("socket.connect", "socket.getaddrinfo", "subprocess.Popen", "os.system")):
         raise PermissionError("network and subprocess access are disabled during calculation")
@@ -1177,30 +1654,38 @@ def environment_snapshot() -> dict[str, str]:
         "python_version": sys.version,
         "implementation": platform.python_implementation(),
         "platform": platform.platform(),
+        "executable": sys.executable,
         "module_sha256": sha256_file(Path(__file__)),
+        "test_code_sha256": sha256_file(Path(__file__).with_name("test_csm.py")),
         "config_sha256": sha256_file(CONFIG_PATH),
     }
+
+
+def implementation_file_hashes() -> dict[str, str]:
+    root = Path(__file__).parent
+    names = (
+        "csm.py", "test_csm.py", "config.json", "RUNBOOK.md", "ENVIRONMENT.md",
+        "RESULT.md", "TEST_MATRIX.md", "TEST_LOG.txt", "fixtures/toy_cases.json",
+    )
+    return {name: sha256_file(root / name) for name in names}
 
 
 def environment_identity_sha256(snapshot: Mapping[str, str] | None = None) -> str:
     return sha256_bytes(canonical_json_bytes(snapshot or environment_snapshot()))
 
 
-def _write_json_exclusive(path: Path, value: Any) -> str:
+def _write_json_exclusive(
+    path: Path, value: Any, *, fault_injector: Callable[[str], None] | None = None,
+) -> str:
     payload = canonical_json_bytes(value)
-    try:
-        with path.open("xb") as stream:
-            stream.write(payload)
-    except FileExistsError as exc:
-        raise GateError("output file already exists; do not reuse an attempt directory") from exc
-    return sha256_bytes(payload)
+    return atomic_write_verified(path, payload, fault_injector=fault_injector)
 
 
 def run_locked_calculation(args: argparse.Namespace) -> int:
     """Production path. Gate and capture checks precede data load/output."""
     config = _read_json(CONFIG_PATH)
     validate_config(config)
-    source_lock = _read_json(Path(args.source_lock))
+    source_lock, source_lock_raw = _read_json_with_bytes(Path(args.source_lock))
     probe_metadata_path = Path(args.probe_metadata)
     probe_metadata_bytes = probe_metadata_path.read_bytes()
     try:
@@ -1213,21 +1698,26 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
     if is_packet_c_source_lock(source_lock):
         validate_packet_c_probe_metadata(source_lock, probe_metadata)
     gate = _read_json(Path(args.gate_receipt))
-    test_log_path = Path(__file__).with_name("TEST_LOG.txt")
-    test_path = Path(__file__).with_name("test_csm.py")
-    expected_file_hashes = {
-        "csm.py": sha256_file(Path(__file__)),
-        "config.json": sha256_file(CONFIG_PATH),
-        "test_csm.py": sha256_file(test_path),
-    }
-    validate_gate_receipt(
+    expected_file_hashes = implementation_file_hashes()
+    gate = validate_gate_receipt(
         gate, source_lock,
+        source_lock_raw_bytes=source_lock_raw,
+        expected_calendar_sha256=(
+            source_lock.get("calendar", {}).get("sha256")
+            if is_packet_c_source_lock(source_lock)
+            else str(source_lock.get("expected_calendar_sha256", ""))
+        ),
         expected_file_hashes=expected_file_hashes,
         expected_environment_sha256=environment_identity_sha256(),
         expected_probe_metadata_sha256=probe_metadata_hash,
     )
-    if sha256_file(test_log_path) != gate.get("synthetic_test_log_sha256"):
-        raise GateError("synthetic test-log identity mismatch")
+    test_log_path = Path(__file__).with_name("TEST_LOG.txt")
+    test_path = Path(__file__).with_name("test_csm.py")
+    output_dir = Path(args.output_dir)
+    if not output_dir.parent.is_dir():
+        raise GateError("durable output parent directory must already exist")
+    if output_dir.exists() or output_dir.is_symlink():
+        raise GateError("output destination already exists; preserve the attempt")
     calendar_path = Path(args.expected_calendar)
     calendar_bytes = calendar_path.read_bytes()
     try:
@@ -1245,6 +1735,7 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
     capture = _read_json(Path(args.capture_manifest))
     validate_capture_manifest(
         capture, raw_bytes, source_lock,
+        source_lock_raw_bytes=source_lock_raw,
         expected_metadata_sha256=probe_metadata_hash if is_packet_c_source_lock(source_lock) else None,
     )
     calendar_hash = sha256_bytes(calendar_bytes)
@@ -1253,10 +1744,10 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
     if capture["access_ledger_id"] != gate["access_ledger_id"]:
         raise GateError("capture and gate access-ledger identity mismatch")
 
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=False)
+    stage_dir = Path(tempfile.mkdtemp(prefix=f".{output_dir.name}.stage-", dir=output_dir.parent))
     raw_hash = sha256_bytes(raw_bytes)
     source_lock_hash = sha256_bytes(canonical_json_bytes(source_lock))
+    source_lock_raw_hash = sha256_bytes(source_lock_raw)
     start_receipt = {
         "run_id": gate["run_id"],
         "data_role": gate["data_role"],
@@ -1267,20 +1758,20 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
         "market_outcome_access_before_gate": False,
         "raw_snapshot_sha256": raw_hash,
         "source_lock_sha256": source_lock_hash,
-        "source_lock_file_sha256": sha256_file(Path(args.source_lock)),
+        "source_lock_raw_sha256": source_lock_raw_hash,
         "probe_metadata_sha256": probe_metadata_hash,
         "calendar_sha256": calendar_hash,
-        "code_sha256": expected_file_hashes["csm.py"],
-        "config_sha256": expected_file_hashes["config.json"],
-        "test_code_sha256": expected_file_hashes["test_csm.py"],
-        "test_log_sha256": sha256_file(test_log_path),
+        "d_file_sha256": expected_file_hashes,
+        "environment_identity_sha256": environment_identity_sha256(),
     }
-    _write_json_exclusive(output_dir / "attempt-start.json", start_receipt)
+    _write_json_exclusive(stage_dir / "attempt-start.json", start_receipt)
 
     stage = "SOURCE_PARSE"
     ledger_hash: str | None = None
     primary_hash: str | None = None
     try:
+        # This hook blocks some accidental calls in this Python process only.
+        # It is not an OS sandbox and does not isolate files or other processes.
         sys.addaudithook(_block_network_audit)
         table = parse_source_csv(raw_bytes, source_lock, source_metadata=probe_metadata)
         validate_observed_date_bounds(table)
@@ -1288,7 +1779,7 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
         events = build_signal_events(target_months, month_end_dates, table)
 
         stage = "EVENT_LEDGER"
-        ledger_path = output_dir / "event-ledger.json"
+        ledger_path = stage_dir / "event-ledger.json"
         ledger_hash = persist_event_ledger(events, ledger_path)
 
         # Outcome computation begins only after the event ledger bytes are durable.
@@ -1307,7 +1798,7 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
             "temporal_claim": "REFERENCE_ASSOCIATION_ONLY",
             "available_at": "UNKNOWN",
         }
-        primary_hash = _write_json_exclusive(output_dir / "primary-metrics.json", primary_payload)
+        primary_hash = _write_json_exclusive(stage_dir / "primary-metrics.json", primary_payload)
 
         stage = "BOOTSTRAP"
         bootstrap = moving_block_bootstrap(outcomes)
@@ -1317,7 +1808,7 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
             eligible_count=metrics.eligible_count,
             scheduled_count=metrics.scheduled_count,
         )
-        inference_hash = _write_json_exclusive(output_dir / "inference.json", {
+        inference_hash = _write_json_exclusive(stage_dir / "inference.json", {
             "spec_id": SPEC_ID,
             "scientific_status": scientific_status,
             "decision": decision,
@@ -1329,16 +1820,20 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
             "test_code_sha256": sha256_file(test_path),
             "test_log_sha256": sha256_file(test_log_path),
             "source_lock_sha256": source_lock_hash,
-            "source_lock_file_sha256": sha256_file(Path(args.source_lock)),
+            "source_lock_raw_sha256": source_lock_raw_hash,
             "probe_metadata_sha256": probe_metadata_hash,
             "calendar_sha256": calendar_hash,
             "raw_snapshot_sha256": raw_hash,
             "event_ledger_sha256": ledger_hash,
             "primary_metrics_sha256": primary_hash,
             "inference_sha256": inference_hash,
-            "network_access": "DISABLED_BY_PROCESS_AUDIT_HOOK",
+            "network_access": "NO_NETWORK_CLIENT; PROCESS_AUDIT_HOOK_ONLY_NOT_OS_ISOLATION",
         }
-        _write_json_exclusive(output_dir / "run-receipt.json", {
+        output_file_hashes = {
+            name: sha256_file(stage_dir / name)
+            for name in ("attempt-start.json", "event-ledger.json", "primary-metrics.json", "inference.json")
+        }
+        success_receipt = {
             "run_id": gate["run_id"],
             "data_role": gate["data_role"],
             "execution_status": "SUCCESS",
@@ -1346,28 +1841,40 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
             "scientific_status": scientific_status,
             "decision": decision,
             "runtime_and_file_snapshot": runtime,
+            "output_file_sha256": output_file_hashes,
             "access_ledger_id": gate["access_ledger_id"],
             "market_outcome_access_before_gate": False,
+        }
+        _write_json_exclusive(stage_dir / "_completion-pending.json", {
+            "promotion_status": "READY_TO_PROMOTE",
+            "success_receipt": success_receipt,
         })
+        promote_output_directory(stage_dir, output_dir)
         print("execution_status=SUCCESS")
         print(f"scientific_status={scientific_status}")
         return 0
     except (GateError, DataError, OSError, ArithmeticError) as exc:
-        _write_json_exclusive(output_dir / "attempt-status.json", {
-            "run_id": gate["run_id"],
-            "execution_status": "FAILED",
-            "evidence_validity": "PARTIAL",
-            "scientific_status": "NOT_APPLICABLE",
-            "stage": stage,
-            "failure_class": exc.__class__.__name__,
-            "access_ledger_id": gate["access_ledger_id"],
-            "raw_snapshot_sha256": raw_hash,
-            "source_lock_sha256": source_lock_hash,
-            "calendar_sha256": calendar_hash,
-            "event_ledger_sha256": ledger_hash,
-            "primary_metrics_sha256": primary_hash,
-            "do_not_reuse_or_retry_without_new_authorization": True,
-        })
+        if stage_dir.exists():
+            try:
+                _write_json_exclusive(stage_dir / "attempt-status.json", {
+                    "run_id": gate["run_id"],
+                    "execution_status": "FAILED",
+                    "evidence_validity": "PARTIAL",
+                    "scientific_status": "NOT_APPLICABLE",
+                    "stage": stage,
+                    "failure_class": exc.__class__.__name__,
+                    "access_ledger_id": gate["access_ledger_id"],
+                    "raw_snapshot_sha256": raw_hash,
+                    "source_lock_sha256": source_lock_hash,
+                    "source_lock_raw_sha256": source_lock_raw_hash,
+                    "calendar_sha256": calendar_hash,
+                    "event_ledger_sha256": ledger_hash,
+                    "primary_metrics_sha256": primary_hash,
+                    "output_promoted": False,
+                    "do_not_reuse_or_retry_without_new_authorization": True,
+                })
+            except (GateError, OSError):
+                pass
         print(f"execution_status=FAILED stage={stage}", file=sys.stderr)
         print(f"failure_class={exc.__class__.__name__}", file=sys.stderr)
         return 2

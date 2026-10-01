@@ -1,14 +1,14 @@
 # CSM-002 deterministic implementation runbook
 
-## Current state
+## Current status
 
-This module implements frozen `SPEC-CSM-002-v01` at freeze-record commit `4ac1e797c777f33a467ec73b250401886d160e80` (Git blob SHA-1 `7fe114e2fcfa33b0565b51c717455abd8837d5d9`; file SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`). The human acceptance is bound to pre-freeze blob `a073e77dec14337ee20609ed6136e50a8c1e76e2` / SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`, recorded as `HDEC-CSM-002-20261001`; only lifecycle metadata changed at freeze. The frozen specification and D configuration are identity-checked by the module. The market-outcome gate remains CLOSED pending independent E audit, Integrator gate PASS, trusted access controls, and a separate X instruction. Calculation tests use synthetic/toy CSV rows only; Packet C's source-lock, schema metadata, and expected calendar are read only as metadata. This does not authorize a run on actual FX history.
+The implementation validates frozen `SPEC-CSM-002-v01`: Git blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`, SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`. The current config mirror says `FROZEN` and matches those bytes. Freeze is not an open blocker. The current I2 record is `CLOSED` and Packet E audit `AUDIT-CSM-E-20261002` is `PARTIAL_WITH_GAPS` / `BLOCKED`; the default validator therefore rejects outcome access. D does not grant access, capture data, calculate market results, or issue an X instruction.
 
-The implementation performs a retrospective reference-rate association. It does not claim that the selected rates were available for executable entry. `AVAILABLE_AT` remains `UNKNOWN`; costs, carry, and financing remain `UNOBSERVED`.
+The implementation's score ledger is formed from the two formation endpoints only. It persists `a`, `b`, formation endpoints, per-currency exact-ratio score identities (including input hashes and the score-spec ID), and formation/calendar skip reasons before target endpoint values are accessed. Missing target observations are classified only after that ledger is persisted.
 
-## Local component verification
+## Synthetic verification
 
-Use Python 3.11 or later and the standard library only:
+Use Python 3.12 or later and the standard library. The test-only RSA private key is synthetic and is not a production trust key.
 
 ```bash
 python3 -m py_compile csm.py test_csm.py
@@ -18,23 +18,41 @@ CSM_PACKET_C_EXPECTED_CALENDAR=/path/to/expected-calendar.json \
   python3 -m unittest -v test_csm.py
 ```
 
-For reproducibility, use the three artifacts from Packet C branch head `9870c710c3cba7bb9226c9eee8ec36687b96fd9d`. Without the environment variables, the 41 self-contained tests run and the exact-artifact integration test is skipped. All price rows and strategy calculations in tests are synthetic. No observation values, full-history prices, ranking, or strategy performance were read or calculated by Packet D.
+The three exact Packet C inputs are metadata only, read from PR #35 head `9870c710c3cba7bb9226c9eee8ec36687b96fd9d`: `source-lock.json` blob `81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf` / SHA-256 `ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71`; `probe-metadata.json` blob `21aa9149b7b7db9b07f1aa3f4bf0312675a166bd` / SHA-256 `1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533`; `expected-calendar.json` blob `6ed720353472ba6f35391936c536d46fb6ae8c66` / SHA-256 `6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4`.
 
-## Preconditions for a future authorized run
+The integration test validates those metadata identities and generates its own synthetic CSV rows. It does not retrieve or read Packet C probe-response CSVs, observed values, market history, prices, rankings, forward returns, P/L, Sharpe, or performance plots. Other test rows and signed receipts are synthetic. TEST_LOG records the exact command, runtime, refs, and observed result.
 
-All of the following must exist and agree before the command may read a full-history input:
+## Receipt authentication
 
-1. The exact human freeze and post-freeze SPEC identity are recorded and validated by the current config. Any later code, config, test, environment, or source identity change must be independently audited before use.
-2. A C source lock and official expected TARGET operating-day calendar for the fixed source range. Current Packet C artifacts establish a bounded route/schema/calendar identity only; full-history coverage, historical publication times, and revision/vintage access remain unknown. The adapter maps the seven exact series, units, status, 32 CSV columns, and 203 month ends without substituting another source.
-3. An independent E audit and an I Integrator gate with `gate_status: PASS`, matching the code, tests, environment, source-lock, calendar, time-range, and access-ledger identities.
-4. A preserved raw-capture snapshot plus a manifest whose source-lock identity, seven series keys, and SHA-256 match the bytes that will be read.
-5. A new output directory. An existing output directory means preserve the attempt and stop; do not reuse it.
+The gate input must be a signed envelope. The I2 envelope must be signed by a trusted `integrator` key and contain a separately signed current E attestation from an `independent_auditor` key. Both use RSASSA-PKCS1-v1_5-SHA256; the verifier checks signer role, validity interval, revocation, receipt expiry (maximum 24 hours), payload signature, and exact current I2/E identities. Signed claims bind the frozen SPEC, D file hashes, runtime identity, source-lock canonical-object hash and exact raw-byte SHA-256, metadata/calendar hashes, access ledger, run ID, and named operator.
 
-The gate receipt is a structured integrity check. This implementation does not cryptographically authenticate human, auditor, or Integrator identities, nor does it enforce operating-system access controls on a raw snapshot. A future authorized runner must provide a trusted receipt channel and file ACL/process isolation. A hand-written JSON object is not sufficient authorization by itself.
+Production trust keys are not created or assigned by this D change. The runner expects `/etc/csm-002/trusted-keys.json`, a root-owned regular file that is not group/world writable. Platform/security staff must provision the auditor and Integrator public keys, their principal IDs, roles, validity intervals, and revocation state; then independently verify the provisioned fingerprints and file ownership/mode. The file is absent/unverified in this work, so production receipt validation remains unavailable and CLOSED. Synthetic test keys are accepted only by test calls; the production CLI does not enable that path.
 
-## Command shape after those conditions are met
+The currently pinned I2 identity is PR #37 head `677341e8185bf38b5cc6d4490260ddefb72eb561`, gate.json blob `ba1670b0c13ec58e806838949a80574a5cbab6c4` / SHA-256 `54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6`, and `GATE.md` blob `03707f1aa346945a368e98881e8aa6f99ae91fb9` / SHA-256 `d901a7726355916088ade7ed32e129a241a360cbbcd220a01319413650d9465d`. Its state is CLOSED / access false. The pinned E identity is PR #38 head `d1335b29eeb01cdd4b71cd5ded62033b8468e539`, audit ID `AUDIT-CSM-E-20261002`, result blob `f29a5d38b16b54734a47c719c09922a461ee3fe4` / SHA-256 `c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35`, and matrix blob `3ada00d887bc76f88c777d2a40ea410077e3e594` / SHA-256 `a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7`. Its status is PARTIAL_WITH_GAPS / BLOCKED. Any later I/E update requires fresh identities and D re-audit; old receipts do not carry forward.
 
-The command accepts artifact paths only; there are no horizon, universe, seed, block-length, threshold, subgroup, or sweep options.
+## External run requirements — not established by D
+
+These controls are conditions for any later outcome-access review. D cannot prove or provision them in this PR; each remains a GAP until its owner supplies evidence.
+
+| Requirement | Owner | Verification evidence |
+|---|---|---|
+| Explicit filesystem allowlist for only the approved code, frozen metadata/receipts, one authorized input snapshot, and protected output/ledger paths | Execution-platform/security owner, to be named by the Integrator | Versioned sandbox policy plus denial probes for reads/writes outside each allowlisted path |
+| OS-level file and process isolation; prevent unrelated users/processes from opening the snapshot or outputs | Execution-platform/security owner, to be named by the Integrator | Separate unprivileged run identity, enforced mount/ACL and process policy, and recorded negative tests for blocked file access and process creation |
+| Durable output destination, with atomic promotion and readback after runner restart | Storage/platform owner, to be named by the Integrator | Provisioned protected destination, restart/persistence check, and readback of all output hashes |
+| Persistent append-only access/attempt ledger, including denied attempts, run IDs, input/output hashes, operator, timestamps, and retries | Research operations/security owner, to be named by the Integrator | Ledger location and retention policy, append-only/tamper-evidence check, and a verified test record read back from the durable store |
+| Named outcome-access operator | Integrator | Before any gate review, record the person's full name and stable account ID; verify their approved role and include the identity in the signed gate and durable ledger |
+
+The Python audit hook blocks selected network and subprocess events inside this process only. It is not OS-level isolation, a filesystem allowlist, or protection from another process. A local staged attempt directory is not a durable access ledger.
+
+## Capture and output safety
+
+`atomic_capture_bytes` writes a same-directory temporary file, checks the exact raw-byte SHA-256 and caller-supplied content validator, flushes and fsyncs it, then promotes it without overwriting an existing capture. The run path reads a source-lock file once into a byte buffer, parses that buffer, and uses the same bytes for raw SHA-256 validation. Capture and gate receipts bind both the canonical object hash and exact raw-byte hash; semantically equal JSON with different bytes fails if its raw hash is not the signed value.
+
+Calculation outputs are written under a same-filesystem temporary directory. Every file is fsynced and hash-checked against a completion manifest before the directory rename. Only after directory promotion and parent fsync does the runner atomically create the final success receipt. Write, flush, file/directory fsync, rename, and receipt-promotion failures are fault-injected in synthetic tests. Failed attempts remain in staging or are removed; they are not promoted as a successful run. The final destination's persistence, reader ACLs, and durable attempt logging remain external requirements above.
+
+## Future command shape
+
+This command is not currently authorized or runnable: the pinned I2 and E states fail closed, and the trusted production key store and external controls are not established.
 
 ```bash
 python3 csm.py run \
@@ -43,16 +61,8 @@ python3 csm.py run \
   --probe-metadata /secure/receipts/probe-metadata.json \
   --expected-calendar /secure/receipts/expected-calendar.json \
   --capture-manifest /secure/receipts/capture-manifest.json \
-  --gate-receipt /secure/receipts/integrator-gate.json \
+  --gate-receipt /secure/receipts/signed-integrator-gate.json \
   --output-dir /secure/runs/csm-002-attempt-001
 ```
 
-The command fails before reading the data file unless the gate, source lock, probe-metadata, code/test/config identity, and environment receipt pass. It then verifies the C calendar and capture hashes, installs a process audit hook that rejects network connection and subprocess events, parses the local ECB CSV snapshot against C's exact 32-column schema and seven dimension/unit/status locks, and builds the entire target-month event grid. It writes and hashes `event-ledger.json` before any target return calculation. Primary metrics are persisted before inference; a later calculation/bootstrap failure writes `attempt-status.json` with `scientific_status: NOT_APPLICABLE`. Any data identity failure stops the attempt; it is not a negative scientific result.
-
-After a valid gate, the output contains the per-slot log-return record, fixed metrics, bootstrap summary, and run receipt. Standard output contains status only; it does not print prices, price samples, rankings, or metrics. The primary metrics and inference files are sensitive market-derived output and must remain in the authorized output location.
-
-## Packet C adapter integration boundary
-
-The adapter accepts Packet C's exact `CSM-SOURCE-LOCK-ECB-001` structure and requires its accompanying `probe-metadata.json` for the ordered 32-column header. It checks all seven series keys and dimensions, quote units, decimal scales, ECB agency code, and status `A`, then maps `TIME_PERIOD` to the fixed-grid parser. The calendar adapter verifies the exact C artifact hash, 4,331 expected open dates, date-stream and month-end hashes, and all 203 month endpoints.
-
-Integration tests pin the Packet C artifact Git blob identities and feed the adapter generated synthetic CSV rows. They do not parse Packet C's probe response rows or any historical `OBS_VALUE`. Packet C remains `PARTIAL_WITH_GAPS`; its bounded November 2009 probe does not establish full-history continuity, historical same-day availability, or revisions. The outcome gate remains closed.
+No command option changes the fixed universe, dates, signal, target, bootstrap, thresholds, or decision rule. A blocked or failed execution is operational evidence with `scientific_status: NOT_APPLICABLE`; it is not a negative result.

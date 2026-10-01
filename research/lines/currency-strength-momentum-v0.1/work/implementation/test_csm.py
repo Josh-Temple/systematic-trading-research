@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import contextlib
+import base64
 import csv
 import hashlib
 import io
@@ -10,7 +11,7 @@ import os
 import random
 import tempfile
 import unittest
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 from pathlib import Path
 
@@ -286,8 +287,16 @@ class CalendarAndLeakageTests(unittest.TestCase):
         calendar = dates_for_small_grid()
         table = synthetic_table(calendar, remove_currency=(calendar["2020-01"], "USD"))
         event = csm.build_signal_events(("2020-01",), calendar, table)[0]
-        self.assertEqual(event.status, "SKIP")
-        self.assertIn("MISSING_CURRENCY:USD@2020-01", event.skip_reason or "")
+        self.assertEqual(event.status, "READY")
+        with tempfile.TemporaryDirectory() as temp:
+            ledger = Path(temp) / "event-ledger.json"
+            digest = csm.persist_event_ledger((event,), ledger)
+            outcomes = csm.calculate_outcomes_after_ledger(
+                (event,), table, ledger_path=ledger, expected_ledger_sha256=digest
+            )
+        self.assertEqual(outcomes, (None,))
+        metrics = csm.summarize_metrics(outcomes, (event,))
+        self.assertIn("TARGET_ENDPOINT_UNAVAILABLE:2020-01", metrics.skip_reasons)
 
     def test_missing_expected_target_endpoint_does_not_use_prior_day_or_shift(self) -> None:
         calendar = dates_for_small_grid()
@@ -298,7 +307,14 @@ class CalendarAndLeakageTests(unittest.TestCase):
         events = csm.build_signal_events(months, calendar, table)
         self.assertEqual(len(events), 3)
         self.assertEqual(events[1].target_month, "2020-02")
-        self.assertIn("MISSING_EXPECTED_ENDPOINT:2020-02@2020-02-28", events[1].skip_reason or "")
+        self.assertEqual(events[1].status, "READY")
+        with tempfile.TemporaryDirectory() as temp:
+            ledger = Path(temp) / "event-ledger.json"
+            digest = csm.persist_event_ledger((events[1],), ledger)
+            outcomes = csm.calculate_outcomes_after_ledger(
+                (events[1],), table, ledger_path=ledger, expected_ledger_sha256=digest
+            )
+        self.assertEqual(outcomes, (None,))
         self.assertEqual(events[2].target_month, "2020-03")
         self.assertIn("MISSING_EXPECTED_ENDPOINT:2020-02@2020-02-28", events[2].skip_reason or "")
 
@@ -310,6 +326,10 @@ class CalendarAndLeakageTests(unittest.TestCase):
         event = csm.build_signal_events(("2020-01",), incomplete, table)[0]
         self.assertEqual(event.status, "SKIP")
         self.assertIn("NO_EXPECTED_ENDPOINT:2020-01", event.skip_reason or "")
+        self.assertEqual(set(event.score_identities), set(csm.CURRENCIES))
+        self.assertTrue(all(len(score["identity_sha256"]) == 64
+                            and len(score["input_identity_sha256"]) == 64
+                            for score in event.score_identities.values()))
 
     def test_prefix_truncation_and_future_perturbation_preserve_past_signal(self) -> None:
         calendar = dates_for_small_grid()
@@ -333,6 +353,48 @@ class CalendarAndLeakageTests(unittest.TestCase):
         for index in (0, 1):
             self.assertEqual((full_events[index].winner, full_events[index].loser),
                              (perturbed[index].winner, perturbed[index].loser))
+
+    def test_pre_outcome_ledger_records_a_b_and_all_score_identities(self) -> None:
+        calendar = dates_for_small_grid()
+        table = synthetic_table(calendar)
+        event = csm.build_signal_events(("2020-01",), calendar, table)[0]
+        row = csm.event_ledger_payload((event,))["events"][0]
+        self.assertEqual(row["a"], event.winner)
+        self.assertEqual(row["b"], event.loser)
+        self.assertEqual(row["formation_start_date"], calendar["2019-11"])
+        self.assertEqual(row["formation_end_date"], calendar["2019-12"])
+        self.assertEqual(set(row["score_identities"]), set(csm.CURRENCIES))
+        for currency, score in event.score_identities.items():
+            self.assertEqual(score["status"], "AVAILABLE")
+            self.assertEqual(score["score_spec"], csm.SCORE_IDENTITY_SPEC)
+            self.assertEqual(len(score["identity_sha256"]), 64)
+            self.assertEqual(len(score["input_identity_sha256"]), 64)
+        repeated = csm.build_signal_events(("2020-01",), calendar, table)[0]
+        self.assertEqual(event.score_identities, repeated.score_identities)
+
+    def test_score_ledger_is_independent_of_target_values_and_target_availability(self) -> None:
+        calendar = dates_for_small_grid()
+        table = synthetic_table(calendar)
+        baseline = csm.build_signal_events(("2020-01",), calendar, table)
+        changed_values = {day: dict(values) for day, values in table.values.items()}
+        target_day = date.fromisoformat(calendar["2020-01"])
+        changed_values[target_day].update({"AUD": Decimal("9000"), "USD": Decimal("0.0001")})
+        changed = csm.QuoteTable(changed_values, table.statuses, table.row_dates)
+        changed_event = csm.build_signal_events(("2020-01",), calendar, changed)
+        self.assertEqual(
+            csm.canonical_json_bytes(csm.event_ledger_payload(baseline)),
+            csm.canonical_json_bytes(csm.event_ledger_payload(changed_event)),
+        )
+        target_missing = csm.QuoteTable(
+            {day: values for day, values in table.values.items() if day != target_day},
+            table.statuses,
+            frozenset(day for day in table.row_dates if day != target_day),
+        )
+        missing_event = csm.build_signal_events(("2020-01",), calendar, target_missing)
+        self.assertEqual(
+            csm.canonical_json_bytes(csm.event_ledger_payload(baseline)),
+            csm.canonical_json_bytes(csm.event_ledger_payload(missing_event)),
+        )
 
     def test_shared_boundary_is_reference_association_not_entry_claim(self) -> None:
         receipt = {"temporal_claim": "REFERENCE_ASSOCIATION_ONLY", "available_at": "UNKNOWN",
@@ -466,11 +528,13 @@ class GateAndReceiptTests(unittest.TestCase):
 
     def test_capture_preflight_hash_and_identity(self) -> None:
         lock = synthetic_source_lock()
+        source_lock_raw = csm.canonical_json_bytes(lock)
         raw = b"synthetic bytes only"
         manifest = {
             "capture_status": "CAPTURED",
             "source_lock_id": lock["id"],
             "source_lock_sha256": csm.sha256_bytes(csm.canonical_json_bytes(lock)),
+            "source_lock_raw_sha256": csm.sha256_bytes(source_lock_raw),
             "spec_id": csm.SPEC_ID,
             "data_role": "EXPLORATORY_DISCOVERY",
             "requested_start": "2009-11-01",
@@ -482,25 +546,106 @@ class GateAndReceiptTests(unittest.TestCase):
             "snapshot_uri": "SYNTHETIC",
             "identity_check": "PASS",
         }
-        csm.validate_capture_manifest(manifest, raw, lock)
+        csm.validate_capture_manifest(manifest, raw, lock, source_lock_raw_bytes=source_lock_raw)
         manifest["raw_snapshot_sha256"] = "0" * 64
         with self.assertRaisesRegex(csm.GateError, "hash mismatch"):
-            csm.validate_capture_manifest(manifest, raw, lock)
+            csm.validate_capture_manifest(manifest, raw, lock, source_lock_raw_bytes=source_lock_raw)
         manifest["raw_snapshot_sha256"] = csm.sha256_bytes(raw)
         manifest["source_lock_id"] = "DIFFERENT-LOCK"
         with self.assertRaisesRegex(csm.GateError, "identity mismatch"):
-            csm.validate_capture_manifest(manifest, raw, lock)
+            csm.validate_capture_manifest(manifest, raw, lock, source_lock_raw_bytes=source_lock_raw)
 
     def test_partial_or_unfrozen_gate_receipt_cannot_authorize(self) -> None:
         with self.assertRaisesRegex(csm.GateError, "human has not frozen"):
-            csm.validate_gate_receipt({"gate_status": "PASS"}, synthetic_source_lock())
+            receipt, trusted, raw = synthetic_gate_receipt(
+                synthetic_source_lock(), gate_overrides={"human_freeze_status": "NOT_FROZEN"}
+            )
+            csm.validate_gate_receipt(
+                receipt, synthetic_source_lock(), source_lock_raw_bytes=raw,
+                trusted_keys=trusted, expected_file_hashes=TEST_FILE_HASHES,
+                expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
+                expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
+                now=TEST_NOW, expected_current_i2_gate=TEST_CURRENT_I2_GATE,
+                expected_e_audit=TEST_E_AUDIT, allow_synthetic_test_fixtures=True,
+            )
 
-    def test_gate_rejects_source_lock_content_mutation(self) -> None:
+    def test_signed_gate_receipt_accepts_only_trusted_e_and_i2_signatures(self) -> None:
         lock = synthetic_source_lock()
-        gate = synthetic_gate_receipt(lock)
-        gate["source_lock_sha256"] = "0" * 64
-        with self.assertRaisesRegex(csm.GateError, "source-lock content identity"):
-            csm.validate_gate_receipt(gate, lock)
+        gate, keys, raw = synthetic_gate_receipt(lock)
+        accepted = csm.validate_gate_receipt(
+            gate, lock, source_lock_raw_bytes=raw, trusted_keys=keys,
+            expected_file_hashes=TEST_FILE_HASHES,
+            expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
+            expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
+            now=TEST_NOW, expected_current_i2_gate=TEST_CURRENT_I2_GATE,
+            expected_e_audit=TEST_E_AUDIT, allow_synthetic_test_fixtures=True,
+        )
+        self.assertEqual(accepted["gate_status"], "PASS")
+
+    def test_gate_rejects_arbitrary_signing_key_and_bad_signature(self) -> None:
+        lock = synthetic_source_lock()
+        gate, keys, raw = synthetic_gate_receipt(lock)
+        unknown = json.loads(json.dumps(gate))
+        unknown["signature"]["key_id"] = "attacker-key-0001"
+        with self.assertRaisesRegex(csm.GateError, "not in the trusted key store"):
+            validate_test_gate(unknown, lock, raw, keys)
+        bad_signature = json.loads(json.dumps(gate))
+        bad_signature["signature"]["signature_b64"] = base64.b64encode(b"\x00" * 256).decode()
+        with self.assertRaisesRegex(csm.GateError, "signature verification failed"):
+            validate_test_gate(bad_signature, lock, raw, keys)
+
+    def test_gate_rejects_placeholder_missing_and_expired_receipts(self) -> None:
+        lock = synthetic_source_lock()
+        gate, keys, raw = synthetic_gate_receipt(lock, gate_overrides={"gate_id": "PLACEHOLDER"})
+        with self.assertRaisesRegex(csm.GateError, "placeholder gate_id"):
+            validate_test_gate(gate, lock, raw, keys)
+        missing, keys, raw = synthetic_gate_receipt(lock)
+        del missing["signature"]
+        with self.assertRaisesRegex(csm.GateError, "not a signed envelope"):
+            validate_test_gate(missing, lock, raw, keys)
+        expired, keys, raw = synthetic_gate_receipt(
+            lock,
+            gate_issued_at="2026-10-01T00:00:00+00:00",
+            gate_expires_at="2026-10-01T12:00:00+00:00",
+        )
+        with self.assertRaisesRegex(csm.GateError, "expired"):
+            validate_test_gate(expired, lock, raw, keys)
+
+    def test_source_lock_raw_byte_identity_rejects_semantically_equal_json(self) -> None:
+        lock = synthetic_source_lock()
+        receipt, keys, raw = synthetic_gate_receipt(lock)
+        different_bytes = json.dumps(lock, indent=2, sort_keys=True).encode("utf-8")
+        self.assertEqual(json.loads(different_bytes.decode("utf-8")), lock)
+        with self.assertRaisesRegex(csm.GateError, "raw-byte identity mismatch"):
+            validate_test_gate(receipt, lock, different_bytes, keys)
+        changed = json.loads(json.dumps(receipt))
+        changed["payload"]["source_lock_raw_sha256"] = csm.sha256_bytes(different_bytes)
+        changed = sign_gate_payload(changed["payload"])
+        with self.assertRaisesRegex(csm.GateError, "raw-byte identity mismatch"):
+            validate_test_gate(changed, lock, raw, keys)
+
+    def test_current_i2_closed_and_current_e_blocked_are_not_authorizing(self) -> None:
+        lock = synthetic_source_lock()
+        receipt, keys, raw = synthetic_gate_receipt(lock)
+        with self.assertRaisesRegex(csm.GateError, "does not identify the current I2 gate"):
+            validate_test_gate(
+                receipt, lock, raw, keys,
+                expected_current_i2_gate=csm.CURRENT_I2_GATE_EXPECTED,
+                expected_e_audit=TEST_E_AUDIT,
+            )
+
+    def test_current_e_partial_recommendation_blocks_even_a_valid_signature(self) -> None:
+        lock = synthetic_source_lock()
+        receipt, keys, raw = synthetic_gate_receipt(
+            lock, current_i2_gate=TEST_CURRENT_I2_GATE,
+            e_audit=csm.CURRENT_E_AUDIT_EXPECTED,
+        )
+        with self.assertRaisesRegex(csm.GateError, "current E audit does not authorize"):
+            validate_test_gate(
+                receipt, lock, raw, keys,
+                expected_current_i2_gate=TEST_CURRENT_I2_GATE,
+                expected_e_audit=csm.CURRENT_E_AUDIT_EXPECTED,
+            )
 
     def test_network_audit_hook_rejects_connect(self) -> None:
         with self.assertRaisesRegex(PermissionError, "disabled"):
@@ -538,6 +683,91 @@ class GateAndReceiptTests(unittest.TestCase):
         self.assertEqual(csm.sha256_bytes(b"abc"),
                          "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
         self.assertEqual(csm.canonical_json_bytes({"x": Decimal("1.20")}), b'{"x":"1.20"}')
+
+
+class AtomicPersistenceTests(unittest.TestCase):
+    def fail_at(self, target: str):
+        def inject(point: str) -> None:
+            if point == target:
+                raise OSError(f"injected {target} failure")
+        return inject
+
+    def build_stage(self, root: Path, name: str) -> Path:
+        stage = root / f".{name}.stage"
+        stage.mkdir()
+        files = {
+            "attempt-start.json": b'{"execution_status":"IN_PROGRESS"}',
+            "event-ledger.json": b'{"record_type":"PRE_OUTCOME_EVENT_LEDGER"}',
+            "primary-metrics.json": b'{"synthetic":true}',
+            "inference.json": b'{"scientific_status":"NOT_APPLICABLE"}',
+        }
+        for filename, payload in files.items():
+            (stage / filename).write_bytes(payload)
+        success = {
+            "execution_status": "SUCCESS",
+            "output_file_sha256": {
+                filename: hashlib.sha256(payload).hexdigest()
+                for filename, payload in files.items()
+            },
+        }
+        (stage / "_completion-pending.json").write_bytes(csm.canonical_json_bytes({
+            "promotion_status": "READY_TO_PROMOTE",
+            "success_receipt": success,
+        }))
+        return stage
+
+    def test_capture_write_flush_fsync_and_promotion_failures_never_publish_partial_bytes(self) -> None:
+        for point in ("write", "flush", "file_fsync", "promotion", "parent_fsync"):
+            with self.subTest(point=point), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                destination = root / "capture.bin"
+                payload = b"synthetic capture bytes only"
+                with self.assertRaisesRegex(csm.GateError, "failed"):
+                    csm.atomic_capture_bytes(
+                        payload, destination,
+                        expected_sha256=csm.sha256_bytes(payload),
+                        validator=lambda raw: self.assertEqual(raw, payload),
+                        fault_injector=self.fail_at(point),
+                    )
+                self.assertFalse(destination.exists())
+                self.assertEqual(list(root.glob(".capture.bin.stage-*")), [])
+
+    def test_capture_hash_mismatch_is_not_promoted(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            destination = Path(temp) / "capture.bin"
+            with self.assertRaisesRegex(csm.GateError, "hash mismatch"):
+                csm.atomic_capture_bytes(
+                    b"synthetic bytes", destination, expected_sha256="0" * 64,
+                    validator=lambda raw: None,
+                )
+            self.assertFalse(destination.exists())
+
+    def test_output_rename_and_promotion_failures_never_leave_success_receipt(self) -> None:
+        for point in ("rename", "parent_fsync", "success_receipt", "success_file_fsync",
+                      "success_promotion", "success_parent_fsync"):
+            with self.subTest(point=point), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                destination = root / "published-run"
+                stage = self.build_stage(root, destination.name)
+                with self.assertRaisesRegex(csm.GateError, "failed|injected"):
+                    csm.promote_output_directory(
+                        stage, destination, fault_injector=self.fail_at(point)
+                    )
+                self.assertFalse((destination / "run-receipt.json").exists())
+                self.assertFalse(destination.exists())
+                if stage.exists():
+                    self.assertTrue((stage / "_completion-pending.json").exists())
+
+    def test_output_promotion_validates_all_bytes_before_final_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            destination = root / "published-run"
+            stage = self.build_stage(root, destination.name)
+            (stage / "event-ledger.json").write_bytes(b"mutated synthetic bytes")
+            with self.assertRaisesRegex(csm.GateError, "hash mismatch"):
+                csm.promote_output_directory(stage, destination)
+            self.assertFalse(destination.exists())
+            self.assertFalse((stage / "run-receipt.json").exists())
 
 
 class PacketCIntegrationTests(unittest.TestCase):
@@ -583,17 +813,27 @@ class PacketCIntegrationTests(unittest.TestCase):
         self.assertEqual(csm.price_vector(table, date(2009, 11, 2))["EUR"], Decimal(1))
 
         metadata_hash = csm.sha256_bytes(payloads["probe-metadata"])
-        synthetic_gate = synthetic_gate_receipt(source_lock)
-        synthetic_gate["expected_calendar_sha256"] = source_lock["calendar"]["sha256"]
-        synthetic_gate["probe_metadata_sha256"] = metadata_hash
+        synthetic_gate, trusted_keys, _ = synthetic_gate_receipt(
+            source_lock,
+            source_lock_raw_bytes=payloads["source-lock"],
+            expected_calendar_sha256=source_lock["calendar"]["sha256"],
+            probe_metadata_sha256=metadata_hash,
+        )
         csm.validate_gate_receipt(
-            synthetic_gate, source_lock,
+            synthetic_gate, source_lock, source_lock_raw_bytes=payloads["source-lock"],
+            trusted_keys=trusted_keys,
+            expected_file_hashes=TEST_FILE_HASHES,
+            expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
             expected_probe_metadata_sha256=metadata_hash,
+            expected_calendar_sha256=source_lock["calendar"]["sha256"],
+            now=TEST_NOW, expected_current_i2_gate=TEST_CURRENT_I2_GATE,
+            expected_e_audit=TEST_E_AUDIT, allow_synthetic_test_fixtures=True,
         )
         capture_manifest = {
             "capture_status": "CAPTURED",
             "source_lock_id": csm.source_lock_id(source_lock),
             "source_lock_sha256": csm.sha256_bytes(csm.canonical_json_bytes(source_lock)),
+            "source_lock_raw_sha256": csm.sha256_bytes(payloads["source-lock"]),
             "spec_id": csm.SPEC_ID,
             "data_role": "EXPLORATORY_DISCOVERY",
             "requested_start": "2009-11-01",
@@ -608,6 +848,7 @@ class PacketCIntegrationTests(unittest.TestCase):
         }
         csm.validate_capture_manifest(
             capture_manifest, synthetic_csv, source_lock,
+            source_lock_raw_bytes=payloads["source-lock"],
             expected_metadata_sha256=metadata_hash,
         )
 
@@ -663,9 +904,108 @@ def synthetic_source_lock() -> dict[str, object]:
     }
 
 
-def synthetic_gate_receipt(source_lock: dict[str, object]) -> dict[str, object]:
-    unit_status = csm.source_unit_status_map(source_lock)
-    return {
+TEST_RSA_N = int(
+    "f12c454cafaa2a3cc5d755f9db98ca193944475b5ed676efb0facd2a0ebcce35272e6721d8ac76a15a136b01e41fd481b3926cdc95f48f27680cd57a2fe9ae13f0bc79d31d616b1cbb5b028c86f69aecf93ad84efc426ff3b77245d9e38ed6868069f84adddb175a1eddb99983da0a8ba8975d047e8fb50390f6a09c723bd84b855d65995738c247bddc199af39ae49324305be07cc587ba074bbe6f72af3cb516734036a8e20998589cb37256cc32ccd5275d0a3dedb3ef320d334ae9dd8e6d78391021f0f58288a74a625c32e66f4023710a378c068ddcd1bd59976ef2722bb662cd4a4241ac21a47f134568a5157eeee81d4b3ccbf39e8a4ded3def126833",
+    16,
+)
+TEST_RSA_D = int(
+    "4bf6a04b53c75aef72776d96ba22e9814166eebcea65cde7988c9ec3c1099a3fe6bbf873123edc4cdd44e17f227e1e1ece53702398be03bb2b4c638f4d7922c218211d94301c67b310964d7abae6010d64413331c9c61962202587b7e633af0185801b5b657ee55f96fa4ac3fe6256d0ff84d1a121461d83668d3030a6d08fc3394dc7a94ed00c9bfaecd94c8ce147c3c154d534b7163f36b2ca8f929ff20ca69ace7d6197c527a4cb5fc773ae19668945df5a1436cea37b561c560566d360737f660c73921e06c46a5bfed26936be53dc751dbfe2a911f88eeb1bc1847754e759899e84280df1cfa055a555e60c20dab7d60dd25b662790b50443f017946a7d",
+    16,
+)
+TEST_NOW = datetime.fromisoformat("2026-10-02T07:00:00+09:00")
+TEST_CURRENT_I2_GATE = {
+    "pr_number": 37,
+    "head_sha": "a" * 40,
+    "gate_blob_sha1": "1" * 40,
+    "gate_sha256": "2" * 64,
+    "gate_markdown_blob_sha1": "3" * 40,
+    "gate_markdown_sha256": "4" * 64,
+    "gate_status": "PASS",
+    "market_outcome_access": True,
+}
+TEST_E_AUDIT = {
+    "audit_id": "AUDIT-CSM-E-SYNTH-001",
+    "pr_number": 38,
+    "head_sha": "b" * 40,
+    "result_blob_sha1": "5" * 40,
+    "result_sha256": "6" * 64,
+    "matrix_blob_sha1": "7" * 40,
+    "matrix_sha256": "8" * 64,
+    "status": "PASS",
+    "recommendation": "ALLOW_I2",
+}
+TEST_FILE_HASHES = {
+    "csm.py": "1" * 64,
+    "test_csm.py": "2" * 64,
+    "config.json": "3" * 64,
+    "RUNBOOK.md": "4" * 64,
+    "ENVIRONMENT.md": "5" * 64,
+    "RESULT.md": "6" * 64,
+    "TEST_MATRIX.md": "7" * 64,
+    "TEST_LOG.txt": "8" * 64,
+    "fixtures/toy_cases.json": "9" * 64,
+}
+TEST_ENVIRONMENT_SHA256 = "c" * 64
+TEST_TRUSTED_KEYS = {
+    "auditor-test-key-001": {
+        "role": "independent_auditor", "principal_id": "auditor-principal-001",
+        "n_hex": format(TEST_RSA_N, "x"), "e": 65537, "revoked": False,
+        "valid_from": "2026-01-01T00:00:00Z", "valid_until": "2027-01-01T00:00:00Z",
+    },
+    "integrator-test-key-001": {
+        "role": "integrator", "principal_id": "integrator-principal-001",
+        "n_hex": format(TEST_RSA_N, "x"), "e": 65537, "revoked": False,
+        "valid_from": "2026-01-01T00:00:00Z", "valid_until": "2027-01-01T00:00:00Z",
+    },
+}
+
+
+def sign_envelope(
+    payload: dict[str, object], key_id: str, *,
+    issued_at: str = "2026-10-02T06:00:00+09:00",
+    expires_at: str = "2026-10-02T18:00:00+09:00",
+) -> dict[str, object]:
+    signature_doc = {
+        "key_id": key_id,
+        "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+        "issued_at": issued_at,
+        "expires_at": expires_at,
+    }
+    message = csm.canonical_json_bytes({"payload": payload, **signature_doc})
+    digest_info = csm.RSA_SHA256_DIGEST_INFO_PREFIX + hashlib.sha256(message).digest()
+    size = (TEST_RSA_N.bit_length() + 7) // 8
+    padding_len = size - len(digest_info) - 3
+    encoded = b"\x00\x01" + b"\xff" * padding_len + b"\x00" + digest_info
+    signature = pow(int.from_bytes(encoded, "big"), TEST_RSA_D, TEST_RSA_N).to_bytes(size, "big")
+    return {"payload": payload, "signature": {
+        **signature_doc,
+        "signature_b64": base64.b64encode(signature).decode("ascii"),
+    }}
+
+
+def sign_gate_payload(payload: dict[str, object], **kwargs: object) -> dict[str, object]:
+    return sign_envelope(payload, "integrator-test-key-001", **kwargs)
+
+
+def synthetic_gate_receipt(
+    source_lock: dict[str, object], *, source_lock_raw_bytes: bytes | None = None,
+    expected_calendar_sha256: str = "a" * 64,
+    probe_metadata_sha256: str | None = None,
+    current_i2_gate: dict[str, object] | None = None,
+    e_audit: dict[str, object] | None = None,
+    gate_overrides: dict[str, object] | None = None,
+    gate_issued_at: str = "2026-10-02T06:00:00+09:00",
+    gate_expires_at: str = "2026-10-02T18:00:00+09:00",
+) -> tuple[dict[str, object], dict[str, dict[str, object]], bytes]:
+    raw_lock = source_lock_raw_bytes or csm.canonical_json_bytes(source_lock)
+    audit_identity = dict(e_audit or TEST_E_AUDIT)
+    audit_payload = {**audit_identity, "signer_principal_id": "auditor-principal-001"}
+    e_envelope = sign_envelope(audit_payload, "auditor-test-key-001")
+    file_hashes = TEST_FILE_HASHES
+    payload: dict[str, object] = {
+        "gate_id": "I2-CSM-002-20261002-TEST-001",
+        "integrator_principal_id": "integrator-principal-001",
+        "signer_principal_id": "integrator-principal-001",
         "gate_status": "PASS",
         "human_freeze_status": "FROZEN",
         "market_outcome_access_authorized": True,
@@ -674,26 +1014,52 @@ def synthetic_gate_receipt(source_lock: dict[str, object]) -> dict[str, object]:
         "spec_git_blob_sha1": csm.SPEC_GIT_BLOB_SHA1,
         "spec_sha256": csm.SPEC_SHA256,
         "hypothesis_id": csm.HYPOTHESIS_ID,
+        "human_contract_decision_id": csm.HUMAN_DECISION_ID,
         "source_lock_id": csm.source_lock_id(source_lock),
-        "human_contract_decision_id": "SYNTHETIC_FIXTURE_ONLY",
         "source_transport": csm.source_transport(source_lock),
         "source_lock_sha256": csm.sha256_bytes(csm.canonical_json_bytes(source_lock)),
-        "unit_status_map_sha256": csm.sha256_bytes(csm.canonical_json_bytes(unit_status)),
-        "expected_calendar_sha256": "a" * 64,
-        "raw_capture_process_id": "SYNTHETIC_FIXTURE_ONLY",
-        "access_ledger_id": "SYNTHETIC_FIXTURE_ONLY",
-        "code_commit": "SYNTHETIC_FIXTURE_ONLY",
-        "synthetic_test_log_sha256": "b" * 64,
-        "environment_identity_sha256": "c" * 64,
-        "independent_audit_id": "SYNTHETIC_FIXTURE_ONLY",
-        "integrator_gate_id": "SYNTHETIC_FIXTURE_ONLY",
-        "run_id": "SYNTHETIC_FIXTURE_ONLY",
-        "outcome_access_owner": "SYNTHETIC_FIXTURE_ONLY",
+        "source_lock_raw_sha256": csm.sha256_bytes(raw_lock),
+        "unit_status_map_sha256": csm.sha256_bytes(
+            csm.canonical_json_bytes(csm.source_unit_status_map(source_lock))
+        ),
+        "expected_calendar_sha256": expected_calendar_sha256,
+        "probe_metadata_sha256": probe_metadata_sha256,
         "source_series_keys": list(csm.EXPECTED_SERIES_BY_CURRENCY.values()),
         "time_range": {"source_start": csm.SOURCE_START, "source_end": csm.SOURCE_END,
                        "target_start": csm.TARGET_START, "target_end": csm.TARGET_END},
+        "raw_capture_process_id": "capture-process-20261002-001",
+        "access_ledger_id": "access-ledger-20261002-001",
+        "run_id": "csm-run-20261002-001",
+        "outcome_access_operator_id": "operator-account-20261002-001",
+        "outcome_access_operator_name": "Jordan Rivera",
+        "code_file_hashes": dict(file_hashes),
+        "synthetic_test_log_sha256": file_hashes["TEST_LOG.txt"],
+        "environment_identity_sha256": TEST_ENVIRONMENT_SHA256,
+        "current_i2_gate_identity": dict(current_i2_gate or TEST_CURRENT_I2_GATE),
+        "independent_audit_identity": audit_identity,
+        "independent_audit_attestation": e_envelope,
+        "independent_audit_envelope_sha256": csm.sha256_bytes(csm.canonical_json_bytes(e_envelope)),
         "full_history_run_authorized": True,
     }
+    payload.update(gate_overrides or {})
+    return (sign_gate_payload(payload, issued_at=gate_issued_at, expires_at=gate_expires_at),
+            TEST_TRUSTED_KEYS, raw_lock)
+
+
+def validate_test_gate(
+    receipt: dict[str, object], source_lock: dict[str, object], source_lock_raw_bytes: bytes,
+    trusted_keys: dict[str, dict[str, object]], *,
+    expected_current_i2_gate: dict[str, object] = TEST_CURRENT_I2_GATE,
+    expected_e_audit: dict[str, object] = TEST_E_AUDIT,
+) -> dict[str, object]:
+    return csm.validate_gate_receipt(
+        receipt, source_lock, source_lock_raw_bytes=source_lock_raw_bytes,
+        trusted_keys=trusted_keys, expected_file_hashes=TEST_FILE_HASHES,
+        expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
+        expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
+        now=TEST_NOW, expected_current_i2_gate=expected_current_i2_gate,
+        expected_e_audit=expected_e_audit, allow_synthetic_test_fixtures=True,
+    )
 
 
 if __name__ == "__main__":

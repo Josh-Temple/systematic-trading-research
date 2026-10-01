@@ -1,66 +1,41 @@
-Packet D post-freeze implementation verification (2026-10-01)
-Environment: Python 3.12.14; CPython; Linux-6.18.44-x86_64-with-glibc2.39; standard library only.
-Accepted pre-freeze SPEC: blob a073e77dec14337ee20609ed6136e50a8c1e76e2; SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90.
-Frozen SPEC: blob 7fe114e2fcfa33b0565b51c717455abd8837d5d9; SHA-256 a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2.
-Human decision: HDEC-CSM-002-20261001; freeze decision: DEC-CSM-003-FREEZE-20261001.
-Packet C source-lock blob: 81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf; SHA-256 ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71.
-Packet C probe-metadata blob: 21aa9149b7b7db9b07f1aa3f4bf0312675a166bd; SHA-256 1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533.
-Packet C expected-calendar blob: 6ed720353472ba6f35391936c536d46fb6ae8c66; SHA-256 6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4.
-Current code SHA-256: 5a47700f7024e19a39f4dd1688bf343a132a21946672ac4a034aa51d0d8ebdd2.
-Current test SHA-256: 70650ded3dec9e94d78f88f14691454cebf63a2b0155de5cb11df7bd2fe1a5ff.
-Current config SHA-256: 9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1.
+Packet D outcome-blind correction verification
+Date: 2026-10-02 (JST)
+Environment: Python 3.12.14; CPython; Linux-6.18.44-x86_64-with-glibc2.39; Python standard library only.
 
-All CSV rows parsed by tests are generated synthetic rows. The Packet C probe response rows and OBS_VALUE contents are not read by this suite. No full-history market data, rankings, forward returns, or market-derived strategy metrics were read or computed.
+Frozen contract identity
+SPEC-CSM-002-v01 Git blob: 7fe114e2fcfa33b0565b51c717455abd8837d5d9
+SPEC-CSM-002-v01 SHA-256: a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2
+Config status: FROZEN; current config matches this frozen identity.
 
+Exact Packet C metadata-only inputs
+Source ref: PR #35 head 9870c710c3cba7bb9226c9eee8ec36687b96fd9d
+research/lines/currency-strength-momentum-v0.1/work/source-qualification/source-lock.json
+  Git blob SHA-1: 81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf
+  SHA-256: ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71
+research/lines/currency-strength-momentum-v0.1/work/source-qualification/probe-metadata.json
+  Git blob SHA-1: 21aa9149b7b7db9b07f1aa3a4bf0312675a166bd
+  SHA-256: 1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533
+research/lines/currency-strength-momentum-v0.1/work/source-qualification/expected-calendar.json
+  Git blob SHA-1: 6ed720353472ba6f35391936c536d46fb6ae8c66
+  SHA-256: 6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4
+
+Gate and audit identities used for fail-closed tests
+Current I2 PR #37 head: 677341e8185bf38b5cc6d4490260ddefb72eb561; gate.json blob ba1670b0c13ec58e806838949a80574a5cbab6c4; SHA-256 54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6; state CLOSED / access false.
+Current E PR #38 head: d1335b29eeb01cdd4b71cd5ded62033b8468e539; AUDIT-CSM-E-20261002; PARTIAL_WITH_GAPS / BLOCKED.
+E RESULT.md blob f29a5d38b16b54734a47c719c09922a461ee3fe4; SHA-256 c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35.
+E AUDIT_MATRIX.csv blob 3ada00d887bc76f88c777d2a40ea410077e3e594; SHA-256 a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7.
+
+Commands and results
 Command: python3 -m py_compile csm.py test_csm.py
-Result: PASS (exit code 0; no output)
-Command: CSM_PACKET_C_SOURCE_LOCK=../source-qualification/source-lock.json CSM_PACKET_C_PROBE_METADATA=../source-qualification/probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=../source-qualification/expected-calendar.json python3 -m unittest -v test_csm.py
-Result: PASS
+Result: PASS; exit code 0; no output.
 
-test_fixed_full_grid_has_partial_final_year_and_no_shift (test_csm.CalendarAndLeakageTests.test_fixed_full_grid_has_partial_final_year_and_no_shift) ... ok
-test_missing_calendar_endpoint_is_not_inferred_from_prices (test_csm.CalendarAndLeakageTests.test_missing_calendar_endpoint_is_not_inferred_from_prices) ... ok
-test_missing_expected_target_endpoint_does_not_use_prior_day_or_shift (test_csm.CalendarAndLeakageTests.test_missing_expected_target_endpoint_does_not_use_prior_day_or_shift) ... ok
-test_one_currency_missing_at_endpoint_is_skip_not_rollback (test_csm.CalendarAndLeakageTests.test_one_currency_missing_at_endpoint_is_skip_not_rollback) ... ok
-test_prefix_truncation_and_future_perturbation_preserve_past_signal (test_csm.CalendarAndLeakageTests.test_prefix_truncation_and_future_perturbation_preserve_past_signal) ... ok
-test_shared_boundary_is_reference_association_not_entry_claim (test_csm.CalendarAndLeakageTests.test_shared_boundary_is_reference_association_not_entry_claim) ... ok
-test_whole_missing_month_is_recorded_without_compressing_grid (test_csm.CalendarAndLeakageTests.test_whole_missing_month_is_recorded_without_compressing_grid) ... ok
-test_year_boundary_and_expected_calendar_endpoints_are_used (test_csm.CalendarAndLeakageTests.test_year_boundary_and_expected_calendar_endpoints_are_used) ... ok
-test_28_canonical_long_directions_need_not_contain_56_way_winner (test_csm.FormulaTests.test_28_canonical_long_directions_need_not_contain_56_way_winner) ... ok
-test_all_56_directed_max_matches_unique_raw_max_minus_min (test_csm.FormulaTests.test_all_56_directed_max_matches_unique_raw_max_minus_min) ... ok
-test_equal_pair_average_preserves_complete_network_rank (test_csm.FormulaTests.test_equal_pair_average_preserves_complete_network_rank) ... ok
-test_eur_can_be_winner_or_loser (test_csm.FormulaTests.test_eur_can_be_winner_or_loser) ... ok
-test_eur_constant_usd_included_and_exact_extrema (test_csm.FormulaTests.test_eur_constant_usd_included_and_exact_extrema) ... ok
-test_exact_decimal_ratio_tie_is_not_broken_by_float_rounding (test_csm.FormulaTests.test_exact_decimal_ratio_tie_is_not_broken_by_float_rounding) ... ok
-test_numeraire_invariance (test_csm.FormulaTests.test_numeraire_invariance) ... ok
-test_quote_direction_and_simple_return_difference_bug (test_csm.FormulaTests.test_quote_direction_and_simple_return_difference_bug) ... ok
-test_usd_can_be_winner_or_loser (test_csm.FormulaTests.test_usd_can_be_winner_or_loser) ... ok
-test_capture_preflight_hash_and_identity (test_csm.GateAndReceiptTests.test_capture_preflight_hash_and_identity) ... ok
-test_config_is_single_frozen_spec_and_rejects_drift (test_csm.GateAndReceiptTests.test_config_is_single_frozen_spec_and_rejects_drift) ... ok
-test_event_ledger_must_be_persisted_and_hashed_before_outcomes (test_csm.GateAndReceiptTests.test_event_ledger_must_be_persisted_and_hashed_before_outcomes) ... ok
-test_event_ledger_mutation_fails_identity_check (test_csm.GateAndReceiptTests.test_event_ledger_mutation_fails_identity_check) ... ok
-test_gate_closed_and_no_access_cli_does_not_read_outcome_file_or_emit_values (test_csm.GateAndReceiptTests.test_gate_closed_and_no_access_cli_does_not_read_outcome_file_or_emit_values) ... ok
-test_gate_rejects_source_lock_content_mutation (test_csm.GateAndReceiptTests.test_gate_rejects_source_lock_content_mutation) ... ok
-test_hashing_and_decimal_json_snapshot_are_stable (test_csm.GateAndReceiptTests.test_hashing_and_decimal_json_snapshot_are_stable) ... ok
-test_network_audit_hook_rejects_connect (test_csm.GateAndReceiptTests.test_network_audit_hook_rejects_connect) ... ok
-test_partial_or_unfrozen_gate_receipt_cannot_authorize (test_csm.GateAndReceiptTests.test_partial_or_unfrozen_gate_receipt_cannot_authorize) ... ok
-test_any_zero_valid_replicate_fails_closed (test_csm.MetricsAndBootstrapTests.test_any_zero_valid_replicate_fails_closed) ... ok
-test_circular_resample_keeps_calendar_length_and_missing_slot (test_csm.MetricsAndBootstrapTests.test_circular_resample_keeps_calendar_length_and_missing_slot) ... ok
-test_fixed_seed_bootstrap_is_reproducible_with_missing_slots (test_csm.MetricsAndBootstrapTests.test_fixed_seed_bootstrap_is_reproducible_with_missing_slots) ... ok
-test_metrics_keep_schedule_count_and_skip_reasons (test_csm.MetricsAndBootstrapTests.test_metrics_keep_schedule_count_and_skip_reasons) ... ok
-test_sufficiency_and_decision_boundaries (test_csm.MetricsAndBootstrapTests.test_sufficiency_and_decision_boundaries) ... ok
-test_type7_percentile_linear_interpolation (test_csm.MetricsAndBootstrapTests.test_type7_percentile_linear_interpolation) ... ok
-test_exact_packet_c_artifacts_with_synthetic_csv_rows (test_csm.PacketCIntegrationTests.test_exact_packet_c_artifacts_with_synthetic_csv_rows) ... ok
-test_csv_adapter_uses_only_source_lock_column_and_series_mapping (test_csm.ParseAndIdentityTests.test_csv_adapter_uses_only_source_lock_column_and_series_mapping) ... ok
-test_missing_status_is_preserved_as_missing (test_csm.ParseAndIdentityTests.test_missing_status_is_preserved_as_missing) ... ok
-test_parse_decimal_and_quote_rows (test_csm.ParseAndIdentityTests.test_parse_decimal_and_quote_rows) ... ok
-test_rejects_duplicate_date_currency_and_unordered_dates (test_csm.ParseAndIdentityTests.test_rejects_duplicate_date_currency_and_unordered_dates) ... ok
-test_rejects_external_eur_quote_and_fake_available_at (test_csm.ParseAndIdentityTests.test_rejects_external_eur_quote_and_fake_available_at) ... ok
-test_rejects_nonfinite_nonpositive_and_bad_decimal (test_csm.ParseAndIdentityTests.test_rejects_nonfinite_nonpositive_and_bad_decimal) ... ok
-test_rejects_snapshot_rows_outside_the_fixed_source_range (test_csm.ParseAndIdentityTests.test_rejects_snapshot_rows_outside_the_fixed_source_range) ... ok
-test_rejects_wrong_unit_unknown_status_and_missing_value_conflict (test_csm.ParseAndIdentityTests.test_rejects_wrong_unit_unknown_status_and_missing_value_conflict) ... ok
-test_source_lock_requires_exact_series_identity (test_csm.ParseAndIdentityTests.test_source_lock_requires_exact_series_identity) ... ok
+Command:
+CSM_PACKET_C_SOURCE_LOCK=/workspace/scratch/a4b39f542e62/tmp_packet_c/source-lock.json CSM_PACKET_C_PROBE_METADATA=/workspace/scratch/a4b39f542e62/tmp_packet_c/probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=/workspace/scratch/a4b39f542e62/tmp_packet_c/expected-calendar.json python3 -m unittest -v test_csm.py
+Result: PASS; exit code 0; 53 tests run, 53 passed, 0 failed, 0 skipped; elapsed 0.590 seconds on the final full run.
+Suite basis: the original 42 tests plus 11 regression/fault-injection tests.
+Regression tests include target-value/availability-invariant score ledgers; all-currency score identity fields; signed receipt checks for trusted roles, arbitrary keys, placeholder/missing/expired/mismatched/bad signatures; raw source-lock byte mismatch; and write/flush/fsync/rename/promotion failure injection.
 
-----------------------------------------------------------------------
-Ran 42 tests in 0.221s
+Input boundary
+All calculation rows and receipt signing keys used by tests are synthetic. Packet C files above are read only as source-lock, probe-schema metadata, and expected-calendar metadata. No Packet C probe-response CSV, observed market values, market history, price, ranking, forward return, P/L, Sharpe, or performance plot was retrieved, read, or calculated. No outcome-access run was attempted.
 
-OK
+This log records the observed local verification. Packet E has not yet independently audited the corrected D head.

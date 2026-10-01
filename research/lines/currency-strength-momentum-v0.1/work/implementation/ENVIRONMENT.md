@@ -1,39 +1,31 @@
-# Implementation environment and guarantee boundaries
+# CSM-002 implementation environment
 
-## Recorded environment
+## Verified software environment
 
-- Python: 3.12.14 in this preparation session.
-- Runtime dependency: Python standard library only.
-- Verification: `unittest` and `py_compile`.
-- Packet C metadata read: exact artifacts at branch `work/csm-source-qualification-20261001`, head `9870c710c3cba7bb9226c9eee8ec36687b96fd9d`.
-- The integration test verifies Packet C Git blob identities for the source lock, probe schema metadata, and expected calendar. It generates synthetic CSV rows from the declared schema. It does not read probe response CSVs, extract `OBS_VALUE`, or request full history.
-- The module contains no HTTP client. The authorized calculation path installs a Python audit hook blocking socket connection, DNS lookup, shell, and subprocess events.
-- Runtime receipts record SHA-256 identities for code, config, tests, test log, source lock, probe metadata, expected calendar, raw snapshot, event ledger, and calculation artifacts.
+- Python 3.12.14, CPython on Linux, using the Python standard library.
+- Test runner: `unittest`; syntax check: `py_compile`.
+- No external Python package, network client, plotting library, or exchange-rate download tool is used by the implementation or tests.
+- Gate signatures use a small standard-library RSA/SHA-256 verifier. Production trust keys are read only from the fixed root-owned trust-store path `/etc/csm-002/trusted-keys.json`; no production key is included, generated, or assigned by this D work. Tests use a synthetic private key fixture that is never available to the production CLI.
 
-### Post-freeze identity refresh
+## Input boundary for the verified suite
 
-- Frozen SPEC blob SHA-1: `7fe114e2fcfa33b0565b51c717455abd8837d5d9`; SHA-256: `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`.
-- Human acceptance remains bound to pre-freeze SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`; freeze decision: `DEC-CSM-003-FREEZE-20261001`; human decision: `HDEC-CSM-002-20261001`.
-- D refreshed its config mirror and exact SPEC constants after freeze. The fixed research choices did not change, and `market_outcome_access` remains closed pending I2 PASS and a separate X instruction.
-- The refreshed verification was run with Python 3.12.14 on CPython/Linux using only the standard library. The exact Packet C source-lock, metadata, and calendar artifacts were hash-checked; all test values remained synthetic.
+The suite reads the exact Packet C source-lock, probe-metadata, and expected-calendar metadata artifacts at PR #35 head `9870c710c3cba7bb9226c9eee8ec36687b96fd9d`, verifies their Git blob and SHA-256 identities, and generates its own metadata-shaped synthetic CSV rows. It does not fetch or read Packet C probe-response CSVs or market observations. All price-like test values and all calculations are synthetic.
+
+The source-lock file is read into one byte buffer and parsed from that buffer. Gate and capture receipt checks bind both its canonicalized object hash and its raw-byte SHA-256. Tests alter whitespace while preserving JSON meaning and confirm the signed raw-byte mismatch is rejected.
 
 ## What tests establish
 
-Synthetic tests cover exact decimal ratio ordering and ties, quote inversion and pair return direction, 56 ordered-pair equivalence, numeraire invariance, complete-network pair-average ranking, calendar-slot preservation, missing-data fail-closed behavior, prefix/future-suffix invariance, temporal receipt boundaries, fixed circular bootstrap behavior, type-7 percentiles, and decision thresholds.
-
-The Packet C integration test checks the exact source-lock mapping, seven ECB series identities and dimensions, ordered 32-column CSV schema, accepted status, units and decimal scales, official calendar file/date/month-end hashes, and all 203 monthly endpoints. Its test rows are generated synthetic values, not ECB observations.
+- Exact-ratio score identities bind each currency's formation inputs and the fixed score calculation specification.
+- The pre-outcome event ledger records `a`, `b`, formation endpoints, every currency's score identity, and pre-outcome skip reasons. Changing or removing the synthetic target endpoint does not change ledger bytes.
+- Signed E and I2 test envelopes are accepted only with trusted test keys and matching role, identity, expiry, code/config/test/environment, source-lock, calendar, and metadata hashes. Unknown keys, placeholders, absent/expired receipts, identity mismatch, and invalid signatures fail closed.
+- Capture and output staging is checked before promotion. Fault injection covers writes, flush, file fsync, raw-byte validation, rename, directory promotion, and final success-receipt creation.
+- The full fixed formula, calendar, bootstrap, threshold, Packet C metadata integration, and closed-gate no-read suite remains in place.
 
 ## What tests do not establish
 
-- Packet C's `PARTIAL_WITH_GAPS` status is retained. Its bounded probe qualifies one fixed month’s route/schema/calendar identity only. It does not establish full-history coverage, historical publication time, revision/vintage access, or availability on every expected date.
-- Packet C reported an incidental search-result observation exposure. Packet D did not retrieve, repeat, reproduce, or use those values; the disclosure still requires Integrator review before any outcome access.
-- No full-history data coverage, market ranking, forward return, performance metric, or strategy result was calculated by Packet D.
-- The official expected calendar identity was hash-checked, but D's tests do not independently adjudicate the authority or legal scope of the ECB/TARGET calendar rule.
-- No historical `AVAILABLE_AT` or executable quote/fill timing was established. The result boundary remains `REFERENCE_ASSOCIATION_ONLY`.
-- Synthetic formula tests do not prove data integrity, market accessibility, profitability, robustness, or independent confirmation.
-- JSON receipt checks validate required fields and byte identities but do not cryptographically authenticate a human, auditor, or Integrator. File permissions and process isolation remain external controls.
-- Python audit hooks reduce accidental network use from this process; they are not an operating-system sandbox and do not prevent a separate process from reading files.
-
-## Runtime output boundary
-
-The authorized runner writes machine-readable files under a new output directory. The event ledger includes calendar slots, pair identities, dates, and skip reasons but excludes target outcomes. It is written and hashed before outcome calculation. Later metrics and inference files contain market-derived outputs and must remain access-controlled. A stopped or invalid attempt is operational evidence, not a scientific rejection.
+- Current I2 remains CLOSED and the exact current E audit remains PARTIAL_WITH_GAPS / BLOCKED. The test-only gate overrides and test keys are not real authorization.
+- A root-owned local trust-store file is an interface, not proof that a production trust root has been distributed. Platform/security staff must provision and fingerprint the E and Integrator public keys and maintain revocation/validity records.
+- A Python audit hook is process-local defense against selected accidental actions. It is not OS-level file/process isolation, does not enforce a filesystem allowlist, and cannot stop another process from reading a file.
+- D has not provisioned or verified a durable allowlisted runner, durable output storage, persistent append-only access/attempt ledger, or named outcome-access operator. Those owners and checks are listed in `RUNBOOK.md` and remain external GAPs.
+- Packet C remains `PARTIAL_WITH_GAPS`; bounded metadata does not establish full-history coverage, missing/status distribution, historical publication timing, or revision/vintage availability. External calendar authority and disclosed observation-exposure disposition are also unresolved.
+- No market history, outcome, ranking, return, P/L, Sharpe, or performance plot was read or calculated.

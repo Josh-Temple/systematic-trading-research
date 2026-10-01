@@ -62,7 +62,7 @@ Packet C reports `PARTIAL_WITH_GAPS`: a bounded November 2009 route/schema/calen
 | 4. Full grid, boundaries, missing data, no rollback/compression | PASS for logic and C calendar identity | Tests preserve the month grid. The exact C calendar file, 4,331 expected dates, date-stream/month-end hashes, and 203 month-end map validate. This does not prove a rate exists on every expected date. |
 | 5. Prefix/future invariance and temporal receipt boundary | PASS for synthetic logic | Future suffix changes do not alter prior signal; fake availability and executable-timing claims are rejected. |
 | 6. Fixed circular bootstrap, type 7, missing slots, sufficiency and decisions | PASS | Fixed 12-slot circular blocks, 10,000 replicates, seed, partial-year behavior, zero-valid failure, and decision boundaries pass synthetic checks. |
-| 7. Gate CLI, capture preflight, ledger-first hash, identity and network boundary | PARTIAL | Closed-gate no-read behavior and synthetic gate/capture checks pass. No raw full-history snapshot was captured or parsed. Human freeze is now recorded; independent audit, Integrator gate, trusted receipt channel, and OS/process isolation are unresolved. |
+| 7. Gate CLI, capture preflight, ledger-first hash, identity and network boundary | PARTIAL_WITH_GAPS | The prior 4f739d9 head had only structural receipt checks. The current follow-up adds signed E/I2 identity checks, raw-byte source-lock binding, atomic staging, and fault tests; current I2 remains CLOSED, E remains BLOCKED, and production trust/OS/storage controls are unresolved. No raw full-history snapshot was captured or parsed. |
 | 8. Stable identity, fixed config, test log, guarantees, no unused search features | PASS for preparation artifacts | Config drift is rejected; CLI exposes artifact paths only; code/test/environment and outputs receive hashes. |
 | 9. No-access receipt and discrepancies for Integrator | PASS | This result records the current C dependency, the incident disclosed by C, all access boundaries, and remaining gates. |
 
@@ -101,14 +101,14 @@ scientific_status: NOT_APPLICABLE
 
 - The pure math, grid logic, and current bounded source-interface adapter are ready for independent code review. They do not establish full-history executability or a scientific result.
 - Packet C's partial evidence and disclosed observation exposure remain a downstream review item. Packet D treats those artifacts as metadata/schema/calendar only and keeps the outcome gate closed.
-- The receipt code checks structure and byte identities; it does not authenticate the human, auditor, or Integrator cryptographically or isolate files at the OS level.
+- At the prior head `4f739d9cc2b21c138771afec4a728bf2b57060ba`, the receipt validator checked structure and byte identities but did not authenticate human/auditor/Integrator identity. The outcome-blind correction below supersedes that implementation. Neither version provides OS-level file/process isolation.
 
 ### Limitations and unresolved gates
 
 1. **Packet C is bounded and partial.** Full-history coverage, historical publication time, and revision/vintage availability are UNKNOWN. Do not infer continuity from the one-month probe.
 2. **Search-result exposure disclosure.** Packet C reports an incidental observation exposure. Packet D did not repeat or use it. E/Integrator must review the disclosure before any outcome access.
 3. **Human freeze does not open the outcome gate.** The exact SPEC bytes are frozen, but independent E audit, I2 gate PASS, receipt authentication/isolation, access-ledger assignment, and a separate X instruction remain outstanding.
-4. **Receipt authenticity and isolation.** Trusted receipt/signing, ACL, and process-isolation controls remain unresolved. The JSON validator alone is insufficient authorization.
+4. **Receipt authenticity and isolation.** The correction implements cryptographic receipt verification, but trusted production keys and OS-level allowlist/isolation controls remain unresolved. The validator alone is not a complete deployment boundary.
 5. **No actual history run.** Full-history coverage, missing/status distributions, raw-capture identity, metrics, and end-to-end output were not tested against real source bytes.
 
 ## Recommendations for E / Integrator
@@ -213,3 +213,48 @@ The known limitations remain: full-history coverage, historical publication time
 - Base: `research/csm-architecture-review-20261001` at `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`.
 - Branch: `work/csm-implementation-20261001`.
 - The follow-up is restricted to Packet D's `work/implementation/**` allowlist. The final head and receipt-bearing remote blobs are verified after this update and recorded in PR #34.
+
+## Outcome-blind correction follow-up (2026-10-02)
+
+### Current result
+
+**D status: `PARTIAL_WITH_GAPS`. Scientific status: `NOT_APPLICABLE`. I2 remains CLOSED; no market data was captured, no outcome was calculated, no gate PASS was emitted, and no X instruction was issued.** The current config remains valid and frozen: SPEC blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`, SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`, `freeze_status: FROZEN`. This is not a pre-freeze blocker.
+
+### Changes made
+
+1. **Signal event ledger:** each event records `a`, `b`, formation endpoints, per-currency score identities, input hashes, score calculation spec ID, and formation/calendar skip reasons. Scores use the exact `q(start)/q(end)` ratio used for ordering; their identities bind the two formation input values and frozen SPEC identity. Ledger bytes are formed from formation/calendar inputs only. Target endpoint values and availability are first accessed after the ledger has been written, flushed, fsynced, and hash-verified. Synthetic tests mutate and remove target values and confirm the ledger bytes remain identical.
+2. **Receipt authenticity:** the production validator verifies separate signed E auditor and Integrator envelopes using trusted RSA public keys, checks role, signer principal, signature, key validity/revocation, receipt expiry, and exact D/SPEC/environment/source identities. The current I2 and E identities are pinned in code. The current I2 record is CLOSED and current E audit is PARTIAL_WITH_GAPS / BLOCKED, so these exact records cannot authorize a run. Synthetic tests cover unknown keys, placeholder and missing identities, absent/expired receipts, mismatched identities, and invalid signatures.
+3. **Source-lock bytes:** the runtime hashes and parses the same raw source-lock byte buffer. The signed gate and capture manifest bind both its canonical object hash and raw-byte SHA-256. A semantically identical JSON file with different whitespace is rejected when its raw hash differs from the signed receipt.
+4. **Save failures:** capture bytes are staged, validated, flushed, fsynced, and promoted without overwriting existing files. Calculation outputs are staged in a temporary same-filesystem directory, file hashes are checked, and the directory is promoted only after validation. The final success receipt is created only after promotion and parent fsync. Synthetic fault injection covers write, flush, file fsync, capture hash, rename, promotion, parent fsync, and success-receipt promotion. Failed cases leave no final successful output receipt.
+5. **Security and operations:** `RUNBOOK.md` and `ENVIRONMENT.md` explicitly distinguish Python process audit hooks from OS-level isolation. They require a filesystem allowlist, OS-level file/process isolation, durable output storage, a persistent append-only access/attempt ledger, and a named outcome-access operator. D does not assign a real operator or production key.
+
+### Current external identities and unresolved conditions
+
+- I2 current record: PR #37 head `677341e8185bf38b5cc6d4490260ddefb72eb561`; `gate.json` blob `ba1670b0c13ec58e806838949a80574a5cbab6c4`, SHA-256 `54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6`; `GATE.md` blob `03707f1aa346945a368e98881e8aa6f99ae91fb9`, SHA-256 `d901a7726355916088ade7ed32e129a241a360cbbcd220a01319413650d9465d`. State is `CLOSED`, access false.
+- E current audit: PR #38 head `d1335b29eeb01cdd4b71cd5ded62033b8468e539`, ID `AUDIT-CSM-E-20261002`; status `PARTIAL_WITH_GAPS`, recommendation `BLOCKED`. Result blob/SHA-256: `f29a5d38b16b54734a47c719c09922a461ee3fe4` / `c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35`. Matrix blob/SHA-256: `3ada00d887bc76f88c777d2a40ea410077e3e594` / `a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7`.
+- **Trusted key root — GAP.** Owner: Integrator-designated platform/security administrator. Check: provision the authorized auditor and Integrator public keys at `/etc/csm-002/trusted-keys.json`, record key fingerprints, roles, validity and revocation state, and verify root ownership and non-writable group/world mode. No production keys were created or assigned by D; the file and signer identities are unverified here.
+- **Filesystem/process isolation — GAP.** Owner: execution-platform/security owner, to be named by the Integrator. Check: provide a versioned OS-enforced allowlist/sandbox profile, then run negative probes for disallowed file reads/writes and process creation as the restricted runner identity. The Python audit hook is not evidence of this control.
+- **Durable output and access ledger — GAP.** Owner: storage/platform and research-operations owners, to be named by the Integrator. Check: provision protected persistent storage, restart the runner, read back hashes, and verify an append-only attempt/access record including denials, input/output identities, retries, timestamps, and operator.
+- **Outcome-access operator — GAP.** Owner: Integrator. Check: name the individual by full name and stable account ID, verify their access role, and include them in the signed I2 receipt and durable ledger. No person was assigned by D.
+- Other existing gaps remain: Packet C is `PARTIAL_WITH_GAPS` and does not establish full-history coverage, historical publication time, or vintage; calendar authority still needs independent confirmation; the disclosed observation exposures and missing original pre-proposal user brief remain unresolved. They are not scientific results.
+
+### Verification provenance
+
+- **Reporter claims from the earlier D head:** the PR body and pre-correction RESULT described 42/42 tests and asserted that the event ledger preceded outcome computation. Packet E independently reproduced those 42 tests and its synthetic oracle at old D head `4f739d9cc2b21c138771afec4a728bf2b57060ba`; it identified the missing score identities, unsigned receipt acceptance, raw source-lock binding gap, and save-failure gap.
+- **Direct reproduction for this correction:** this work executed the complete updated D suite using Python 3.12.14 and the three exact metadata-only Packet C refs listed in TEST_MATRIX/TEST_LOG. The observed command, exit status, test count, and individual test names are recorded in TEST_LOG. This is direct execution of D tests, not a new independent Packet E audit.
+- **Remote readback:** after push, every changed D file is fetched from the exact PR #34 head, then its content, Git blob SHA-1, SHA-256, and path allowlist are checked. Packet E has not yet re-audited the corrected head; its prior BLOCKED recommendation remains the current independent audit state.
+
+### Updated D artifact identities
+
+Expected identities for the current D deliverables are below; the same values are recomputed from the exact remote PR #34 head during readback. `RESULT.md` does not embed its own digest; its exact final blob and SHA-256 are recorded in the completion response and PR #34.
+
+| D artifact | Git blob SHA-1 | SHA-256 |
+|---|---|---|
+| `csm.py` | `95cf059a5e0d5b6742dfa885fce7b37c58f2362c` | `4db33063f0388b8b7ec0613fff8228a4aa3cb00b94855a557c5abcd3b86f4104` |
+| `test_csm.py` | `e287ab6923d073058cfa0e5e7be46b9ea5bc537a` | `3499c6cf4bc52f5052c7ed76ef92da41c272cbb6a31980a51801372775f1f66f` |
+| `config.json` | `a1c1e140f8c0844fc554ae6fcd975bcb5e610770` | `9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1` |
+| `fixtures/toy_cases.json` | `4e925eabb4d88772806f0e109c15680f17d73a31` | `08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c` |
+| `RUNBOOK.md` | `3142c0291aa979bb80c28d71b4e47fc7408591ab` | `7fa355a6b071567ff6d4ea4290033f5635fc44b64159af2438acae69ecc14948` |
+| `ENVIRONMENT.md` | `bf6d5b4c0381e967226ee0996736d858b524b8eb` | `8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f` |
+| `TEST_MATRIX.md` | `03633916f0190925a01d6b26e5146956e657c31f` | `7cfbd342057ce8a9517fbbf44e464fb05beb60e6de82e47f4e1d8643e7da4bce` |
+| `TEST_LOG.txt` | `c70e610064f92ba15527fb7f99b8796607a9a91f` | `84a6a88673b0502b53bf3b2eb0ca100d101d8bd57cfab3da08695285fc399f44` |
