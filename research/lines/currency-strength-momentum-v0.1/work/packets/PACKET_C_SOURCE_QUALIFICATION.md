@@ -45,7 +45,7 @@ references/SOURCE_REVIEW_2026-10-01.md。provisional DATA-CSM-001はreview対象
 4. bounded probeは2009-11の固定期間のみ。scratch deterministic scriptでprice bytesをoutputしない。series/date/status/unit/schemaのみreportし、raw probeのhash/access receiptを保存。full history coverageはXで確認予定と明記。
 5. source-lockにallowed status、identity、parse rules、schema validation、duplicate/nonfinite handling、missing semantics、publication/availability scope、retrieval failureとscientific gapの扱いを固定。科学条件はSPECを変更しない。
 6. ECB/BIS bilateral/EER/Fed/FRED/Dukascopy/OANDAを全field（officiality/currency/frequency/history/timestamp/timezone/fixing-vs-executable/BIDASK/spread/carry/financing/missing/revision/license/API/automation）で評価。未取得fieldはUNKNOWN。FRED daily dateをsame-day availabilityにしない。
-7. licensing/source attribution、raw snapshot durable location、retrieval headers/hash、mutable latest-vintageの再現保証を評価。rate dataと論文再配布を区別。
+7. ECB copyrightとESCB statistics reuse policyを各7 seriesのprovenanceへ適用する。source citation、raw bytesを正確に保つこと、変換の明示、revision可能性を記録し、公開GitHubでのraw snapshotとderived artifactsの再利用条件を確認する。権利やsource-originが不明なら公開captureをBLOCKし、非公開のdurable storage等の許容経路を提案する。rate dataと論文再配布を区別。
 8. no-tick最小route、後続economic/factor source候補、blocking gaps、human choicesを整理。代替providerへ切替えない。
 
 ## Allowed sources / exact deliverables
