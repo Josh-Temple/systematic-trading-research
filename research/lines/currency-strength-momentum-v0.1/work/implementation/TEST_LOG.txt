@@ -1,11 +1,21 @@
-Packet D implementation verification (2026-10-01)
-Environment: Python 3.12.14; standard library only.
-Source contract: SPEC-CSM-002-v01 proposal ref 36240da15fc83120d12d081c227f3e0dd8badaaa.
-Packet C inputs: source-lock blob 81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf; probe-metadata blob 21aa9149b7b7db9b07f1aa3f4bf0312675a166bd; expected-calendar blob 6ed720353472ba6f35391936c536d46fb6ae8c66.
-All CSV rows used by tests are generated synthetic values. The Packet C probe response rows and OBS_VALUE contents are not read by this suite.
+Packet D post-freeze implementation verification (2026-10-01)
+Environment: Python 3.12.14; CPython; Linux-6.18.44-x86_64-with-glibc2.39; standard library only.
+Accepted pre-freeze SPEC: blob a073e77dec14337ee20609ed6136e50a8c1e76e2; SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90.
+Frozen SPEC: blob 7fe114e2fcfa33b0565b51c717455abd8837d5d9; SHA-256 a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2.
+Human decision: HDEC-CSM-002-20261001; freeze decision: DEC-CSM-003-FREEZE-20261001.
+Packet C source-lock blob: 81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf; SHA-256 ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71.
+Packet C probe-metadata blob: 21aa9149b7b7db9b07f1aa3f4bf0312675a166bd; SHA-256 1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533.
+Packet C expected-calendar blob: 6ed720353472ba6f35391936c536d46fb6ae8c66; SHA-256 6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4.
+Current code SHA-256: 5a47700f7024e19a39f4dd1688bf343a132a21946672ac4a034aa51d0d8ebdd2.
+Current test SHA-256: 70650ded3dec9e94d78f88f14691454cebf63a2b0155de5cb11df7bd2fe1a5ff.
+Current config SHA-256: 9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1.
+
+All CSV rows parsed by tests are generated synthetic rows. The Packet C probe response rows and OBS_VALUE contents are not read by this suite. No full-history market data, rankings, forward returns, or market-derived strategy metrics were read or computed.
+
 Command: python3 -m py_compile csm.py test_csm.py
+Result: PASS (exit code 0; no output)
+Command: CSM_PACKET_C_SOURCE_LOCK=../source-qualification/source-lock.json CSM_PACKET_C_PROBE_METADATA=../source-qualification/probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=../source-qualification/expected-calendar.json python3 -m unittest -v test_csm.py
 Result: PASS
-Command: CSM_PACKET_C_SOURCE_LOCK=... CSM_PACKET_C_PROBE_METADATA=... CSM_PACKET_C_EXPECTED_CALENDAR=... python3 -m unittest -v test_csm.py
 
 test_fixed_full_grid_has_partial_final_year_and_no_shift (test_csm.CalendarAndLeakageTests.test_fixed_full_grid_has_partial_final_year_and_no_shift) ... ok
 test_missing_calendar_endpoint_is_not_inferred_from_prices (test_csm.CalendarAndLeakageTests.test_missing_calendar_endpoint_is_not_inferred_from_prices) ... ok
@@ -25,7 +35,7 @@ test_numeraire_invariance (test_csm.FormulaTests.test_numeraire_invariance) ... 
 test_quote_direction_and_simple_return_difference_bug (test_csm.FormulaTests.test_quote_direction_and_simple_return_difference_bug) ... ok
 test_usd_can_be_winner_or_loser (test_csm.FormulaTests.test_usd_can_be_winner_or_loser) ... ok
 test_capture_preflight_hash_and_identity (test_csm.GateAndReceiptTests.test_capture_preflight_hash_and_identity) ... ok
-test_config_is_single_proposed_spec_and_rejects_drift (test_csm.GateAndReceiptTests.test_config_is_single_proposed_spec_and_rejects_drift) ... ok
+test_config_is_single_frozen_spec_and_rejects_drift (test_csm.GateAndReceiptTests.test_config_is_single_frozen_spec_and_rejects_drift) ... ok
 test_event_ledger_must_be_persisted_and_hashed_before_outcomes (test_csm.GateAndReceiptTests.test_event_ledger_must_be_persisted_and_hashed_before_outcomes) ... ok
 test_event_ledger_mutation_fails_identity_check (test_csm.GateAndReceiptTests.test_event_ledger_mutation_fails_identity_check) ... ok
 test_gate_closed_and_no_access_cli_does_not_read_outcome_file_or_emit_values (test_csm.GateAndReceiptTests.test_gate_closed_and_no_access_cli_does_not_read_outcome_file_or_emit_values) ... ok
@@ -51,6 +61,6 @@ test_rejects_wrong_unit_unknown_status_and_missing_value_conflict (test_csm.Pars
 test_source_lock_requires_exact_series_identity (test_csm.ParseAndIdentityTests.test_source_lock_requires_exact_series_identity) ... ok
 
 ----------------------------------------------------------------------
-Ran 42 tests in 0.183s
+Ran 42 tests in 0.221s
 
 OK
