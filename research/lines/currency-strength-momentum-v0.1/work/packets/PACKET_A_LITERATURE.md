@@ -42,11 +42,12 @@ references/SCIENTIFIC_PRIOR_ART_2026-10-01.md、references/GITHUB_PRIOR_ART_2026
 1. Menkhoff/Sarno/Schmeling/Schrimpfの原文§data、return sorting、spot/excess、formation/holding、developed subset、cost、limits-to-arbitrageをpage/section付きで抽出。
 2. Moskowitz/Ooi/PedersenのTSMOM signal/payoff、vol scaling、spot/roll contribution、CSとの相違。
 3. Zhang Dissecting currency momentumのfull textを著者/機関/原出版から取得。static factor regressionとfactor momentum、残差、estimationの時点、sample・G10を確認。取得不能ならabstract-levelの結論に留める。
-4. Iwanaga/Sakemoto2025 Conditional currency momentum portfoliosのfull text、post-GFC split、currency coverage、cost、conditioning training/evaluationを確認。
-5. 2020–2026のcurrency momentum replication/reassessmentを一次資料で検索し、major/G10、post2010、postGFC、ZIRP、政策正常化後の区別を調査。2025basis-momentum/IR volatility、2026FX momentumの候補を適用範囲でscreen。full textが無い候補も取得状態を残す。
-6. winner/loser basketとsingle extreme、spot rankingとexcess ranking、USDをuniverseに含むこととUSD benchmark、carry/dollar/factor momentumをmatrixで対照。
-7. 支持・反証・不確実を列挙し、monthly1/1、8通貨、post2010の推奨への影響を結果前のreasonで示す。変更はrecommendationのみ、仕様は変更しない。
-8. model pretraining/既知historyを含むhistorical確認の限界、publication/search bias、独立unused/prospectiveの必要性を記録。
+4. Iwanaga/Sakemoto 2025 Conditional currency momentum portfoliosのfull text、post-GFC split、currency coverage、cost、conditioning training/evaluationを確認。
+5. Hutchinson, Kyziropoulos, O'Brien, O'Reilly and Sharma (2022), “Are carry, momentum and value still there in currencies?” のfull textを読む。G11 universe、sample split、cross-sectional momentumのexcess-return definition、core 3-month/1-month and parameter variations、post-2010 results/costs、past/future return regressionsをpage付きで抽出。2010–2020結果が本lineの1-month raw spot single-extreme ECB-reference testへどこまで移転するか、直接比較できない点とともに記録する。
+6. 2020–2026のcurrency momentum replication/reassessmentを一次資料で検索し、major/G10、post-2010、post-GFC、ZIRP、政策正常化後の区別を調査。2025 basis-momentum/IR volatility、2026 FX momentumの候補を適用範囲でscreen。full textが無い候補も取得状態を残す。
+7. winner/loser basketとsingle extreme、spot rankingとexcess ranking、USDをuniverseに含むこととUSD benchmark、carry/dollar/factor momentumをmatrixで対照。
+8. 支持・反証・不確実を列挙し、monthly 1/1、8通貨、post-2010の推奨への影響を結果前のreasonで示す。変更はrecommendationのみ、仕様は変更しない。
+9. model pretraining/既知historyを含むhistorical確認の限界、publication/search bias、独立unused/prospectiveの必要性を記録。
 
 ## Allowed sources / exact deliverables
 原論文、著者website、大学repository、central bank paper、journal、著者replication code。secondary pageはdiscovery用で、fact根拠は一次へ。
