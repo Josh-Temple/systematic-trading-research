@@ -2,7 +2,7 @@
 
 ## Current state
 
-This module implements the proposed `SPEC-CSM-002-v01` bytes from proposal ref `36240da15fc83120d12d081c227f3e0dd8badaaa` (Git blob SHA-1 `a073e77dec14337ee20609ed6136e50a8c1e76e2`; file SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`). The contract remains `PROPOSED_NOT_FROZEN`; `DEC-CSM-002` keeps the market-outcome gate closed. The calculation and adapter integration tests use synthetic/toy CSV rows only. Packet C's official source-lock, schema metadata, and expected calendar are read as metadata artifacts. This is not authorization to run on actual FX history.
+This module implements frozen `SPEC-CSM-002-v01` at freeze-record commit `4ac1e797c777f33a467ec73b250401886d160e80` (Git blob SHA-1 `7fe114e2fcfa33b0565b51c717455abd8837d5d9`; file SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`). The human acceptance is bound to pre-freeze blob `a073e77dec14337ee20609ed6136e50a8c1e76e2` / SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`, recorded as `HDEC-CSM-002-20261001`; only lifecycle metadata changed at freeze. The frozen specification and D configuration are identity-checked by the module. The market-outcome gate remains CLOSED pending independent E audit, Integrator gate PASS, trusted access controls, and a separate X instruction. Calculation tests use synthetic/toy CSV rows only; Packet C's source-lock, schema metadata, and expected calendar are read only as metadata. This does not authorize a run on actual FX history.
 
 The implementation performs a retrospective reference-rate association. It does not claim that the selected rates were available for executable entry. `AVAILABLE_AT` remains `UNKNOWN`; costs, carry, and financing remain `UNOBSERVED`.
 
@@ -24,7 +24,7 @@ For reproducibility, use the three artifacts from Packet C branch head `9870c710
 
 All of the following must exist and agree before the command may read a full-history input:
 
-1. A human contract decision that freezes the exact `SPEC-CSM-002-v01` bytes. The frozen receipt must retain the same Git blob identity recorded in `config.json`.
+1. The exact human freeze and post-freeze SPEC identity are recorded and validated by the current config. Any later code, config, test, environment, or source identity change must be independently audited before use.
 2. A C source lock and official expected TARGET operating-day calendar for the fixed source range. Current Packet C artifacts establish a bounded route/schema/calendar identity only; full-history coverage, historical publication times, and revision/vintage access remain unknown. The adapter maps the seven exact series, units, status, 32 CSV columns, and 203 month ends without substituting another source.
 3. An independent E audit and an I Integrator gate with `gate_status: PASS`, matching the code, tests, environment, source-lock, calendar, time-range, and access-ledger identities.
 4. A preserved raw-capture snapshot plus a manifest whose source-lock identity, seven series keys, and SHA-256 match the bytes that will be read.
