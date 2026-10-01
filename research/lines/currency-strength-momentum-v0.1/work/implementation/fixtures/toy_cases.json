@@ -1,0 +1,19 @@
+{
+  "fixture_status": "SYNTHETIC",
+  "purpose": "toy price vectors for deterministic component tests only",
+  "prices_are_market_data": false,
+  "old": {
+    "AUD": "1", "CAD": "1", "CHF": "1", "EUR": "1",
+    "GBP": "1", "JPY": "1", "NZD": "1", "USD": "1"
+  },
+  "formation_end": {
+    "AUD": "1.2", "CAD": "0.95", "CHF": "1.05", "EUR": "1",
+    "GBP": "0.98", "JPY": "1.1", "NZD": "1.02", "USD": "0.8"
+  },
+  "target_end": {
+    "AUD": "1.3", "CAD": "1.0", "CHF": "1.0", "EUR": "1",
+    "GBP": "0.95", "JPY": "1.0", "NZD": "1.0", "USD": "0.7"
+  },
+  "expected_winner": "USD",
+  "expected_loser": "AUD"
+}
