@@ -19,7 +19,9 @@ Use for questions about the Horizontal Reaction research line.
 ### currency-strength-momentum-v0.1
 
 - branch: `research/currency-strength-momentum-v0.1`
-- intended scope root on that branch: `research/lines/currency-strength-momentum-v0.1/`
+- scope root on that branch: `research/lines/currency-strength-momentum-v0.1/`
+- current projection on that branch: `research/lines/currency-strength-momentum-v0.1/CURRENT.md`
+- line definition on that branch: `research/lines/currency-strength-momentum-v0.1/RESEARCH_LINE.md`
 
 Use for questions about the FX currency-strength / strongest-versus-weakest momentum research line.
 
