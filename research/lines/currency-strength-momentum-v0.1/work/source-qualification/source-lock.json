@@ -1,0 +1,284 @@
+{
+  "source_lock_id": "CSM-SOURCE-LOCK-ECB-001",
+  "version": "1.0.0",
+  "status": "QUALIFIED_BOUNDED_ROUTE_ONLY",
+  "scientific_status": "NOT_APPLICABLE",
+  "market_outcome_access": false,
+  "authoritative_spec": "research/lines/currency-strength-momentum-v0.1/specifications/SPEC-CSM-002-v01.md",
+  "proposal_ref": "36240da15fc83120d12d081c227f3e0dd8badaaa",
+  "qualification_cutoff_utc": "2026-10-01T08:20:40Z",
+  "route": {
+    "provider": "European Central Bank (ECB)",
+    "dataset": "EXR",
+    "transport": "official SDMX REST API",
+    "endpoint_template": "https://data-api.ecb.europa.eu/service/data/EXR/D.{CCY}.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2026-09-30&format=csvdata",
+    "probe_endpoint_period": "2009-11-01/2009-11-30 only",
+    "accept": "text/csv",
+    "format": "csvdata",
+    "organization_code": "4F0",
+    "organization_label": "European Central Bank (ECB)",
+    "organization_codelist": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_ORGANISATION/1.0?references=none",
+    "provenance": "Official ECB series; ECB response SOURCE_AGENCY 4F0 resolved through ECB CL_ORGANISATION."
+  },
+  "series": [
+    {
+      "key": "D.AUD.EUR.SP00.A",
+      "currency": "AUD",
+      "currency_denom": "EUR",
+      "quote_unit": "AUD per EUR 1",
+      "frequency": "D",
+      "exr_type": "SP00",
+      "exr_type_label": "Spot",
+      "exr_suffix": "A",
+      "exr_suffix_label": "Average (codelist label only; no inference about bid/ask or intraday averaging)",
+      "unit": "AUD",
+      "unit_mult": 0,
+      "decimals": 4,
+      "source_agency": "4F0",
+      "source_agency_label": "European Central Bank (ECB)",
+      "allowed_statuses": [
+        {
+          "code": "A",
+          "label": "Normal value"
+        }
+      ]
+    },
+    {
+      "key": "D.CAD.EUR.SP00.A",
+      "currency": "CAD",
+      "currency_denom": "EUR",
+      "quote_unit": "CAD per EUR 1",
+      "frequency": "D",
+      "exr_type": "SP00",
+      "exr_type_label": "Spot",
+      "exr_suffix": "A",
+      "exr_suffix_label": "Average (codelist label only; no inference about bid/ask or intraday averaging)",
+      "unit": "CAD",
+      "unit_mult": 0,
+      "decimals": 4,
+      "source_agency": "4F0",
+      "source_agency_label": "European Central Bank (ECB)",
+      "allowed_statuses": [
+        {
+          "code": "A",
+          "label": "Normal value"
+        }
+      ]
+    },
+    {
+      "key": "D.CHF.EUR.SP00.A",
+      "currency": "CHF",
+      "currency_denom": "EUR",
+      "quote_unit": "CHF per EUR 1",
+      "frequency": "D",
+      "exr_type": "SP00",
+      "exr_type_label": "Spot",
+      "exr_suffix": "A",
+      "exr_suffix_label": "Average (codelist label only; no inference about bid/ask or intraday averaging)",
+      "unit": "CHF",
+      "unit_mult": 0,
+      "decimals": 4,
+      "source_agency": "4F0",
+      "source_agency_label": "European Central Bank (ECB)",
+      "allowed_statuses": [
+        {
+          "code": "A",
+          "label": "Normal value"
+        }
+      ]
+    },
+    {
+      "key": "D.GBP.EUR.SP00.A",
+      "currency": "GBP",
+      "currency_denom": "EUR",
+      "quote_unit": "GBP per EUR 1",
+      "frequency": "D",
+      "exr_type": "SP00",
+      "exr_type_label": "Spot",
+      "exr_suffix": "A",
+      "exr_suffix_label": "Average (codelist label only; no inference about bid/ask or intraday averaging)",
+      "unit": "GBP",
+      "unit_mult": 0,
+      "decimals": 5,
+      "source_agency": "4F0",
+      "source_agency_label": "European Central Bank (ECB)",
+      "allowed_statuses": [
+        {
+          "code": "A",
+          "label": "Normal value"
+        }
+      ]
+    },
+    {
+      "key": "D.JPY.EUR.SP00.A",
+      "currency": "JPY",
+      "currency_denom": "EUR",
+      "quote_unit": "JPY per EUR 1",
+      "frequency": "D",
+      "exr_type": "SP00",
+      "exr_type_label": "Spot",
+      "exr_suffix": "A",
+      "exr_suffix_label": "Average (codelist label only; no inference about bid/ask or intraday averaging)",
+      "unit": "JPY",
+      "unit_mult": 0,
+      "decimals": 2,
+      "source_agency": "4F0",
+      "source_agency_label": "European Central Bank (ECB)",
+      "allowed_statuses": [
+        {
+          "code": "A",
+          "label": "Normal value"
+        }
+      ]
+    },
+    {
+      "key": "D.NZD.EUR.SP00.A",
+      "currency": "NZD",
+      "currency_denom": "EUR",
+      "quote_unit": "NZD per EUR 1",
+      "frequency": "D",
+      "exr_type": "SP00",
+      "exr_type_label": "Spot",
+      "exr_suffix": "A",
+      "exr_suffix_label": "Average (codelist label only; no inference about bid/ask or intraday averaging)",
+      "unit": "NZD",
+      "unit_mult": 0,
+      "decimals": 4,
+      "source_agency": "4F0",
+      "source_agency_label": "European Central Bank (ECB)",
+      "allowed_statuses": [
+        {
+          "code": "A",
+          "label": "Normal value"
+        }
+      ]
+    },
+    {
+      "key": "D.USD.EUR.SP00.A",
+      "currency": "USD",
+      "currency_denom": "EUR",
+      "quote_unit": "USD per EUR 1",
+      "frequency": "D",
+      "exr_type": "SP00",
+      "exr_type_label": "Spot",
+      "exr_suffix": "A",
+      "exr_suffix_label": "Average (codelist label only; no inference about bid/ask or intraday averaging)",
+      "unit": "USD",
+      "unit_mult": 0,
+      "decimals": 4,
+      "source_agency": "4F0",
+      "source_agency_label": "European Central Bank (ECB)",
+      "allowed_statuses": [
+        {
+          "code": "A",
+          "label": "Normal value"
+        }
+      ]
+    }
+  ],
+  "official_metadata": {
+    "codelists": {
+      "freq": {
+        "url": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_FREQ/1.0?references=none",
+        "accepted": "D (Daily)"
+      },
+      "currency": {
+        "url": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_CURRENCY/1.0?references=none"
+      },
+      "exr_type": {
+        "url": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_EXR_TYPE/1.0?references=none",
+        "accepted": "SP00 (Spot)"
+      },
+      "exr_suffix": {
+        "url": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_EXR_SUFFIX/1.0?references=none",
+        "accepted": "A (Average label only)"
+      },
+      "obs_status": {
+        "url": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_OBS_STATUS/1.0?references=none",
+        "accepted": "A (Normal value)"
+      },
+      "organisation": {
+        "url": "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_ORGANISATION/1.0?references=none",
+        "accepted": "4F0 (European Central Bank)"
+      }
+    },
+    "dataset_structure": "https://data.ecb.europa.eu/data/datasets/EXR/structure"
+  },
+  "calendar": {
+    "file": "expected-calendar.json",
+    "id": "ECB_TARGET_LONG_TERM_2002_RULE",
+    "version": "1.0",
+    "range_start_inclusive": "2009-11-01",
+    "range_end_inclusive": "2026-09-30",
+    "expected_open_day_count": 4331,
+    "sha256": "6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4",
+    "open_dates_sha256": "eba527a340b2bbaf4c425b2d431465c98cef29d5ee30af0eedd49838dd51ec4b",
+    "month_end_identity_sha256": "81cc2e46f6af707517bd5c54c686bc80818ac50722d768897b63b7538fadd4f2",
+    "semantics": "Last expected TARGET operating date per month is chosen from calendar rules, independently of price presence; missing expected open dates are gaps, never forward-filled."
+  },
+  "parsing_and_validation": {
+    "encoding": "UTF-8 or UTF-8 with BOM; preserve raw response bytes before parsing",
+    "schema": "Exact 32-column CSV schema in probe-metadata.json; unexpected additions, removals, or reordering fail closed pending review.",
+    "key_identity": "Each row key/dimension must agree with the requested series and currency; CURRENCY_DENOM=EUR, FREQ=D, EXR_TYPE=SP00, EXR_SUFFIX=A.",
+    "row_identity": "One row per TIME_PERIOD; duplicate, invalid, or out-of-range dates fail closed.",
+    "status": "Accept only OBS_STATUS=A (Normal value). Missing/unmarked or any other status is quarantined until reviewed.",
+    "value_validation": "At authorized full-history execution only, parse decimal text locale-independently; reject missing, nonfinite, or unparsable values. Never coerce silently.",
+    "expected_dates": "Compare rows with the expected TARGET calendar. Weekends/holidays are scheduled closures; missing expected open dates and unexpected dates are recorded separately.",
+    "missing_data": "No interpolation, carry-forward, backfill, or imputation. Missing expected open day is a source/data-quality gap.",
+    "duplicates": "Duplicates are not resolved by last-write-wins; fail closed and preserve raw response and metadata.",
+    "request_failures": "HTTP/network/parse failures are acquisition failures, not negative scientific outcomes.",
+    "snapshots": "Record retrieval UTC, exact URL/parameters, HTTP status/headers, byte count and SHA-256; store original bytes unchanged. Revisions are new snapshots, never overwrite prior raw bytes."
+  },
+  "publication_and_vintage": {
+    "same_day_availability": "UNKNOWN",
+    "historical_setting_time": "UNKNOWN across the study history; Nov 2009 legacy TITLE_COMPL says 2:15 pm CET; current June 2026 framework describes setting around 14:10 CET and publication around 16:00 CET.",
+    "exact_historical_release_time": "UNKNOWN",
+    "historical_vintage_or_revision_access": "UNKNOWN",
+    "safe_interpretation": "Date-only reference association. No same-day tradability or information-set claim."
+  },
+  "licensing": {
+    "source_origin": "Resolved: SOURCE_AGENCY=4F0 maps to European Central Bank in ECB official CL_ORGANISATION.",
+    "policy": "ECB/ESCB public statistics reuse policy: free reuse of public statistics in standard format subject to source citation, unchanged official data/metadata and disclaimer; third-party data excluded; revisions may change data.",
+    "policy_url": "https://www.ecb.europa.eu/stats/ecb_statistics/governance_and_quality_framework/html/usage_policy.en.html",
+    "copyright_url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+    "raw_snapshot_public_capture": "Permitted for official standard CSV with citation and no alteration under reviewed ECB conditions.",
+    "derived_artifacts": "No market-valued derived artifacts in this qualification. Any later transformation must be documented and retain source attribution.",
+    "committed_raw_probe_files": false,
+    "local_probe_snapshot_path": "csm-source-qualification/probe-snapshot/ (scratch only; byte-exact)"
+  },
+  "probe": {
+    "receipt": "PROBE_RECEIPT.md",
+    "metadata": "probe-metadata.json",
+    "probe_id": "CSM-C-PROBE-2009-11",
+    "bounded_period": {
+      "start": "2009-11-01",
+      "end": "2009-11-30"
+    },
+    "retrieved_at_utc": "2026-10-01T08:20:40.683106+00:00",
+    "all_series_match_expected_calendar_and_schema": true,
+    "raw_snapshots_stored_byte_exact": true,
+    "obs_value_column_present": true,
+    "obs_value_values_extracted_or_used": false,
+    "obs_value_values_emitted": false,
+    "full_history_coverage_tested": false
+  },
+  "outcome_gate": {
+    "state": "CLOSED",
+    "prohibited": [
+      "full-history price retrieval before authorized X",
+      "currency-strength ranking",
+      "forward returns",
+      "strategy P/L",
+      "Sharpe",
+      "subgroup or parameter selection",
+      "same-day tradability inference"
+    ],
+    "required_before_execution": [
+      "human freeze",
+      "source/code identity lock",
+      "independent audit",
+      "integrator gate",
+      "disclosure of incidental search-snippet observation exposure"
+    ]
+  }
+}

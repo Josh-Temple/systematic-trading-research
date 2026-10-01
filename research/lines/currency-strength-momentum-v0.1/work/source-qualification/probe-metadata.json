@@ -1,0 +1,920 @@
+{
+  "probe_id": "CSM-C-PROBE-2009-11",
+  "retrieved_at_utc": "2026-10-01T08:20:40.683106+00:00",
+  "bounded_period": {
+    "start": "2009-11-01",
+    "end": "2009-11-30"
+  },
+  "data_values_visible": false,
+  "expected_calendar_path": "expected-calendar.json",
+  "expected_calendar_sha256": "6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4",
+  "expected_probe_dates": [
+    "2009-11-02",
+    "2009-11-03",
+    "2009-11-04",
+    "2009-11-05",
+    "2009-11-06",
+    "2009-11-09",
+    "2009-11-10",
+    "2009-11-11",
+    "2009-11-12",
+    "2009-11-13",
+    "2009-11-16",
+    "2009-11-17",
+    "2009-11-18",
+    "2009-11-19",
+    "2009-11-20",
+    "2009-11-23",
+    "2009-11-24",
+    "2009-11-25",
+    "2009-11-26",
+    "2009-11-27",
+    "2009-11-30"
+  ],
+  "all_series_match_expected_calendar_and_schema": true,
+  "raw_snapshots_stored_byte_exact": true,
+  "series": [
+    {
+      "series": "D.AUD.EUR.SP00.A",
+      "request_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.AUD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "final_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.AUD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "http_status": 200,
+      "content_type": "text/csv",
+      "http_date": "Thu, 01 Oct 2026 08:20:40 GMT",
+      "last_modified": "Wed, 30 Sep 2026 13:57:08 GMT",
+      "etag": null,
+      "cache_control": "max-age=30",
+      "response_bytes": 5008,
+      "response_sha256": "19c96d0161204fbaa64625c29585d62212f30fb904b2b0da1b5f29e11b9d934c",
+      "row_count": 21,
+      "date_count": 21,
+      "first_date": "2009-11-02",
+      "last_date": "2009-11-30",
+      "dates": [
+        "2009-11-02",
+        "2009-11-03",
+        "2009-11-04",
+        "2009-11-05",
+        "2009-11-06",
+        "2009-11-09",
+        "2009-11-10",
+        "2009-11-11",
+        "2009-11-12",
+        "2009-11-13",
+        "2009-11-16",
+        "2009-11-17",
+        "2009-11-18",
+        "2009-11-19",
+        "2009-11-20",
+        "2009-11-23",
+        "2009-11-24",
+        "2009-11-25",
+        "2009-11-26",
+        "2009-11-27",
+        "2009-11-30"
+      ],
+      "dates_sha256": "1ac4300aee6f072732b97b5e4c05c9b19787a87514efe2b242231c26835e83cf",
+      "status_codes": [
+        "A"
+      ],
+      "dimensions": {
+        "FREQ": [
+          "D"
+        ],
+        "CURRENCY": [
+          "AUD"
+        ],
+        "CURRENCY_DENOM": [
+          "EUR"
+        ],
+        "EXR_TYPE": [
+          "SP00"
+        ],
+        "EXR_SUFFIX": [
+          "A"
+        ]
+      },
+      "series_metadata": {
+        "UNIT": [
+          "AUD"
+        ],
+        "UNIT_MULT": [
+          "0"
+        ],
+        "DECIMALS": [
+          "4"
+        ],
+        "TITLE": [
+          "Australian dollar/Euro ECB reference exchange rate"
+        ],
+        "TITLE_COMPL": [
+          "ECB reference exchange rate, Australian dollar/Euro, 2.15 pm (C.E.T.)"
+        ],
+        "SOURCE_AGENCY": [
+          "4F0"
+        ],
+        "SOURCE_PUB": [],
+        "COMPILING_ORG": [],
+        "DISS_ORG": [],
+        "COLLECTION": [
+          "A"
+        ],
+        "COVERAGE": []
+      },
+      "schema": [
+        "KEY",
+        "FREQ",
+        "CURRENCY",
+        "CURRENCY_DENOM",
+        "EXR_TYPE",
+        "EXR_SUFFIX",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_STATUS",
+        "OBS_CONF",
+        "OBS_PRE_BREAK",
+        "OBS_COM",
+        "TIME_FORMAT",
+        "BREAKS",
+        "COLLECTION",
+        "COMPILING_ORG",
+        "DISS_ORG",
+        "DOM_SER_IDS",
+        "PUBL_ECB",
+        "PUBL_MU",
+        "PUBL_PUBLIC",
+        "UNIT_INDEX_BASE",
+        "COMPILATION",
+        "COVERAGE",
+        "DECIMALS",
+        "NAT_TITLE",
+        "SOURCE_AGENCY",
+        "SOURCE_PUB",
+        "TITLE",
+        "TITLE_COMPL",
+        "UNIT",
+        "UNIT_MULT"
+      ],
+      "obs_value_column_present": true,
+      "obs_value_values_extracted_or_used": false,
+      "obs_value_values_emitted": false,
+      "raw_snapshot_byte_exact": true
+    },
+    {
+      "series": "D.CAD.EUR.SP00.A",
+      "request_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.CAD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "final_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.CAD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "http_status": 200,
+      "content_type": "text/csv",
+      "http_date": "Thu, 01 Oct 2026 08:20:40 GMT",
+      "last_modified": "Wed, 30 Sep 2026 13:57:08 GMT",
+      "etag": null,
+      "cache_control": "max-age=30",
+      "response_bytes": 4925,
+      "response_sha256": "5a377ea79598074f04b821a3a375215da3bdc76ba2ab2d8cad0709f03dc248bc",
+      "row_count": 21,
+      "date_count": 21,
+      "first_date": "2009-11-02",
+      "last_date": "2009-11-30",
+      "dates": [
+        "2009-11-02",
+        "2009-11-03",
+        "2009-11-04",
+        "2009-11-05",
+        "2009-11-06",
+        "2009-11-09",
+        "2009-11-10",
+        "2009-11-11",
+        "2009-11-12",
+        "2009-11-13",
+        "2009-11-16",
+        "2009-11-17",
+        "2009-11-18",
+        "2009-11-19",
+        "2009-11-20",
+        "2009-11-23",
+        "2009-11-24",
+        "2009-11-25",
+        "2009-11-26",
+        "2009-11-27",
+        "2009-11-30"
+      ],
+      "dates_sha256": "1ac4300aee6f072732b97b5e4c05c9b19787a87514efe2b242231c26835e83cf",
+      "status_codes": [
+        "A"
+      ],
+      "dimensions": {
+        "FREQ": [
+          "D"
+        ],
+        "CURRENCY": [
+          "CAD"
+        ],
+        "CURRENCY_DENOM": [
+          "EUR"
+        ],
+        "EXR_TYPE": [
+          "SP00"
+        ],
+        "EXR_SUFFIX": [
+          "A"
+        ]
+      },
+      "series_metadata": {
+        "UNIT": [
+          "CAD"
+        ],
+        "UNIT_MULT": [
+          "0"
+        ],
+        "DECIMALS": [
+          "4"
+        ],
+        "TITLE": [
+          "Canadian dollar/Euro ECB reference exchange rate"
+        ],
+        "TITLE_COMPL": [
+          "ECB reference exchange rate, Canadian dollar/Euro, 2.15 pm (C.E.T.)"
+        ],
+        "SOURCE_AGENCY": [
+          "4F0"
+        ],
+        "SOURCE_PUB": [],
+        "COMPILING_ORG": [],
+        "DISS_ORG": [],
+        "COLLECTION": [
+          "A"
+        ],
+        "COVERAGE": []
+      },
+      "schema": [
+        "KEY",
+        "FREQ",
+        "CURRENCY",
+        "CURRENCY_DENOM",
+        "EXR_TYPE",
+        "EXR_SUFFIX",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_STATUS",
+        "OBS_CONF",
+        "OBS_PRE_BREAK",
+        "OBS_COM",
+        "TIME_FORMAT",
+        "BREAKS",
+        "COLLECTION",
+        "COMPILING_ORG",
+        "DISS_ORG",
+        "DOM_SER_IDS",
+        "PUBL_ECB",
+        "PUBL_MU",
+        "PUBL_PUBLIC",
+        "UNIT_INDEX_BASE",
+        "COMPILATION",
+        "COVERAGE",
+        "DECIMALS",
+        "NAT_TITLE",
+        "SOURCE_AGENCY",
+        "SOURCE_PUB",
+        "TITLE",
+        "TITLE_COMPL",
+        "UNIT",
+        "UNIT_MULT"
+      ],
+      "obs_value_column_present": true,
+      "obs_value_values_extracted_or_used": false,
+      "obs_value_values_emitted": false,
+      "raw_snapshot_byte_exact": true
+    },
+    {
+      "series": "D.CHF.EUR.SP00.A",
+      "request_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.CHF.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "final_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.CHF.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "http_status": 200,
+      "content_type": "text/csv",
+      "http_date": "Thu, 01 Oct 2026 08:20:40 GMT",
+      "last_modified": "Wed, 30 Sep 2026 13:57:08 GMT",
+      "etag": null,
+      "cache_control": "max-age=30",
+      "response_bytes": 4756,
+      "response_sha256": "d675912a6a683a656c420265871a5363a225e32d1a0e0ccdc5b3436e414451c1",
+      "row_count": 21,
+      "date_count": 21,
+      "first_date": "2009-11-02",
+      "last_date": "2009-11-30",
+      "dates": [
+        "2009-11-02",
+        "2009-11-03",
+        "2009-11-04",
+        "2009-11-05",
+        "2009-11-06",
+        "2009-11-09",
+        "2009-11-10",
+        "2009-11-11",
+        "2009-11-12",
+        "2009-11-13",
+        "2009-11-16",
+        "2009-11-17",
+        "2009-11-18",
+        "2009-11-19",
+        "2009-11-20",
+        "2009-11-23",
+        "2009-11-24",
+        "2009-11-25",
+        "2009-11-26",
+        "2009-11-27",
+        "2009-11-30"
+      ],
+      "dates_sha256": "1ac4300aee6f072732b97b5e4c05c9b19787a87514efe2b242231c26835e83cf",
+      "status_codes": [
+        "A"
+      ],
+      "dimensions": {
+        "FREQ": [
+          "D"
+        ],
+        "CURRENCY": [
+          "CHF"
+        ],
+        "CURRENCY_DENOM": [
+          "EUR"
+        ],
+        "EXR_TYPE": [
+          "SP00"
+        ],
+        "EXR_SUFFIX": [
+          "A"
+        ]
+      },
+      "series_metadata": {
+        "UNIT": [
+          "CHF"
+        ],
+        "UNIT_MULT": [
+          "0"
+        ],
+        "DECIMALS": [
+          "4"
+        ],
+        "TITLE": [
+          "Swiss franc/Euro ECB reference exchange rate"
+        ],
+        "TITLE_COMPL": [
+          "ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)"
+        ],
+        "SOURCE_AGENCY": [
+          "4F0"
+        ],
+        "SOURCE_PUB": [],
+        "COMPILING_ORG": [],
+        "DISS_ORG": [],
+        "COLLECTION": [
+          "A"
+        ],
+        "COVERAGE": []
+      },
+      "schema": [
+        "KEY",
+        "FREQ",
+        "CURRENCY",
+        "CURRENCY_DENOM",
+        "EXR_TYPE",
+        "EXR_SUFFIX",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_STATUS",
+        "OBS_CONF",
+        "OBS_PRE_BREAK",
+        "OBS_COM",
+        "TIME_FORMAT",
+        "BREAKS",
+        "COLLECTION",
+        "COMPILING_ORG",
+        "DISS_ORG",
+        "DOM_SER_IDS",
+        "PUBL_ECB",
+        "PUBL_MU",
+        "PUBL_PUBLIC",
+        "UNIT_INDEX_BASE",
+        "COMPILATION",
+        "COVERAGE",
+        "DECIMALS",
+        "NAT_TITLE",
+        "SOURCE_AGENCY",
+        "SOURCE_PUB",
+        "TITLE",
+        "TITLE_COMPL",
+        "UNIT",
+        "UNIT_MULT"
+      ],
+      "obs_value_column_present": true,
+      "obs_value_values_extracted_or_used": false,
+      "obs_value_values_emitted": false,
+      "raw_snapshot_byte_exact": true
+    },
+    {
+      "series": "D.GBP.EUR.SP00.A",
+      "request_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.GBP.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "final_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.GBP.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "http_status": 200,
+      "content_type": "text/csv",
+      "http_date": "Thu, 01 Oct 2026 08:20:40 GMT",
+      "last_modified": "Wed, 30 Sep 2026 13:57:08 GMT",
+      "etag": null,
+      "cache_control": "max-age=30",
+      "response_bytes": 4888,
+      "response_sha256": "eaba637b40ba3539c802f6b7bd351ca318817540846dc9082fedfce492c7772c",
+      "row_count": 21,
+      "date_count": 21,
+      "first_date": "2009-11-02",
+      "last_date": "2009-11-30",
+      "dates": [
+        "2009-11-02",
+        "2009-11-03",
+        "2009-11-04",
+        "2009-11-05",
+        "2009-11-06",
+        "2009-11-09",
+        "2009-11-10",
+        "2009-11-11",
+        "2009-11-12",
+        "2009-11-13",
+        "2009-11-16",
+        "2009-11-17",
+        "2009-11-18",
+        "2009-11-19",
+        "2009-11-20",
+        "2009-11-23",
+        "2009-11-24",
+        "2009-11-25",
+        "2009-11-26",
+        "2009-11-27",
+        "2009-11-30"
+      ],
+      "dates_sha256": "1ac4300aee6f072732b97b5e4c05c9b19787a87514efe2b242231c26835e83cf",
+      "status_codes": [
+        "A"
+      ],
+      "dimensions": {
+        "FREQ": [
+          "D"
+        ],
+        "CURRENCY": [
+          "GBP"
+        ],
+        "CURRENCY_DENOM": [
+          "EUR"
+        ],
+        "EXR_TYPE": [
+          "SP00"
+        ],
+        "EXR_SUFFIX": [
+          "A"
+        ]
+      },
+      "series_metadata": {
+        "UNIT": [
+          "GBP"
+        ],
+        "UNIT_MULT": [
+          "0"
+        ],
+        "DECIMALS": [
+          "5"
+        ],
+        "TITLE": [
+          "Pound sterling/Euro ECB reference exchange rate"
+        ],
+        "TITLE_COMPL": [
+          "ECB reference exchange rate, Pound sterling/Euro, 2.15 pm (C.E.T.)"
+        ],
+        "SOURCE_AGENCY": [
+          "4F0"
+        ],
+        "SOURCE_PUB": [],
+        "COMPILING_ORG": [],
+        "DISS_ORG": [],
+        "COLLECTION": [
+          "A"
+        ],
+        "COVERAGE": []
+      },
+      "schema": [
+        "KEY",
+        "FREQ",
+        "CURRENCY",
+        "CURRENCY_DENOM",
+        "EXR_TYPE",
+        "EXR_SUFFIX",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_STATUS",
+        "OBS_CONF",
+        "OBS_PRE_BREAK",
+        "OBS_COM",
+        "TIME_FORMAT",
+        "BREAKS",
+        "COLLECTION",
+        "COMPILING_ORG",
+        "DISS_ORG",
+        "DOM_SER_IDS",
+        "PUBL_ECB",
+        "PUBL_MU",
+        "PUBL_PUBLIC",
+        "UNIT_INDEX_BASE",
+        "COMPILATION",
+        "COVERAGE",
+        "DECIMALS",
+        "NAT_TITLE",
+        "SOURCE_AGENCY",
+        "SOURCE_PUB",
+        "TITLE",
+        "TITLE_COMPL",
+        "UNIT",
+        "UNIT_MULT"
+      ],
+      "obs_value_column_present": true,
+      "obs_value_values_extracted_or_used": false,
+      "obs_value_values_emitted": false,
+      "raw_snapshot_byte_exact": true
+    },
+    {
+      "series": "D.JPY.EUR.SP00.A",
+      "request_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.JPY.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "final_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.JPY.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "http_status": 200,
+      "content_type": "text/csv",
+      "http_date": "Thu, 01 Oct 2026 08:20:40 GMT",
+      "last_modified": "Wed, 30 Sep 2026 13:57:08 GMT",
+      "etag": null,
+      "cache_control": "max-age=30",
+      "response_bytes": 4794,
+      "response_sha256": "d9caa2ca5d50193431cae621bed005f51e482ba1a5c2d35b13ba46c4107c25bb",
+      "row_count": 21,
+      "date_count": 21,
+      "first_date": "2009-11-02",
+      "last_date": "2009-11-30",
+      "dates": [
+        "2009-11-02",
+        "2009-11-03",
+        "2009-11-04",
+        "2009-11-05",
+        "2009-11-06",
+        "2009-11-09",
+        "2009-11-10",
+        "2009-11-11",
+        "2009-11-12",
+        "2009-11-13",
+        "2009-11-16",
+        "2009-11-17",
+        "2009-11-18",
+        "2009-11-19",
+        "2009-11-20",
+        "2009-11-23",
+        "2009-11-24",
+        "2009-11-25",
+        "2009-11-26",
+        "2009-11-27",
+        "2009-11-30"
+      ],
+      "dates_sha256": "1ac4300aee6f072732b97b5e4c05c9b19787a87514efe2b242231c26835e83cf",
+      "status_codes": [
+        "A"
+      ],
+      "dimensions": {
+        "FREQ": [
+          "D"
+        ],
+        "CURRENCY": [
+          "JPY"
+        ],
+        "CURRENCY_DENOM": [
+          "EUR"
+        ],
+        "EXR_TYPE": [
+          "SP00"
+        ],
+        "EXR_SUFFIX": [
+          "A"
+        ]
+      },
+      "series_metadata": {
+        "UNIT": [
+          "JPY"
+        ],
+        "UNIT_MULT": [
+          "0"
+        ],
+        "DECIMALS": [
+          "2"
+        ],
+        "TITLE": [
+          "Japanese yen/Euro ECB reference exchange rate"
+        ],
+        "TITLE_COMPL": [
+          "ECB reference exchange rate, Japanese yen/Euro, 2.15 pm (C.E.T.)"
+        ],
+        "SOURCE_AGENCY": [
+          "4F0"
+        ],
+        "SOURCE_PUB": [],
+        "COMPILING_ORG": [],
+        "DISS_ORG": [],
+        "COLLECTION": [
+          "A"
+        ],
+        "COVERAGE": []
+      },
+      "schema": [
+        "KEY",
+        "FREQ",
+        "CURRENCY",
+        "CURRENCY_DENOM",
+        "EXR_TYPE",
+        "EXR_SUFFIX",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_STATUS",
+        "OBS_CONF",
+        "OBS_PRE_BREAK",
+        "OBS_COM",
+        "TIME_FORMAT",
+        "BREAKS",
+        "COLLECTION",
+        "COMPILING_ORG",
+        "DISS_ORG",
+        "DOM_SER_IDS",
+        "PUBL_ECB",
+        "PUBL_MU",
+        "PUBL_PUBLIC",
+        "UNIT_INDEX_BASE",
+        "COMPILATION",
+        "COVERAGE",
+        "DECIMALS",
+        "NAT_TITLE",
+        "SOURCE_AGENCY",
+        "SOURCE_PUB",
+        "TITLE",
+        "TITLE_COMPL",
+        "UNIT",
+        "UNIT_MULT"
+      ],
+      "obs_value_column_present": true,
+      "obs_value_values_extracted_or_used": false,
+      "obs_value_values_emitted": false,
+      "raw_snapshot_byte_exact": true
+    },
+    {
+      "series": "D.NZD.EUR.SP00.A",
+      "request_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.NZD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "final_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.NZD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "http_status": 200,
+      "content_type": "text/csv",
+      "http_date": "Thu, 01 Oct 2026 08:20:40 GMT",
+      "last_modified": "Wed, 30 Sep 2026 13:57:08 GMT",
+      "etag": null,
+      "cache_control": "max-age=30",
+      "response_bytes": 5049,
+      "response_sha256": "fe9f9d705a331a1623632473e974cd315dbe08ae9d24adee77afe46af7a497a0",
+      "row_count": 21,
+      "date_count": 21,
+      "first_date": "2009-11-02",
+      "last_date": "2009-11-30",
+      "dates": [
+        "2009-11-02",
+        "2009-11-03",
+        "2009-11-04",
+        "2009-11-05",
+        "2009-11-06",
+        "2009-11-09",
+        "2009-11-10",
+        "2009-11-11",
+        "2009-11-12",
+        "2009-11-13",
+        "2009-11-16",
+        "2009-11-17",
+        "2009-11-18",
+        "2009-11-19",
+        "2009-11-20",
+        "2009-11-23",
+        "2009-11-24",
+        "2009-11-25",
+        "2009-11-26",
+        "2009-11-27",
+        "2009-11-30"
+      ],
+      "dates_sha256": "1ac4300aee6f072732b97b5e4c05c9b19787a87514efe2b242231c26835e83cf",
+      "status_codes": [
+        "A"
+      ],
+      "dimensions": {
+        "FREQ": [
+          "D"
+        ],
+        "CURRENCY": [
+          "NZD"
+        ],
+        "CURRENCY_DENOM": [
+          "EUR"
+        ],
+        "EXR_TYPE": [
+          "SP00"
+        ],
+        "EXR_SUFFIX": [
+          "A"
+        ]
+      },
+      "series_metadata": {
+        "UNIT": [
+          "NZD"
+        ],
+        "UNIT_MULT": [
+          "0"
+        ],
+        "DECIMALS": [
+          "4"
+        ],
+        "TITLE": [
+          "New Zealand dollar/Euro ECB reference exchange rate"
+        ],
+        "TITLE_COMPL": [
+          "ECB reference exchange rate, New Zealand dollar/Euro, 2.15 pm (C.E.T.)"
+        ],
+        "SOURCE_AGENCY": [
+          "4F0"
+        ],
+        "SOURCE_PUB": [],
+        "COMPILING_ORG": [],
+        "DISS_ORG": [],
+        "COLLECTION": [
+          "A"
+        ],
+        "COVERAGE": []
+      },
+      "schema": [
+        "KEY",
+        "FREQ",
+        "CURRENCY",
+        "CURRENCY_DENOM",
+        "EXR_TYPE",
+        "EXR_SUFFIX",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_STATUS",
+        "OBS_CONF",
+        "OBS_PRE_BREAK",
+        "OBS_COM",
+        "TIME_FORMAT",
+        "BREAKS",
+        "COLLECTION",
+        "COMPILING_ORG",
+        "DISS_ORG",
+        "DOM_SER_IDS",
+        "PUBL_ECB",
+        "PUBL_MU",
+        "PUBL_PUBLIC",
+        "UNIT_INDEX_BASE",
+        "COMPILATION",
+        "COVERAGE",
+        "DECIMALS",
+        "NAT_TITLE",
+        "SOURCE_AGENCY",
+        "SOURCE_PUB",
+        "TITLE",
+        "TITLE_COMPL",
+        "UNIT",
+        "UNIT_MULT"
+      ],
+      "obs_value_column_present": true,
+      "obs_value_values_extracted_or_used": false,
+      "obs_value_values_emitted": false,
+      "raw_snapshot_byte_exact": true
+    },
+    {
+      "series": "D.USD.EUR.SP00.A",
+      "request_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "final_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A?startPeriod=2009-11-01&endPeriod=2009-11-30&format=csvdata",
+      "http_status": 200,
+      "content_type": "text/csv",
+      "http_date": "Thu, 01 Oct 2026 08:20:40 GMT",
+      "last_modified": "Wed, 30 Sep 2026 13:57:08 GMT",
+      "etag": null,
+      "cache_control": "max-age=30",
+      "response_bytes": 4673,
+      "response_sha256": "e5055a18b2f4c177c8eaf0ba950547734d2028d03c6c6baee064b4d4c155c0d8",
+      "row_count": 21,
+      "date_count": 21,
+      "first_date": "2009-11-02",
+      "last_date": "2009-11-30",
+      "dates": [
+        "2009-11-02",
+        "2009-11-03",
+        "2009-11-04",
+        "2009-11-05",
+        "2009-11-06",
+        "2009-11-09",
+        "2009-11-10",
+        "2009-11-11",
+        "2009-11-12",
+        "2009-11-13",
+        "2009-11-16",
+        "2009-11-17",
+        "2009-11-18",
+        "2009-11-19",
+        "2009-11-20",
+        "2009-11-23",
+        "2009-11-24",
+        "2009-11-25",
+        "2009-11-26",
+        "2009-11-27",
+        "2009-11-30"
+      ],
+      "dates_sha256": "1ac4300aee6f072732b97b5e4c05c9b19787a87514efe2b242231c26835e83cf",
+      "status_codes": [
+        "A"
+      ],
+      "dimensions": {
+        "FREQ": [
+          "D"
+        ],
+        "CURRENCY": [
+          "USD"
+        ],
+        "CURRENCY_DENOM": [
+          "EUR"
+        ],
+        "EXR_TYPE": [
+          "SP00"
+        ],
+        "EXR_SUFFIX": [
+          "A"
+        ]
+      },
+      "series_metadata": {
+        "UNIT": [
+          "USD"
+        ],
+        "UNIT_MULT": [
+          "0"
+        ],
+        "DECIMALS": [
+          "4"
+        ],
+        "TITLE": [
+          "US dollar/Euro ECB reference exchange rate"
+        ],
+        "TITLE_COMPL": [
+          "ECB reference exchange rate, US dollar/Euro, 2.15 pm (C.E.T.)"
+        ],
+        "SOURCE_AGENCY": [
+          "4F0"
+        ],
+        "SOURCE_PUB": [],
+        "COMPILING_ORG": [],
+        "DISS_ORG": [],
+        "COLLECTION": [
+          "A"
+        ],
+        "COVERAGE": []
+      },
+      "schema": [
+        "KEY",
+        "FREQ",
+        "CURRENCY",
+        "CURRENCY_DENOM",
+        "EXR_TYPE",
+        "EXR_SUFFIX",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_STATUS",
+        "OBS_CONF",
+        "OBS_PRE_BREAK",
+        "OBS_COM",
+        "TIME_FORMAT",
+        "BREAKS",
+        "COLLECTION",
+        "COMPILING_ORG",
+        "DISS_ORG",
+        "DOM_SER_IDS",
+        "PUBL_ECB",
+        "PUBL_MU",
+        "PUBL_PUBLIC",
+        "UNIT_INDEX_BASE",
+        "COMPILATION",
+        "COVERAGE",
+        "DECIMALS",
+        "NAT_TITLE",
+        "SOURCE_AGENCY",
+        "SOURCE_PUB",
+        "TITLE",
+        "TITLE_COMPL",
+        "UNIT",
+        "UNIT_MULT"
+      ],
+      "obs_value_column_present": true,
+      "obs_value_values_extracted_or_used": false,
+      "obs_value_values_emitted": false,
+      "raw_snapshot_byte_exact": true
+    }
+  ]
+}
