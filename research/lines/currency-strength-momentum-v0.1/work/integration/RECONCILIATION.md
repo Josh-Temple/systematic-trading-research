@@ -104,6 +104,14 @@ B/Cのbranchがe0fより遅れていること自体を科学的否定証拠と�
 
 **露出インシデント:** C Resultによると、source discovery中にECB currency converterとFRED seriesの検索結果が個別のcurrent observationsを表示した。値は報告・比較・計算に使わず、Resultにも再掲していないとのworker申告を確認した。Integratorとして値やraw CSVを取り直していない。この申告はEと人間によるreviewを要するため、gate conditionはBLOCKEDのままにした。2009-11 bounded probeはCの許可範囲内で、responseにOBS_VALUE列を含むraw CSVをbyte-exactで保存したが、probeはvaluesを抽出・出力・分析していないと報告されている。
 
+**公式資料によるIntegrator追確認 (2026-10-01):** 上記C作業とは別に、値系列へのAPI requestをせず、ECB frameworkとAPI helpを確認した。現行の2026-06-23 frameworkは、reference rateが情報提供目的であること、設定・公表の現在の時刻帯、一定の条件で翌TARGET営業日の同一通貨レート公表まで訂正・再公表し得ること、関連記録を最低5年保持することを示す。API helpはstartPeriod/endPeriodとupdatedAfterによる絞込を記載する。これらは現行方針と更新検出の理解を補うが、2010–2026全期間への方針適用、原初vintageの復元、全期間のcoverageを証明しないため、historical availability/vintageはUNKNOWNのままにする。
+
+**Integratorの追加露出:** 公式資料の確認中、ECBの一般公開current reference-rates pageを開いたところ、tool outputに個別のcurrent observationsを含む日次表が返った。これはmetadata-only範囲を超えた。値を統合artifactへ転記・引用せず、比較・計算・分析に使っていない。strategy statisticも計算していない。Cのincidentとは別にhuman/E reviewと処置を要するため、data-exposure conditionはBLOCKEDのままとする。監査対象ページ: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.eu.html。
+
+**Integrator source-document follow-up (2026-10-01; no series API request):** The official ECB framework dated 23 June 2026 describes reference rates as informational, gives current setting/publication timing, allows amendment or republication in specified circumstances up to publication of the next business day's rate, and requires relevant records to be kept for at least five years. ECB API help documents start/end-period and updated-after filters. This narrows what can be said about the current policy and update workflow; it does not establish historical policy applicability throughout 2010-2026, guarantee recovery of original vintages, or verify full-history coverage. Historical availability and vintage therefore remain UNKNOWN. No series API request or historical data retrieval was made in this follow-up.
+
+**Additional Integrator exposure incident:** While reading official source documentation, the public ECB current reference-rates page returned a daily table containing individual current observations in the tool output. This exceeded the metadata-only scope. No individual value was copied into an integration artifact, quoted, compared, calculated, or used. No strategy statistic was computed. This incident is recorded for human/E review; the data-exposure gate condition remains BLOCKED. The page is documented here for auditability: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.eu.html.
+
 ### D — Deterministic Implementation
 
 | # | Task | Worker status | 統合上の範囲 |
@@ -157,7 +165,7 @@ Packet Eでは、SPEC freezeがない場合はdraft auditまで行いfinal PASS�
 
 2026-10-01に、GitHubからmain a765b33fc0915fdfdcf21287a4418aca4f5b8b7cとproposal e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff、A/B/C/Dのexact headsを読み取った。上記すべてのworker deliverableを各exact headから取得し、各Git blob SHA-1を下表へ記録した。Cのraw probe CSVは取得していない。D code/testsは読み、D報告の42件test logもreadbackしたが、このI sessionで再実行していない。E auditは実行していない。
 
-I sessionでFX market values、ranking、forward returns、strategy P/L、Sharpe、best parameter/period/subgroupは計算・記録していない。H3、DATA-HR-003、Autonomous Pilot inputs、Web/MCP、broker、live/paper ordersも触れていない。Cの検索結果上の露出はworker Resultからのdisclosureとして扱い、観測値は再掲しない。
+I sessionでranking、forward returns、strategy P/L、Sharpe、best parameter/period/subgroupは計算していない。追加確認中に公式ECBのcurrent reference-rates pageを開き、tool outputに個別のcurrent observationsを含む日次表が返った。許可範囲を超えた露出として記録し、個別値は成果物へ転記・引用せず、比較・計算・分析に使っていない。Cの検索結果上の露出もworker Resultからのdisclosureとして扱い、観測値は再掲しない。H3、DATA-HR-003、Autonomous Pilot inputs、broker、live/paper ordersは触れていない。
 
 ## Remote deliverable identities
 
