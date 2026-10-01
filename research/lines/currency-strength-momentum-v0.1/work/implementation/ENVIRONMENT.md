@@ -10,6 +10,13 @@
 - The module contains no HTTP client. The authorized calculation path installs a Python audit hook blocking socket connection, DNS lookup, shell, and subprocess events.
 - Runtime receipts record SHA-256 identities for code, config, tests, test log, source lock, probe metadata, expected calendar, raw snapshot, event ledger, and calculation artifacts.
 
+### Post-freeze identity refresh
+
+- Frozen SPEC blob SHA-1: `7fe114e2fcfa33b0565b51c717455abd8837d5d9`; SHA-256: `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`.
+- Human acceptance remains bound to pre-freeze SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`; freeze decision: `DEC-CSM-003-FREEZE-20261001`; human decision: `HDEC-CSM-002-20261001`.
+- D refreshed its config mirror and exact SPEC constants after freeze. The fixed research choices did not change, and `market_outcome_access` remains closed pending I2 PASS and a separate X instruction.
+- The refreshed verification was run with Python 3.12.14 on CPython/Linux using only the standard library. The exact Packet C source-lock, metadata, and calendar artifacts were hash-checked; all test values remained synthetic.
+
 ## What tests establish
 
 Synthetic tests cover exact decimal ratio ordering and ties, quote inversion and pair return direction, 56 ordered-pair equivalence, numeraire invariance, complete-network pair-average ranking, calendar-slot preservation, missing-data fail-closed behavior, prefix/future-suffix invariance, temporal receipt boundaries, fixed circular bootstrap behavior, type-7 percentiles, and decision thresholds.
