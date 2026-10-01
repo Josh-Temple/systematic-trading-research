@@ -1,0 +1,6 @@
+Python 3.12.14
+PASS prefix invariance
+PASS cross-sectional maximum-pair identity
+PASS lagged returns and applied turnover cost
+PASS higher-timeframe availability alignment
+RESULT: 4/4 passed; synthetic inputs only
