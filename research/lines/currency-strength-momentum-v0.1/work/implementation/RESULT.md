@@ -29,6 +29,12 @@ relations:
 - Exact proposed specification identity: Git blob SHA-1 `a073e77dec14337ee20609ed6136e50a8c1e76e2`; file SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`.
 - C dependency check on 2026-10-01: the branch search returned no `work/csm-source-qualification-20261001` branch and the specified `work/source-qualification/source-lock.json` path returned 404 at that ref. The required post-C fresh read and real adapter integration test are therefore BLOCKED; synthetic work proceeded as Packet D permits.
 
+### Explicit architecture-base update receipt
+
+During final pre-PR verification, main remained `1bba695ea252863c3b7366b8b910aa36e211c325`, but PR #31's head had advanced from the pinned `36240da15fc83120d12d081c227f3e0dd8badaaa` to `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`. A fresh compare read found six commits adding a published 2022 adverse prior and review, ECB/ESCB reuse requirements, and an independent plan review. The changes touch `ARCHITECTURE_REVIEW`, `VALIDATION`, `SCIENTIFIC_PRIOR_ART`, `SOURCE_REVIEW`, Packet A, and Packet C. `SPEC-CSM-002-v01`, `DEC-CSM-002`, and Packet D are unchanged.
+
+I keep `proposal_ref` at the user-specified `36240...` because that is the exact spec/Packet used to implement and test. For the stacked PR only, I explicitly update the branch's integration base to the current PR #31 head `e0f42...` so the D change does not hide or revert those six architecture commits. The updated evidence lowers novelty and confirms that the target period overlaps published results; it does not alter the fixed implementation contract. The revised Packet C adds source-reuse checks, so public snapshot permission remains a C gate. This base update does not authorize a source capture, market access, or any scientific change.
+
 ## Implemented deliverables
 
 - `work/implementation/csm.py`: standard-library parser/identity checks, exact-ratio signal selection, pair log return, fixed calendar grid, pre-outcome event ledger and hash, fixed bootstrap, metrics, decision boundaries, temporal-receipt checks, gate/capture preflight, local loader, output hashes, and network/subprocess audit hook.
@@ -105,6 +111,7 @@ scientific_status: NOT_APPLICABLE
 
 - After C completes, fresh-read its exact source-lock and calendar commit, check all seven series/unit/status/field mappings, and add a metadata-only adapter integration test under `work/implementation/**`. If the source lock requires different fields, change the adapter only and rerun the entire synthetic suite.
 - Have E independently review the exact implementation/test hashes, exact-ratio tie logic, pair direction, missing-grid and bootstrap semantics, event-ledger ordering, and the production CLI's no-output-before-gate behavior.
+- Have C apply the revised ECB/ESCB source-reuse requirements to the seven series, provenance, and any proposed public snapshot; the data and transformed artifact locations must remain blocked if reuse conditions are unclear.
 - Keep the market gate CLOSED until the human freeze, C source/calendar identities, E audit, I gate, exact code/environment/test identities, and a trusted receipt/file-isolation boundary are all present.
 - Treat any adapter or code correction as an implementation revision before outcome access. Do not interpret a blocked source or failed test as a negative strategy result.
 
