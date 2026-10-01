@@ -78,6 +78,14 @@ Vol normalization、unequal/incomplete pair averages、multi-horizon、pair-spec
 | positive進行 | net edgeを意味しない点は妥当 | evidence validity/data insufficiencyを先に判定。promoteは別screen設計のみ |
 | 直ちに一回実行 | source/code/test/権限のgateが不足 | A–D → E → I → human freeze/readiness → X → R。research efficiencyと権限分離 |
 
+## Published post-2010 adverse prior
+
+Hutchinson et al. (2022) study highly liquid G11 currencies against USD and report a broad deterioration in currency-momentum portfolio performance out of sample, including a post-publication period beginning in 2010. Their core cross-sectional momentum portfolio uses a three-month formation and one-month holding period; their study also reports broader parameterizations and pooled currency-return tests. This is an adverse prior that the earlier summary did not make sufficiently explicit.
+
+The proposed 2010–2026 target window overlaps those public results. The planned test is therefore a narrow historical replication/translation of a different target: raw spot, one-month formation, a single extreme pair, and ECB reference rates. It cannot be called an independent confirmation or a new post-publication holdout. This limitation does not eliminate the low-cost information value of testing the exact user idea, but it lowers the novelty and the prior probability of a positive result. Worker A must verify exact study variants and report the transfer boundary before any human freeze.
+
+Reference: Hutchinson, Kyziropoulos, O'Brien, O'Reilly and Sharma (2022), “Are carry, momentum and value still there in currencies?”, *International Review of Financial Analysis* 83, 102245, DOI 10.1016/j.irfa.2022.102245; [author-accepted full text](https://pureadmin.qub.ac.uk/ws/portalfiles/portal/359418115/1_s2.0_S1057521922002058_main.pdf).
+
 本案は結果を見ずに作成した。変更理由は上表の4種類に限定。provisionalを正本化せず、新しいIDで推奨仕様を保存する。
 
 ## 最大のリスク
