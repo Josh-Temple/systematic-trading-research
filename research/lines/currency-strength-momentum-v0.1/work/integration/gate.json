@@ -99,7 +99,7 @@
     {
       "id": "source_full_history_and_vintage",
       "status": "BLOCKED",
-      "evidence": "Bounded route passed; history coverage and vintage/availability UNKNOWN."
+      "evidence": "C qualified the bounded route/schema/calendar. The 23 June 2026 ECB framework documents current correction timing and five-year record retention, but not applicability across the entire target sample or historical-vintage retrieval. Full-history coverage and historical availability remain UNKNOWN."
     },
     {
       "id": "dataset_role_and_owner",
@@ -129,7 +129,7 @@
     {
       "id": "data_exposure_disposition",
       "status": "BLOCKED",
-      "evidence": "C disclosed current observation snippets; no independent disposition."
+      "evidence": "C disclosed individual current observations in search-result snippets; the Integrator's 2026-10-01 ECB page fetch also returned a current daily observation table. Values were not transcribed into integration artifacts or used; independent human/E disposition is pending."
     },
     {
       "id": "bounded_probe_receipt",
@@ -179,6 +179,14 @@
     "performance_plots_generated": false,
     "h3_or_pilot_inputs_accessed": false,
     "run_id": null,
-    "result_id": null
+    "result_id": null,
+    "integrator_source_page_exposure": {
+      "date": "2026-10-01",
+      "source": "Official ECB euro foreign exchange reference-rates page",
+      "page_returned_individual_current_observation_table": true,
+      "values_transcribed_into_integration_artifacts": false,
+      "values_compared_calculated_or_used": false,
+      "disposition": "BLOCKED_PENDING_HUMAN_AND_E_REVIEW"
+    }
   }
 }
