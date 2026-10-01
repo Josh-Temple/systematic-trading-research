@@ -108,10 +108,6 @@ B/Cのbranchがe0fより遅れていること自体を科学的否定証拠と�
 
 **Integratorの追加露出:** 公式資料の確認中、ECBの一般公開current reference-rates pageを開いたところ、tool outputに個別のcurrent observationsを含む日次表が返った。これはmetadata-only範囲を超えた。値を統合artifactへ転記・引用せず、比較・計算・分析に使っていない。strategy statisticも計算していない。Cのincidentとは別にhuman/E reviewと処置を要するため、data-exposure conditionはBLOCKEDのままとする。監査対象ページ: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.eu.html。
 
-**Integrator source-document follow-up (2026-10-01; no series API request):** The official ECB framework dated 23 June 2026 describes reference rates as informational, gives current setting/publication timing, allows amendment or republication in specified circumstances up to publication of the next business day's rate, and requires relevant records to be kept for at least five years. ECB API help documents start/end-period and updated-after filters. This narrows what can be said about the current policy and update workflow; it does not establish historical policy applicability throughout 2010-2026, guarantee recovery of original vintages, or verify full-history coverage. Historical availability and vintage therefore remain UNKNOWN. No series API request or historical data retrieval was made in this follow-up.
-
-**Additional Integrator exposure incident:** While reading official source documentation, the public ECB current reference-rates page returned a daily table containing individual current observations in the tool output. This exceeded the metadata-only scope. No individual value was copied into an integration artifact, quoted, compared, calculated, or used. No strategy statistic was computed. This incident is recorded for human/E review; the data-exposure gate condition remains BLOCKED. The page is documented here for auditability: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.eu.html.
-
 ### D — Deterministic Implementation
 
 | # | Task | Worker status | 統合上の範囲 |
