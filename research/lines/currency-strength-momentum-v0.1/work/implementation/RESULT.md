@@ -133,4 +133,12 @@ Local SHA-256 before upload:
 | `work/implementation/TEST_LOG.txt` | `e161d272ce696fd5c5c06e5304a3f03ff5368089f90cf4af9ac61093c30945d9` |
 | `work/implementation/RESULT.md` | Exact digest is reported with the final remote readback because embedding a file's own hash would alter that file. |
 
-After upload, every deliverable will be fetched from the exact remote branch head and compared byte-for-byte with the local file. The final result records the branch head, PR URL, and `RESULT.md` digest.
+Every deliverable is fetched from the exact remote branch head and compared byte-for-byte with the local file. This PR receipt records the head at creation; the final branch head and `RESULT.md` digest are reported after final verification.
+
+## Pull request receipt
+
+- Draft PR: [#34](https://github.com/Josh-Temple/systematic-trading-research/pull/34).
+- Base: `research/csm-architecture-review-20261001` at `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`.
+- D branch included the current architecture head as a second parent in merge commit `a39a41a5d7f352166709cd1815541264bff4be41`; its tree contains the six updated architecture commits plus only the nine Packet D files under the write allowlist.
+- PR head at creation: `a39a41a5d7f352166709cd1815541264bff4be41`; GitHub reports the draft as open and mergeable with a clean diff. No merge was performed.
+- PR description records the unchanged `main_sha`, the pinned `proposal_ref`, 41 synthetic-only tests, and the closed market gate.
