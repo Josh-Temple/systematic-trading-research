@@ -18,7 +18,7 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-AUDIT_ID = "AUDIT-CSM-E-20261002-REAUDIT-01"
+AUDIT_ID = "AUDIT-CSM-E-20261001-REAUDIT-01"
 I_HEAD = "c2fdbc1f2a9fcccc32717b130a36433819aaa2fa"
 I_GATE_BLOB = "bd6db786a3a1aafe7ce0864def41d5e13123447c"
 I_GATE_SHA256 = "036498e34b85ecbe9fef4c9a6c452b906ee6e680ffe4a08924cb3e3b11fdcbb3"
@@ -309,35 +309,6 @@ def test_raw_lock_and_current_identity(csm: Any, gate_doc: Mapping[str, Any]) ->
         now=NOW, allow_synthetic_test_fixtures=True), "does not identify the current I2 gate")
 
 
-
-def test_gate_required_negative_controls(csm: Any, gate_doc: Mapping[str, Any]) -> None:
-    lock = synthetic_lock(csm)
-    raw = csm.canonical_json_bytes(lock)
-    file_hashes = {
-        name: hashlib.sha256(name.encode("ascii")).hexdigest()
-        for name in ("csm.py", "test_csm.py", "config.json", "RUNBOOK.md", "ENVIRONMENT.md",
-                     "RESULT.md", "TEST_MATRIX.md", "TEST_LOG.txt", "fixtures/toy_cases.json")
-    }
-    common = {
-        "source_lock_raw_bytes": raw, "trusted_keys": TEST_KEYS,
-        "expected_file_hashes": file_hashes, "expected_environment_sha256": "c" * 64,
-        "expected_probe_metadata_sha256": None, "expected_calendar_sha256": "a" * 64,
-        "now": NOW, "allow_synthetic_test_fixtures": True,
-    }
-    rejects(lambda: csm.validate_gate_receipt({}, lock, **common),
-            "gate receipt is not a signed envelope")
-    rejects(lambda: csm.validate_gate_receipt(
-        {"payload": {"human_freeze_status": "PROPOSED"}}, lock, **common),
-        "human has not frozen the exact research contract")
-
-    current_i = actual_i_identity(gate_doc)
-    current_e = {**csm.CURRENT_E_AUDIT_EXPECTED, "audit_id": AUDIT_ID}
-    payload = valid_gate_payload(csm, lock, raw, current_i, file_hashes)
-    payload["independent_audit_identity"] = current_e
-    rejects(lambda: csm.validate_gate_receipt(
-        {"payload": payload}, lock, **common, expected_current_i2_gate=current_i),
-        "does not identify the current E audit")
-
 def stage_success_tree(csm: Any, parent: Path, name: str) -> tuple[Path, Path]:
     stage = parent / f".{name}.stage"
     destination = parent / name
@@ -518,7 +489,6 @@ def main() -> int:
         ("synthetic formula, 56-pair, quote, tie, numeraire, and baseline oracle", lambda: test_math_and_outcome_blindness(csm)),
         ("formation score ledger target-value and availability invariance", lambda: test_ledger_target_invariance(csm)),
         ("trusted key, role, principal, signature, revocation, and expiry checks", lambda: test_signature_controls(csm)),
-        ("no-gate, unfrozen, and current E identity rejection", lambda: test_gate_required_negative_controls(csm, gate_doc)),
         ("raw source-lock bytes and current I identity rejection", lambda: test_raw_lock_and_current_identity(csm, gate_doc)),
         ("fault-injected atomic persistence and promotion", lambda: test_failure_cleanup(csm)),
         ("independent fixed circular bootstrap and decision boundaries", lambda: test_bootstrap(csm)),

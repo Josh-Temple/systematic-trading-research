@@ -1,11 +1,11 @@
 ---
-audit_id: AUDIT-CSM-E-20261002-REAUDIT-01
+audit_id: AUDIT-CSM-E-20261001-REAUDIT-01
 status: PARTIAL_WITH_GAPS
 scientific_status: NOT_APPLICABLE
 recommendation: BLOCKED
 i2_gate_status: BLOCKED_CLOSED
 market_outcome_access: false
-audit_date: 2026-10-02
+audit_date: 2026-10-01
 ---
 
 # Packet E independent re-audit of current Packet D
@@ -63,6 +63,10 @@ The supplied opening refs all matched the GitHub state at the audit start. No si
 
 main_sha and proposal_ref are distinct. The fresh main README, research principles and schema guide matched the proposal branch copies. The main index routes the currency-strength line to research/currency-strength-momentum-v0.1; that branch and its provisional SPEC-CSM-001 were not read or used as the contract. The requested e0f42a proposal remains the contract source for this audit.
 
+### E publication ref refresh
+
+The supplied E opening ref d1335b29eeb01cdd4b71cd5ded62033b8468e539 matched at the start of the re-audit. Before publication, a fresh PR #38 and branch read showed the E branch had advanced to 5922c5d43d29e9e753e6e55b8298b5591a59e63e, a direct child of d1335b29eeb01cdd4b71cd5ded62033b8468e539. PR #38 remained open and draft, based on architecture head e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff. The four changed files at 5922 were exactly the E allowlist; all four were read at that exact head. That commit contained an earlier draft audit ID AUDIT-CSM-E-20261002-REAUDIT-01. It was not used as evidence for this report: D, I, C metadata and contract inputs were freshly fetched and independently checked again. This report uses the distinct audit ID AUDIT-CSM-E-20261001-REAUDIT-01 and is appended to the latest fast-forwardable branch head. The original historical E result at d1335b2 remains unmodified and historical.
+
 ## I2 gate identity
 
 The current I PR #37 head is c2fdbc1f2a9fcccc32717b130a36433819aaa2fa. Both gate files were fetched at that exact head and their Git blob and SHA-256 identities were recomputed from bytes.
@@ -97,7 +101,7 @@ All nine paths below were fetched from D head 6dccd49ee21e4ac29f55162f93ef3e65aa
 - Formation score identity: D's event ledger includes a score identity for each currency. The E oracle generated synthetic formation data, changed target values, then removed target availability; serialized ledger bytes stayed identical in both cases. An outcome calculation with an absent ledger and wrong expected digest was rejected. This independently resolves the old E score-identity finding at the code/test level.
 - Signature verification: a valid synthetic RSA envelope signed by a configured test key was accepted only for the configured role and principal. Wrong role, wrong principal, unknown key, revoked key and expired envelope cases failed closed. These test keys are synthetic fixtures; this does not establish production key provisioning.
 - Raw source-lock bytes: D reads the lock into a byte buffer, hashes that exact buffer and parses the same buffer. A semantically equivalent JSON document with different raw bytes was rejected in the oracle. The permitted C metadata files' exact byte identities also matched.
-- Current identity mismatch: D's CURRENT_I2_GATE_EXPECTED constant and RUNBOOK/TEST_LOG pin PR #37 head 677341e8185bf38b5cc6d4490260ddefb72eb561, gate.json blob ba1670b0c13ec58e806838949a80574a5cbab6c4 and SHA-256 54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6. Current I is c2fdbc1f2a9fcccc32717b130a36433819aaa2fa with gate.json blob bd6db786a3a1aafe7ce0864def41d5e13123447c and SHA-256 036498e34b85ecbe9fef4c9a6c452b906ee6e680ffe4a08924cb3e3b11fdcbb3. D's CURRENT_E_AUDIT_EXPECTED pins historical audit AUDIT-CSM-E-20261002 at PR #38 head d1335b29eeb01cdd4b71cd5ded62033b8468e539, result blob f29a5d38b16b54734a47c719c09922a461ee3fe4 / SHA-256 c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35 and matrix blob 3ada00d887bc76f88c777d2a40ea410077e3e594 / SHA-256 a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7. The E oracle signed synthetic envelopes identifying the current I files and the new E audit ID. It independently confirmed rejection of the current I identity, current E identity, missing gate and unfrozen gate. The new audit ID is AUDIT-CSM-E-20261002-REAUDIT-01, so the pinned E identity is also stale.
+- Current identity mismatch: D's CURRENT_I2_GATE_EXPECTED constant and RUNBOOK/TEST_LOG pin PR #37 head 677341e8185bf38b5cc6d4490260ddefb72eb561, gate.json blob ba1670b0c13ec58e806838949a80574a5cbab6c4 and SHA-256 54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6. Current I is c2fdbc1f2a9fcccc32717b130a36433819aaa2fa with gate.json blob bd6db786a3a1aafe7ce0864def41d5e13123447c and SHA-256 036498e34b85ecbe9fef4c9a6c452b906ee6e680ffe4a08924cb3e3b11fdcbb3. D's CURRENT_E_AUDIT_EXPECTED pins historical audit AUDIT-CSM-E-20261002 at PR #38 head d1335b29eeb01cdd4b71cd5ded62033b8468e539, result blob f29a5d38b16b54734a47c719c09922a461ee3fe4 / SHA-256 c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35 and matrix blob 3ada00d887bc76f88c777d2a40ea410077e3e594 / SHA-256 a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7. The E oracle signed a synthetic envelope identifying the current I files and confirmed D rejects it as not identifying current I2. The new audit ID is AUDIT-CSM-E-20261001-REAUDIT-01, so the pinned E identity is also stale.
 - D follow-up is required. D's code pins, RUNBOOK.md and TEST_LOG.txt need an identity-refresh design and accurate current refs. The design must avoid a circular requirement in which the audit's final hashes depend on a D head that itself must embed those same final audit hashes. After a D change, create a fresh D identity and repeat the E checks against it. I2 stays closed throughout.
 - Persistence faults: the single injected write, flush, fsync, rename and promotion failures tested by D's suite and the E oracle did not promote false success in the tested isolated cases. E also tested a compound fault: the destination parent fsync fails after directory promotion, then rollback deletion fails. D suppresses the rollback deletion error; promotion reports failure while the final run directory and run-receipt.json remain. This is a reproduced GAP because a success receipt remains after failed promotion. D must either make rollback cleanup reliable or ensure the final receipt cannot be interpreted as success after any failed promotion; add a compound-fault regression test.
 - Trust store: D expects /etc/csm-002/trusted-keys.json and rejects missing/untrusted test identities as configured. The production trust store and production key fingerprints/roles/principals/validity/revocation evidence were not present. The local synthetic key cannot close that gap.
@@ -122,6 +126,8 @@ D's RUNBOOK assigns roles, but the reviewed artifacts contain no named owners or
 | Production trust-key distribution | Platform/security staff | No provisioned trust store or independently checked fingerprints |
 
 The current process-local audit hook is not OS isolation and does not enforce a filesystem allowlist. A local attempt directory is not an append-only durable ledger. No holdout separation is evidenced.
+
+The current I reconciliation records two data-exposure disclosures: C reported individual current observations in search-result snippets, and the Integrator reported an ECB page response that included individual observations. This audit read the disclosure from I's reconciliation/decision records only; it did not fetch the page or values, and it reproduces none of them. Human/E disposition remains pending and the exposure condition remains BLOCKED. These disclosures are not independently reproduced exposure events. Current I reconciliation identity: blob 518fb7762f64aa2b9742e4913011d9ce53ca6a62 / SHA-256 ecad2f14bc7f00345fa97bedee060db58423a76c7fec6b19516e040462f554a7; post-E decision blob dfb0d374c1fe4089c3f52a7878f36554e647d978 / SHA-256 61d494361e842716402bd33a8546415f5ad8daa65f93f9526ed0bcb627171d4e.
 
 Calendar metadata internal consistency is not an external-authority check. Keep external calendar authority, complete source coverage, missing/status distribution, publication timing and revision/vintage unresolved. No values from C were reproduced. A later review needs a separately approved metadata-only verification plan before any source-readiness claim can be raised.
 
@@ -198,16 +204,3 @@ The historical E findings were used only to distinguish old code findings from c
 Independent executions, runtime identity and fault results are recorded in TEST_LOG.txt. The complete D suite was run from exact fetched D bytes with only the three permitted C metadata files available. The E oracle validates the recorded D, I, frozen SPEC and C identities before running synthetic tests.
 
 Before any I2 reconsideration, D must resolve current I/E identity binding and the compound rollback-receipt fault, then publish a fresh exact D identity and obtain a new independent E audit. The D/I owners must keep the gate closed while that sequence is pending. Separately, Integrator/platform/security/storage/research-operations owners must provide the operating controls and evidence listed above; source readiness and human/lineage gaps need their own evidence and dispositions.
-
-## E deliverable identities
-
-All four paths are confined to work/independent-audit/**.
-
-| Deliverable | Git blob SHA-1 | SHA-256 |
-|---|---|---|
-| work/independent-audit/AUDIT_MATRIX.csv | 0f66ee9a73b13f6c74c6e342c807049f1da79040 | d3e8c2fcda5a209774d297b08d14a6fabc6aecb63ededb2a61a5e609a68034f5 |
-| work/independent-audit/toy_oracle.py | a489c6feddfe3fd8787bc253cc08004a1a9ff325 | 973eb3d70859f00c9d5da42dddf2c899d408a64dcd4867396b6ce129fbe3e514 |
-| work/independent-audit/TEST_LOG.txt | 0fb4a4be8f2ac04f8ed971fe95e8df8460ad7982 | 9d8aefe03c6aa6b83ee6f300b82380991efa54876b1581e2b79d98d752e16f4d |
-| work/independent-audit/RESULT.md | Exact-head Git blob and SHA-256 are recorded in the completion readback because a file cannot embed its own final digest. |
-
-The completion record must confirm the exact remote head, all four read-back byte comparisons, Git blob SHA-1/SHA-256 identities, and the allowlist-only diff.

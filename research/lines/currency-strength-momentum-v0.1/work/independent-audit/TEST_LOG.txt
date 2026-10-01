@@ -1,59 +1,51 @@
-Packet E independent re-audit execution log
-Audit ID: AUDIT-CSM-E-20261002-REAUDIT-01
-Status: PARTIAL_WITH_GAPS; scientific_status NOT_APPLICABLE; recommendation BLOCKED
-Current I2 state: BLOCKED / CLOSED; market_outcome_access false.
+Packet E independent re-audit — execution log
+Audit ID: AUDIT-CSM-E-20261001-REAUDIT-01
+Audit date: 2026-10-01 (UTC)
+Final status: PARTIAL_WITH_GAPS; recommendation BLOCKED; I2 BLOCKED / CLOSED; market_outcome_access=false.
 
-Input binding:
-- D PR #34 exact head: 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779; all nine D artifact Git blob SHA-1 and SHA-256 identities matched the supplied values. The complete identity table is in RESULT.md.
-- I PR #37 exact head: c2fdbc1f2a9fcccc32717b130a36433819aaa2fa.
-- I work/integration/gate.json blob bd6db786a3a1aafe7ce0864def41d5e13123447c; SHA-256 036498e34b85ecbe9fef4c9a6c452b906ee6e680ffe4a08924cb3e3b11fdcbb3.
-- I work/integration/GATE.md blob 28ef6e0c006c08fb721ca6100323f283d5cb84c3; SHA-256 4c8bd37622e412eac5ae806841f40bb61e9ce8b4de2d2ede834ff0521988d387.
-- Frozen SPEC at I head: blob 7fe114e2fcfa33b0565b51c717455abd8837d5d9; SHA-256 a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2.
-- C reads were restricted to source-lock.json, probe-metadata.json and expected-calendar.json at PR #35 head 9870c710c3cba7bb9226c9eee8ec36687b96fd9d. Their exact identities are in RESULT.md.
-- Old E AUDIT-CSM-E-20261002 and its result/matrix are historical only and remain unchanged.
+Independence and access scope
+- Fresh-read repository refs directly from GitHub at audit start; all user-supplied starting SHAs matched. D PR #34 head: 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779. Current I PR #37 head: c2fdbc1f2a9fcccc32717b130a36433819aaa2fa. E/PR #38 opening ref at audit start: d1335b29eeb01cdd4b71cd5ded62033b8468e539. main: a765b33fc0915fdfdcf21287a4418aca4f5b8b7c; architecture proposal ref: e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff.
+- D's self-reported 53/53 was treated as a claim until the exact D snapshot was independently executed. The old E 42/42 suite and 5/5 oracle are historical only and were not used as current-D evidence.
+- Permitted C read scope: only source-lock.json, probe-metadata.json, expected-calendar.json at C PR #35 head 9870c710c3cba7bb9226c9eee8ec36687b96fd9d. Their (Git blob SHA-1 / raw SHA-256) identities: source-lock 81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf / ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71; probe-metadata 21aa9149b7b7db9b07f1aa3a4bf0312675a166bd / 1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533; expected-calendar 6ed720353472ba6f35391936c536d46fb6ae8c66 / 6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4.
+- Current I gate at PR #37 head c2fdbc1f2a9fcccc32717b130a36433819aaa2fa: gate.json blob bd6db786a3a1aafe7ce0864def41d5e13123447c, SHA-256 036498e34b85ecbe9fef4c9a6c452b906ee6e680ffe4a08924cb3e3b11fdcbb3; GATE.md blob 28ef6e0c006c08fb721ca6100323f283d5cb84c3, SHA-256 4c8bd37622e412eac5ae806841f40bb61e9ce8b4de2d2ede834ff0521988d387. Gate says CLOSED and market_outcome_access=false.
+- Frozen SPEC at I head: blob 7fe114e2fcfa33b0565b51c717455abd8837d5d9, SHA-256 a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2. Accepted pre-freeze SPEC at proposal e0f42a...: blob a073e77dec14337ee20609ed6136e50a8c1e76e2, SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90. Their scientific bodies were compared and matched.
+- Forbidden material was not opened or derived: C RESULT, raw probe CSV, OBS_VALUE, market prices/history, rankings, forward returns, P/L, Sharpe and performance plots. No H3, DATA-HR-003, Autonomous Pilot, broker, live/paper inputs or X instruction was accessed/issued. The oracle uses synthetic examples; C metadata is identity/internal validation only and no C values or calendar entries are reproduced.
 
-Access scope:
-- D source/tests/docs/fixtures, current I gate and contract/freeze metadata, A/B supporting evidence, and only the three permitted C metadata files were read.
-- Local execution used the exact fetched D artifacts in /tmp/csm_packet_e_replay, permitted C metadata in /tmp/csm_packet_e_inputs, and synthetic-only E test cases.
-- C RESULT, raw probe CSV and OBS_VALUE were not read. No market prices/history, ranking, forward return, strategy result, P/L, Sharpe, or performance plot was accessed, generated or calculated. No H3, DATA-HR-003, Autonomous Pilot, broker, live/paper input, or X instruction was touched.
-- No production trust key or live source credential was loaded.
+D snapshot identity
+The following exact D PR #34 files were fetched from commit 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779; each Git blob SHA-1 and raw-byte SHA-256 matched the supplied identity. Paths are relative to work/implementation/.
+- csm.py — 95cf059a5e0d5b6742dfa885fce7b37c58f2362c / 4db33063f0388b8b7ec0613fff8228a4aa3cb00b94855a557c5abcd3b86f4104
+- test_csm.py — e287ab6923d073058cfa0e5e7be46b9ea5bc537a / 3499c6cf4bc52f5052c7ed76ef92da41c272cbb6a31980a51801372775f1f66f
+- config.json — a1c1e140f8c0844fc554ae6fcd975bcb5e610770 / 9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1
+- RUNBOOK.md — 3142c0291aa979bb80c28d71b4e47fc7408591ab / 7fa355a6b071567ff6d4ea4290033f5635fc44b64159af2438acae69ecc14948
+- ENVIRONMENT.md — bf6d5b4c0381e967226ee0996736d858b524b8eb / 8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f
+- RESULT.md — 98e36e22a797806d1ee66438825d7a75f42ff21a / 91fba806a72a9d4e103b535d4acc10b525476f7901700ff1279845bfff2a6923
+- TEST_MATRIX.md — 03633916f0190925a01d6b26e5146956e657c31f / 7cfbd342057ce8a9517fbbf44e464fb05beb60e6de82e47f4e1d8643e7da4bce
+- TEST_LOG.txt — c70e610064f92ba15527fb7f99b8796607a9a91f / 84a6a88673b0502b53bf3b2eb0ca100d101d8bd57cfab3da08695285fc399f44
+- fixtures/toy_cases.json — 4e925eabb4d88772806f0e109c15680f17d73a31 / 08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c
 
-Runtime:
-- 2026-10-02T08:27:51+09:00
-- Python 3.12.14
-- Linux x86_64, kernel 6.18.44
+Runtime
+- Python 3.12.14; Linux-6.18.44-x86_64-with-glibc2.39.
+- Exact fetched D files staged under /tmp/csm_packet_e_replay; the only test data configured for C consisted of the three permitted metadata files under /tmp/csm_packet_e_inputs.
 
-Independent D regression run:
-1. python3 -m py_compile csm.py test_csm.py
-   Result: PASS.
-2. CSM_PACKET_C_SOURCE_LOCK=/tmp/csm_packet_e_inputs/C_source-lock.json CSM_PACKET_C_PROBE_METADATA=/tmp/csm_packet_e_inputs/C_probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=/tmp/csm_packet_e_inputs/C_expected-calendar.json python3 -m unittest -v test_csm.py
-   Result: Ran 53 tests; 53 passed; 0 failed; 0 skipped.
-   This independently reproduces D's 53/53 claim on the exact D snapshot. It is a synthetic/code test result only.
-3. Initial pytest discovery was attempted with python3 -m pytest -q and could not start because pytest is not installed in this environment. An initial incomplete replay copy also lacked exact D runtime documentation files required by a test and failed during harness setup. After all nine exact D artifacts were staged, command 2 above completed successfully. Neither setup failure is a D behavior finding.
+Independent commands and results
+1) Initial environment check: `python3 -m pytest -q` in /tmp/csm_packet_e_replay — pytest was not installed; no result inferred.
+2) A first unittest attempt before all nine D files/runtime identity docs had been staged failed one setup test with FileNotFoundError. This was a harness setup error, not a D test failure; the exact complete snapshot was staged and the prescribed suite was rerun below.
+3) `python3 -m py_compile csm.py test_csm.py` in /tmp/csm_packet_e_replay — PASS.
+4) `CSM_PACKET_C_SOURCE_LOCK=/tmp/csm_packet_e_inputs/C_source-lock.json CSM_PACKET_C_PROBE_METADATA=/tmp/csm_packet_e_inputs/C_probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=/tmp/csm_packet_e_inputs/C_expected-calendar.json python3 -m unittest -v test_csm.py` in /tmp/csm_packet_e_replay — PASS, 53 tests ran in 0.590s, OK. This independently reproduces D's 53/53 claim for the bound snapshot/runtime.
+5) `python3 /tmp/csm_packet_e_inputs/toy_oracle.py --d-root /tmp/csm_packet_e_replay --i-gate-json /tmp/csm_packet_e_inputs/I_gate.json --i-gate-md /tmp/csm_packet_e_inputs/I_GATE.md --frozen-spec /tmp/csm_packet_e_inputs/FROZEN_SPEC.md --source-lock /tmp/csm_packet_e_inputs/C_source-lock.json --probe-metadata /tmp/csm_packet_e_inputs/C_probe-metadata.json --expected-calendar /tmp/csm_packet_e_inputs/C_expected-calendar.json` — PASS for synthetic mathematical, ledger, signature, raw-byte, bootstrap, boundary, and metadata identity checks; reproduced GAP for final directory fsync failure followed by rollback deletion failure leaving run-receipt.json in the final directory. Oracle process exited 0 because this failure mode is an expected audit finding.
+6) Oracle/test synthetic coverage: exact-ratio/Fraction arithmetic; 56 ordered pairs; q_b/q_a direction; tie and numeraire changes; target value/availability mutation invariance of formation ledger bytes; trusted test key positive and wrong role/principal, unknown, revoked, expired negative cases; current-I exact identity rejection; semantically equal but raw-byte-different source-lock rejection; injected write/flush/fsync/rename/promotion faults; independent circular bootstrap and decision thresholds; explicit compound rollback failure. The signing key and values are synthetic, not production material.
 
-E-authored oracle:
-Command:
-python3 /tmp/csm_packet_e_outputs/toy_oracle.py --d-root /tmp/csm_packet_e_replay --i-gate-json /tmp/csm_packet_e_inputs/I_gate.json --i-gate-md /tmp/csm_packet_e_inputs/I_GATE.md --frozen-spec /tmp/csm_packet_e_inputs/FROZEN_SPEC.md --source-lock /tmp/csm_packet_e_inputs/C_source-lock.json --probe-metadata /tmp/csm_packet_e_inputs/C_probe-metadata.json --expected-calendar /tmp/csm_packet_e_inputs/C_expected-calendar.json
+Representative independent outcome
+- Current I is CLOSED / market_outcome_access=false. D's constants, RUNBOOK and TEST_LOG still pin old I head 677341e8185bf38b5cc6d4490260ddefb72eb561 and old E audit AUDIT-CSM-E-20261002 at old E head d1335b29eeb01cdd4b71cd5ded62033b8468e539. D therefore rejects current I's exact gate identity; its D receipt path is not current-gate-aligned and needs a D follow-up.
+- Single injected persistence failures cleaned up as expected in tested cases. Compound final parent-directory fsync plus rollback-deletion failure left a success receipt; status remains GAP.
+- Process-local audit hook does not establish OS isolation/filesystem allowlisting; no durable protected destination, persistent append-only access/attempt ledger, named operator or production trust-key fingerprints/distribution was evidenced. Keep owner/evidence gaps open.
+- Calendar external authority, complete source-period coverage, observed missing/status distribution, historical publication timing and revision/vintage were not accessed and remain unresolved.
+- Old E audit ID AUDIT-CSM-E-20261002 was inspected only as historical record for old D 4f739d9cc2b21c138771afec4a728bf2b57060ba. Its status was not changed or used as current evidence.
 
-Output:
-PASS: synthetic formula, 56-pair, quote, tie, numeraire, and baseline oracle
-PASS: formation score ledger target-value and availability invariance
-PASS: trusted key, role, principal, signature, revocation, and expiry checks
-PASS: no-gate, unfrozen, and current E identity rejection
-PASS: raw source-lock bytes and current I identity rejection
-PASS: fault-injected atomic persistence and promotion
-PASS: independent fixed circular bootstrap and decision boundaries
-PASS: exact permitted C metadata identity and internal validation
-GAP_REPRODUCED: final directory fsync error plus rollback deletion error leaves run-receipt.json
-AUDIT_ID: AUDIT-CSM-E-20261002-REAUDIT-01
-BOUND_D_HEAD: 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779
-BOUND_I_HEAD: c2fdbc1f2a9fcccc32717b130a36433819aaa2fa
-CURRENT_I_GATE_STATE: CLOSED False
+Audit disposition and next verification
+All nine items are in AUDIT_MATRIX.csv. Statuses: 1 GAP, 2 PASS (synthetic mathematics only), 3 GAP, 4 PASS (code/synthetic outcome-blindness only), 5 PASS (synthetic method only), 6 GAP, 7 GAP, 8 GAP, 9 PASS (audit consolidation only). PASS is not a gate decision. Overall PARTIAL_WITH_GAPS; recommendation BLOCKED; scientific_status NOT_APPLICABLE. Before any I2 reconsideration: D owner should remove stale identity assumptions using a non-circular binding design, refresh RUNBOOK/TEST_LOG, fix compound-fault receipt semantics, publish a new exact D head, and obtain another independent E review. Platform/security, storage/platform, research operations/security and Integrator must supply the operational evidence and named owner/operator. Calendar/source authority and human/lineage gaps need their own approved evidence. I2 remains CLOSED; no run or outcome access is authorized by this audit.
 
-The compound persistence GAP was induced only with temporary synthetic directories; leftover test output was removed after observation. The oracle exits successfully when expected controls behave as specified, while reporting the reproduced compound-failure GAP explicitly.
 
-Staged E artifact identities:
-- AUDIT_MATRIX.csv Git blob 0f66ee9a73b13f6c74c6e342c807049f1da79040; SHA-256 d3e8c2fcda5a209774d297b08d14a6fabc6aecb63ededb2a61a5e609a68034f5.
-- toy_oracle.py Git blob a489c6feddfe3fd8787bc253cc08004a1a9ff325; SHA-256 973eb3d70859f00c9d5da42dddf2c899d408a64dcd4867396b6ce129fbe3e514.
-
-Remote branch update and exact-head readback are a separate completion check. Before the audit is treated as complete, read all four allowlisted files back from the exact updated remote E head and compare raw bytes, Git blob SHA-1 and SHA-256 with the staged artifacts. Keep PR #38 draft and do not merge.
+Publication ref refresh
+- At audit start PR #38 matched supplied head d1335b29eeb01cdd4b71cd5ded62033b8468e539. Immediately before publication, fresh PR and branch reads returned 5922c5d43d29e9e753e6e55b8298b5591a59e63e; its parent is d1335b29eeb01cdd4b71cd5ded62033b8468e539. PR #38 remained open/draft and based on architecture head e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff. The four paths in that PR were exactly the E allowlist. All four files at 5922 were read. Its earlier draft audit ID AUDIT-CSM-E-20261002-REAUDIT-01 was not used as evidence; fresh D/I/metadata/contract reads were used for this audit, which has distinct ID AUDIT-CSM-E-20261001-REAUDIT-01.
+- Current I reconciliation and post-E decision records report two pending exposure disclosures (C search-result snippets and an Integrator ECB page response). This is noted from I records only, not independently reproduced; no page or individual values were read, quoted, compared, or calculated. Human/E disposition remains pending.
