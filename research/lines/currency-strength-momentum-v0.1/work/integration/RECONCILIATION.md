@@ -102,7 +102,7 @@ B/Cのbranchがe0fより遅れていること自体を科学的否定証拠と�
 
 **source identity:** source-lock CSM-SOURCE-LOCK-ECB-001はD.AUD/CAD/CHF/GBP/JPY/NZD/USD.EUR.SP00.A、currency-per-EUR、daily、status Aを固定する。codelist suffix Aの表示「Average」はlabelであり、bid/ask平均やintraday平均の証拠ではない。source-lock Git blob SHA-1は81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf、SHA-256はebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71。calendar Git blob SHA-1は6ed720353472ba6f35391936c536d46fb6ae8c66、SHA-256は6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4。
 
-**露出インシデント:** C Resultによると、source discovery中にECB currency converterとFRED seriesの検索結果が個別のcurrent observationsを表示した。値は報告・比較・計算に使わず、Resultにも再掲していないとのworker申告を確認した。Integraterとして値やraw CSVを取り直していない。この申告はEと人間によるreviewを要するため、gate conditionはBLOCKEDのままにした。2009-11 bounded probeはCの許可範囲内で、responseにOBS_VALUE列を含むraw CSVをbyte-exactで保存したが、probeはvaluesを抽出・出力・分析していないと報告されている。
+**露出インシデント:** C Resultによると、source discovery中にECB currency converterとFRED seriesの検索結果が個別のcurrent observationsを表示した。値は報告・比較・計算に使わず、Resultにも再掲していないとのworker申告を確認した。Integratorとして値やraw CSVを取り直していない。この申告はEと人間によるreviewを要するため、gate conditionはBLOCKEDのままにした。2009-11 bounded probeはCの許可範囲内で、responseにOBS_VALUE列を含むraw CSVをbyte-exactで保存したが、probeはvaluesを抽出・出力・分析していないと報告されている。
 
 ### D — Deterministic Implementation
 
