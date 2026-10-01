@@ -1,10 +1,15 @@
 {
-  "config_type": "PROPOSED_SPEC_MIRROR",
+  "config_type": "FROZEN_SPEC_MIRROR",
   "spec_id": "SPEC-CSM-002-v01",
-  "spec_git_blob_sha1": "a073e77dec14337ee20609ed6136e50a8c1e76e2",
-  "spec_sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90",
+  "spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
+  "spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
+  "accepted_pre_freeze_spec_git_blob_sha1": "a073e77dec14337ee20609ed6136e50a8c1e76e2",
+  "accepted_pre_freeze_spec_sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90",
+  "human_decision_id": "HDEC-CSM-002-20261001",
+  "freeze_decision_id": "DEC-CSM-003-FREEZE-20261001",
+  "freeze_record_commit": "4ac1e797c777f33a467ec73b250401886d160e80",
   "hypothesis_id": "HYP-CSM-002",
-  "freeze_status": "PROPOSED_NOT_FROZEN",
+  "freeze_status": "FROZEN",
   "source_family": "ECB_EXR_DAILY",
   "source_role": "REFERENCE_RATE_ASSOCIATION_ONLY",
   "source_start": "2009-11",
@@ -28,5 +33,5 @@
   },
   "minimum_eligible": 120,
   "minimum_coverage": "0.80",
-  "market_outcome_access": "CLOSED_UNTIL_HUMAN_FREEZE_AND_INTEGRATOR_GATE"
+  "market_outcome_access": "CLOSED_UNTIL_INTEGRATOR_GATE_PASS_AND_SEPARATE_X_INSTRUCTION"
 }
