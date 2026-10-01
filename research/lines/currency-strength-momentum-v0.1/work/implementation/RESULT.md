@@ -168,6 +168,25 @@ SHA-256 values for the eight other deliverables are recorded below. The `RESULT.
 
 The final `RESULT.md` SHA-256 and all nine remote Git blob identities are reported in PR #34 and the final readback receipt.
 
+### Remote readback receipt
+
+- At D branch head `c82c5cca33c77eff3003f50816baecaab4fbe1f3`, compared against base `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`, the complete diff was exactly the nine allowlisted `work/implementation/**` files.
+- All nine files were fetched from that head and matched their local bytes exactly. Their Git blob SHA-1s at that readback were:
+
+| Path | Git blob SHA-1 |
+|---|---|
+| `work/implementation/RESULT.md` (before this receipt was added) | `1484c09c2fe205838531b206756ee78823c62f38` |
+| `work/implementation/csm.py` | `f1eddb69b988c57a3ce39e654261e94f5c5e7d52` |
+| `work/implementation/test_csm.py` | `f3e5006c2931e9d459504142f270253571d3fb82` |
+| `work/implementation/config.json` | `a1c1e140f8c0844fc554ae6fcd975bcb5e610770` |
+| `work/implementation/fixtures/toy_cases.json` | `4e925eabb4d88772806f0e109c15680f17d73a31` |
+| `work/implementation/RUNBOOK.md` | `939447e212555dceb0d5090d39a4eaee46f86d1a` |
+| `work/implementation/ENVIRONMENT.md` | `7313a07849b8104bd154bf991c27a85049b5fa04` |
+| `work/implementation/TEST_MATRIX.md` | `fc767c84cb036a73ad3ac8dd600beba0ad603504` |
+| `work/implementation/TEST_LOG.txt` | `2cdf9f479c6294fd0f5d44300b3d834c3b5462a3` |
+
+This receipt changes only `RESULT.md`. The final branch head and fresh readback of the receipt-bearing `RESULT.md` are verified again after this update; the final file's own digest is recorded in PR #34 to avoid self-reference.
+
 ### Follow-up access and gate receipt
 
 ```yaml
@@ -193,4 +212,4 @@ The known limitations remain: full-history coverage, historical publication time
 - Draft PR: [#34](https://github.com/Josh-Temple/systematic-trading-research/pull/34), not merged.
 - Base: `research/csm-architecture-review-20261001` at `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`.
 - Branch: `work/csm-implementation-20261001`.
-- The follow-up commit is restricted to Packet D's `work/implementation/**` allowlist. Exact branch head, nine-file path allowlist, and remote blob readback are recorded after the update.
+- The follow-up is restricted to Packet D's `work/implementation/**` allowlist. The final head and receipt-bearing remote blobs are verified after this update and recorded in PR #34.
