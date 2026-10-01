@@ -30,6 +30,8 @@ NON_EUR_CURRENCIES = tuple(c for c in CURRENCIES if c != "EUR")
 EXPECTED_SERIES_BY_CURRENCY = {
     c: f"D.{c}.EUR.SP00.A" for c in NON_EUR_CURRENCIES
 }
+PACKET_C_LOCK_ID = "CSM-SOURCE-LOCK-ECB-001"
+PACKET_C_CALENDAR_ID = "ECB_TARGET_LONG_TERM_2002_RULE"
 TARGET_START = "2010-01"
 TARGET_END = "2026-09"
 SOURCE_START = "2009-11"
@@ -149,7 +151,148 @@ def parse_iso_date(value: Any, *, field: str = "date") -> date:
     return parsed
 
 
+def is_packet_c_source_lock(source_lock: Mapping[str, Any]) -> bool:
+    return source_lock.get("source_lock_id") == PACKET_C_LOCK_ID
+
+
+def source_lock_id(source_lock: Mapping[str, Any]) -> Any:
+    return source_lock.get("source_lock_id", source_lock.get("id"))
+
+
+def source_transport(source_lock: Mapping[str, Any]) -> Any:
+    if is_packet_c_source_lock(source_lock):
+        route = source_lock.get("route", {})
+        return route.get("transport") if isinstance(route, Mapping) else None
+    return source_lock.get("source_transport")
+
+
+def source_unit_status_map(source_lock: Mapping[str, Any]) -> dict[str, Any]:
+    if is_packet_c_source_lock(source_lock):
+        series = source_lock.get("series", [])
+        return {
+            "unit_by_currency": {
+                item["currency"]: item["quote_unit"]
+                for item in series if isinstance(item, Mapping)
+            },
+            "status_policy": {"valid": ["A"], "missing": []},
+        }
+    return {
+        "unit_by_currency": source_lock.get("unit_by_currency"),
+        "status_policy": source_lock.get("status_policy"),
+    }
+
+
+def validate_packet_c_source_lock(source_lock: Mapping[str, Any]) -> None:
+    """Validate Packet C's exact bounded ECB lock without treating it as gate approval."""
+    if source_lock_id(source_lock) != PACKET_C_LOCK_ID:
+        raise GateError("Packet C source-lock identity mismatch")
+    if source_lock.get("version") != "1.0.0":
+        raise GateError("Packet C source-lock version mismatch")
+    if source_lock.get("status") != "QUALIFIED_BOUNDED_ROUTE_ONLY":
+        raise GateError("Packet C source route is not qualified")
+    if source_lock.get("scientific_status") != "NOT_APPLICABLE":
+        raise GateError("Packet C source lock claims a scientific result")
+    if source_lock.get("market_outcome_access") is not False:
+        raise GateError("Packet C source lock cannot authorize market-outcome access")
+    if not str(source_lock.get("authoritative_spec", "")).endswith(
+        f"{SPEC_ID}.md"
+    ):
+        raise GateError("Packet C source lock SPEC reference mismatch")
+
+    route = source_lock.get("route")
+    if not isinstance(route, Mapping):
+        raise GateError("Packet C route identity is absent")
+    route_identity = {
+        "provider": "European Central Bank (ECB)",
+        "dataset": "EXR",
+        "transport": "official SDMX REST API",
+        "format": "csvdata",
+        "organization_code": "4F0",
+    }
+    if any(route.get(key) != value for key, value in route_identity.items()):
+        raise GateError("Packet C route identity mismatch")
+    if not str(route.get("endpoint_template", "")).startswith(
+        "https://data-api.ecb.europa.eu/service/data/EXR/"
+    ):
+        raise GateError("Packet C endpoint is not the locked ECB EXR route")
+
+    series = source_lock.get("series")
+    if not isinstance(series, list) or len(series) != len(NON_EUR_CURRENCIES):
+        raise GateError("Packet C lock must identify exactly seven series")
+    by_currency: dict[str, Mapping[str, Any]] = {}
+    for item in series:
+        if not isinstance(item, Mapping):
+            raise GateError("Packet C series record is malformed")
+        currency = item.get("currency")
+        if currency in by_currency:
+            raise GateError("Packet C series currency is duplicated")
+        by_currency[str(currency)] = item
+    if set(by_currency) != set(NON_EUR_CURRENCIES):
+        raise GateError("Packet C series currency universe mismatch")
+    for currency, item in by_currency.items():
+        expected = {
+            "key": EXPECTED_SERIES_BY_CURRENCY[currency],
+            "currency_denom": "EUR",
+            "quote_unit": f"{currency} per EUR 1",
+            "frequency": "D",
+            "exr_type": "SP00",
+            "exr_suffix": "A",
+            "unit": currency,
+            "unit_mult": 0,
+            "source_agency": "4F0",
+            "allowed_statuses": [{"code": "A", "label": "Normal value"}],
+        }
+        if any(item.get(key) != value for key, value in expected.items()):
+            raise GateError("Packet C series identity, unit, or status mismatch")
+
+    parsing = source_lock.get("parsing_and_validation")
+    if not isinstance(parsing, Mapping):
+        raise GateError("Packet C parse policy is absent")
+    if parsing.get("key_identity") != (
+        "Each row key/dimension must agree with the requested series and currency; "
+        "CURRENCY_DENOM=EUR, FREQ=D, EXR_TYPE=SP00, EXR_SUFFIX=A."
+    ):
+        raise GateError("Packet C row identity policy mismatch")
+    if "Exact 32-column CSV schema" not in str(parsing.get("schema", "")):
+        raise GateError("Packet C exact CSV schema policy is absent")
+    if "Accept only OBS_STATUS=A" not in str(parsing.get("status", "")):
+        raise GateError("Packet C observation-status policy mismatch")
+
+    calendar = source_lock.get("calendar")
+    if not isinstance(calendar, Mapping):
+        raise GateError("Packet C calendar identity is absent")
+    if (calendar.get("id") != PACKET_C_CALENDAR_ID
+            or calendar.get("range_start_inclusive") != "2009-11-01"
+            or calendar.get("range_end_inclusive") != "2026-09-30"
+            or calendar.get("expected_open_day_count") != 4331):
+        raise GateError("Packet C calendar scope mismatch")
+    for hash_key in ("sha256", "open_dates_sha256", "month_end_identity_sha256"):
+        digest = calendar.get(hash_key)
+        if not isinstance(digest, str) or len(digest) != 64:
+            raise GateError("Packet C calendar hash identity is invalid")
+
+    probe = source_lock.get("probe")
+    publication = source_lock.get("publication_and_vintage")
+    if not isinstance(probe, Mapping) or not isinstance(publication, Mapping):
+        raise GateError("Packet C probe or publication boundary is absent")
+    if (probe.get("bounded_period") != {"start": "2009-11-01", "end": "2009-11-30"}
+            or probe.get("full_history_coverage_tested") is not False
+            or probe.get("obs_value_values_extracted_or_used") is not False
+            or probe.get("obs_value_values_emitted") is not False):
+        raise GateError("Packet C bounded-probe boundary mismatch")
+    outcome_gate = source_lock.get("outcome_gate")
+    if not isinstance(outcome_gate, Mapping) or outcome_gate.get("state") != "CLOSED":
+        raise GateError("Packet C outcome gate is not recorded CLOSED")
+    if (publication.get("same_day_availability") != "UNKNOWN"
+            or publication.get("historical_vintage_or_revision_access") != "UNKNOWN"
+            or "No same-day tradability" not in str(publication.get("safe_interpretation", ""))):
+        raise GateError("Packet C publication-time boundary mismatch")
+
+
 def validate_series_identity(source_lock: Mapping[str, Any]) -> None:
+    if is_packet_c_source_lock(source_lock):
+        validate_packet_c_source_lock(source_lock)
+        return
     if source_lock.get("id") in (None, ""):
         raise GateError("source lock has no identity")
     if source_lock.get("spec_id") != SPEC_ID:
@@ -173,6 +316,7 @@ def validate_gate_receipt(
     receipt: Mapping[str, Any], source_lock: Mapping[str, Any],
     *, expected_file_hashes: Mapping[str, str] | None = None,
     expected_environment_sha256: str | None = None,
+    expected_probe_metadata_sha256: str | None = None,
 ) -> None:
     """Fail closed; no current receipt can pass against this proposed contract."""
     validate_series_identity(source_lock)
@@ -190,7 +334,7 @@ def validate_gate_receipt(
         raise GateError("gate SPEC bytes differ from implementation target")
     if receipt.get("hypothesis_id") != HYPOTHESIS_ID:
         raise GateError("gate hypothesis identity mismatch")
-    if receipt.get("source_lock_id") != source_lock.get("id"):
+    if receipt.get("source_lock_id") != source_lock_id(source_lock):
         raise GateError("gate source-lock identity mismatch")
     required_text = (
         "human_contract_decision_id",
@@ -213,23 +357,36 @@ def validate_gate_receipt(
         value = receipt.get(field)
         if not isinstance(value, str) or not value.strip():
             raise GateError(f"gate receipt missing {field}")
+    if is_packet_c_source_lock(source_lock):
+        if expected_probe_metadata_sha256 is None:
+            raise GateError("exact Packet C probe-metadata bytes are required for gate validation")
+        metadata_hash = receipt.get("probe_metadata_sha256")
+        if not isinstance(metadata_hash, str) or len(metadata_hash) != 64:
+            raise GateError("gate receipt missing Packet C probe-metadata identity")
+        if metadata_hash != expected_probe_metadata_sha256:
+            raise GateError("gate Packet C probe-metadata identity mismatch")
+        if receipt.get("expected_calendar_sha256") != source_lock["calendar"].get("sha256"):
+            raise GateError("gate Packet C calendar identity mismatch")
     for field in ("spec_sha256", "source_lock_sha256", "unit_status_map_sha256", "expected_calendar_sha256",
                   "synthetic_test_log_sha256", "environment_identity_sha256"):
         value = receipt[field]
         if len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value.lower()):
             raise GateError(f"gate receipt has invalid {field}")
+    if is_packet_c_source_lock(source_lock):
+        value = receipt["probe_metadata_sha256"]
+        if any(ch not in "0123456789abcdef" for ch in value.lower()):
+            raise GateError("gate receipt has invalid probe-metadata hash")
     if receipt.get("spec_sha256") != SPEC_SHA256:
         raise GateError("gate SPEC SHA-256 differs from proposed exact bytes")
     if receipt.get("source_series_keys") != list(EXPECTED_SERIES_BY_CURRENCY.values()):
         raise GateError("gate series keys mismatch")
-    if receipt.get("source_transport") != source_lock.get("source_transport"):
+    if receipt.get("source_transport") != source_transport(source_lock):
         raise GateError("gate source transport does not match source lock")
     if receipt.get("source_lock_sha256") != sha256_bytes(canonical_json_bytes(source_lock)):
         raise GateError("gate source-lock content identity mismatch")
-    status_unit_hash = sha256_bytes(canonical_json_bytes({
-        "unit_by_currency": source_lock.get("unit_by_currency"),
-        "status_policy": source_lock.get("status_policy"),
-    }))
+    status_unit_hash = sha256_bytes(canonical_json_bytes(
+        source_unit_status_map(source_lock)
+    ))
     if receipt.get("unit_status_map_sha256") != status_unit_hash:
         raise GateError("gate unit/status identity mismatch")
     expected_time_range = {
@@ -250,11 +407,12 @@ def validate_gate_receipt(
 
 
 def validate_capture_manifest(
-    manifest: Mapping[str, Any], raw_bytes: bytes, source_lock: Mapping[str, Any]
+    manifest: Mapping[str, Any], raw_bytes: bytes, source_lock: Mapping[str, Any],
+    *, expected_metadata_sha256: str | None = None,
 ) -> None:
     if manifest.get("capture_status") != "CAPTURED":
         raise GateError("raw-capture preflight is not complete")
-    if manifest.get("source_lock_id") != source_lock.get("id"):
+    if manifest.get("source_lock_id") != source_lock_id(source_lock):
         raise GateError("raw-capture source identity mismatch")
     if manifest.get("source_lock_sha256") != sha256_bytes(canonical_json_bytes(source_lock)):
         raise GateError("raw-capture source-lock content identity mismatch")
@@ -277,11 +435,102 @@ def validate_capture_manifest(
         raise GateError("raw-capture retrieval timestamp is not ISO-8601") from exc
     if manifest.get("identity_check") != "PASS":
         raise GateError("raw-capture identity check did not pass")
+    if is_packet_c_source_lock(source_lock) and expected_metadata_sha256 is None:
+        raise GateError("exact Packet C probe-metadata bytes are required for capture validation")
+    if expected_metadata_sha256 is not None and (
+        manifest.get("probe_metadata_sha256") != expected_metadata_sha256
+    ):
+        raise GateError("raw-capture probe-metadata identity mismatch")
+
+
+def validate_packet_c_probe_metadata(
+    source_lock: Mapping[str, Any], metadata: Mapping[str, Any]
+) -> tuple[str, ...]:
+    """Return the exact CSV header established by Packet C's metadata artifact."""
+    validate_packet_c_source_lock(source_lock)
+    probe = source_lock["probe"]
+    if metadata.get("probe_id") != probe.get("probe_id"):
+        raise GateError("Packet C probe-metadata identity mismatch")
+    if metadata.get("data_values_visible") is not False:
+        raise GateError("Packet C metadata artifact is not metadata-only")
+    if metadata.get("expected_calendar_sha256") != source_lock["calendar"].get("sha256"):
+        raise GateError("Packet C metadata calendar identity mismatch")
+    records = metadata.get("series")
+    if not isinstance(records, list) or len(records) != len(NON_EUR_CURRENCIES):
+        raise GateError("Packet C metadata must contain exactly seven series schemas")
+    expected_keys = set(EXPECTED_SERIES_BY_CURRENCY.values())
+    observed_keys: set[str] = set()
+    expected_schema: tuple[str, ...] | None = None
+    required = {
+        "KEY", "FREQ", "CURRENCY", "CURRENCY_DENOM", "EXR_TYPE", "EXR_SUFFIX",
+        "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS", "UNIT", "UNIT_MULT", "SOURCE_AGENCY",
+    }
+    for record in records:
+        if not isinstance(record, Mapping):
+            raise GateError("Packet C metadata series schema is malformed")
+        key = record.get("series")
+        columns = record.get("schema")
+        if not isinstance(key, str) or key not in expected_keys or key in observed_keys:
+            raise GateError("Packet C metadata series-key set mismatch")
+        observed_keys.add(key)
+        if not isinstance(columns, list) or not all(isinstance(x, str) for x in columns):
+            raise GateError("Packet C metadata CSV schema is malformed")
+        schema = tuple(columns)
+        if len(schema) != 32 or len(set(schema)) != 32 or not required.issubset(schema):
+            raise GateError("Packet C metadata CSV schema is not the locked 32-column schema")
+        if expected_schema is None:
+            expected_schema = schema
+        elif schema != expected_schema:
+            raise GateError("Packet C series CSV schemas differ")
+    if observed_keys != expected_keys or expected_schema is None:
+        raise GateError("Packet C metadata does not cover all seven exact series")
+    if metadata.get("all_series_match_expected_calendar_and_schema") is not True:
+        raise GateError("Packet C bounded probe did not match its declared schema")
+    return expected_schema
 
 
 def _normalized_source_rows(
-    reader: csv.DictReader, source_lock: Mapping[str, Any]
+    reader: csv.DictReader, source_lock: Mapping[str, Any],
+    *, source_metadata: Mapping[str, Any] | None = None,
 ) -> Iterable[dict[str, Any]]:
+    if is_packet_c_source_lock(source_lock):
+        if source_metadata is None:
+            raise GateError("Packet C probe metadata is required for its CSV adapter")
+        validate_packet_c_probe_metadata(source_lock, source_metadata)
+        by_key = {item["key"]: item for item in source_lock["series"]}
+        for row in reader:
+            try:
+                series_key = row["KEY"]
+                record = by_key[series_key]
+                currency = record["currency"]
+                dimensions = {
+                    "FREQ": record["frequency"],
+                    "CURRENCY": currency,
+                    "CURRENCY_DENOM": record["currency_denom"],
+                    "EXR_TYPE": record["exr_type"],
+                    "EXR_SUFFIX": record["exr_suffix"],
+                    "SOURCE_AGENCY": record["source_agency"],
+                    "UNIT": record["unit"],
+                    "UNIT_MULT": str(record["unit_mult"]),
+                    "DECIMALS": str(record["decimals"]),
+                }
+                if any(row[field] != expected for field, expected in dimensions.items()):
+                    raise DataError("ECB CSV row dimensions or units mismatch the Packet C lock")
+                allowed = {item["code"] for item in record["allowed_statuses"]}
+                if row["OBS_STATUS"] not in allowed:
+                    raise DataError("ECB CSV observation status is outside the Packet C lock")
+                yield {
+                    "date": row["TIME_PERIOD"],
+                    "currency": currency,
+                    "obs_value": row["OBS_VALUE"],
+                    "unit": record["quote_unit"],
+                    "status": row["OBS_STATUS"],
+                    "available_at": "UNKNOWN",
+                }
+            except KeyError as exc:
+                raise DataError("ECB CSV row key or required dimension is absent") from exc
+        return
+
     field_map = source_lock["csv_field_map"]
     series_to_currency = {v: k for k, v in source_lock["series_by_currency"].items()}
     for row in reader:
@@ -316,15 +565,16 @@ def parse_quote_rows(
     statuses: dict[date, dict[str, str]] = {}
     seen: set[tuple[date, str]] = set()
     row_dates: set[date] = set()
-    previous_day: date | None = None
+    previous_day_by_currency: dict[str, date] = {}
     for row in rows:
         day = parse_iso_date(row.get("date"), field="date")
-        if previous_day is not None and day < previous_day:
-            raise DataError("input dates are not ordered")
-        previous_day = day
         currency = str(row.get("currency", ""))
         if currency not in NON_EUR_CURRENCIES:
             raise DataError("unexpected source currency; EUR is synthetic q=1")
+        previous_day = previous_day_by_currency.get(currency)
+        if previous_day is not None and day < previous_day:
+            raise DataError("input dates are not ordered within currency")
+        previous_day_by_currency[currency] = day
         key = (day, currency)
         if key in seen:
             raise DataError("duplicate date/currency observation")
@@ -349,13 +599,32 @@ def parse_quote_rows(
     return QuoteTable(values=values, statuses=statuses, row_dates=frozenset(row_dates))
 
 
-def parse_source_csv(raw_bytes: bytes, source_lock: Mapping[str, Any]) -> QuoteTable:
+def parse_source_csv(
+    raw_bytes: bytes, source_lock: Mapping[str, Any],
+    source_metadata: Mapping[str, Any] | None = None,
+) -> QuoteTable:
     validate_series_identity(source_lock)
     try:
-        text = raw_bytes.decode("utf-8", errors="strict")
+        text = raw_bytes.decode("utf-8-sig", errors="strict")
     except UnicodeDecodeError as exc:
         raise DataError("source CSV is not UTF-8") from exc
     reader = csv.DictReader(text.splitlines())
+    if is_packet_c_source_lock(source_lock):
+        if source_metadata is None:
+            raise GateError("Packet C probe metadata is required for its CSV adapter")
+        schema = validate_packet_c_probe_metadata(source_lock, source_metadata)
+        if reader.fieldnames != list(schema):
+            raise DataError("ECB CSV header differs from the exact Packet C schema")
+        rows = _normalized_source_rows(
+            reader, source_lock, source_metadata=source_metadata
+        )
+        status_map = source_unit_status_map(source_lock)
+        return parse_quote_rows(
+            rows,
+            status_policy=status_map["status_policy"],
+            unit_by_currency=status_map["unit_by_currency"],
+        )
+
     required_columns = set(source_lock["csv_field_map"].values())
     if reader.fieldnames is None or not required_columns.issubset(set(reader.fieldnames)):
         raise DataError("source CSV schema differs from source lock")
@@ -776,7 +1045,56 @@ def validate_temporal_receipt(receipt: Mapping[str, Any]) -> None:
         raise GateError("same timestamp cannot be asserted as executable availability")
 
 
-def validate_calendar_document(calendar_doc: Mapping[str, Any]) -> None:
+def validate_calendar_document(
+    calendar_doc: Mapping[str, Any],
+    *, source_lock: Mapping[str, Any] | None = None,
+    raw_bytes: bytes | None = None,
+) -> dict[str, str]:
+    if source_lock is not None and is_packet_c_source_lock(source_lock):
+        validate_packet_c_source_lock(source_lock)
+        identity = source_lock["calendar"]
+        if (calendar_doc.get("calendar_id") != identity.get("id")
+                or calendar_doc.get("calendar_version") != identity.get("version")
+                or calendar_doc.get("range_start_inclusive") != "2009-11-01"
+                or calendar_doc.get("range_end_inclusive") != "2026-09-30"
+                or calendar_doc.get("timezone_for_date_labels") != "Europe/Berlin"):
+            raise GateError("Packet C expected-calendar identity mismatch")
+        dates = calendar_doc.get("expected_open_dates")
+        closures = calendar_doc.get("weekday_closures")
+        if not isinstance(dates, list) or not isinstance(closures, Mapping):
+            raise GateError("Packet C expected-calendar date data is malformed")
+        if len(dates) != identity.get("expected_open_day_count"):
+            raise GateError("Packet C expected-calendar date count mismatch")
+        parsed_dates = [parse_iso_date(value, field="expected_open_dates") for value in dates]
+        if any(parsed_dates[i] >= parsed_dates[i + 1] for i in range(len(parsed_dates) - 1)):
+            raise GateError("Packet C expected-calendar dates are not unique and ordered")
+        lower, upper = date(2009, 11, 1), date(2026, 9, 30)
+        if any(day < lower or day > upper or day.weekday() >= 5 for day in parsed_dates):
+            raise GateError("Packet C expected-calendar contains an out-of-range or weekend date")
+        if any(day in set(parsed_dates) for day in (
+            parse_iso_date(value, field="weekday_closures") for value in closures
+        )):
+            raise GateError("Packet C expected-calendar includes a declared closure")
+        date_stream = "\n".join(dates).encode("utf-8")
+        if sha256_bytes(date_stream) != identity.get("open_dates_sha256"):
+            raise GateError("Packet C open-date hash mismatch")
+        month_ends: dict[str, str] = {}
+        for value in dates:
+            month_ends[value[:7]] = value
+        expected_months = month_range(SOURCE_START, SOURCE_END)
+        if tuple(month_ends) != expected_months:
+            raise GateError("Packet C calendar does not cover the fixed month grid")
+        month_stream = "\n".join(
+            f"{month}={day}" for month, day in month_ends.items()
+        ).encode("utf-8")
+        if sha256_bytes(month_stream) != identity.get("month_end_identity_sha256"):
+            raise GateError("Packet C month-end identity hash mismatch")
+        if calendar_doc.get("last_expected_open_day_by_month") != month_ends:
+            raise GateError("Packet C declared month ends differ from its open-date grid")
+        if raw_bytes is None or sha256_bytes(raw_bytes) != identity.get("sha256"):
+            raise GateError("Packet C expected-calendar file hash mismatch")
+        return month_ends
+
     if calendar_doc.get("spec_id") != SPEC_ID:
         raise GateError("calendar SPEC identity mismatch")
     if calendar_doc.get("calendar_timezone") != "Europe/Berlin":
@@ -792,6 +1110,7 @@ def validate_calendar_document(calendar_doc: Mapping[str, Any]) -> None:
         raise GateError("calendar endpoints are not strictly ordered")
     if not calendar_doc.get("official_calendar_source"):
         raise GateError("calendar authority is absent")
+    return endpoints
 
 
 def validate_config(config: Mapping[str, Any]) -> None:
@@ -869,6 +1188,17 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
     config = _read_json(CONFIG_PATH)
     validate_config(config)
     source_lock = _read_json(Path(args.source_lock))
+    probe_metadata_path = Path(args.probe_metadata)
+    probe_metadata_bytes = probe_metadata_path.read_bytes()
+    try:
+        probe_metadata = json.loads(probe_metadata_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GateError("Packet C probe metadata is not valid UTF-8 JSON") from exc
+    if not isinstance(probe_metadata, dict):
+        raise GateError("Packet C probe metadata is not a JSON object")
+    probe_metadata_hash = sha256_bytes(probe_metadata_bytes)
+    if is_packet_c_source_lock(source_lock):
+        validate_packet_c_probe_metadata(source_lock, probe_metadata)
     gate = _read_json(Path(args.gate_receipt))
     test_log_path = Path(__file__).with_name("TEST_LOG.txt")
     test_path = Path(__file__).with_name("test_csm.py")
@@ -881,6 +1211,7 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
         gate, source_lock,
         expected_file_hashes=expected_file_hashes,
         expected_environment_sha256=environment_identity_sha256(),
+        expected_probe_metadata_sha256=probe_metadata_hash,
     )
     if sha256_file(test_log_path) != gate.get("synthetic_test_log_sha256"):
         raise GateError("synthetic test-log identity mismatch")
@@ -892,10 +1223,17 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
         raise GateError("calendar artifact is not valid UTF-8 JSON") from exc
     if not isinstance(calendar_doc, dict):
         raise GateError("calendar artifact is not a JSON object")
-    validate_calendar_document(calendar_doc)
-    raw_bytes = Path(args.normalized_csv).read_bytes()
+    month_end_dates = validate_calendar_document(
+        calendar_doc,
+        source_lock=source_lock,
+        raw_bytes=calendar_bytes,
+    )
+    raw_bytes = Path(args.source_csv).read_bytes()
     capture = _read_json(Path(args.capture_manifest))
-    validate_capture_manifest(capture, raw_bytes, source_lock)
+    validate_capture_manifest(
+        capture, raw_bytes, source_lock,
+        expected_metadata_sha256=probe_metadata_hash if is_packet_c_source_lock(source_lock) else None,
+    )
     calendar_hash = sha256_bytes(calendar_bytes)
     if gate["expected_calendar_sha256"] != calendar_hash:
         raise GateError("gate calendar identity mismatch")
@@ -917,6 +1255,7 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
         "raw_snapshot_sha256": raw_hash,
         "source_lock_sha256": source_lock_hash,
         "source_lock_file_sha256": sha256_file(Path(args.source_lock)),
+        "probe_metadata_sha256": probe_metadata_hash,
         "calendar_sha256": calendar_hash,
         "code_sha256": expected_file_hashes["csm.py"],
         "config_sha256": expected_file_hashes["config.json"],
@@ -930,10 +1269,10 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
     primary_hash: str | None = None
     try:
         sys.addaudithook(_block_network_audit)
-        table = parse_source_csv(raw_bytes, source_lock)
+        table = parse_source_csv(raw_bytes, source_lock, source_metadata=probe_metadata)
         validate_observed_date_bounds(table)
         target_months = month_range(TARGET_START, TARGET_END)
-        events = build_signal_events(target_months, calendar_doc["month_end_dates"], table)
+        events = build_signal_events(target_months, month_end_dates, table)
 
         stage = "EVENT_LEDGER"
         ledger_path = output_dir / "event-ledger.json"
@@ -978,6 +1317,7 @@ def run_locked_calculation(args: argparse.Namespace) -> int:
             "test_log_sha256": sha256_file(test_log_path),
             "source_lock_sha256": source_lock_hash,
             "source_lock_file_sha256": sha256_file(Path(args.source_lock)),
+            "probe_metadata_sha256": probe_metadata_hash,
             "calendar_sha256": calendar_hash,
             "raw_snapshot_sha256": raw_hash,
             "event_ledger_sha256": ledger_hash,
@@ -1024,8 +1364,9 @@ def cli(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Fixed CSM-002 deterministic screen")
     subparsers = parser.add_subparsers(dest="command", required=True)
     run = subparsers.add_parser("run", help="authorized full-history run only")
-    run.add_argument("--normalized-csv", required=True)
+    run.add_argument("--source-csv", required=True)
     run.add_argument("--source-lock", required=True)
+    run.add_argument("--probe-metadata", required=True)
     run.add_argument("--expected-calendar", required=True)
     run.add_argument("--capture-manifest", required=True)
     run.add_argument("--gate-receipt", required=True)

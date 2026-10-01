@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import contextlib
+import csv
+import hashlib
 import io
 import json
+import os
 import random
 import tempfile
 import unittest
@@ -420,6 +423,7 @@ class GateAndReceiptTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             lock_path = root / "source-lock.json"
+            metadata_path = root / "probe-metadata.json"
             gate_path = root / "gate.json"
             csv_path = root / "input.csv"
             calendar_path = root / "calendar.json"
@@ -427,13 +431,15 @@ class GateAndReceiptTests(unittest.TestCase):
             output_path = root / "output"
             lock = synthetic_source_lock()
             lock_path.write_text(json.dumps(lock), encoding="utf-8")
+            metadata_path.write_text("{}", encoding="utf-8")
             gate_path.write_text(json.dumps({"gate_status": "CLOSED"}), encoding="utf-8")
             csv_path.write_text("VERY_DISTINCT_SYNTHETIC_VALUE_987654321", encoding="utf-8")
             calendar_path.write_text("{}", encoding="utf-8")
             manifest_path.write_text("{}", encoding="utf-8")
             stdout, stderr = io.StringIO(), io.StringIO()
             with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
-                status = csm.cli(["run", "--normalized-csv", str(csv_path), "--source-lock", str(lock_path),
+                status = csm.cli(["run", "--source-csv", str(csv_path), "--source-lock", str(lock_path),
+                                  "--probe-metadata", str(metadata_path),
                                   "--expected-calendar", str(calendar_path), "--capture-manifest", str(manifest_path),
                                   "--gate-receipt", str(gate_path), "--output-dir", str(output_path)])
             self.assertEqual(status, 2)
@@ -517,6 +523,115 @@ class GateAndReceiptTests(unittest.TestCase):
         self.assertEqual(csm.canonical_json_bytes({"x": Decimal("1.20")}), b'{"x":"1.20"}')
 
 
+class PacketCIntegrationTests(unittest.TestCase):
+    def test_exact_packet_c_artifacts_with_synthetic_csv_rows(self) -> None:
+        source_lock_path = os.environ.get("CSM_PACKET_C_SOURCE_LOCK")
+        metadata_path = os.environ.get("CSM_PACKET_C_PROBE_METADATA")
+        calendar_path = os.environ.get("CSM_PACKET_C_EXPECTED_CALENDAR")
+        if not all((source_lock_path, metadata_path, calendar_path)):
+            self.skipTest("exact Packet C artifacts were not supplied to this test run")
+
+        paths = {
+            "source-lock": (Path(source_lock_path), "81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf"),
+            "probe-metadata": (Path(metadata_path), "21aa9149b7b7db9b07f1aa3f4bf0312675a166bd"),
+            "expected-calendar": (Path(calendar_path), "6ed720353472ba6f35391936c536d46fb6ae8c66"),
+        }
+        payloads: dict[str, bytes] = {}
+        for name, (path, expected_blob) in paths.items():
+            raw = path.read_bytes()
+            actual_blob = hashlib.sha1(
+                f"blob {len(raw)}\0".encode("ascii") + raw
+            ).hexdigest()
+            self.assertEqual(actual_blob, expected_blob, f"Packet C {name} blob identity")
+            payloads[name] = raw
+
+        source_lock = json.loads(payloads["source-lock"].decode("utf-8"))
+        metadata = json.loads(payloads["probe-metadata"].decode("utf-8"))
+        calendar_doc = json.loads(payloads["expected-calendar"].decode("utf-8"))
+        csm.validate_packet_c_source_lock(source_lock)
+        schema = csm.validate_packet_c_probe_metadata(source_lock, metadata)
+        month_ends = csm.validate_calendar_document(
+            calendar_doc, source_lock=source_lock,
+            raw_bytes=payloads["expected-calendar"],
+        )
+        self.assertEqual(len(schema), 32)
+        self.assertEqual(len(month_ends), 203)
+        self.assertEqual(month_ends["2009-11"], "2009-11-30")
+        self.assertEqual(month_ends["2026-09"], "2026-09-30")
+
+        synthetic_csv = packet_c_synthetic_csv(schema, source_lock)
+        table = csm.parse_source_csv(synthetic_csv, source_lock, source_metadata=metadata)
+        observed = table.values[date(2009, 11, 2)]
+        self.assertEqual(set(observed), set(csm.NON_EUR_CURRENCIES))
+        self.assertEqual(csm.price_vector(table, date(2009, 11, 2))["EUR"], Decimal(1))
+
+        metadata_hash = csm.sha256_bytes(payloads["probe-metadata"])
+        synthetic_gate = synthetic_gate_receipt(source_lock)
+        synthetic_gate["expected_calendar_sha256"] = source_lock["calendar"]["sha256"]
+        synthetic_gate["probe_metadata_sha256"] = metadata_hash
+        csm.validate_gate_receipt(
+            synthetic_gate, source_lock,
+            expected_probe_metadata_sha256=metadata_hash,
+        )
+        capture_manifest = {
+            "capture_status": "CAPTURED",
+            "source_lock_id": csm.source_lock_id(source_lock),
+            "source_lock_sha256": csm.sha256_bytes(csm.canonical_json_bytes(source_lock)),
+            "spec_id": csm.SPEC_ID,
+            "data_role": "EXPLORATORY_DISCOVERY",
+            "requested_start": "2009-11-01",
+            "requested_end": "2026-09-30",
+            "raw_snapshot_sha256": csm.sha256_bytes(synthetic_csv),
+            "source_series_keys": list(csm.EXPECTED_SERIES_BY_CURRENCY.values()),
+            "access_ledger_id": "SYNTHETIC-LEDGER",
+            "retrieval_timestamp": "2020-01-01T00:00:00Z",
+            "snapshot_uri": "SYNTHETIC",
+            "identity_check": "PASS",
+            "probe_metadata_sha256": metadata_hash,
+        }
+        csm.validate_capture_manifest(
+            capture_manifest, synthetic_csv, source_lock,
+            expected_metadata_sha256=metadata_hash,
+        )
+
+        reordered = list(schema)
+        reordered[0], reordered[1] = reordered[1], reordered[0]
+        bad_header_csv = packet_c_synthetic_csv(tuple(reordered), source_lock)
+        with self.assertRaisesRegex(csm.DataError, "exact Packet C schema"):
+            csm.parse_source_csv(bad_header_csv, source_lock, source_metadata=metadata)
+
+        bad_dimension_csv = synthetic_csv.replace(b",EUR,SP00,", b",USD,SP00,", 1)
+        with self.assertRaisesRegex(csm.DataError, "dimensions or units"):
+            csm.parse_source_csv(bad_dimension_csv, source_lock, source_metadata=metadata)
+
+
+def packet_c_synthetic_csv(
+    schema: tuple[str, ...] | list[str], source_lock: dict[str, object]
+) -> bytes:
+    """Create metadata-shaped test rows; all OBS_VALUE text here is synthetic."""
+    stream = io.StringIO(newline="")
+    writer = csv.DictWriter(stream, fieldnames=list(schema), lineterminator="\n")
+    writer.writeheader()
+    for index, series in enumerate(source_lock["series"], start=1):
+        row = {field: "" for field in schema}
+        row.update({
+            "KEY": series["key"],
+            "FREQ": series["frequency"],
+            "CURRENCY": series["currency"],
+            "CURRENCY_DENOM": series["currency_denom"],
+            "EXR_TYPE": series["exr_type"],
+            "EXR_SUFFIX": series["exr_suffix"],
+            "TIME_PERIOD": "2009-11-02",
+            "OBS_VALUE": f"{index}.25",
+            "OBS_STATUS": "A",
+            "SOURCE_AGENCY": series["source_agency"],
+            "UNIT": series["unit"],
+            "UNIT_MULT": str(series["unit_mult"]),
+            "DECIMALS": str(series["decimals"]),
+        })
+        writer.writerow(row)
+    return stream.getvalue().encode("utf-8")
+
 def synthetic_source_lock() -> dict[str, object]:
     return {
         "id": "SYNTHETIC-LOCK-ONLY",
@@ -532,6 +647,7 @@ def synthetic_source_lock() -> dict[str, object]:
 
 
 def synthetic_gate_receipt(source_lock: dict[str, object]) -> dict[str, object]:
+    unit_status = csm.source_unit_status_map(source_lock)
     return {
         "gate_status": "PASS",
         "human_freeze_status": "FROZEN",
@@ -541,14 +657,11 @@ def synthetic_gate_receipt(source_lock: dict[str, object]) -> dict[str, object]:
         "spec_git_blob_sha1": csm.SPEC_GIT_BLOB_SHA1,
         "spec_sha256": csm.SPEC_SHA256,
         "hypothesis_id": csm.HYPOTHESIS_ID,
-        "source_lock_id": source_lock["id"],
+        "source_lock_id": csm.source_lock_id(source_lock),
         "human_contract_decision_id": "SYNTHETIC_FIXTURE_ONLY",
-        "source_transport": source_lock["source_transport"],
+        "source_transport": csm.source_transport(source_lock),
         "source_lock_sha256": csm.sha256_bytes(csm.canonical_json_bytes(source_lock)),
-        "unit_status_map_sha256": csm.sha256_bytes(csm.canonical_json_bytes({
-            "unit_by_currency": source_lock["unit_by_currency"],
-            "status_policy": source_lock["status_policy"],
-        })),
+        "unit_status_map_sha256": csm.sha256_bytes(csm.canonical_json_bytes(unit_status)),
         "expected_calendar_sha256": "a" * 64,
         "raw_capture_process_id": "SYNTHETIC_FIXTURE_ONLY",
         "access_ledger_id": "SYNTHETIC_FIXTURE_ONLY",

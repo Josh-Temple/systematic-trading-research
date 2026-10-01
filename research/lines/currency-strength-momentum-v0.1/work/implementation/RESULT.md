@@ -14,72 +14,76 @@ relations:
 
 # Packet D — outcome-blind deterministic implementation result
 
-## Executive status
+## Status
 
-**PARTIAL_WITH_GAPS.** The deterministic core, synthetic test harness, fixed config, operator notes, environment record, test log, and full-scope matrix are implemented. The official source adapter and calendar integration remain blocked because Packet C's `source-lock.json` and expected calendar are not yet available. No market-data run was attempted. This is an implementation result, not a scientific result.
+**PARTIAL_WITH_GAPS.** The deterministic core, synthetic tests, fixed configuration, operator notes, and source adapter for the current Packet C metadata/calendar are implemented. The exact Packet C lock, schema metadata, and expected calendar pass integration checks using generated synthetic CSV rows. No historical ECB observations or outcomes were read by Packet D. Full-history capture/execution remains unauthorized and untested; the market-outcome gate remains CLOSED.
 
-## Fresh-read and authority receipt
+## Authority and fresh-read receipt
 
 - Repository: `Josh-Temple/systematic-trading-research`.
-- `main_sha`: `1bba695ea252863c3b7366b8b910aa36e211c325` (fresh `commits/main` read on 2026-10-01).
-- `proposal_ref`: `research/csm-architecture-review-20261001` at exact head `36240da15fc83120d12d081c227f3e0dd8badaaa`; its parent is the recorded `main_sha` above. The two refs are distinct and the proposal is not treated as main authority.
-- Architecture PR: [#31](https://github.com/Josh-Temple/systematic-trading-research/pull/31), draft/open when checked; the specified SHA is its head. The D branch was created from that exact SHA.
-- Main `README.md`, `docs/RESEARCH_PRINCIPLES.md`, and `schema/v0.1/README.md` were read from main. Root `AGENTS.md` returned 404.
-- Proposal-ref reads: line `README.md`, `ARCHITECTURE_REVIEW_2026-10-01.md`, `SPEC-CSM-002-v01.md`, `DEC-CSM-002.md`, `PACKET_A_LITERATURE.md`, `PACKET_B_GITHUB_PRIOR_ART.md`, `PACKET_C_SOURCE_QUALIFICATION.md`, this Packet D, `references/GITHUB_PRIOR_ART_2026-10-01.md`, and `references/SOURCE_REVIEW_2026-10-01.md`.
+- `main_sha`: `1bba695ea252863c3b7366b8b910aa36e211c325`, freshly read from `refs/heads/main` on 2026-10-01.
+- User-pinned `proposal_ref`: `36240da15fc83120d12d081c227f3e0dd8badaaa`; its parent was the recorded `main_sha`. Main and proposal remain separate refs.
+- Architecture PR #31 currently reviewed at `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`. The Packet D branch is stacked on this architecture head; no merge to main was made.
+- Fresh-read main files: `README.md`, `docs/RESEARCH_PRINCIPLES.md`, `schema/v0.1/README.md`. Root `AGENTS.md` returned 404.
+- Fresh-read proposal files: line `README.md`, `ARCHITECTURE_REVIEW_2026-10-01.md`, `SPEC-CSM-002-v01.md`, `DEC-CSM-002.md`, Packets A–D, `references/GITHUB_PRIOR_ART_2026-10-01.md`, and `references/SOURCE_REVIEW_2026-10-01.md`.
 - Exact proposed specification identity: Git blob SHA-1 `a073e77dec14337ee20609ed6136e50a8c1e76e2`; file SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`.
-- C dependency check on 2026-10-01: the branch search returned no `work/csm-source-qualification-20261001` branch and the specified `work/source-qualification/source-lock.json` path returned 404 at that ref. The required post-C fresh read and real adapter integration test are therefore BLOCKED; synthetic work proceeded as Packet D permits.
 
-### Explicit architecture-base update receipt
+### Architecture-base update receipt
 
-During final pre-PR verification, main remained `1bba695ea252863c3b7366b8b910aa36e211c325`, but PR #31's head had advanced from the pinned `36240da15fc83120d12d081c227f3e0dd8badaaa` to `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`. A fresh compare read found six commits adding a published 2022 adverse prior and review, ECB/ESCB reuse requirements, and an independent plan review. The changes touch `ARCHITECTURE_REVIEW`, `VALIDATION`, `SCIENTIFIC_PRIOR_ART`, `SOURCE_REVIEW`, Packet A, and Packet C. `SPEC-CSM-002-v01`, `DEC-CSM-002`, and Packet D are unchanged.
+The architecture PR advanced from the pinned proposal ref to `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`, adding six reviewed commits. The changes updated prior-art/source-reuse review and Packets A/C; Packet D, `SPEC-CSM-002-v01`, and `DEC-CSM-002` were unchanged. The D branch integrates that current architecture head as its PR base while preserving the user-pinned proposal ref for the implementation contract. Main remained at `1bba695ea252863c3b7366b8b910aa36e211c325`.
 
-I keep `proposal_ref` at the user-specified `36240...` because that is the exact spec/Packet used to implement and test. For the stacked PR only, I explicitly update the branch's integration base to the current PR #31 head `e0f42...` so the D change does not hide or revert those six architecture commits. The updated evidence lowers novelty and confirms that the target period overlaps published results; it does not alter the fixed implementation contract. The revised Packet C adds source-reuse checks, so public snapshot permission remains a C gate. This base update does not authorize a source capture, market access, or any scientific change.
+### Packet C integration receipt
+
+A fresh follow-up read found Packet C branch `work/csm-source-qualification-20261001` at `9870c710c3cba7bb9226c9eee8ec36687b96fd9d`; its draft PR is [#35](https://github.com/Josh-Temple/systematic-trading-research/pull/35), based on the same architecture head. Packet D verified these current artifact identities:
+
+| Packet C artifact | Git blob SHA-1 | File SHA-256 |
+|---|---|---|
+| `work/source-qualification/source-lock.json` | `81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf` | `ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71` |
+| `work/source-qualification/probe-metadata.json` | `21aa9149b7b7db9b07f1aa3f4bf0312675a166bd` | `1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533` |
+| `work/source-qualification/expected-calendar.json` | `6ed720353472ba6f35391936c536d46fb6ae8c66` | `6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4` |
+
+Packet C reports `PARTIAL_WITH_GAPS`: a bounded November 2009 route/schema/calendar check passed, while full-history coverage, historical publication time, and revision/vintage access remain UNKNOWN. Packet C also discloses an incidental search-result observation exposure that makes its evidence validity PARTIAL. Packet D did not retrieve, repeat, reproduce, or use those observations. This disclosure remains for E/Integrator review; it does not open the market gate.
 
 ## Implemented deliverables
 
-- `work/implementation/csm.py`: standard-library parser/identity checks, exact-ratio signal selection, pair log return, fixed calendar grid, pre-outcome event ledger and hash, fixed bootstrap, metrics, decision boundaries, temporal-receipt checks, gate/capture preflight, local loader, output hashes, and network/subprocess audit hook.
-- `work/implementation/test_csm.py`: synthetic-only tests for all component behaviors and failure boundaries.
-- `work/implementation/fixtures/toy_cases.json`: explicitly labeled synthetic toy vectors; no market data.
-- `work/implementation/config.json`: one exact proposed SPEC mirror, with no horizon/search/threshold overrides.
-- `work/implementation/RUNBOOK.md`, `ENVIRONMENT.md`, `TEST_LOG.txt`, and `TEST_MATRIX.md`.
+- `work/implementation/csm.py`: Packet C source-lock and 32-column schema adapter; expected-calendar identity validation; exact-ratio signal selection; fixed calendar grid; event-ledger persistence/hash before outcomes; fixed bootstrap and metrics; temporal receipt, gate, capture, and network checks.
+- `work/implementation/test_csm.py`: synthetic/toy tests plus a Packet C artifact integration test using synthetic CSV rows only.
+- `work/implementation/fixtures/toy_cases.json`: explicitly synthetic toy vectors.
+- `work/implementation/config.json`: one proposed-spec mirror; no search or parameter overrides.
+- `work/implementation/RUNBOOK.md`, `ENVIRONMENT.md`, `TEST_MATRIX.md`, `TEST_LOG.txt`.
 
 ## Work matrix
 
 | Packet item | Status | Result |
 |---|---|---|
-| 1. Pure parsing/validation; separate signal, target, metrics, receipt | PASS for pure core; source adapter integration BLOCKED | Decimal positivity/finite checks, unit/status identity, date ordering, duplicates, plus distinct signal/target/metric/receipt functions. |
-| 2. EUR/USD, inversion, quote direction, raw extrema vs 56 pairs, numeraire invariance | PASS | Synthetic tests establish the exact ratio identity and catch the incorrect simple-return subtraction. |
-| 3. Exact ties, unique extrema, EUR/USD winner/loser, 28 directions, equal pair-average | PASS | Fraction-based exact ratio comparisons and all required synthetic polarity cases pass. The 28-direction example is only a toy orientation, not a broker quote convention. |
-| 4. Full grid, date boundaries, holiday/weekend input, missing data, no rollback/shift | PASS for grid logic; official calendar BLOCKED | Expected dates are consumed verbatim; missing calendar/data slots remain in place. C's official operating-day artifact is absent. |
-| 5. Prefix truncation, future perturbation, shared-boundary receipt | PASS for synthetic logic | Earlier selections remain unchanged; receipt validation refuses fabricated `AVAILABLE_AT` and same-reference executable claims. |
-| 6. Metrics, fixed 12-slot circular bootstrap, type 7, missing grid, sufficiency/rules | PASS | Fixed 10,000 replicates and seed, missing-slot retention, partial final year, zero-valid failure, and 120 / 0.80 decision boundaries are tested. |
-| 7. Local loader, preflight, ledger-first hash, gate, network boundary, output identities | PARTIAL_WITH_GAPS | Gate-closed CLI and capture/event identity checks pass. Real source-lock, calendar, and authorized full-history integration were not available or attempted. |
-| 8. Stable identity, fixed config, test log, guarantees, no unused search features | PASS for preparation artifacts | Config drift fails; CLI has no scientific tuning switches; environment/code/config/test and output hashes are recorded by the runner. Final hashes must be reissued after C adapter integration and E audit. |
-| 9. No-access receipt and Integrator recommendations | PASS | No-access receipt and unresolved adapter/receipt-boundary issues are recorded below. |
+| 1. Pure parsing/validation; signal, target, metrics, receipt separation | PASS for synthetic core and Packet C adapter | The adapter checks seven exact ECB series, quote dimensions, units, decimal scales, status, schema, and source identities. Its CSV rows are generated synthetic values. |
+| 2. EUR constant, USD inclusion, inversion, quote direction, 56 pairs, numeraire invariance | PASS | Synthetic exact-ratio tests establish the raw-extrema/all-56-pair identity and catch incorrect simple-return subtraction. |
+| 3. Exact ties, unique extrema, EUR/USD winner/loser, 28 directions, pair-average rank | PASS | Required polarity, tie, direction, and ranking edge cases pass using synthetic inputs. |
+| 4. Full grid, boundaries, missing data, no rollback/compression | PASS for logic and C calendar identity | Tests preserve the month grid. The exact C calendar file, 4,331 expected dates, date-stream/month-end hashes, and 203 month-end map validate. This does not prove a rate exists on every expected date. |
+| 5. Prefix/future invariance and temporal receipt boundary | PASS for synthetic logic | Future suffix changes do not alter prior signal; fake availability and executable-timing claims are rejected. |
+| 6. Fixed circular bootstrap, type 7, missing slots, sufficiency and decisions | PASS | Fixed 12-slot circular blocks, 10,000 replicates, seed, partial-year behavior, zero-valid failure, and decision boundaries pass synthetic checks. |
+| 7. Gate CLI, capture preflight, ledger-first hash, identity and network boundary | PARTIAL | Closed-gate no-read behavior and synthetic gate/capture checks pass. No raw full-history snapshot was captured or parsed. Human freeze, independent audit, Integrator gate, trusted receipt channel, and OS/process isolation are unresolved. |
+| 8. Stable identity, fixed config, test log, guarantees, no unused search features | PASS for preparation artifacts | Config drift is rejected; CLI exposes artifact paths only; code/test/environment and outputs receive hashes. |
+| 9. No-access receipt and discrepancies for Integrator | PASS | This result records the current C dependency, the incident disclosed by C, all access boundaries, and remaining gates. |
 
-Full test-to-scope mapping is in `TEST_MATRIX.md`.
+## Verification and access receipt
 
-## Verification performed
-
-- Environment: Python 3.12.14; standard library only.
-- Commands: `python3 -m py_compile csm.py test_csm.py`; `python3 -m unittest -v test_csm.py`.
-- Result: **41 tests passed**. Full output is preserved in `TEST_LOG.txt`.
-- CLI gate test supplies a synthetic sentinel in a data file and a CLOSED gate. The CLI returns before reading that data file, emits no sentinel/rate/ranking/metric, and creates no output directory.
-- Synthetic event-ledger test confirms outcome calculation fails if the ledger is missing, then succeeds only after exact ledger bytes are persisted and hash-checked.
-- The runner preserves post-gate failures as operational `attempt-status.json` receipts with `scientific_status: NOT_APPLICABLE`; it does not map a loader/bootstrap failure to a negative result.
-- No real ECB values, prices, historical rankings, forward returns, strategy metrics, or performance plots were retrieved or calculated. No network, broker, live/paper order, Horizontal Reaction/H3, DATA-HR-003, or Autonomous Pilot market input was accessed.
-
-## No-access receipt
+- Python 3.12.14; standard library only.
+- `python3 -m py_compile csm.py test_csm.py` — passed.
+- `python3 -m unittest -v test_csm.py` with the three exact Packet C artifact paths set — **42 tests passed**.
+- Packet C integration verifies the three pinned Git blob identities, validates source-lock/schema/calendar metadata, and parses only generated synthetic CSV rows. The C probe-response rows and `OBS_VALUE` fields were not loaded by Packet D.
+- Packet D did not request market data, calculate rankings/forward returns/strategy metrics, or generate performance plots. No broker, live/paper order, Horizontal Reaction/H3, DATA-HR-003, Autonomous Pilot input, web UI, or MCP was accessed.
+- The D CLI test confirms a CLOSED gate returns before reading its synthetic sentinel data file or creating an output directory.
 
 ```yaml
-actual_market_data_accessed: false
-historical_rankings_computed: false
-forward_returns_computed_from_market_data: false
-strategy_performance_metrics_computed: false
+packet_d_actual_market_observations_read_or_used: false
+packet_d_full_history_retrieved: false
+packet_d_historical_rankings_computed: false
+packet_d_forward_returns_computed_from_market_data: false
+packet_d_strategy_metrics_computed_from_market_data: false
+packet_c_metadata_and_calendar_read: true
+synthetic_csv_rows_used_for_c_adapter_test: true
 market_outcome_gate: CLOSED
-synthetic_or_toy_values_used_for_component_tests: true
-synthetic_pair_log_return_used_only_for_component_test: true
-external_market_data_requests: 0
 scientific_status: NOT_APPLICABLE
 ```
 
@@ -87,58 +91,54 @@ scientific_status: NOT_APPLICABLE
 
 ### Facts
 
-- The proposed spec requires fixed monthly endpoints, eight currencies, all 56 directed pairs, a one-month formation and target, a 12-calendar-slot circular moving-block bootstrap, and the stated sufficiency/decision rules.
-- This implementation compares `q(old)/q(new)` as exact rational numbers derived from decimal input, so exact extrema ties do not depend on floating-point/log rounding.
-- The source parser constructs EUR as synthetic `q=1`; it accepts only the seven non-EUR source currencies.
-- Missing endpoint dates or currencies do not roll back to an earlier observation and do not compress the target-month grid.
-- The local source adapter currently expects a generic source-lock mapping (`series_by_currency`, `csv_field_map`, `unit_by_currency`, `status_policy`, `source_transport`). C's authoritative lock was unavailable at the dependency check.
+- The proposed screen fixes eight currencies, seven non-EUR ECB series, all 56 directed pairs, one-month formation/target periods, a fixed month grid, and a 12-slot circular moving-block bootstrap.
+- Packet C's source lock is `QUALIFIED_BOUNDED_ROUTE_ONLY`, identifies seven `D.{CCY}.EUR.SP00.A` series, and permits status `A`. Historical same-day availability and revision/vintage access remain UNKNOWN.
+- The adapter checks C's exact ordered 32-column metadata schema and binds the source-lock identity, probe-metadata hash, calendar file hash, date-list hash, and monthly endpoint hash. CSV value parsing is exercised only with synthetic rows.
+- The official calendar artifact defines 4,331 expected open dates and 203 monthly endpoints from 2009-11 through 2026-09. It is independent of observed prices; gaps are not filled or shifted.
+- The source interface does not claim that the ECB reference values were available for executable entry. `AVAILABLE_AT` remains UNKNOWN and costs/carry/financing remain UNOBSERVED.
 
 ### Interpretation
 
-- The pure math and calendar-grid behavior are ready for independent review, but this is not evidence that the proposed screen is executable against the ECB source.
-- The gate enforces exact identities and required approval fields. It is not a cryptographic identity system and does not provide operating-system isolation. A trusted receipt channel, ACL, and isolated runner must be resolved before any actual full-history read.
-- The adapter field names are an implementation interface, not a change to canonical science or a claim about ECB's eventual wire schema. C may require a bounded adapter adjustment once its source lock is available.
+- The pure math, grid logic, and current bounded source-interface adapter are ready for independent code review. They do not establish full-history executability or a scientific result.
+- Packet C's partial evidence and disclosed observation exposure remain a downstream review item. Packet D treats those artifacts as metadata/schema/calendar only and keeps the outcome gate closed.
+- The receipt code checks structure and byte identities; it does not authenticate the human, auditor, or Integrator cryptographically or isolate files at the OS level.
 
-### Limitations / unresolved discrepancies
+### Limitations and unresolved gates
 
-1. **C source-lock and calendar absent:** exact ECB status codes, CSV schema, unit labels, transport, expected TARGET dates, and calendar hash remain UNKNOWN. No defaults were invented. Reconcile the adapter with C's completed artifacts, then add the required integration tests.
-2. **Specification still proposed:** `DEC-CSM-002` says `HUMAN_BOUNDARY`; the gate remains CLOSED. The code does not authorize outcome access merely because it exists or its tests pass.
-3. **Receipt authenticity:** the CLI checks receipt structure and hashes, but an authorized human/auditor/Integrator identity is not cryptographically verified. The next gate must specify a trusted signing/ACL mechanism or explicitly block execution until one exists.
-4. **Calendar authority:** tests prove that the code follows the supplied date map; they do not prove that dates are official TARGET operating-day endpoints.
-5. **No market execution:** full-history loader behavior, coverage, statuses, and end-to-end output hashes have not been exercised against real source bytes. No scientific finding follows from this preparation work.
+1. **Packet C is bounded and partial.** Full-history coverage, historical publication time, and revision/vintage availability are UNKNOWN. Do not infer continuity from the one-month probe.
+2. **Search-result exposure disclosure.** Packet C reports an incidental observation exposure. Packet D did not repeat or use it. E/Integrator must review the disclosure before any outcome access.
+3. **Scientific contract is not frozen.** `DEC-CSM-002` retains `HUMAN_BOUNDARY`; no tests or source qualification open the market gate.
+4. **Receipt authenticity and isolation.** Trusted receipt/signing, ACL, and process-isolation controls remain unresolved. The JSON validator alone is insufficient authorization.
+5. **No actual history run.** Full-history coverage, missing/status distributions, raw-capture identity, metrics, and end-to-end output were not tested against real source bytes.
 
 ## Recommendations for E / Integrator
 
-- After C completes, fresh-read its exact source-lock and calendar commit, check all seven series/unit/status/field mappings, and add a metadata-only adapter integration test under `work/implementation/**`. If the source lock requires different fields, change the adapter only and rerun the entire synthetic suite.
-- Have E independently review the exact implementation/test hashes, exact-ratio tie logic, pair direction, missing-grid and bootstrap semantics, event-ledger ordering, and the production CLI's no-output-before-gate behavior.
-- Have C apply the revised ECB/ESCB source-reuse requirements to the seven series, provenance, and any proposed public snapshot; the data and transformed artifact locations must remain blocked if reuse conditions are unclear.
-- Keep the market gate CLOSED until the human freeze, C source/calendar identities, E audit, I gate, exact code/environment/test identities, and a trusted receipt/file-isolation boundary are all present.
-- Treat any adapter or code correction as an implementation revision before outcome access. Do not interpret a blocked source or failed test as a negative strategy result.
+- Review the exact D code/test hashes with the exact C artifact identities recorded above. Inspect the C disclosure without reproducing observation snippets; retain the gate as CLOSED pending a documented decision.
+- Independently audit exact-ratio tie handling, quote direction, missing-grid semantics, bootstrap rules, event-ledger ordering, and the no-output-before-gate path.
+- Resolve trusted approval identity and OS/file/process isolation before any full-history read.
+- Require a later authorized run to verify full-history coverage, status/missing/duplicate distributions, and revisions against the exact lock and calendar. Any operational failure remains `NOT_APPLICABLE`, not a negative strategy finding.
 
-## Changed paths and identity
+## Changed paths and identities
 
-All changed paths are under the Packet D write allowlist `work/implementation/**`. No merge, force-push, shared CURRENT/spec/reference update, or other worker path change was made.
+All D changes are under `work/implementation/**`. No main write, merge, force-push, shared spec/reference change, or other worker path change was made.
 
-Local SHA-256 before upload:
+SHA-256 values for the eight other deliverables are recorded below. The `RESULT.md` digest is recorded in the final remote readback receipt because embedding a file's own digest would change it.
 
 | Deliverable | SHA-256 |
 |---|---|
-| `work/implementation/csm.py` | `e47913deb5f138264d253bdee984736c0b59420103b6f7d8d3bead325f31f958` |
-| `work/implementation/test_csm.py` | `8b73d149101ad038d448654be2602e364e3d02f956a5df4792d9445fbc0bc98c` |
+| `work/implementation/csm.py` | `dfd42a29e4cd042ad44ce9461d29246c0609bee401463cd21b82e0f0d6a37267` |
+| `work/implementation/test_csm.py` | `69693bba8efbfa37e64c0fe08be332d583a15b9f8f4d3c99652e70acba634171` |
 | `work/implementation/config.json` | `5624c22c2ccad339cacc72b34d877eea5b0160ac7715f10d269ea984aa443ad1` |
 | `work/implementation/fixtures/toy_cases.json` | `08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c` |
-| `work/implementation/RUNBOOK.md` | `964bfed5a8246b9c4a36939216f8ae2fdc60fea80d02e99c1902a52cb0db2fd7` |
-| `work/implementation/ENVIRONMENT.md` | `c612f279cdc49b79fada3303d6bb8144067010dfcae72cb538c78b853b8830fd` |
-| `work/implementation/TEST_MATRIX.md` | `a1d856e8dba58b6ea50d3e669d9dc112e1fdd1a932880b396e1224dcf2c13701` |
-| `work/implementation/TEST_LOG.txt` | `e161d272ce696fd5c5c06e5304a3f03ff5368089f90cf4af9ac61093c30945d9` |
-| `work/implementation/RESULT.md` | Exact digest is reported with the final remote readback because embedding a file's own hash would alter that file. |
-
-Every deliverable is fetched from the exact remote branch head and compared byte-for-byte with the local file. This PR receipt records the head at creation; the final branch head and `RESULT.md` digest are reported after final verification.
+| `work/implementation/RUNBOOK.md` | `5630c47255d7ad9665590c34c1017456af00596282a3ac540e46c5449b5e57ac` |
+| `work/implementation/ENVIRONMENT.md` | `e9bf206a3fb46a0f03ad044db8a48b4cbcde7211146643164e12786d2d0f3740` |
+| `work/implementation/TEST_MATRIX.md` | `a893af14752e04f4d3101190c16288ed12b345c61f0fa3720280cc7529d3b4f2` |
+| `work/implementation/TEST_LOG.txt` | `2bb7c59b82f22b14e04151bdb2b2d6b8e69cdf72967c3e4ffea41d30a4433fd5` |
+| `work/implementation/RESULT.md` | final digest reported after remote readback |
 
 ## Pull request receipt
 
-- Draft PR: [#34](https://github.com/Josh-Temple/systematic-trading-research/pull/34).
+- Draft PR: [#34](https://github.com/Josh-Temple/systematic-trading-research/pull/34), not merged.
 - Base: `research/csm-architecture-review-20261001` at `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`.
-- D branch included the current architecture head as a second parent in merge commit `a39a41a5d7f352166709cd1815541264bff4be41`; its tree contains the six updated architecture commits plus only the nine Packet D files under the write allowlist.
-- PR head at creation: `a39a41a5d7f352166709cd1815541264bff4be41`; GitHub reports the draft as open and mergeable with a clean diff. No merge was performed.
-- PR description records the unchanged `main_sha`, the pinned `proposal_ref`, 41 synthetic-only tests, and the closed market gate.
+- Branch: `work/csm-implementation-20261001`.
+- The updated PR diff must contain only the nine Packet D paths in `work/implementation/**`. Exact branch head and remote blob readback will be verified after push and reported in the PR/final completion receipt.

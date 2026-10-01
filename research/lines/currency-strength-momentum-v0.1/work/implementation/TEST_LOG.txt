@@ -1,3 +1,12 @@
+Packet D implementation verification (2026-10-01)
+Environment: Python 3.12.14; standard library only.
+Source contract: SPEC-CSM-002-v01 proposal ref 36240da15fc83120d12d081c227f3e0dd8badaaa.
+Packet C inputs: source-lock blob 81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf; probe-metadata blob 21aa9149b7b7db9b07f1aa3f4bf0312675a166bd; expected-calendar blob 6ed720353472ba6f35391936c536d46fb6ae8c66.
+All CSV rows used by tests are generated synthetic values. The Packet C probe response rows and OBS_VALUE contents are not read by this suite.
+Command: python3 -m py_compile csm.py test_csm.py
+Result: PASS
+Command: CSM_PACKET_C_SOURCE_LOCK=... CSM_PACKET_C_PROBE_METADATA=... CSM_PACKET_C_EXPECTED_CALENDAR=... python3 -m unittest -v test_csm.py
+
 test_fixed_full_grid_has_partial_final_year_and_no_shift (test_csm.CalendarAndLeakageTests.test_fixed_full_grid_has_partial_final_year_and_no_shift) ... ok
 test_missing_calendar_endpoint_is_not_inferred_from_prices (test_csm.CalendarAndLeakageTests.test_missing_calendar_endpoint_is_not_inferred_from_prices) ... ok
 test_missing_expected_target_endpoint_does_not_use_prior_day_or_shift (test_csm.CalendarAndLeakageTests.test_missing_expected_target_endpoint_does_not_use_prior_day_or_shift) ... ok
@@ -30,6 +39,7 @@ test_fixed_seed_bootstrap_is_reproducible_with_missing_slots (test_csm.MetricsAn
 test_metrics_keep_schedule_count_and_skip_reasons (test_csm.MetricsAndBootstrapTests.test_metrics_keep_schedule_count_and_skip_reasons) ... ok
 test_sufficiency_and_decision_boundaries (test_csm.MetricsAndBootstrapTests.test_sufficiency_and_decision_boundaries) ... ok
 test_type7_percentile_linear_interpolation (test_csm.MetricsAndBootstrapTests.test_type7_percentile_linear_interpolation) ... ok
+test_exact_packet_c_artifacts_with_synthetic_csv_rows (test_csm.PacketCIntegrationTests.test_exact_packet_c_artifacts_with_synthetic_csv_rows) ... ok
 test_csv_adapter_uses_only_source_lock_column_and_series_mapping (test_csm.ParseAndIdentityTests.test_csv_adapter_uses_only_source_lock_column_and_series_mapping) ... ok
 test_missing_status_is_preserved_as_missing (test_csm.ParseAndIdentityTests.test_missing_status_is_preserved_as_missing) ... ok
 test_parse_decimal_and_quote_rows (test_csm.ParseAndIdentityTests.test_parse_decimal_and_quote_rows) ... ok
@@ -41,6 +51,6 @@ test_rejects_wrong_unit_unknown_status_and_missing_value_conflict (test_csm.Pars
 test_source_lock_requires_exact_series_identity (test_csm.ParseAndIdentityTests.test_source_lock_requires_exact_series_identity) ... ok
 
 ----------------------------------------------------------------------
-Ran 41 tests in 0.234s
+Ran 42 tests in 0.183s
 
 OK
