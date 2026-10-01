@@ -411,12 +411,29 @@ class MetricsAndBootstrapTests(unittest.TestCase):
 
 
 class GateAndReceiptTests(unittest.TestCase):
-    def test_config_is_single_proposed_spec_and_rejects_drift(self) -> None:
+    def test_config_is_single_frozen_spec_and_rejects_drift(self) -> None:
         config = json.loads(csm.CONFIG_PATH.read_text(encoding="utf-8"))
         csm.validate_config(config)
+        self.assertEqual(csm.SPEC_GIT_BLOB_SHA1, "7fe114e2fcfa33b0565b51c717455abd8837d5d9")
+        self.assertEqual(csm.SPEC_SHA256, "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2")
+        self.assertEqual(config["accepted_pre_freeze_spec_sha256"], "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90")
+        self.assertEqual(config["human_decision_id"], "HDEC-CSM-002-20261001")
+        self.assertEqual(config["freeze_status"], "FROZEN")
+        self.assertEqual(
+            config["market_outcome_access"],
+            "CLOSED_UNTIL_INTEGRATOR_GATE_PASS_AND_SEPARATE_X_INSTRUCTION",
+        )
         changed = dict(config)
         changed["target_end"] = "2026-10"
         with self.assertRaisesRegex(csm.GateError, "target_end"):
+            csm.validate_config(changed)
+        changed = dict(config)
+        changed["freeze_status"] = "PROPOSED_NOT_FROZEN"
+        with self.assertRaisesRegex(csm.GateError, "freeze_status"):
+            csm.validate_config(changed)
+        changed = dict(config)
+        changed["market_outcome_access"] = "OPEN"
+        with self.assertRaisesRegex(csm.GateError, "market_outcome_access"):
             csm.validate_config(changed)
 
     def test_gate_closed_and_no_access_cli_does_not_read_outcome_file_or_emit_values(self) -> None:
