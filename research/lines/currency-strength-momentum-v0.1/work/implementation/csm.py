@@ -1,8 +1,9 @@
-"""Outcome-blind deterministic core for the proposed CSM-002 screen.
+"""Outcome-blind deterministic core for the frozen CSM-002 screen.
 
 The module has no network client and accepts only a source-lock-described CSV
-adapter. The research contract remains proposed, so a market run cannot pass
-the gate until a later freeze and Integrator receipt authorize it.
+adapter. The human freeze fixes the contract bytes but does not authorize a
+market run; independent audit, Integrator gate, and separate X instruction
+remain required.
 """
 from __future__ import annotations
 
@@ -22,8 +23,13 @@ from typing import Any, Iterable, Mapping, Sequence
 
 
 SPEC_ID = "SPEC-CSM-002-v01"
-SPEC_GIT_BLOB_SHA1 = "a073e77dec14337ee20609ed6136e50a8c1e76e2"
-SPEC_SHA256 = "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90"
+SPEC_GIT_BLOB_SHA1 = "7fe114e2fcfa33b0565b51c717455abd8837d5d9"
+SPEC_SHA256 = "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2"
+ACCEPTED_SPEC_GIT_BLOB_SHA1 = "a073e77dec14337ee20609ed6136e50a8c1e76e2"
+ACCEPTED_SPEC_SHA256 = "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90"
+HUMAN_DECISION_ID = "HDEC-CSM-002-20261001"
+FREEZE_DECISION_ID = "DEC-CSM-003-FREEZE-20261001"
+FREEZE_RECORD_COMMIT = "4ac1e797c777f33a467ec73b250401886d160e80"
 HYPOTHESIS_ID = "HYP-CSM-002"
 CURRENCIES = ("AUD", "CAD", "CHF", "EUR", "GBP", "JPY", "NZD", "USD")
 NON_EUR_CURRENCIES = tuple(c for c in CURRENCIES if c != "EUR")
@@ -318,7 +324,7 @@ def validate_gate_receipt(
     expected_environment_sha256: str | None = None,
     expected_probe_metadata_sha256: str | None = None,
 ) -> None:
-    """Fail closed; no current receipt can pass against this proposed contract."""
+    """Fail closed unless every exact contract, source, and access identity agrees."""
     validate_series_identity(source_lock)
     if receipt.get("gate_status") != "PASS":
         raise GateError("market-outcome gate is not PASS")
@@ -377,7 +383,7 @@ def validate_gate_receipt(
         if any(ch not in "0123456789abcdef" for ch in value.lower()):
             raise GateError("gate receipt has invalid probe-metadata hash")
     if receipt.get("spec_sha256") != SPEC_SHA256:
-        raise GateError("gate SPEC SHA-256 differs from proposed exact bytes")
+        raise GateError("gate SPEC SHA-256 differs from frozen exact bytes")
     if receipt.get("source_series_keys") != list(EXPECTED_SERIES_BY_CURRENCY.values()):
         raise GateError("gate series keys mismatch")
     if receipt.get("source_transport") != source_transport(source_lock):
@@ -1115,9 +1121,15 @@ def validate_calendar_document(
 
 def validate_config(config: Mapping[str, Any]) -> None:
     expected = {
+        "config_type": "FROZEN_SPEC_MIRROR",
         "spec_id": SPEC_ID,
         "spec_git_blob_sha1": SPEC_GIT_BLOB_SHA1,
         "spec_sha256": SPEC_SHA256,
+        "accepted_pre_freeze_spec_git_blob_sha1": ACCEPTED_SPEC_GIT_BLOB_SHA1,
+        "accepted_pre_freeze_spec_sha256": ACCEPTED_SPEC_SHA256,
+        "human_decision_id": HUMAN_DECISION_ID,
+        "freeze_decision_id": FREEZE_DECISION_ID,
+        "freeze_record_commit": FREEZE_RECORD_COMMIT,
         "hypothesis_id": HYPOTHESIS_ID,
         "universe": list(CURRENCIES),
         "target_start": TARGET_START,
@@ -1135,7 +1147,8 @@ def validate_config(config: Mapping[str, Any]) -> None:
         },
         "minimum_eligible": MIN_ELIGIBLE,
         "minimum_coverage": str(MIN_COVERAGE),
-        "freeze_status": "PROPOSED_NOT_FROZEN",
+        "freeze_status": "FROZEN",
+        "market_outcome_access": "CLOSED_UNTIL_INTEGRATOR_GATE_PASS_AND_SEPARATE_X_INSTRUCTION",
     }
     for key, value in expected.items():
         if config.get(key) != value:
