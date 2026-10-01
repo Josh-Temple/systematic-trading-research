@@ -1,0 +1,186 @@
+{
+  "id": "GATE-CSM-I2-20261001",
+  "research_line_id": "RL-CSM-001",
+  "created_at": "2026-10-01",
+  "stage": "I2_PRE_OUTCOME",
+  "state": "HUMAN_BOUNDARY",
+  "gate_status": "CLOSED",
+  "market_outcome_access": false,
+  "scientific_status": "NOT_APPLICABLE",
+  "i1_status": "PARTIAL_WITH_GAPS",
+  "proposal_ref": "e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff",
+  "main_sha": "a765b33fc0915fdfdcf21287a4418aca4f5b8b7c",
+  "specification": {
+    "id": "SPEC-CSM-002-v01",
+    "proposal_status": "PROPOSED_NOT_FROZEN",
+    "freeze_status": "NOT_APPROVED",
+    "git_blob_sha1": "a073e77dec14337ee20609ed6136e50a8c1e76e2",
+    "sha256": "e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90"
+  },
+  "human_contract": {
+    "decision": "NOT_APPROVED",
+    "decision_id": null,
+    "accepted_spec_sha256": null,
+    "original_instruction_ref": null
+  },
+  "outcome_access_owner": {
+    "role": "X",
+    "named_operator": null
+  },
+  "input_heads": {
+    "A": {
+      "branch": "work/csm-literature-20261001",
+      "head": "5e45377b890877ff18275a7fbd4371ffe80c92ba",
+      "pr": 33
+    },
+    "B": {
+      "branch": "work/csm-github-prior-art-20261001",
+      "head": "c756805692658c99394ca71f88203ba224e78c3c",
+      "pr": 32,
+      "merge_base": "36240da15fc83120d12d081c227f3e0dd8badaaa",
+      "path_conformance": "BLOCKED"
+    },
+    "C": {
+      "branch": "work/csm-source-qualification-20261001",
+      "head": "9870c710c3cba7bb9226c9eee8ec36687b96fd9d",
+      "pr": 35,
+      "merge_base": "36240da15fc83120d12d081c227f3e0dd8badaaa"
+    },
+    "D": {
+      "branch": "work/csm-implementation-20261001",
+      "head": "2271ce68039e295aa3cd50b5b2431e1a03d5dfdc",
+      "pr": 34
+    },
+    "E": {
+      "branch": null,
+      "head": null,
+      "result": null
+    }
+  },
+  "source_identities": {
+    "source_lock_id": "CSM-SOURCE-LOCK-ECB-001",
+    "source_lock_git_blob_sha1": "81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf",
+    "source_lock_sha256": "ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71",
+    "probe_metadata_git_blob_sha1": "21aa9149b7b7db9b07f1aa3f4bf0312675a166bd",
+    "probe_metadata_sha256": "1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533",
+    "expected_calendar_git_blob_sha1": "6ed720353472ba6f35391936c536d46fb6ae8c66",
+    "expected_calendar_sha256": "6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4",
+    "qualified_scope": "BOUNDED_ROUTE_SCHEMA_CALENDAR_ONLY",
+    "full_history_coverage": "UNKNOWN",
+    "historical_publication_time": "UNKNOWN",
+    "revision_vintage_availability": "UNKNOWN",
+    "expected_open_dates": 4331,
+    "expected_month_ends": 203
+  },
+  "implementation_identities": {
+    "D_head": "2271ce68039e295aa3cd50b5b2431e1a03d5dfdc",
+    "code_git_blob_sha1": "11e4fa7729e5ec1c271a9b4b54c76de4cf049466",
+    "code_sha256": "dfd42a29e4cd042ad44ce9461d29246c0609bee401463cd21b82e0f0d6a37267",
+    "tests_git_blob_sha1": "965e8f49ee9d5678d1022dfb45a313d79b4655b8",
+    "tests_sha256": "69693bba8efbfa37e64c0fe08be332d583a15b9f8f4d3c99652e70acba634171",
+    "config_git_blob_sha1": "a1e49571ae30d48a502c4964c14f36cf556d15bb",
+    "config_sha256": "5624c22c2ccad339cacc72b34d877eea5b0160ac7715f10d269ea984aa443ad1",
+    "test_log_git_blob_sha1": "0d168ef8f5d3f73a5c98cf542e109e3d9697b094",
+    "test_log_sha256": "2bb7c59b82f22b14e04151bdb2b2d6b8e69cdf72967c3e4ffea41d30a4433fd5",
+    "reported_test_result": "42 passed",
+    "independent_audit": "NOT_RUN"
+  },
+  "conditions": [
+    {
+      "id": "human_contract_freeze",
+      "status": "BLOCKED",
+      "evidence": "No exact-byte acceptance receipt."
+    },
+    {
+      "id": "spec_implementation_identity",
+      "status": "BLOCKED",
+      "evidence": "D config matches proposed bytes; no accepted/frozen human identity."
+    },
+    {
+      "id": "source_full_history_and_vintage",
+      "status": "BLOCKED",
+      "evidence": "Bounded route passed; history coverage and vintage/availability UNKNOWN."
+    },
+    {
+      "id": "dataset_role_and_owner",
+      "status": "BLOCKED",
+      "evidence": "EXPLORATORY_DISCOVERY and role X are proposed; named operator and approval absent."
+    },
+    {
+      "id": "no_hidden_search",
+      "status": "PASS",
+      "evidence": "One fixed empirical candidate; no outcome-driven search recorded."
+    },
+    {
+      "id": "synthetic_tests",
+      "status": "PASS",
+      "evidence": "D log reports 42 synthetic/component tests passed; E audit remains separate."
+    },
+    {
+      "id": "independent_E_audit",
+      "status": "BLOCKED",
+      "evidence": "No E result/head."
+    },
+    {
+      "id": "temporal_claim_acceptance",
+      "status": "BLOCKED",
+      "evidence": "Reference association only is proposed; human acceptance absent; AVAILABLE_AT UNKNOWN."
+    },
+    {
+      "id": "data_exposure_disposition",
+      "status": "BLOCKED",
+      "evidence": "C disclosed current observation snippets; no independent disposition."
+    },
+    {
+      "id": "bounded_probe_receipt",
+      "status": "PASS",
+      "evidence": "Fixed 2009-11 probe metadata receipt; no value output reported."
+    },
+    {
+      "id": "baseline_and_decision_rule",
+      "status": "PASS",
+      "evidence": "Fixed by proposed SPEC and synthetic D tests."
+    },
+    {
+      "id": "raw_capture_and_two_stage_preflight",
+      "status": "BLOCKED",
+      "evidence": "No full-history snapshot or actual preflight."
+    },
+    {
+      "id": "durable_destination_and_access_ledger",
+      "status": "BLOCKED",
+      "evidence": "No durable destination or trusted attempt/access ledger assigned."
+    },
+    {
+      "id": "receipt_authentication_and_isolation",
+      "status": "BLOCKED",
+      "evidence": "D reports no cryptographic identity authentication or OS file/process isolation."
+    },
+    {
+      "id": "restricted_boundaries",
+      "status": "PASS",
+      "evidence": "No H3, DATA-HR-003, Autonomous Pilot, live/paper orders, or broker access."
+    }
+  ],
+  "blocking_conditions": [
+    "human_contract_freeze",
+    "source_full_history_and_vintage",
+    "dataset_role_and_owner",
+    "independent_E_audit",
+    "temporal_claim_acceptance",
+    "data_exposure_disposition",
+    "raw_capture_and_two_stage_preflight",
+    "durable_destination_and_access_ledger",
+    "receipt_authentication_and_isolation"
+  ],
+  "no_result_receipt": {
+    "actual_market_history_read_or_used_by_integrator": false,
+    "currency_strength_ranking_computed": false,
+    "forward_returns_computed": false,
+    "strategy_metrics_computed": false,
+    "performance_plots_generated": false,
+    "h3_or_pilot_inputs_accessed": false,
+    "run_id": null,
+    "result_id": null
+  }
+}
