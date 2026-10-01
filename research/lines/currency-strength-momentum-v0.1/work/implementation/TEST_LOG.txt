@@ -1,0 +1,41 @@
+Packet D outcome-blind correction verification
+Date: 2026-10-02 (JST)
+Environment: Python 3.12.14; CPython; Linux-6.18.44-x86_64-with-glibc2.39; Python standard library only.
+
+Frozen contract identity
+SPEC-CSM-002-v01 Git blob: 7fe114e2fcfa33b0565b51c717455abd8837d5d9
+SPEC-CSM-002-v01 SHA-256: a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2
+Config status: FROZEN; current config matches this frozen identity.
+
+Exact Packet C metadata-only inputs
+Source ref: PR #35 head 9870c710c3cba7bb9226c9eee8ec36687b96fd9d
+research/lines/currency-strength-momentum-v0.1/work/source-qualification/source-lock.json
+  Git blob SHA-1: 81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf
+  SHA-256: ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71
+research/lines/currency-strength-momentum-v0.1/work/source-qualification/probe-metadata.json
+  Git blob SHA-1: 21aa9149b7b7db9b07f1aa3a4bf0312675a166bd
+  SHA-256: 1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533
+research/lines/currency-strength-momentum-v0.1/work/source-qualification/expected-calendar.json
+  Git blob SHA-1: 6ed720353472ba6f35391936c536d46fb6ae8c66
+  SHA-256: 6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4
+
+Gate and audit identities used for fail-closed tests
+Current I2 PR #37 head: 677341e8185bf38b5cc6d4490260ddefb72eb561; gate.json blob ba1670b0c13ec58e806838949a80574a5cbab6c4; SHA-256 54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6; state CLOSED / access false.
+Current E PR #38 head: d1335b29eeb01cdd4b71cd5ded62033b8468e539; AUDIT-CSM-E-20261002; PARTIAL_WITH_GAPS / BLOCKED.
+E RESULT.md blob f29a5d38b16b54734a47c719c09922a461ee3fe4; SHA-256 c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35.
+E AUDIT_MATRIX.csv blob 3ada00d887bc76f88c777d2a40ea410077e3e594; SHA-256 a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7.
+
+Commands and results
+Command: python3 -m py_compile csm.py test_csm.py
+Result: PASS; exit code 0; no output.
+
+Command:
+CSM_PACKET_C_SOURCE_LOCK=/workspace/scratch/a4b39f542e62/tmp_packet_c/source-lock.json CSM_PACKET_C_PROBE_METADATA=/workspace/scratch/a4b39f542e62/tmp_packet_c/probe-metadata.json CSM_PACKET_C_EXPECTED_CALENDAR=/workspace/scratch/a4b39f542e62/tmp_packet_c/expected-calendar.json python3 -m unittest -v test_csm.py
+Result: PASS; exit code 0; 53 tests run, 53 passed, 0 failed, 0 skipped; elapsed 0.590 seconds on the final full run.
+Suite basis: the original 42 tests plus 11 regression/fault-injection tests.
+Regression tests include target-value/availability-invariant score ledgers; all-currency score identity fields; signed receipt checks for trusted roles, arbitrary keys, placeholder/missing/expired/mismatched/bad signatures; raw source-lock byte mismatch; and write/flush/fsync/rename/promotion failure injection.
+
+Input boundary
+All calculation rows and receipt signing keys used by tests are synthetic. Packet C files above are read only as source-lock, probe-schema metadata, and expected-calendar metadata. No Packet C probe-response CSV, observed market values, market history, price, ranking, forward return, P/L, Sharpe, or performance plot was retrieved, read, or calculated. No outcome-access run was attempted.
+
+This log records the observed local verification. Packet E has not yet independently audited the corrected D head.
