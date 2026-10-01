@@ -26,3 +26,16 @@
 - empirical effect、net economics、factor independence、confirmation。
 
 remote readbackでは保存commitの全file bytesをlocal SHA256と照合する。この文書のlocalチェックをremote保存の証明として代用しない。
+
+
+## Independent review addendum — 2026-10-01
+
+Reviewed proposal branch head: `4f71e41419cf3424b54b90ed6f267aede3a16ca7` (main remained `1bba695ea252863c3b7366b8b910aa36e211c325`).
+
+- Added Hutchinson et al. (2022) after reading its author-accepted full text. The plan records the paper as an adverse post-2010 prior, while spelling out that its excess-return basket construction and sample are not the same as this single-extreme ECB-reference spot screen. The 2010–2026 window overlaps known published evidence and is not an independent holdout.
+- Added official ECB copyright and ESCB statistics reuse conditions to the source review and C Packet: cite the source, preserve public source statistics/metadata accurately, disclose transformations, and account for possible revisions. Public snapshot storage remains a C qualification item.
+- Re-read all 20 Markdown artifacts and 8 Work Packets at the reviewed head. Relative Markdown links: 0 broken. Duplicate entity/packet IDs: 0. Required role, objective, fresh-read, forbidden-action, outcome-permission, failure, and deliverable sections: present in all 8 Packets.
+- Gate template still has `market_outcome_access=false`, `state=HUMAN_BOUNDARY`, and null input identities; it is not a PASS receipt.
+- No historical FX series was downloaded and no selected-pair return, strategy metric, Sharpe ratio, or currency ranking was calculated.
+
+The readback checks above apply to the proposal head named at the start of this addendum; this addendum records those checks and does not authorize market-outcome access.
