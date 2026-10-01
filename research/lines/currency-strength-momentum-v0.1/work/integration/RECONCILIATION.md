@@ -20,9 +20,15 @@ relations:
 
 I1の統合準備を実施し、A–Dの正確なremote headから報告・表・コード・testsを読み直した。Worker結果は研究条件の異なる文献・実装・source qualification・合成実装であり、今回の仮説に対する市場結果ではない。I1の統合記録は **PARTIAL_WITH_GAPS**。I2のoutcome-access gateは閉じたままで、I3は未実施である。
 
-Human freeze receiptがなく、独立E監査も存在しない。さらに、Cが開示した検索結果上の観測値露出、Bの成果物path/base不整合、全期間のcoverage・historical vintage不明、実行時の信頼できる承認経路とfile/process isolation未解決がある。これらをPASSへ置き換えていない。
+Human acceptance receipt is now recorded, but independent E audit still does not exist. C's disclosed search-result observation exposure, B's artifact path/base mismatch, unknown full-period coverage and historical vintage, and unresolved trusted authorization and file/process isolation remain. These have not been changed to PASS.
 
-この記録が固定するのは、承認前の提案内容と、現在確認できる証拠・限界だけである。SPEC、仮説、期間、universe、dataset role、decision ruleは変更していない。実データのranking、forward return、P/L、Sharpe、性能plotは計算していない。
+この記録は、承認されたSPECのexact pre-freeze bytes、その後のfreeze metadata差分、現在確認できる証拠と限界を固定する。承認後のSPEC本文・仮説・期間・universe・dataset role・decision ruleは変更していない。実データのranking、forward return、P/L、Sharpe、性能plotは計算していない。
+
+## Human acceptance and freeze follow-up
+
+Human decision HDEC-CSM-002-20261001 records the user's exact response 「承認します 進めて下さい」 at 2026-10-01T21:35:55+09:00 to the request naming pre-freeze SPEC SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90. The accepted proposal bytes had blob SHA-1 a073e77dec14337ee20609ed6136e50a8c1e76e2. Freeze commit 4ac1e797c777f33a467ec73b250401886d160e80 changed only SPEC frontmatter lifecycle fields; frozen blob SHA-1 is 7fe114e2fcfa33b0565b51c717455abd8837d5d9 and SHA-256 is a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2. The post-freeze body is byte-for-byte identical to the accepted body.
+
+The human decision resolves exact-spec acceptance and the reference-association-only temporal boundary. D's config remains pinned to the accepted pre-freeze SHA and `PROPOSED_NOT_FROZEN`; implementation/spec identity is therefore BLOCKED pending D refresh and independent audit. This freeze does not authorize capture or execution. The I2 gate remains BLOCKED / CLOSED.
 
 ## Authorityとfresh-read receipt
 
@@ -32,8 +38,8 @@ Human freeze receiptがなく、独立E監査も存在しない。さらに、C�
 | mainの後続変更 | main headはworker報告の1bba695ea252863c3b7366b8b910aa36e211c325から進み、a765b33fc0915fdfdcf21287a4418aca4f5b8b7cでresearch/lines/INDEX.mdだけを追加していた。 |
 | current main index | INDEXはcurrency-strength lineをbranch research/currency-strength-momentum-v0.1へrouteしている。ユーザー指定proposalはresearch/csm-architecture-review-20261001のe0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ffで、同じscience documentがmainにあるとは扱わない。古いprovisional branchやそのSPEC-CSM-001は今回読まず、契約に使っていない。Indexのroute差はこのPacketのwrite allowlist外なので変更していない。 |
 | proposal | ユーザーのURLで指定されたArchitecture PR #31のexact head e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff。PR #31はmain未統合。README、ARCHITECTURE_REVIEW_2026-10-01.md、SPEC-CSM-002-v01.md、HYP-CSM-002.md、DEC-CSM-002.md、work/README.md、Packets A–EとIを取得した。 |
-| SPEC-CSM-002-v01 | Git blob SHA-1 a073e77dec14337ee20609ed6136e50a8c1e76e2、SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90。status HUMAN_BOUNDARY / PROPOSED_NOT_FROZEN。 |
-| original human instruction / freeze receipt | 現在の依頼は「Packet Iを実行」であり、science contractを承認する指示ではない。提案を作った元のuser brief全文とSPECのexact-byte acceptance receiptは、今回fresh-readしたproposal資料に見当たらない。人間承認を推定していない。 |
+| SPEC-CSM-002-v01 | Accepted pre-freeze blob SHA-1 a073e77dec14337ee20609ed6136e50a8c1e76e2 / SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90. Frozen post-metadata blob SHA-1 7fe114e2fcfa33b0565b51c717455abd8837d5d9 / SHA-256 a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2; status ACTIVE / FROZEN. |
+| original human instruction / freeze receipt | Packet Iの実行依頼後、exact pre-freeze SHA-256を示した受諾依頼へのuser返信「承認します 進めて下さい」を2026-10-01T21:35:55+09:00に記録した。元のuser brief全文はreviewed repository artifactsに見当たらない。人間承認は推定ではなく、HDEC-CSM-002-20261001のreceiptに基づく。 |
 
 現在mainのINDEXが案内するbranchとユーザー指定proposal branchは異なる。proposal branchの内容を、current mainの正本や承認済み科学条件として扱っていない。
 
@@ -123,7 +129,7 @@ B/Cのbranchがe0fより遅れていること自体を科学的否定証拠と�
 | 9 | no-access receiptとdiscrepancies | PASS | C disclosureを再掲せずレビュー課題として保持。 |
 |  | **総合** | **PARTIAL_WITH_GAPS** | 42 testsはDの報告・TEST_LOGによる。Iは再実行せず、E独立監査も未実施。 |
 
-Dのconfigはproposal SPECと同じGit blob SHA-1 a073e77dec14337ee20609ed6136e50a8c1e76e2 / SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90を記録し、freeze_status PROPOSED_NOT_FROZENとしている。D code/test Git blob SHA-1は11e4fa7729e5ec1c271a9b4b54c76de4cf049466 / 965e8f49ee9d5678d1022dfb45a313d79b4655b8。D Resultが報告するSHA-256は、それぞれdfd42a29e4cd042ad44ce9461d29246c0609bee401463cd21b82e0f0d6a37267 / 69693bba8efbfa37e64c0fe08be332d583a15b9f8f4d3c99652e70acba634171。D TEST_LOGは42件成功と記録するが、実験用市場データやoutcomeは含まないとされる。
+Dのconfigはaccepted pre-freeze SPECのGit blob SHA-1 a073e77dec14337ee20609ed6136e50a8c1e76e2 / SHA-256 e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90を記録し、freeze_status PROPOSED_NOT_FROZENとしている。SPEC凍結後のGit blob SHA-1は7fe114e2fcfa33b0565b51c717455abd8837d5d9 / SHA-256 a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2である。したがってD configは現在のfrozen file identityと一致せず、I2条件はBLOCKED。D code/test Git blob SHA-1は11e4fa7729e5ec1c271a9b4b54c76de4cf049466 / 965e8f49ee9d5678d1022dfb45a313d79b4655b8。D Resultが報告するSHA-256は、それぞれdfd42a29e4cd042ad44ce9461d29246c0609bee401463cd21b82e0f0d6a37267 / 69693bba8efbfa37e64c0fe08be332d583a15b9f8f4d3c99652e70acba634171。D TEST_LOGは42件成功と記録するが、実験用市場データやoutcomeは含まないとされる。
 
 Dはsynthetic CSVでC source lockとcalendarを統合テストした。Cのprobe response CSVは読んでいない。code上はclosed gate時のno-read test、event-ledger先行保存、source identity checksがある。一方、human/auditor/Integrator identityを暗号学的に認証せず、OSレベルの権限制御も実装されていない。この限界はコードテスト合格で解消されない。
 
@@ -140,7 +146,7 @@ Packet Eでは、SPEC freezeがない場合はdraft auditまで行いfinal PASS�
 | Bのintraday rejectionと月次proposal | horizon/universe/data/constructionの違い | 月次仕様のnegative resultとは分類しない。Bの報告はsource-reported。 |
 | 「通貨強弱meter」と全56 directed pairの最大形成return | 同じraw common-numeraire scoresによる数学的同値 | 独立機構として重複主張しない。HYP-CSM-002もこれを記載する。 |
 | ECB suffix Aの「Average」と平均bid/ask解釈 | labelとmarket conventionの混同 | C source lockはlabelだけを採用。bid/ask平均・取引値を推定しない。 |
-| Cのhistorical timestamp / revision / latest vintage | source qualification gap | UNKNOWNのまま。causal/executable claimには使わない。Reference-associationとして受け入れるかはhuman contractに残す。 |
+| Cのhistorical timestamp / revision / latest vintage | source qualification gap plus accepted claim boundary | Historical availability/original vintage remains UNKNOWN and cannot support causal/executable claims. The human accepted retrospective latest-vintage reference association only; this does not qualify full-history coverage or vintage retrieval. |
 | main INDEXとuser-pinned proposal branchのrouting | repository state/refの差 | science evidenceの矛盾ではないが、将来のcanonical routingに要修正。現Packetのallowlist外。 |
 | Bのroot-level deliverablesとline-relative rule | path/baseの非適合 | Worker成果の配置・refを修正するまでcanonical line artifactとして扱わない。 |
 
@@ -148,12 +154,13 @@ Packet Eでは、SPEC freezeがない場合はdraft auditまで行いfinal PASS�
 
 ## 現在の境界と次の必須条件
 
-- SPEC-CSM-002-v01はPROPOSED_NOT_FROZEN。人間が指定されたexact bytesを受け入れるまでfreezeしない。
-- HYP-CSM-002はUNTESTED。EXP-CSM-002はPLANNED_NOT_FROZEN、DATA-CSM-002もPLANNED_NOT_FROZENとして記録する。
+- SPEC-CSM-002-v01はFROZEN。human decision HDEC-CSM-002-20261001 accepted the pre-freeze SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`; the metadata-frozen file SHA-256 is `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`. The scientific body is unchanged.
+- HYP-CSM-002はUNTESTED。EXP-CSM-002とDATA-CSM-002はPLANNED、実験はNOT_RUN、Dataset captureはNOT_CAPTURED_FOR_EXPERIMENT。
 - 2009-11 bounded source probeはsource qualificationのみ。2010-01〜2026-09のfixed discovery historyはcaptureされていない。future confirmation sampleは指定・アクセスされていない。
-- 記載されたXは実行roleであり、named operatorは未指定。別の明示的execution instruction、human contract receipt、E audit、I gate PASSが要る。
+- 記載されたXは実行roleであり、named operatorは未指定。別の明示的execution instruction、独立E audit、I gate全項目PASSが要る。
+- D configはpre-freeze SPEC identityのままで、frozen file identityと一致しない。Dによるconfig refresh/revalidationと、その後の独立E auditまではGate I2はBLOCKED。
 - B workerは成果物のline-relative path/base mismatchを解消する必要がある。C source lock、D code/config、calendar、environmentのbyte identitiesが後続変更で変われば、既存D結果・E auditをそのまま引き継がない。
-- Full-history coverage、historical publication/availability、vintage/revision、trusted receipt channel、file/process isolation、durable raw snapshot/attempt ledger destinationは未解決。
+- Full-history coverage、実際のmissing/status分布、revision/vintage取得、CとIntegratorのdata-exposure disposition、trusted receipt channel、file/process isolation、durable raw snapshot/attempt ledger destinationは未解決。Historical availability/original vintageはUNKNOWNだが、受諾されたreference-association-only claimではcausal claimに使わない。
 - Current main research indexのrouting差は別の変更管理で直す。今回のIntegration PRでは触らない。
 - 全条件pass後にのみGate I2を再fresh-readし、Xへの一回実行指示を検討する。X/R完了後に限りI3 closureを実施する。
 
