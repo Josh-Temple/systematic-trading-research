@@ -1,0 +1,833 @@
+{
+  "scope": "SOURCE_QUALIFICATION_ONLY",
+  "scientific_status": "NOT_APPLICABLE",
+  "strategy_outcomes_computed": false,
+  "sources": [
+    {
+      "instrument": "1306",
+      "url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_1306.csv",
+      "retrieved_at_utc": "2026-10-02T21:23:28.460441+00:00",
+      "final_url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_1306.csv",
+      "content_type": "text/csv",
+      "bytes": 517487,
+      "sha256": "732caedee5938d9eb053c0fd207d6c99d39ebbea338962c594f5e41f93f6ae8b",
+      "status": "FETCHED",
+      "profile": {
+        "encoding": "cp932",
+        "csv_rows": 6199,
+        "dated_rows": 6194,
+        "date_min": "2001-07-11",
+        "date_max": "2026-10-01",
+        "duplicate_date_rows": 0,
+        "exact_duplicate_rows": 0,
+        "out_of_order_transitions": 0,
+        "future_date_rows": 0,
+        "weekend_rows": 14,
+        "weekend_dates": [
+          "2004-01-10",
+          "2004-07-10",
+          "2005-07-10",
+          "2009-01-10",
+          "2010-01-10",
+          "2010-07-10",
+          "2011-07-10",
+          "2015-01-10",
+          "2016-01-10",
+          "2016-07-10",
+          "2021-01-10",
+          "2021-07-10",
+          "2022-07-10",
+          "2026-01-10"
+        ],
+        "outage_2020_10_01_present": true,
+        "nonempty_unparsed_rows_after_first_date": 0,
+        "column_count": 11,
+        "header_candidates": [
+          [],
+          [
+            "基準日",
+            "純資産総額",
+            "受益権口数",
+            "1口当たり基準価額",
+            "1口当たり分配金",
+            "騰落率",
+            "1口当たり基準価額（分配金再投資）",
+            "株式組入比率",
+            "債券組入比率",
+            "REIT組入比率",
+            "先物組入比率"
+          ],
+          [
+            "Date",
+            "ETF Net Asset (Total)",
+            "Shares Outstanding",
+            "Net Asset Value (per Share)",
+            "ETF Dividend (per Share)",
+            "Total Return",
+            "ETF Net Asset Value (per Share) (Dividend-included)",
+            "Percent of Stocks in ETF",
+            "Percent of Bonds in ETF",
+            "Percent of REITs in ETF",
+            "Percent of Futures in ETF"
+          ]
+        ],
+        "row_width_counts": {
+          "11": 6194
+        },
+        "blank_by_column": [
+          0,
+          0,
+          2866,
+          0,
+          0,
+          1,
+          0,
+          4956,
+          4956,
+          4956,
+          4956
+        ],
+        "numeric_quality_by_column": [
+          {
+            "column_index": 1,
+            "finite_numeric": 6194,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 2,
+            "finite_numeric": 3328,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 3,
+            "finite_numeric": 6194,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 4,
+            "finite_numeric": 6194,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 6169
+          },
+          {
+            "column_index": 5,
+            "finite_numeric": 6193,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 2903
+          },
+          {
+            "column_index": 6,
+            "finite_numeric": 6194,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 7,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 8,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          },
+          {
+            "column_index": 9,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          },
+          {
+            "column_index": 10,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          }
+        ],
+        "calendar_completeness": "UNVERIFIED: trading calendar not joined",
+        "point_in_time_vintage": "UNVERIFIED: current retrospective export"
+      }
+    },
+    {
+      "instrument": "2510",
+      "url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_2510.csv",
+      "retrieved_at_utc": "2026-10-02T21:23:28.462237+00:00",
+      "final_url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_2510.csv",
+      "content_type": "text/csv",
+      "bytes": 187682,
+      "sha256": "4e80a10554afbb393a637e3049a0aac30357f897dea91b773b8c35c7a2227de0",
+      "status": "FETCHED",
+      "profile": {
+        "encoding": "cp932",
+        "csv_rows": 2161,
+        "dated_rows": 2156,
+        "date_min": "2017-12-07",
+        "date_max": "2026-10-01",
+        "duplicate_date_rows": 0,
+        "exact_duplicate_rows": 0,
+        "out_of_order_transitions": 0,
+        "future_date_rows": 0,
+        "weekend_rows": 6,
+        "weekend_dates": [
+          "2019-09-07",
+          "2020-03-07",
+          "2021-03-07",
+          "2024-09-07",
+          "2025-09-07",
+          "2026-03-07"
+        ],
+        "outage_2020_10_01_present": true,
+        "nonempty_unparsed_rows_after_first_date": 0,
+        "column_count": 11,
+        "header_candidates": [
+          [],
+          [
+            "基準日",
+            "純資産総額",
+            "受益権口数",
+            "1口当たり基準価額",
+            "1口当たり分配金",
+            "騰落率",
+            "1口当たり基準価額（分配金再投資）",
+            "株式組入比率",
+            "債券組入比率",
+            "REIT組入比率",
+            "先物組入比率"
+          ],
+          [
+            "Date",
+            "ETF Net Asset (Total)",
+            "Shares Outstanding",
+            "Net Asset Value (per Share)",
+            "ETF Dividend (per Share)",
+            "Total Return",
+            "ETF Net Asset Value (per Share) (Dividend-included)",
+            "Percent of Stocks in ETF",
+            "Percent of Bonds in ETF",
+            "Percent of REITs in ETF",
+            "Percent of Futures in ETF"
+          ]
+        ],
+        "row_width_counts": {
+          "11": 2156
+        },
+        "blank_by_column": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          918,
+          918,
+          918,
+          918
+        ],
+        "numeric_quality_by_column": [
+          {
+            "column_index": 1,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 2,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 3,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 4,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 2139
+          },
+          {
+            "column_index": 5,
+            "finite_numeric": 2155,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1137
+          },
+          {
+            "column_index": 6,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 7,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          },
+          {
+            "column_index": 8,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 9,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          },
+          {
+            "column_index": 10,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          }
+        ],
+        "calendar_completeness": "UNVERIFIED: trading calendar not joined",
+        "point_in_time_vintage": "UNVERIFIED: current retrospective export"
+      }
+    },
+    {
+      "instrument": "2511",
+      "url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_2511.csv",
+      "retrieved_at_utc": "2026-10-02T21:23:28.462942+00:00",
+      "final_url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_2511.csv",
+      "content_type": "text/csv",
+      "bytes": 189799,
+      "sha256": "690519b2abdb7a16ff2f9524804c86c491be184cb1140a619a76eb09521467b9",
+      "status": "FETCHED",
+      "profile": {
+        "encoding": "cp932",
+        "csv_rows": 2161,
+        "dated_rows": 2156,
+        "date_min": "2017-12-07",
+        "date_max": "2026-10-01",
+        "duplicate_date_rows": 0,
+        "exact_duplicate_rows": 0,
+        "out_of_order_transitions": 0,
+        "future_date_rows": 0,
+        "weekend_rows": 6,
+        "weekend_dates": [
+          "2019-09-07",
+          "2020-03-07",
+          "2021-03-07",
+          "2024-09-07",
+          "2025-09-07",
+          "2026-03-07"
+        ],
+        "outage_2020_10_01_present": true,
+        "nonempty_unparsed_rows_after_first_date": 0,
+        "column_count": 11,
+        "header_candidates": [
+          [],
+          [
+            "基準日",
+            "純資産総額",
+            "受益権口数",
+            "1口当たり基準価額",
+            "1口当たり分配金",
+            "騰落率",
+            "1口当たり基準価額（分配金再投資）",
+            "株式組入比率",
+            "債券組入比率",
+            "REIT組入比率",
+            "先物組入比率"
+          ],
+          [
+            "Date",
+            "ETF Net Asset (Total)",
+            "Shares Outstanding",
+            "Net Asset Value (per Share)",
+            "ETF Dividend (per Share)",
+            "Total Return",
+            "ETF Net Asset Value (per Share) (Dividend-included)",
+            "Percent of Stocks in ETF",
+            "Percent of Bonds in ETF",
+            "Percent of REITs in ETF",
+            "Percent of Futures in ETF"
+          ]
+        ],
+        "row_width_counts": {
+          "11": 2156
+        },
+        "blank_by_column": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          918,
+          918,
+          918,
+          918
+        ],
+        "numeric_quality_by_column": [
+          {
+            "column_index": 1,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 2,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 3,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 4,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 2138
+          },
+          {
+            "column_index": 5,
+            "finite_numeric": 2155,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1001
+          },
+          {
+            "column_index": 6,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 7,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          },
+          {
+            "column_index": 8,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 9,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          },
+          {
+            "column_index": 10,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          }
+        ],
+        "calendar_completeness": "UNVERIFIED: trading calendar not joined",
+        "point_in_time_vintage": "UNVERIFIED: current retrospective export"
+      }
+    },
+    {
+      "instrument": "2513",
+      "url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_2513.csv",
+      "retrieved_at_utc": "2026-10-02T21:23:28.463465+00:00",
+      "final_url": "https://www.nomura-am.co.jp/fund/etf/history/ETF_2513.csv",
+      "content_type": "text/csv",
+      "bytes": 229623,
+      "sha256": "06839fdacb057768b92b4a99e10f2e786ff5850ad04226dd66f3ffaa61141fb5",
+      "status": "FETCHED",
+      "profile": {
+        "encoding": "cp932",
+        "csv_rows": 2161,
+        "dated_rows": 2156,
+        "date_min": "2017-12-07",
+        "date_max": "2026-10-01",
+        "duplicate_date_rows": 0,
+        "exact_duplicate_rows": 0,
+        "out_of_order_transitions": 0,
+        "future_date_rows": 0,
+        "weekend_rows": 6,
+        "weekend_dates": [
+          "2019-09-07",
+          "2020-03-07",
+          "2021-03-07",
+          "2024-09-07",
+          "2025-09-07",
+          "2026-03-07"
+        ],
+        "outage_2020_10_01_present": true,
+        "nonempty_unparsed_rows_after_first_date": 0,
+        "column_count": 11,
+        "header_candidates": [
+          [],
+          [
+            "基準日",
+            "純資産総額",
+            "受益権口数",
+            "1口当たり基準価額",
+            "1口当たり分配金",
+            "騰落率",
+            "1口当たり基準価額（分配金再投資）",
+            "株式組入比率",
+            "債券組入比率",
+            "REIT組入比率",
+            "先物組入比率"
+          ],
+          [
+            "Date",
+            "ETF Net Asset (Total)",
+            "Shares Outstanding",
+            "Net Asset Value (per Share)",
+            "ETF Dividend (per Share)",
+            "Total Return",
+            "ETF Net Asset Value (per Share) (Dividend-included)",
+            "Percent of Stocks in ETF",
+            "Percent of Bonds in ETF",
+            "Percent of REITs in ETF",
+            "Percent of Futures in ETF"
+          ]
+        ],
+        "row_width_counts": {
+          "11": 2156
+        },
+        "blank_by_column": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          918,
+          918,
+          918,
+          918
+        ],
+        "numeric_quality_by_column": [
+          {
+            "column_index": 1,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 2,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 3,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 4,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 2138
+          },
+          {
+            "column_index": 5,
+            "finite_numeric": 2155,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 924
+          },
+          {
+            "column_index": 6,
+            "finite_numeric": 2156,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 7,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 8,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 1238
+          },
+          {
+            "column_index": 9,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          },
+          {
+            "column_index": 10,
+            "finite_numeric": 1238,
+            "invalid_numeric": 0,
+            "nonfinite": 0,
+            "nonpositive": 0
+          }
+        ],
+        "calendar_completeness": "UNVERIFIED: trading calendar not joined",
+        "point_in_time_vintage": "UNVERIFIED: current retrospective export"
+      }
+    },
+    {
+      "instrument": "1540",
+      "url": "https://kikinzoku.tr.mufg.jp/ja/data_report/historicaldata/main/01/teaserItems1/0/linkList/0/link/gold.zip",
+      "retrieved_at_utc": "2026-10-02T21:23:28.464029+00:00",
+      "final_url": "https://kikinzoku.tr.mufg.jp/ja/data_report/historicaldata/main/01/teaserItems1/0/linkList/0/link/gold.zip",
+      "content_type": "application/zip",
+      "bytes": 126378,
+      "sha256": "138393fde9fc5c0813cf4d15224a98ffd1a1294f781ac4a34145d75ed631ca5a",
+      "status": "FETCHED",
+      "members": [
+        {
+          "name": "gold.csv",
+          "bytes": 419126,
+          "sha256": "26550d93d7fcde93c9905678dbcf445b59478daf15f3cb0792e2dd5855d4c5a1",
+          "profile": {
+            "encoding": "cp932",
+            "csv_rows": 3984,
+            "dated_rows": 3972,
+            "date_min": "2010-07-02",
+            "date_max": "2026-10-02",
+            "duplicate_date_rows": 0,
+            "exact_duplicate_rows": 0,
+            "out_of_order_transitions": 0,
+            "future_date_rows": 0,
+            "weekend_rows": 0,
+            "weekend_dates": [],
+            "outage_2020_10_01_present": true,
+            "nonempty_unparsed_rows_after_first_date": 0,
+            "column_count": 15,
+            "header_candidates": [
+              [
+                "Mitsubishi UFJ Trust and Banking Corporation is not liable for any damages whatsoever incurred as a result of the information provided in these files.",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              [
+                "日付/Date",
+                "取引所終値/Closing Price",
+                "指標価格/Index Price",
+                "清算数値/OSE Future Price",
+                "為替 円／ドル/Exchange Rate",
+                "口数/Unit",
+                "NAV（円）/Net Asset Value(\\)",
+                "一口NAV/Net Asset Value per Share(\\)",
+                "乖離率/Daily Deviation Rate",
+                "理論質量(g)/Mass of Trust Asset(g)",
+                "小口転換必要口数（1kg）/Required Units for Small-lot Conversion(1kg)",
+                "小口転換必要口数（2kg）/Required Units for Small-lot Conversion(2kg)",
+                "小口転換必要口数（3kg）/Required Units for Small-lot Conversion(3kg)",
+                "小口転換必要口数（4kg）/Required Units for Small-lot Conversion(4kg)",
+                "小口転換必要口数（5kg）/Required Units for Small-lot Conversion(5kg)"
+              ]
+            ],
+            "row_width_counts": {
+              "15": 3972
+            },
+            "blank_by_column": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "numeric_quality_by_column": [
+              {
+                "column_index": 1,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 2,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 3,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 4,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 5,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 6,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 7,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 8,
+                "finite_numeric": 3971,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 3971
+              },
+              {
+                "column_index": 9,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 10,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 11,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 12,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 13,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              },
+              {
+                "column_index": 14,
+                "finite_numeric": 3972,
+                "invalid_numeric": 0,
+                "nonfinite": 0,
+                "nonpositive": 0
+              }
+            ],
+            "calendar_completeness": "UNVERIFIED: trading calendar not joined",
+            "point_in_time_vintage": "UNVERIFIED: current retrospective export"
+          }
+        }
+      ]
+    }
+  ],
+  "profiler_sha256": "5ac410597069342ea7e52342e1b79c9acb7c6092c7e1c15a3351f6a7abbdb8cf",
+  "checks_updated_at_utc": "2026-10-02T21:26:14.022061+00:00"
+}

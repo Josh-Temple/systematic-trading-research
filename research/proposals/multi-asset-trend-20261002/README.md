@@ -105,3 +105,7 @@ Huangほか（2020）の大学掲載要旨は、資産別の予測性の弱さ�
 - [source-register.csv](source-register.csv): S01–S17の公式出典、確認範囲と限界。検索断片ではなく本文を確認した範囲を記録。
 - [cost_feasibility.py](cost_feasibility.py) / [feasibility.json](feasibility.json): オフラインの端数とデータ固定費試算。市場成績・注文計算は行わない。
 - Dataのデータ品質手順を、上記のメタデータ・時点/単位リスクに限定して使用した。実価格系列の品質評価は未実施。
+
+## 2026-10-03追記：無料履歴の実取得
+
+[無料公式履歴の取得・品質確認](SOURCE_QUALIFICATION_2026-10-03.md)、[source manifest](source_manifest.json)、[検査コード](profile_sources.py)を追加した。5ファイルの実取得と列・日付品質を確認したが、市場OHLC、取引可否、分配金イベント、公開時刻、利用権は未完備。NAV/イベント日と売買日を混同しない。上の2026-10-02時点の記載は履歴として保持する。戦略成績は計算しておらず、正式な研究・データ受入・ライブ運用へ昇格しない。
