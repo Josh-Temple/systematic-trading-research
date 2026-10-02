@@ -3,8 +3,10 @@ id: SPEC-CSM-002-v01
 type: Specification
 research_line_id: RL-CSM-001
 created_at: 2026-10-01
-status: HUMAN_BOUNDARY
-freeze_status: PROPOSED_NOT_FROZEN
+status: ACTIVE
+freeze_status: FROZEN
+frozen_at: 2026-10-01T21:35:55+09:00
+human_decision_ref: DEC-CSM-003-FREEZE-20261001
 tests_hypothesis: HYP-CSM-002
 data_roles_allowed:
   - EXPLORATORY_DISCOVERY
