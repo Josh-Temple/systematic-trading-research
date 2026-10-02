@@ -17,50 +17,64 @@ updated_at: 2026-10-02
 
 # Packet I — Stage I1 reconciliation
 
-## Current amendment after D outcome-blind correction — 2026-10-02
+## Current amendment after Packet E re-audit — 2026-10-02
 
-This amendment supersedes the post-E current-state text below and earlier I snapshots wherever they identify D head `4f739d9cc2b21c138771afec4a728bf2b57060ba` as current or treat E's old implementation findings as current verified facts. The prior E report itself is retained unchanged as a dated, input-bound audit. This I update does not replace independent E review.
+This amendment supersedes prior current-state passages that describe E as pending or the E audit at `d1335b29eeb01cdd4b71cd5ded62033b8468e539` as the current audit. Current E is `4f683901d01fd6b5ce161c874118a34d40bcac82`; it audited current D head `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779`. The earlier E report remains an unchanged historical record for old D head `4f739d9cc2b21c138771afec4a728bf2b57060ba`.
 
 ### Current decision
 
-Packet I I1 remains **PARTIAL_WITH_GAPS**. I2 remains **BLOCKED / CLOSED** and `market_outcome_access=false`. Packet E's audit `AUDIT-CSM-E-20261002` remains PARTIAL_WITH_GAPS / BLOCKED for the exact D inputs it reviewed at `4f739d9cc2b21c138771afec4a728bf2b57060ba`; that audit is stale for corrected D head `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779`. An independent E re-audit is pending. HYP-CSM-002 remains UNTESTED. No full-history capture, market ranking, forward return, strategy P/L, Sharpe, or performance plot was accessed or calculated in this I refresh. No instruction was issued to X.
+Packet I I1 remains **PARTIAL_WITH_GAPS**. Current independent E audit `AUDIT-CSM-E-20261001-REAUDIT-01` is **PARTIAL_WITH_GAPS / BLOCKED**. I2 remains **BLOCKED / CLOSED** and `market_outcome_access=false`. HYP-CSM-002 remains UNTESTED. E independently reran D's 53 tests and synthetic oracle, but did not access market outcomes. No full-history capture, ranking, forward return, strategy P/L, Sharpe, or performance plot was accessed or calculated in this I refresh. No instruction was issued to X.
 
-The exact human acceptance and frozen SPEC remain valid and unchanged: accepted pre-freeze SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`; frozen blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`, SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`. The original pre-proposal human brief remains absent from repository receipts.
+The exact human acceptance and frozen SPEC remain unchanged: accepted pre-freeze SHA-256 `e39569e9e238e3b869ff302d4f67002252eb4f970cd83592bdeed632fe9eed90`; frozen blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`, SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`.
 
-### Current refs and D identity
+### Current refs and E identity
 
-| Input | Exact current reference |
+| Input | Current exact ref |
 |---|---|
 | main | `a765b33fc0915fdfdcf21287a4418aca4f5b8b7c` |
-| User-pinned architecture proposal / PR #31 | `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`, open/unmerged |
+| Architecture PR #31 | `e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff`, open/unmerged |
 | C / PR #35 | `9870c710c3cba7bb9226c9eee8ec36687b96fd9d` |
 | D / PR #34 | `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779`, open/draft/unmerged |
-| E / PR #38 | `d1335b29eeb01cdd4b71cd5ded62033b8468e539`, open/draft/unmerged; audit input D head was `4f739d9cc2b21c138771afec4a728bf2b57060ba` |
-| I / PR #37 before this refresh | `d1b7fa6ecb0fc663ede2b51630afbc395165243f` |
+| E / PR #38 | `4f683901d01fd6b5ce161c874118a34d40bcac82`, open/draft/unmerged; audit `AUDIT-CSM-E-20261001-REAUDIT-01` |
+| I / PR #37 before this refresh | `c2fdbc1f2a9fcccc32717b130a36433819aaa2fa` |
 
-The D ref is fresh-read from PR #34 and its branch; all nine D deliverables were fetched from exact head `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779`. Git blob and SHA-256 identities are listed in GATE.md and PR #34. D reports 53/53 synthetic tests. I did not rerun D tests. D's reported changes address the prior audit's ledger score identities, signed receipt checks, raw-byte source-lock binding, and atomic staging/promotion; E must independently verify those behaviors against current inputs.
+E read all nine D files at `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779`, verified the supplied Git blob/SHA-256 identities, independently reran the 53-test suite, and ran an E-authored synthetic oracle. Item statuses are 1 GAP, 2 PASS, 3 GAP, 4 PASS, 5 PASS, 6 GAP, 7 GAP, 8 GAP, 9 PASS. Full finding details and hashes are in the current E RESULT and AUDIT_MATRIX.
 
-D's RUNBOOK.md and TEST_LOG.txt still cite the pre-refresh I2 gate and prior E identities. Because this I update changes the I gate artifact identity, E must check whether D's current receipt/test identity bindings are valid for the refreshed gate and identify any needed D follow-up before any I2 reconsideration.
+### Independently resolved and still-open D findings
 
-### Prior E audit remains input-bound
+- E reproduced that formation score identities are recorded before target outcomes and remain byte-identical when synthetic target values or availability change. This resolves the old score-identity finding at the code/synthetic-test level.
+- E reproduced configured synthetic signature/role/principal/expiry/revocation checks and raw source-lock-byte binding. However, D's expected current-I and current-E audit identities still pin old refs. E confirmed that D rejects the exact current I gate and this re-audit identity. Production keys are not provisioned.
+- E passed the isolated write/flush/fsync/rename/promotion failure tests, then reproduced a compound failure: parent-directory fsync fails after promotion and rollback deletion also fails; the final directory still contains `run-receipt.json` even though promotion reports failure. D must fix this and add the compound case as a regression test.
+- D's RUNBOOK and TEST_LOG still cite the old I gate and old E audit. D needs a non-circular identity-refresh design, accurate current refs, new D hashes and a further E audit after changes.
 
-E PR #38 remains at `d1335b29eeb01cdd4b71cd5ded62033b8468e539`, audit `AUDIT-CSM-E-20261002`, with status PARTIAL_WITH_GAPS and recommendation BLOCKED. Its independent 42/42 D run and 5/5 toy oracle covered the old D implementation and are historical evidence only for that D identity. E found calendar/source, gate and persistence, isolation/accountability, exposure-disposition, B path/base, and original-brief gaps. The new D features may address some code findings, but none is marked PASS by this I update. E must re-audit current D; external/source and governance gaps remain open unless separately evidenced.
+### Current E audit identity
 
-### Current blockers
+PR #38 head `4f683901d01fd6b5ce161c874118a34d40bcac82` records `AUDIT-CSM-E-20261001-REAUDIT-01`, PARTIAL_WITH_GAPS / BLOCKED, bound to D `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779` and I `c2fdbc1f2a9fcccc32717b130a36433819aaa2fa`. Exact readback artifact identities:
 
-1. **Independent E re-audit:** audit current D `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779` and all nine exact D deliverable identities; explicitly check the current I2/E receipt binding, since D's runbook/test log cite old I refs.
-2. **Source readiness:** C establishes bounded route/schema/calendar metadata. External calendar authority, full-history coverage, missing/status distribution, historical publication timing, and revision/vintage availability remain unresolved.
-3. **Execution controls:** production trust-key distribution, OS-level file/process isolation, filesystem allowlist, durable output destination, persistent append-only access/attempt ledger, and named outcome-access operator remain unestablished.
-4. **Exposure dispositions:** human dispositions remain pending for C's search-result and Integrator's ECB-page exposure disclosures. No values are reproduced.
-5. **Other lineage gaps:** B's five artifacts remain outside line-relative paths and its branch uses an older merge-base; the original pre-proposal human brief is absent. Keep these as explicit owner/lineage gaps without converting them into market findings.
+| E artifact | Git blob SHA-1 | SHA-256 |
+|---|---|---|
+| `RESULT.md` | `e94a0c7ece92046d9abe5dd77d056a0291b9b461` | `69114a4c56164e36e508b46c3565f9ddc4d7ef3b5b78315cfbe8384a6228c372` |
+| `AUDIT_MATRIX.csv` | `cd9625bef4f462e441d9cd581c9207d3d89331fb` | `5201506d5be8db71e281e8a59b2264cf33f9e3493621fdfc227f0d633b903062` |
+| `toy_oracle.py` | `940c46da336a887b3ff7231b5f8aef747a289f30` | `1c2e7963d2891a0c5e62479c5ca51df65a71b2a89aa8566cbeec1f3ca42eb6c3` |
+| `TEST_LOG.txt` | `54716715f0ea42a56b06e34924026402bf96c0e6` | `f3397bb632bbba146413e79e4adcf8b7ccf0d2a190ac3d1d3cdbe22eb64a2342` |
 
-DATA-CSM-002 remains PLANNED / NOT_CAPTURED_FOR_EXPERIMENT; EXP-CSM-002 remains PLANNED / NOT_RUN. The freeze is not an access authorization. This refresh makes no change to the frozen science or gate status.
+The previous E audit `AUDIT-CSM-E-20261002`, head `d1335b29eeb01cdd4b71cd5ded62033b8468e539`, remains historical and was not reused as current evidence. PR #38's description still shows its earlier 42/42 and 5/5 summary; the current RESULT.md and AUDIT_MATRIX.csv at the head above contain the re-audit. The I record follows the exact artifact files and fresh PR head, not the stale PR description.
 
-No market price/history, ranking, forward return, P/L, Sharpe, or performance plot was fetched, read, calculated, or generated for this amendment. No C raw probe CSV or OBS_VALUE values were read. No H3, DATA-HR-003, Autonomous Pilot, broker, live, or paper-trading input was accessed.
+### Conditions still blocking I2
+
+1. D must resolve stale current gate/audit identity pins without a circular hash dependency, fix the compound receipt-promotion failure, add regression coverage, and publish fresh D identities. E must then audit the new D head.
+2. Source readiness remains limited: external calendar authority, full-history coverage, missing/status distribution, historical publication timing, and revision/vintage are unresolved.
+3. Production trust-key distribution, OS-level isolation, filesystem allowlist, durable destination, persistent append-only access/attempt ledger, and named outcome-access operator remain unestablished.
+4. Human disposition is pending for both exposure disclosures; no observation values are reproduced.
+5. B path/base conformance and original brief traceability remain separate lineage gaps.
+
+DATA-CSM-002 remains PLANNED / NOT_CAPTURED_FOR_EXPERIMENT; EXP-CSM-002 remains PLANNED / NOT_RUN. The human freeze does not authorize capture or analysis.
+
+No C raw probe CSV, OBS_VALUE, market history, price, ranking, return, P/L, Sharpe or performance plot was read or calculated for this amendment. No H3, DATA-HR-003, Autonomous Pilot, broker, live or paper-trading input was accessed.
 
 ---
 
-## Prior post-E snapshot — historical; reviewed D head `4f739d9cc2b21c138771afec4a728bf2b57060ba`
+## Prior D-stage snapshot — historical; reviewed old D head `4f739d9cc2b21c138771afec4a728bf2b57060ba`
 
 ## Initial I1 reconciliation snapshot — 2026-10-01
 

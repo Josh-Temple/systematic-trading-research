@@ -61,16 +61,16 @@
     },
     "E": {
       "branch": "work/csm-independent-audit-20261001",
-      "head": "d1335b29eeb01cdd4b71cd5ded62033b8468e539",
+      "head": "4f683901d01fd6b5ce161c874118a34d40bcac82",
       "pr": 38,
       "base": "e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff",
-      "audit_id": "AUDIT-CSM-E-20261002",
+      "audit_id": "AUDIT-CSM-E-20261001-REAUDIT-01",
       "status": "PARTIAL_WITH_GAPS",
       "recommendation": "BLOCKED",
-      "applicability": "STALE_FOR_CURRENT_D_HEAD",
-      "reaudit_status": "PENDING"
+      "applicability": "CURRENT_FOR_D_HEAD",
+      "reaudit_status": "COMPLETE_WITH_GAPS"
     },
-    "I_reviewed_pre_refresh_head": "677341e8185bf38b5cc6d4490260ddefb72eb561"
+    "I_reviewed_pre_refresh_head": "c2fdbc1f2a9fcccc32717b130a36433819aaa2fa"
   },
   "source_identities": {
     "source_lock_id": "CSM-SOURCE-LOCK-ECB-001",
@@ -100,15 +100,15 @@
     "config_sha256": "9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1",
     "test_log_git_blob_sha1": "c70e610064f92ba15527fb7f99b8796607a9a91f",
     "test_log_sha256": "84a6a88673b0502b53bf3b2eb0ca100d101d8bd57cfab3da08695285fc399f44",
-    "reported_test_result": "53 passed, 0 failed, 0 skipped; reported by D at current head, not yet independently rerun by E",
-    "independent_audit": "STALE_FOR_D_HEAD; previous audit PARTIAL_WITH_GAPS / recommendation BLOCKED; current E re-audit pending",
+    "reported_test_result": "53 passed, 0 failed, 0 skipped; independently rerun by E at current D head",
+    "independent_audit": "AUDIT-CSM-E-20261001-REAUDIT-01; PARTIAL_WITH_GAPS; recommendation BLOCKED",
     "config_pinned_spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
     "config_pinned_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
     "frozen_spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
     "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
     "environment_git_blob_sha1": "bf6d5b4c0381e967226ee0996736d858b524b8eb",
     "result_git_blob_sha1": "98e36e22a797806d1ee66438825d7a75f42ff21a",
-    "spec_implementation_conformance": "PENDING_INDEPENDENT_E_REAUDIT: D reports score identities; verify current implementation against frozen SPEC",
+    "spec_implementation_conformance": "PARTIAL: E verified outcome-blind score-identity behavior and reviewed math/time/bootstrap on synthetic inputs; this is not an overall implementation certification, and current identity-binding/persistence gaps remain.",
     "environment_sha256": "8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f",
     "result_sha256": "91fba806a72a9d4e103b535d4acc10b525476f7901700ff1279845bfff2a6923",
     "runbook_git_blob_sha1": "3142c0291aa979bb80c28d71b4e47fc7408591ab",
@@ -117,121 +117,110 @@
     "test_matrix_sha256": "7cfbd342057ce8a9517fbbf44e464fb05beb60e6de82e47f4e1d8643e7da4bce",
     "fixture_git_blob_sha1": "4e925eabb4d88772806f0e109c15680f17d73a31",
     "fixture_sha256": "08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c",
-    "receipt_and_capture_remediation": "PENDING_INDEPENDENT_E_REAUDIT: D reports signed current E/I2 receipts, raw-byte source-lock binding, staging/atomic promotion, and injected failure tests"
+    "receipt_and_capture_remediation": "PARTIAL_WITH_GAPS: synthetic test-key signature/role/expiry/revocation and raw-byte checks passed; D rejects current I/E identities, production trust keys are unprovisioned, and compound promotion/rollback failure leaves a success receipt.",
+    "score_identity_ledger": "PASS at code/synthetic-test level; E item 4",
+    "signed_receipt_checks": "Synthetic tests pass for configured test keys; current I/E identity pins stale and production keys unprovisioned",
+    "raw_source_lock_byte_check": "PASS in synthetic byte-mismatch tests; current signed gate binding still blocked",
+    "capture_promotion": "GAP: compound parent-fsync plus rollback-deletion failure leaves run-receipt.json after promotion reports failure",
+    "current_gate_binding": "BLOCKED: D's current code pins older I gate and E audit identities; E reproduced rejection of the exact current I/E identities."
   },
   "conditions": [
     {
       "id": "human_contract_freeze",
       "status": "PASS",
-      "evidence": "HDEC-CSM-002-20261001 accepts exact pre-freeze SPEC; frozen metadata does not alter scientific body."
+      "evidence": "HDEC-CSM-002-20261001 accepts exact pre-freeze SPEC; frozen metadata does not alter the scientific body."
     },
     {
       "id": "frozen_config_identity",
       "status": "PASS",
-      "evidence": "D config at 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779 blob a1c1e140f8c0844fc554ae6fcd975bcb5e610770 / SHA-256 9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1 remains FROZEN and matches the frozen SPEC."
+      "evidence": "D config blob a1c1e140f8c0844fc554ae6fcd975bcb5e610770 / SHA-256 9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1 remains FROZEN and pins the frozen SPEC."
     },
     {
-      "id": "spec_implementation_conformance",
-      "status": "BLOCKED",
-      "evidence": "D reports the required score-identity ledger; E must independently inspect and test the corrected exact head before conformance can be marked PASS."
-    },
-    {
-      "id": "source_full_history_vintage_and_calendar_authority",
-      "status": "BLOCKED",
-      "evidence": "External calendar authority, full-history coverage, missing/status distribution, publication timing, and vintage remain unresolved."
-    },
-    {
-      "id": "dataset_role_and_confirmation_sample",
+      "id": "math_score_ledger_temporal_bootstrap",
       "status": "PASS",
-      "evidence": "Frozen role remains EXPLORATORY_DISCOVERY; no confirmation sample is designated or accessed."
-    },
-    {
-      "id": "named_outcome_access_operator",
-      "status": "BLOCKED",
-      "evidence": "X remains a role; named operator is unassigned."
-    },
-    {
-      "id": "no_hidden_search",
-      "status": "PASS",
-      "evidence": "Frozen SPEC fixes one empirical family; no search or outcome use is reported for the corrected implementation."
+      "evidence": "E independently checked synthetic pair math, score-identity ledger target invariance, time handling and fixed bootstrap on current D; no market inference follows."
     },
     {
       "id": "synthetic_tests_and_oracle",
-      "status": "BLOCKED",
-      "evidence": "D reports 53/53 synthetic tests; independent E rerun/oracle against current head is pending. Prior 42/42 and 5/5 apply only to old D inputs."
-    },
-    {
-      "id": "independent_E_audit",
-      "status": "BLOCKED",
-      "evidence": "E report at d1335b29eeb01cdd4b71cd5ded62033b8468e539 is PARTIAL_WITH_GAPS / BLOCKED for D 4f739d9cc2b21c138771afec4a728bf2b57060ba; stale for current D 6dccd49ee21e4ac29f55162f93ef3e65aa7a5779. Fresh E re-audit is pending."
-    },
-    {
-      "id": "temporal_claim_acceptance",
       "status": "PASS",
-      "evidence": "Accepted scope remains retrospective latest-vintage reference association only; no causal or executable claim."
+      "evidence": "E reran all 53 current D tests and its independent synthetic oracle; synthetic/code checks only."
     },
     {
-      "id": "data_exposure_disposition",
+      "id": "signature_and_source_lock_raw_bytes",
+      "status": "GAP",
+      "evidence": "Test-key signatures and raw-byte mismatch checks passed, but D's exact current I/E identity pins are stale and production key material is unprovisioned."
+    },
+    {
+      "id": "current_gate_and_audit_identity_binding",
       "status": "BLOCKED",
-      "evidence": "C's search-result and Integrator's ECB-page exposure disclosures remain pending human disposition; values are not repeated."
-    },
-    {
-      "id": "bounded_probe_receipt",
-      "status": "PASS",
-      "evidence": "C's fixed 2009-11 bounded metadata probe receipt is recorded; no raw probe values were read in this refresh."
-    },
-    {
-      "id": "baseline_and_decision_rule",
-      "status": "PASS",
-      "evidence": "Frozen SPEC identities and previous E synthetic oracle agree on the baseline and fixed rules; current D re-audit remains pending."
-    },
-    {
-      "id": "source_lock_exact_raw_bytes",
-      "status": "BLOCKED",
-      "evidence": "D reports signed raw-byte SHA-256 binding for source-lock; E must verify at current identity before this condition can pass."
+      "evidence": "E reproduced that D rejects the exact current I gate and new E audit identity because D's code pins old I/E refs."
     },
     {
       "id": "capture_save_failure_semantics",
       "status": "BLOCKED",
-      "evidence": "D reports same-directory staging, fsync/hash checks, atomic promotion, and injected failures; E must independently verify."
+      "evidence": "E reproduced parent-directory fsync failure after promotion plus rollback-deletion failure leaving run-receipt.json in the final destination."
+    },
+    {
+      "id": "independent_E_audit",
+      "status": "BLOCKED",
+      "evidence": "Current E audit AUDIT-CSM-E-20261001-REAUDIT-01 is PARTIAL_WITH_GAPS and recommends BLOCKED; the gate requires a qualifying E PASS."
+    },
+    {
+      "id": "source_full_history_vintage_and_calendar_authority",
+      "status": "BLOCKED",
+      "evidence": "External calendar authority, full-history coverage, missing/status distribution, historical publication timing and revision/vintage remain unresolved."
+    },
+    {
+      "id": "dataset_role_and_confirmation_sample",
+      "status": "PASS",
+      "evidence": "Role remains EXPLORATORY_DISCOVERY; no confirmation sample is designated or accessed."
+    },
+    {
+      "id": "named_outcome_access_operator",
+      "status": "BLOCKED",
+      "evidence": "X remains a role; no named operator is assigned."
+    },
+    {
+      "id": "data_exposure_disposition",
+      "status": "BLOCKED",
+      "evidence": "C and Integrator observation-exposure disclosures remain pending human disposition; no values are repeated."
     },
     {
       "id": "durable_destination_and_access_ledger",
       "status": "BLOCKED",
-      "evidence": "Production durable destination and persistent append-only access/attempt ledger remain unassigned."
+      "evidence": "Durable protected output and persistent append-only access/attempt ledger remain unassigned."
     },
     {
-      "id": "receipt_authentication_and_OS_isolation",
+      "id": "OS_isolation_and_filesystem_allowlist",
       "status": "BLOCKED",
-      "evidence": "D reports signed trusted-role checks, but production trust-key provisioning and OS-level file/process isolation remain unresolved; D's references to the pre-refresh I/E identities also need E review."
+      "evidence": "No OS-level file/process isolation or enforced filesystem allowlist was evidenced."
     },
     {
       "id": "B_path_base_conformance",
       "status": "GAP",
-      "evidence": "B deliverables remain outside line-relative paths and branch is based on an older merge-base; owner disposition remains open."
+      "evidence": "B deliverables remain outside the line-relative path and based on older merge-base; remediation belongs to B owner."
     },
     {
       "id": "original_brief_lineage",
       "status": "GAP",
-      "evidence": "Original pre-proposal brief is absent from repository receipts; exact accepted/frozen SPEC bytes are recorded."
+      "evidence": "Original pre-proposal brief is absent from repository receipts; accepted/frozen SPEC identity is verified."
     },
     {
       "id": "restricted_boundaries",
       "status": "PASS",
-      "evidence": "No market-outcome access or H3/Pilot/live/broker input access occurred in this I refresh."
+      "evidence": "No market outcome, H3/Pilot/live/broker input access occurred in this I refresh."
     }
   ],
   "blocking_conditions": [
-    "spec_implementation_conformance",
+    "current_gate_and_audit_identity_binding",
+    "capture_save_failure_semantics",
+    "independent_E_audit",
     "source_full_history_vintage_and_calendar_authority",
     "named_outcome_access_operator",
-    "synthetic_tests_and_oracle",
-    "independent_E_audit",
     "data_exposure_disposition",
-    "source_lock_exact_raw_bytes",
-    "capture_save_failure_semantics",
     "durable_destination_and_access_ledger",
-    "receipt_authentication_and_OS_isolation"
+    "OS_isolation_and_filesystem_allowlist",
+    "signature_and_source_lock_raw_bytes"
   ],
   "no_result_receipt": {
     "actual_market_history_read_or_used_by_integrator": false,
@@ -269,30 +258,42 @@
         "disposition": "PENDING_HUMAN_DISPOSITION"
       }
     ],
-    "e_audit_id": "AUDIT-CSM-E-20261002",
+    "e_audit_id": "AUDIT-CSM-E-20261001-REAUDIT-01",
     "e_audit_recommendation": "BLOCKED",
-    "i_refresh_head_reviewed": "d1b7fa6ecb0fc663ede2b51630afbc395165243f",
+    "i_refresh_head_reviewed": "c2fdbc1f2a9fcccc32717b130a36433819aaa2fa",
     "current_d_head_reviewed": "6dccd49ee21e4ac29f55162f93ef3e65aa7a5779",
     "current_d_test_run_by_integrator": false,
-    "prior_e_audit_stale_for_current_d": true
+    "prior_e_audit_stale_for_current_d": true,
+    "prior_e_audit_id": "AUDIT-CSM-E-20261002",
+    "current_e_audit_head": "4f683901d01fd6b5ce161c874118a34d40bcac82",
+    "current_e_audit_status": "PARTIAL_WITH_GAPS",
+    "current_e_audit_market_outcome_access": false,
+    "d_tests_independently_rerun_by_e": "53 passed, 0 failed, 0 skipped",
+    "compound_persistence_gap_reproduced": true,
+    "d_current_i_e_identity_binding_pass": false,
+    "current_gate_canonical_state": "BLOCKED_CLOSED",
+    "current_gate_status": "CLOSED",
+    "market_outcome_access": false
   },
   "updated_at": "2026-10-02",
   "recommendation": "BLOCKED",
   "e_audit": {
-    "audit_id": "AUDIT-CSM-E-20261002",
+    "audit_id": "AUDIT-CSM-E-20261001-REAUDIT-01",
     "status": "PARTIAL_WITH_GAPS",
     "recommendation": "BLOCKED",
     "branch": "work/csm-independent-audit-20261001",
-    "head": "d1335b29eeb01cdd4b71cd5ded62033b8468e539",
+    "head": "4f683901d01fd6b5ce161c874118a34d40bcac82",
     "pr": 38,
-    "result_blob_sha1": "f29a5d38b16b54734a47c719c09922a461ee3fe4",
-    "result_sha256": "c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35",
-    "audit_matrix_blob_sha1": "3ada00d887bc76f88c777d2a40ea410077e3e594",
-    "audit_matrix_sha256": "a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7",
-    "toy_oracle_blob_sha1": "7cefc34a2f7a3c63af9a5b6a0b6e814f2271b62a",
-    "toy_oracle_sha256": "06dc7c3798e1a3a813dd4a7e3a9b06f38f4d327a999efb33d09eb36aca32bfe5",
-    "test_log_blob_sha1": "899c73221598ea34b55fc43f2213eaf276a5bb97",
-    "test_log_sha256": "be7cfff4cc8279062adfcf830dcc38c53736b99e5ea63f5db0ade95a175927f1",
+    "audited_d_head": "6dccd49ee21e4ac29f55162f93ef3e65aa7a5779",
+    "audited_i_head": "c2fdbc1f2a9fcccc32717b130a36433819aaa2fa",
+    "result_blob_sha1": "e94a0c7ece92046d9abe5dd77d056a0291b9b461",
+    "result_sha256": "69114a4c56164e36e508b46c3565f9ddc4d7ef3b5b78315cfbe8384a6228c372",
+    "audit_matrix_blob_sha1": "cd9625bef4f462e441d9cd581c9207d3d89331fb",
+    "audit_matrix_sha256": "5201506d5be8db71e281e8a59b2264cf33f9e3493621fdfc227f0d633b903062",
+    "toy_oracle_blob_sha1": "940c46da336a887b3ff7231b5f8aef747a289f30",
+    "toy_oracle_sha256": "1c2e7963d2891a0c5e62479c5ca51df65a71b2a89aa8566cbeec1f3ca42eb6c3",
+    "test_log_blob_sha1": "54716715f0ea42a56b06e34924026402bf96c0e6",
+    "test_log_sha256": "f3397bb632bbba146413e79e4adcf8b7ccf0d2a190ac3d1d3cdbe22eb64a2342",
     "task_statuses": [
       "GAP",
       "PASS",
@@ -304,22 +305,32 @@
       "GAP",
       "PASS"
     ],
-    "d_tests": "42 passed, 0 failed, 0 skipped (old D head only)",
-    "e_oracle": "5/5 synthetic checks passed (old D head only)",
-    "market_outcomes_accessed": false,
-    "applicability": "STALE_FOR_CURRENT_D_HEAD",
-    "audited_d_head": "4f739d9cc2b21c138771afec4a728bf2b57060ba",
-    "current_d_head": "6dccd49ee21e4ac29f55162f93ef3e65aa7a5779",
-    "current_reaudit_status": "PENDING"
+    "d_tests": "53 passed, 0 failed, 0 skipped; independently rerun by E",
+    "e_oracle": "PASS for synthetic math/ledger/receipt/raw-byte/bootstrap cases; reproduced compound persistence GAP",
+    "market_outcomes_accessed": false
   },
-  "I_reviewed_pre_refresh_head": "d1b7fa6ecb0fc663ede2b51630afbc395165243f",
+  "I_reviewed_pre_refresh_head": "c2fdbc1f2a9fcccc32717b130a36433819aaa2fa",
   "current_d_remediation_claims": {
-    "status": "REPORTED_BY_D_PENDING_E_VERIFICATION",
-    "score_identity_ledger": "added",
-    "signed_receipt_and_identity_binding": "added; exact post-refresh current-I binding must be checked",
-    "source_lock_raw_byte_sha256": "added",
-    "atomic_staging_promotion_and_failure_injection": "added",
+    "status": "PARTIALLY_VERIFIED_BY_E_WITH_BLOCKING_GAPS",
+    "score_identity_ledger": "PASS at synthetic/code level; target-invariance confirmed by E",
+    "signed_receipt_and_identity_binding": "Synthetic signature/role/principal/expiry/revocation checks pass; current I/E identity pins are stale and exact current refs are rejected; production trust keys are unprovisioned",
+    "source_lock_raw_byte_sha256": "Synthetic raw-byte binding/mismatch checks pass; gate binding remains blocked",
+    "atomic_staging_promotion_and_failure_injection": "GAP: isolated injected failures pass, but compound parent-directory fsync plus rollback-deletion failure leaves run-receipt.json after promotion reports failure",
     "d_reported_tests": "53 passed, 0 failed, 0 skipped",
+    "e_independent_tests": "53 passed, 0 failed, 0 skipped; independently rerun by E at the exact D head",
     "config_unchanged_frozen": true
-  }
+  },
+  "prior_e_audit": {
+    "audit_id": "AUDIT-CSM-E-20261002",
+    "status": "PARTIAL_WITH_GAPS",
+    "recommendation": "BLOCKED",
+    "head": "d1335b29eeb01cdd4b71cd5ded62033b8468e539",
+    "audited_d_head": "4f739d9cc2b21c138771afec4a728bf2b57060ba",
+    "result_blob_sha1": "f29a5d38b16b54734a47c719c09922a461ee3fe4",
+    "result_sha256": "c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35",
+    "audit_matrix_blob_sha1": "3ada00d887bc76f88c777d2a40ea410077e3e594",
+    "audit_matrix_sha256": "a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7",
+    "applicability": "HISTORICAL_OLD_D_HEAD"
+  },
+  "pr_38_description_sync": "STALE: PR body still summarizes prior 42/42 and 5/5 audit; exact current RESULT/MATRIX at head 4f683901 contain the re-audit"
 }
