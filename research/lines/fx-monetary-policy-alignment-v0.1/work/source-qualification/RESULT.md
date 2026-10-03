@@ -3,9 +3,9 @@ id: DIAG-FXMP-SOURCE-001
 type: Diagnostic
 research_line_id: RL-FXMP-001
 created_at: 2026-10-03
-status: PARTIAL_WITH_GAPS
+status: QUALIFIED_WITH_GAPS
 execution_status: SUCCESS
-evidence_validity: PARTIAL
+evidence_validity: VALID_WITH_DURABILITY_GAP
 scientific_status: NOT_APPLICABLE
 tests_hypothesis: NOT_APPLICABLE
 relations:
@@ -141,3 +141,51 @@ Before human freeze or any FX outcome access:
 6. demonstrate that the proposed break-aware feature ledger can be built without reading FX target outcomes.
 
 No source substitution is authorized if this action fails.
+
+
+## Packet C raw-source preflight update — 2026-10-03
+
+A minimal outcome-blind GitHub Actions preflight successfully downloaded the official BIS flat CSV archive and inspected only the policy-rate predictor source.
+
+Execution identity:
+- workflow run: `37130000351`
+- workflow head: `6e60055b3748c4ec156deecff61114016e4c44a5`
+- result: PASS
+- FX price/return access: NO
+- observation values emitted to logs: NO
+
+Raw source identity:
+- official URL: `https://data.bis.org/static/bulk/WS_CBPOL_csv_flat.zip`
+- archive bytes: 4,134,512
+- archive SHA-256: `707f39206f7c4bc1001ea7f67b182d20e9b2d59fcf6542d0dd566a19f61d7f15`
+- CSV member: `WS_CBPOL_csv_flat.csv`
+- uncompressed bytes: 475,596,384
+- CSV SHA-256: `0ba9441232f120b4237121494e57d5faf4a087615528f411b8ecc3e1750a4ff9`
+
+Deterministic predictor slice:
+- period: 2009-09 through 2026-08
+- areas: AU/CA/CH/XM/GB/JP/NZ/US
+- rows: 1,592
+- slice bytes: 34,192
+- slice SHA-256: `2cf878dbd0b8a98c05db741dc40a14d0b62a7cb6c178f86121937b0d41eb7eee`
+
+Coverage:
+- AU/CA/CH/XM/GB/NZ/US: 204/204 monthly rows each.
+- JP: 164/204 monthly rows.
+- JP absent monthly rows: 2013-05 through 2016-08 inclusive, 40 months.
+- present rows: zero duplicate months, zero blank OBS_VALUE, zero nonnumeric OBS_VALUE.
+- observed status/confidentiality codes in the selected slice: OBS_STATUS=A and OBS_CONF=F only; their official codelist meanings remain to be locked before final freeze.
+
+The JP row gap is consistent with the official BIS documentation stating no BOJ policy rate was adopted from 4 Apr 2013 through 20 Sep 2016. The feature rule remains stricter than row availability: any lookback interval overlapping the documented no-policy-rate interval is unavailable.
+
+Machine-readable receipt: `SOURCE_LOCK.json`.
+
+### Remaining gap
+
+The Actions artifact contains the raw archive and deterministic predictor slice but expires on 2026-11-02. Hash identity is now locked, but durable long-term raw-byte preservation is not yet established. This does not justify substituting a future BIS release if its bytes differ.
+
+### Updated qualification
+
+**QUALIFIED_WITH_GAPS / SOURCE_IDENTITY_LOCKED / SEMANTIC_GUARDS_REQUIRED**
+
+The source is sufficient to proceed to deterministic outcome-blind implementation and independent audit. It is not sufficient to open market-outcome access.
