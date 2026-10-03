@@ -1,4 +1,4 @@
-name: FXMP freeze candidate identity
+name: FXMP freeze integrity
 
 on:
   push:
@@ -21,13 +21,68 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
-      - name: Verify pre-freeze state and print exact identity
+        with:
+          fetch-depth: 0
+
+      - name: Verify accepted-body preservation and frozen identity
         run: |
-          spec="research/lines/fx-monetary-policy-alignment-v0.1/specifications/SPEC-FXMP-001-v02.md"
-          grep -q '^status: HUMAN_BOUNDARY$' "$spec"
-          grep -q '^freeze_status: PROPOSED_NOT_FROZEN$' "$spec"
-          bytes=$(wc -c < "$spec" | tr -d ' ')
-          sha=$(sha256sum "$spec" | awk '{print $1}')
-          echo "FXMP_FREEZE_CANDIDATE_BYTES=$bytes"
-          echo "FXMP_FREEZE_CANDIDATE_SHA256=$sha"
-          echo "FXMP_FREEZE_CANDIDATE_GIT_BLOB=$(git hash-object "$spec")"
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import subprocess
+
+          path = "research/lines/fx-monetary-policy-alignment-v0.1/specifications/SPEC-FXMP-001-v02.md"
+          accepted_commit = "06c2d7dbc9bfd89c4c4990a1effbf49fd77da6e6"
+          expected_prefreeze_sha = "dfcdc8e6d240539fca1afdc5bafd3202bd0e0648fdc1c13c7224917fd7a66040"
+          expected_prefreeze_blob = "f19f611648253e7fad23fa53b6c229addc1d6711"
+
+          current = Path(path).read_bytes()
+          accepted = subprocess.check_output(["git", "show", f"{accepted_commit}:{path}"])
+
+          assert hashlib.sha256(accepted).hexdigest() == expected_prefreeze_sha
+          accepted_blob = subprocess.check_output(["git", "hash-object", "--stdin"], input=accepted).decode().strip()
+          assert accepted_blob == expected_prefreeze_blob
+
+          def split_doc(raw: bytes):
+              text = raw.decode("utf-8")
+              parts = text.split("---\n", 2)
+              assert len(parts) == 3 and parts[0] == ""
+              return parts[1], parts[2]
+
+          af, abody = split_doc(accepted)
+          cf, cbody = split_doc(current)
+          assert abody == cbody, "scientific body changed during freeze"
+
+          def frontmatter_map(s: str):
+              out = {}
+              for line in s.splitlines():
+                  if line.startswith("  ") or line.startswith("- ") or ":" not in line:
+                      continue
+                  k, v = line.split(":", 1)
+                  out[k.strip()] = v.strip()
+              return out
+
+          a = frontmatter_map(af)
+          c = frontmatter_map(cf)
+          assert a["status"] == "HUMAN_BOUNDARY"
+          assert a["freeze_status"] == "PROPOSED_NOT_FROZEN"
+          assert "frozen_at" not in a
+          assert "human_decision_ref" not in a
+          assert c["status"] == "ACTIVE"
+          assert c["freeze_status"] == "FROZEN"
+          assert c["frozen_at"] == "2026-10-04T07:47:20+09:00"
+          assert c["human_decision_ref"] == "HDEC-FXMP-001-20261004"
+
+          allowed = {"status", "freeze_status", "frozen_at", "human_decision_ref"}
+          for key in set(a) | set(c):
+              if key in allowed:
+                  continue
+              assert a.get(key) == c.get(key), f"unexpected frontmatter change: {key}"
+
+          sha = hashlib.sha256(current).hexdigest()
+          blob = subprocess.check_output(["git", "hash-object", path]).decode().strip()
+          print(f"FXMP_FROZEN_BYTES={len(current)}")
+          print(f"FXMP_FROZEN_SHA256={sha}")
+          print(f"FXMP_FROZEN_GIT_BLOB={blob}")
+          print("FXMP_SCIENTIFIC_BODY_UNCHANGED=true")
+          PY
