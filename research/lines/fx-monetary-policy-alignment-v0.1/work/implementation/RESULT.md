@@ -3,9 +3,9 @@ id: DIAG-FXMP-IMPLEMENTATION-001
 type: Diagnostic
 research_line_id: RL-FXMP-001
 created_at: 2026-10-03
-status: IMPLEMENTED_AWAITING_CI
-execution_status: NOT_RUN
-evidence_validity: NOT_APPLICABLE
+status: PASS
+execution_status: SUCCESS
+evidence_validity: VALID_FOR_SYNTHETIC_SCOPE
 scientific_status: NOT_APPLICABLE
 tests_hypothesis: NOT_APPLICABLE
 relations:
@@ -38,3 +38,27 @@ The implementation accepts already-selected synthetic pair identities. It does n
 The proposed three-month lookback is not encoded as a hardwired scientific search rule here. Callers supply old/new policy month labels; the final frozen specification will determine them.
 
 CI result will be appended separately. No scientific result is produced by these tests.
+
+
+## CI verification — 2026-10-03
+
+Exact PR head tested: `9e9791676b53d70a7f01ecfac42f139f9ce803b8`.
+
+Workflow:
+- name: `FXMP outcome-blind implementation tests`
+- run: `37130507077`
+- result: **SUCCESS**
+- synthetic tests: **12 passed / 0 failed**
+- compile: PASS
+
+The tests include:
+- ALIGNED / OPPOSED / NEUTRAL classification;
+- exact Decimal equality;
+- missing/invalid-source fail-closed behavior;
+- CHF 2019-06 instrument-switch crossing;
+- EUR 2024-09 instrument-switch crossing;
+- JP no-policy-rate interval;
+- deterministic ledger ordering;
+- future/outcome field mutation and removal producing identical feature-ledger bytes.
+
+No FX market price, price ranking, target return, P/L or performance metric was accessed by this workflow.
