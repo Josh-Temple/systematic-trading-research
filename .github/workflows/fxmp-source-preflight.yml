@@ -15,7 +15,7 @@ on:
       - "research/lines/fx-monetary-policy-alignment-v0.1/**"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   source-preflight:
@@ -26,6 +26,26 @@ jobs:
 
       - name: Run outcome-blind BIS source preflight
         run: python3 .github/scripts/fxmp_source_preflight.py
+
+      - name: Verify fixed predictor slice identity
+        run: |
+          echo "2cf878dbd0b8a98c05db741dc40a14d0b62a7cb6c178f86121937b0d41eb7eee  artifacts/fxmp-source-preflight/bis_cbpol_monthly_8ccy_2009-09_2026-08.csv" | sha256sum -c -
+
+      - name: Preserve deterministic predictor slice on research branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/research/fx-monetary-policy-alignment-v0.1'
+        run: |
+          target="research/lines/fx-monetary-policy-alignment-v0.1/datasets/bis_cbpol_monthly_8ccy_2009-09_2026-08.csv"
+          mkdir -p "$(dirname "$target")"
+          cp artifacts/fxmp-source-preflight/bis_cbpol_monthly_8ccy_2009-09_2026-08.csv "$target"
+          if git diff --quiet -- "$target" && git ls-files --error-unmatch "$target" >/dev/null 2>&1; then
+            echo "Predictor slice already preserved with identical bytes."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add "$target"
+            git commit -m "Preserve locked BIS predictor slice"
+            git push
+          fi
 
       - name: Upload predictor-only source preflight artifacts
         if: always()
