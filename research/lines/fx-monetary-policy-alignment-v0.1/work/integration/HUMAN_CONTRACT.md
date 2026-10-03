@@ -10,6 +10,9 @@ accepting_human: Current human user; repository-linked GitHub login Josh-Temple
 accepted_spec_sha256: dfcdc8e6d240539fca1afdc5bafd3202bd0e0648fdc1c13c7224917fd7a66040
 accepted_spec_git_blob_sha1: f19f611648253e7fad23fa53b6c229addc1d6711
 accepted_spec_bytes: 12201
+frozen_spec_sha256: 6087910862dfc710f5fe64f16cd0067a399487e3de12e20f930f50024419b741
+frozen_spec_git_blob_sha1: eb79d2c4dbd4e4b13ffbd70aed325a1e39c50c6c
+frozen_spec_bytes: 12260
 relations:
   - type: uses_specification
     target: SPEC-FXMP-001-v02
@@ -83,3 +86,24 @@ This receipt authorizes the **science freeze only**.
 It does not authorize market-outcome access, CSM outcome generation, FXMP return comparison, P/L, Sharpe, broker actions, paper trading, or live trading.
 
 A separate final integration gate must be evaluated after the frozen-file identity is verified.
+
+
+## Frozen identity verification
+
+The accepted scientific body was frozen by metadata-only transition and independently verified in GitHub Actions.
+
+- frozen Git blob SHA-1: `eb79d2c4dbd4e4b13ffbd70aed325a1e39c50c6c`
+- frozen bytes: `12260`
+- frozen SHA-256: `6087910862dfc710f5fe64f16cd0067a399487e3de12e20f930f50024419b741`
+- freeze integrity workflow run: `37159665711`
+- verification result: **SUCCESS**
+- scientific body unchanged from accepted pre-freeze bytes: **true**
+
+The verified transition is exactly:
+
+- `status: HUMAN_BOUNDARY -> ACTIVE`
+- `freeze_status: PROPOSED_NOT_FROZEN -> FROZEN`
+- add `frozen_at: 2026-10-04T07:47:20+09:00`
+- add `human_decision_ref: HDEC-FXMP-001-20261004`
+
+No scientific-body edit occurred during freeze.
