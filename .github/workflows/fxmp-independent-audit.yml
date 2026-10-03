@@ -1,0 +1,28 @@
+name: FXMP independent pre-outcome audit
+
+on:
+  push:
+    branches:
+      - audit/fxmp-preoutcome-20261004
+    paths:
+      - "research/lines/fx-monetary-policy-alignment-v0.1/**"
+      - ".github/workflows/fxmp-independent-audit.yml"
+  pull_request:
+    paths:
+      - "research/lines/fx-monetary-policy-alignment-v0.1/**"
+      - ".github/workflows/fxmp-independent-audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            research/lines/fx-monetary-policy-alignment-v0.1
+      - name: Run independent synthetic oracle audit
+        run: python3 research/lines/fx-monetary-policy-alignment-v0.1/work/independent-audit/audit_fxmp.py

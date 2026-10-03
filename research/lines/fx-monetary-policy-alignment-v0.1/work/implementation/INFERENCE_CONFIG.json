@@ -1,0 +1,15 @@
+{
+  "id": "FXMP-INFERENCE-CANDIDATE-001",
+  "status": "PROPOSED_NOT_FROZEN",
+  "block_length_calendar_slots": 12,
+  "bootstrap_replicates": 10000,
+  "seed": 20261004,
+  "percentile_method": "type7_linear",
+  "interval": "two_sided_95_percent",
+  "min_aligned": 24,
+  "min_opposed": 24,
+  "primary_estimand": "mean(y|ALIGNED)-mean(y|OPPOSED)",
+  "empty_primary_group_in_any_replicate": "FAIL_INFERENCE",
+  "full_calendar_slot_grid": true,
+  "note": "Candidate values implemented before market outcome access; exact human freeze still required."
+}

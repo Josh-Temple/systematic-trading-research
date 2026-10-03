@@ -1,0 +1,35 @@
+name: FXMP outcome-blind implementation tests
+
+on:
+  push:
+    branches:
+      - research/fx-monetary-policy-alignment-v0.1
+    paths:
+      - "research/lines/fx-monetary-policy-alignment-v0.1/work/implementation/**"
+      - "research/lines/fx-monetary-policy-alignment-v0.1/work/source-qualification/SOURCE_LOCK.json"
+      - ".github/workflows/fxmp-implementation-tests.yml"
+  pull_request:
+    paths:
+      - "research/lines/fx-monetary-policy-alignment-v0.1/work/implementation/**"
+      - "research/lines/fx-monetary-policy-alignment-v0.1/work/source-qualification/SOURCE_LOCK.json"
+      - ".github/workflows/fxmp-implementation-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: research/lines/fx-monetary-policy-alignment-v0.1/work/implementation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            research/lines/fx-monetary-policy-alignment-v0.1
+      - name: Compile
+        run: python3 -m py_compile policy_feature.py test_policy_feature.py inference.py test_inference.py
+      - name: Run synthetic feature and inference tests
+        run: python3 -m unittest -v test_policy_feature.py test_inference.py

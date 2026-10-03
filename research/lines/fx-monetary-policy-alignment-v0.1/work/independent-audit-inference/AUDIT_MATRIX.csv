@@ -1,0 +1,9 @@
+check_id,scope,status,criterion
+I01,config identity,PASS,"12-slot block, 10000 replicates, seed 20261004, 24/24 minima"
+I02,type7 percentile,PASS,"known type-7 interpolation matches independent oracle"
+I03,circular sampling,PASS,"known n=5 block=2 seed=7 draw equals fixed expected sequence"
+I04,known difference,PASS,"constant synthetic groups produce exact D and interval"
+I05,minimum groups,PASS,"23 ALIGNED vs 30 OPPOSED returns INSUFFICIENT_EVIDENCE"
+I06,empty bootstrap group,PASS,"replicate with missing primary group fails closed"
+I07,static boundary,PASS,"no network/subprocess/pandas/numpy dependency"
+I08,market outcome access,PASS,"no market outcome accessed"

@@ -25,7 +25,16 @@ Use for questions about the Horizontal Reaction research line.
 
 Use for questions about the FX currency-strength / strongest-versus-weakest momentum research line.
 
-Important:
+### fx-monetary-policy-alignment-v0.1
+
+- branch: `research/fx-monetary-policy-alignment-v0.1`
+- scope root on that branch: `research/lines/fx-monetary-policy-alignment-v0.1/`
+- current projection on that branch: `research/lines/fx-monetary-policy-alignment-v0.1/CURRENT.md`
+- line definition on that branch: `research/lines/fx-monetary-policy-alignment-v0.1/RESEARCH_LINE.md`
+
+Use for questions about whether a preregistered monetary-policy feature adds information to the price-momentum-selected strongest-versus-weakest FX pair.
+
+Important for both non-main lines:
 - the line is not currently present on `main`;
 - do not infer its current research state from this index;
 - fresh-read the named branch before answering line-specific current-state questions;
