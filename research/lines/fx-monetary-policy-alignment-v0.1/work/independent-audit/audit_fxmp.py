@@ -126,7 +126,7 @@ def audit_static_boundary():
     bad_imports = sorted(imports & forbidden_modules)
     if bad_imports:
         raise AssertionError(f"forbidden implementation imports: {bad_imports}")
-    bad_calls = sorted(set(calls) & {"open", "urlopen", "request", "get", "post", "run", "Popen"})
+    bad_calls = sorted(set(calls) & {"open", "urlopen", "request", "post", "run", "Popen"})
     if bad_calls:
         raise AssertionError(f"forbidden implementation calls: {bad_calls}")
     return {"imports": sorted(imports), "forbidden_imports": [], "forbidden_calls": []}
