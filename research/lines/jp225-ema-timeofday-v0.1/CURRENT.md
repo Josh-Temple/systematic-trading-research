@@ -1,51 +1,70 @@
 ---
 type: CurrentProjection
 research_line_id: RL-JP225-EMA-001
-projection_generated_at: 2026-10-03
+projection_generated_at: 2026-10-04
 derived_from_decisions:
   - DEC-JP225-EMA-001
-derived_from_interpretations: []
+  - DEC-JP225-PROXY-20261004
+derived_from_interpretations:
+  - RESULT-JP225-PROXY-OANDA-2019-REPLICATION
+  - RESULT-JP225-PROXY-EMA200-SLOPE-2018
 ---
 
 # Current State
 
-## Scientific status
+## Main scientific status
 
-- HYP-JP225-EMA-001: **UNTESTED**
-- Market outcomes accessed by this line: **NO**
-- Current phase: **PRE_OUTCOME / SOURCE QUALIFICATION + OUTCOME-BLIND IMPLEMENTATION**
+- Exact XM hypothesis HYP-JP225-EMA-001: **UNTESTED**
+- XM market outcomes accessed: **NO**
+- Packet A exact XM source: **PARTIAL_WITH_GAPS**
+- Packet B deterministic implementation: **COMPLETE**
+- Packet C XM discovery: **LOCKED**
+- 2026 XM holdout: **UNTOUCHED / LOCKED**
 
-## Frozen core
+## Frozen XM core
 
-Primary signal: M1 EMA(5) crossing EMA(200).
+- symbol: XM MT5 `JP225Cash`
+- M1 EMA(5)/EMA(200) crossover
+- primary horizon: +15 minutes
+- quote-executable BID/ASK economics required
+- 2025 discovery
+- 2026-01-01 through 2026-09-30 holdout only after a valid discovery advancement
 
-Primary outcome: signed executable +15-minute return in JP225 index points using observed BID/ASK quotes.
+## Proxy exploratory evidence
 
-Primary candidate windows for discovery selection:
+Because exact XM data was unavailable in Chat, public OANDA-derived **midpoint** JP225 M1 data was used under separate exploratory labels.
 
-1. ALL eligible times
-2. TOKYO_OPEN_30: 08:45–09:15 JST
-3. TOKYO_CLOSE_30: 15:15–15:45 JST
+### 2020 partial-year
 
-Other predeclared windows are descriptive diagnostics only.
+Broad all-time continuation was small and not statistically separated from zero. Tokyo-open continuation was negative. A historical-close window looked positive post hoc.
 
-## Data state
+### 2019 independent historical replication
 
-Preferred source: XM MT5 `JP225Cash`.
+The historical-close candidate failed its pre-frozen replication:
 
-Required: BID-based M1 bars or equivalent raw BID ticks, BID/ASK ticks for executable entry/exit, explicit instrument/server/timezone metadata, and warm-up + discovery coverage.
+- mean +0.9303 points
+- day-cluster 95% interval [-2.9103, +5.0836]
+- HISTORICAL_PROXY_NOT_REPLICATED
 
-Current result: **NOT YET QUALIFIED**.
+### 2018 nearby slope-filter test
 
-Dukascopy `JPN.IDX/JPY` is not an authorized exact substitute because its official product description is "Japan 200+ Index".
+A one-bar EMA200 slope-alignment rule produced exactly the same events as the unfiltered crossover. Algebra shows this filter is structurally redundant.
 
-## Gate
+The underlying 2018 broad crossover result was:
 
-Do not inspect 2026 holdout outcomes unless the 2025 discovery stage selects exactly one predeclared candidate under the frozen advancement rule.
+- mean +0.2374 gross points
+- day-cluster 95% interval [-0.3830, +0.8841]
 
-## Next actions
+No robust gross continuation edge was established.
 
-1. Packet A — XM source qualification.
-2. Packet B — deterministic implementation and synthetic tests.
-3. Packet C — 2025 discovery execution only after A and B pass.
-4. Packet D — 2026 holdout only if Packet C advances one exact window.
+## Current interpretation
+
+The available proxy evidence is adverse to the simple claim that M1 EMA5/EMA200 crossover has a broad, stable short-horizon continuation edge that only needs a low spread to become profitable.
+
+It does not establish the result for current XM JP225Cash.
+
+## Next action
+
+Highest priority: obtain exact XM MT5 JP225Cash M1 and BID/ASK tick history using the existing outcome-blind collector, qualify timestamp/instrument semantics, then run the frozen XM 2025 discovery.
+
+Do not continue searching EMA lengths, hours, weekdays, slope lookbacks, or exits on the consumed OANDA proxy data.
