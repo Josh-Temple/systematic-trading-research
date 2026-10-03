@@ -1,0 +1,249 @@
+{
+  "scope": "HYPOTHETICAL_ARITHMETIC_ONLY",
+  "market_outcomes_computed": false,
+  "assumptions": "150 JPY/USD and 0.02 JPY/unit cost reserve are illustrative, not observed. Leverage cap 2 is a draft guardrail, not account setting. No margin calculation.",
+  "cases": [
+    {
+      "broker": "Matsui",
+      "hypothetical_inputs": {
+        "budget": 50,
+        "distance": "0.30",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 1,
+        "step": 1
+      },
+      "result": {
+        "status": "ARITHMETIC_ONLY",
+        "units": "133",
+        "reserved_loss_jpy": "42.56",
+        "notional_jpy": "19950",
+        "effective_leverage": "1.995"
+      }
+    },
+    {
+      "broker": "XM_Micro_MT5",
+      "hypothetical_inputs": {
+        "budget": 50,
+        "distance": "0.30",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 100,
+        "step": 10
+      },
+      "result": {
+        "status": "ARITHMETIC_ONLY",
+        "units": "130",
+        "reserved_loss_jpy": "41.60",
+        "notional_jpy": "19500",
+        "effective_leverage": "1.95"
+      }
+    },
+    {
+      "broker": "Matsui",
+      "hypothetical_inputs": {
+        "budget": 50,
+        "distance": "0.50",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 1,
+        "step": 1
+      },
+      "result": {
+        "status": "ARITHMETIC_ONLY",
+        "units": "96",
+        "reserved_loss_jpy": "49.92",
+        "notional_jpy": "14400",
+        "effective_leverage": "1.44"
+      }
+    },
+    {
+      "broker": "XM_Micro_MT5",
+      "hypothetical_inputs": {
+        "budget": 50,
+        "distance": "0.50",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 100,
+        "step": 10
+      },
+      "result": {
+        "status": "SKIP",
+        "reason": "MINIMUM_SIZE_EXCEEDS_LIMITS",
+        "rounded_units": "90"
+      }
+    },
+    {
+      "broker": "Matsui",
+      "hypothetical_inputs": {
+        "budget": 50,
+        "distance": "1.00",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 1,
+        "step": 1
+      },
+      "result": {
+        "status": "ARITHMETIC_ONLY",
+        "units": "49",
+        "reserved_loss_jpy": "49.98",
+        "notional_jpy": "7350",
+        "effective_leverage": "0.735"
+      }
+    },
+    {
+      "broker": "XM_Micro_MT5",
+      "hypothetical_inputs": {
+        "budget": 50,
+        "distance": "1.00",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 100,
+        "step": 10
+      },
+      "result": {
+        "status": "SKIP",
+        "reason": "MINIMUM_SIZE_EXCEEDS_LIMITS",
+        "rounded_units": "40"
+      }
+    },
+    {
+      "broker": "Matsui",
+      "hypothetical_inputs": {
+        "budget": 25,
+        "distance": "0.30",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 1,
+        "step": 1
+      },
+      "result": {
+        "status": "ARITHMETIC_ONLY",
+        "units": "78",
+        "reserved_loss_jpy": "24.96",
+        "notional_jpy": "11700",
+        "effective_leverage": "1.17"
+      }
+    },
+    {
+      "broker": "XM_Micro_MT5",
+      "hypothetical_inputs": {
+        "budget": 25,
+        "distance": "0.30",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 100,
+        "step": 10
+      },
+      "result": {
+        "status": "SKIP",
+        "reason": "MINIMUM_SIZE_EXCEEDS_LIMITS",
+        "rounded_units": "70"
+      }
+    },
+    {
+      "broker": "Matsui",
+      "hypothetical_inputs": {
+        "budget": 25,
+        "distance": "0.50",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 1,
+        "step": 1
+      },
+      "result": {
+        "status": "ARITHMETIC_ONLY",
+        "units": "48",
+        "reserved_loss_jpy": "24.96",
+        "notional_jpy": "7200",
+        "effective_leverage": "0.72"
+      }
+    },
+    {
+      "broker": "XM_Micro_MT5",
+      "hypothetical_inputs": {
+        "budget": 25,
+        "distance": "0.50",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 100,
+        "step": 10
+      },
+      "result": {
+        "status": "SKIP",
+        "reason": "MINIMUM_SIZE_EXCEEDS_LIMITS",
+        "rounded_units": "40"
+      }
+    },
+    {
+      "broker": "Matsui",
+      "hypothetical_inputs": {
+        "budget": 25,
+        "distance": "1.00",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 1,
+        "step": 1
+      },
+      "result": {
+        "status": "ARITHMETIC_ONLY",
+        "units": "24",
+        "reserved_loss_jpy": "24.48",
+        "notional_jpy": "3600",
+        "effective_leverage": "0.36"
+      }
+    },
+    {
+      "broker": "XM_Micro_MT5",
+      "hypothetical_inputs": {
+        "budget": 25,
+        "distance": "1.00",
+        "unit_cost": "0.02",
+        "fixed_cost": 0,
+        "equity": 10000,
+        "price": 150,
+        "leverage_cap": 2,
+        "minimum": 100,
+        "step": 10
+      },
+      "result": {
+        "status": "SKIP",
+        "reason": "MINIMUM_SIZE_EXCEEDS_LIMITS",
+        "rounded_units": "20"
+      }
+    }
+  ]
+}
