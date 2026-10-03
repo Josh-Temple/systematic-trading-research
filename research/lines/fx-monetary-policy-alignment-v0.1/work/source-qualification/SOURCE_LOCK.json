@@ -1,0 +1,197 @@
+{
+  "id": "FXMP-SOURCE-LOCK-BIS-CBPOL-001",
+  "research_line_id": "RL-FXMP-001",
+  "created_at": "2026-10-03",
+  "status": "LOCKED_TO_HASH_WITH_EPHEMERAL_RAW_ARTIFACT",
+  "source": {
+    "provider": "Bank for International Settlements",
+    "dataflow": "BIS,WS_CBPOL,1.0",
+    "bulk_url": "https://data.bis.org/static/bulk/WS_CBPOL_csv_flat.zip",
+    "retrieved_via": "GitHub Actions",
+    "workflow_run_id": 37130000351,
+    "workflow_head_sha": "6e60055b3748c4ec156deecff61114016e4c44a5",
+    "http_status": 200,
+    "archive_bytes": 4134512,
+    "archive_sha256": "707f39206f7c4bc1001ea7f67b182d20e9b2d59fcf6542d0dd566a19f61d7f15",
+    "csv_member": "WS_CBPOL_csv_flat.csv",
+    "csv_member_uncompressed_bytes": 475596384,
+    "csv_member_sha256": "0ba9441232f120b4237121494e57d5faf4a087615528f411b8ecc3e1750a4ff9"
+  },
+  "predictor_slice": {
+    "frequency": "M",
+    "areas": [
+      "AU",
+      "CA",
+      "CH",
+      "XM",
+      "GB",
+      "JP",
+      "NZ",
+      "US"
+    ],
+    "period_start": "2009-09",
+    "period_end": "2026-08",
+    "selected_row_count": 1592,
+    "deterministic_slice_bytes": 34192,
+    "deterministic_slice_sha256": "2cf878dbd0b8a98c05db741dc40a14d0b62a7cb6c178f86121937b0d41eb7eee",
+    "observation_values_emitted_to_logs": false,
+    "fx_price_or_return_data_accessed": false,
+    "per_area": {
+      "AU": {
+        "rows": 204,
+        "unique_periods": 204,
+        "missing_row_months": 0,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 204
+        },
+        "obs_conf_codes": {
+          "F": 204
+        }
+      },
+      "CA": {
+        "rows": 204,
+        "unique_periods": 204,
+        "missing_row_months": 0,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 204
+        },
+        "obs_conf_codes": {
+          "F": 204
+        }
+      },
+      "CH": {
+        "rows": 204,
+        "unique_periods": 204,
+        "missing_row_months": 0,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 204
+        },
+        "obs_conf_codes": {
+          "F": 204
+        }
+      },
+      "XM": {
+        "rows": 204,
+        "unique_periods": 204,
+        "missing_row_months": 0,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 204
+        },
+        "obs_conf_codes": {
+          "F": 204
+        }
+      },
+      "GB": {
+        "rows": 204,
+        "unique_periods": 204,
+        "missing_row_months": 0,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 204
+        },
+        "obs_conf_codes": {
+          "F": 204
+        }
+      },
+      "JP": {
+        "rows": 164,
+        "unique_periods": 164,
+        "missing_row_months": 40,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 164
+        },
+        "obs_conf_codes": {
+          "F": 164
+        }
+      },
+      "NZ": {
+        "rows": 204,
+        "unique_periods": 204,
+        "missing_row_months": 0,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 204
+        },
+        "obs_conf_codes": {
+          "F": 204
+        }
+      },
+      "US": {
+        "rows": 204,
+        "unique_periods": 204,
+        "missing_row_months": 0,
+        "missing_obs_value_rows": 0,
+        "duplicates": 0,
+        "nonnumeric": 0,
+        "obs_status_codes": {
+          "A": 204
+        },
+        "obs_conf_codes": {
+          "F": 204
+        }
+      }
+    },
+    "jp_absent_months": {
+      "first": "2013-05",
+      "last": "2016-08",
+      "count": 40,
+      "interpretation": "Consistent with the documented BOJ no-policy-rate interval; this is row absence, not a blank OBS_VALUE in present rows."
+    }
+  },
+  "semantic_guards": [
+    {
+      "area": "CH",
+      "event_type": "POLICY_INSTRUMENT_IDENTITY_CHANGE",
+      "date": "2019-06-13",
+      "before": "mid-point of SNB target range",
+      "after": "SNB policy rate",
+      "feature_rule": "Any policy-momentum interval crossing this date is unavailable."
+    },
+    {
+      "area": "XM",
+      "event_type": "POLICY_INSTRUMENT_IDENTITY_CHANGE",
+      "date": "2024-09-18",
+      "before": "main refinancing operations fixed rate",
+      "after": "deposit facility steering rate",
+      "feature_rule": "Any policy-momentum interval crossing this date is unavailable."
+    },
+    {
+      "area": "JP",
+      "event_type": "NO_POLICY_RATE_INTERVAL",
+      "start_date": "2013-04-04",
+      "end_date": "2016-09-20",
+      "feature_rule": "Any policy-momentum interval overlapping this interval is unavailable."
+    }
+  ],
+  "artifact_receipt": {
+    "github_actions_artifact_id": 11276347958,
+    "artifact_name": "fxmp-bis-source-preflight",
+    "artifact_digest_sha256": "722d5ff08b0f0a843a81e961809a0de1e79329857db615a9d7d2c4ee924861ed",
+    "artifact_expires_at": "2026-11-02T14:33:17Z",
+    "durability_limit": "The GitHub Actions artifact is temporary. Exact source bytes are identified by hashes, but long-term raw-byte preservation is not yet established."
+  },
+  "remaining_gaps": [
+    "Long-term durable storage of the raw archive or deterministic predictor slice is not established.",
+    "Official semantic definitions of observed OBS_STATUS=A and OBS_CONF=F have not yet been locked from the SDMX codelists.",
+    "Point-in-time historical vintage availability is not established; scope remains retrospective latest-vintage association."
+  ]
+}
