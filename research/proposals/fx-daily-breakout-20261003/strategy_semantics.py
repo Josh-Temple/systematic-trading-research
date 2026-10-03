@@ -7,8 +7,7 @@ from zoneinfo import ZoneInfo
 
 NY = ZoneInfo("America/New_York")
 JST = ZoneInfo("Asia/Tokyo")
-
-ALLOWED_EXIT_MODES = {"WEEKEND_FLAT", "TEN_CHECK_HOLD"}
+ACTIVE_EXIT_MODE = "WEEKEND_FLAT"
 
 
 def breakout_signal(completed_bars):
@@ -38,7 +37,7 @@ def ny_close_jst(ny_session_date: date) -> datetime:
 
 
 def review_window_jst(ny_session_date: date):
-    """Return the proposed 20:00-20:05 JST execution window after NY close."""
+    """Return the proposed 20:00-20:05 JST entry window after NY close."""
     close_jst = ny_close_jst(ny_session_date)
     start = datetime.combine(close_jst.date(), time(20, 0), tzinfo=JST)
     end = datetime.combine(close_jst.date(), time(20, 5), tzinfo=JST)
@@ -53,7 +52,22 @@ def review_delay_hours(ny_session_date: date) -> float:
 
 
 def validate_exit_mode(mode: str) -> str:
-    """Require exactly one preregistered exit architecture."""
-    if mode not in ALLOWED_EXIT_MODES:
-        raise ValueError("exit mode must be WEEKEND_FLAT or TEN_CHECK_HOLD")
+    """Require the human-selected WEEKEND_FLAT exit architecture."""
+    if mode != ACTIVE_EXIT_MODE:
+        raise ValueError("active exit mode is WEEKEND_FLAT")
     return mode
+
+
+def is_new_entry_allowed(review_at_jst: datetime) -> bool:
+    """Allow new entries only Monday-Thursday at the normal JST review."""
+    if review_at_jst.tzinfo is None:
+        raise ValueError("review time must be timezone-aware")
+    local = review_at_jst.astimezone(JST)
+    return local.weekday() in (0, 1, 2, 3)
+
+
+def weekend_forced_exit_at(review_date_jst: date):
+    """Return Friday 23:00 JST forced-close request time, otherwise None."""
+    if review_date_jst.weekday() != 4:
+        return None
+    return datetime.combine(review_date_jst, time(23, 0), tzinfo=JST)
