@@ -2,7 +2,7 @@
   "id": "FXMP-SOURCE-LOCK-BIS-CBPOL-001",
   "research_line_id": "RL-FXMP-001",
   "created_at": "2026-10-03",
-  "status": "LOCKED_TO_HASH_WITH_EPHEMERAL_RAW_ARTIFACT",
+  "status": "LOCKED_WITH_DURABLE_PREDICTOR_SLICE",
   "source": {
     "provider": "Bank for International Settlements",
     "dataflow": "BIS,WS_CBPOL,1.0",
@@ -155,6 +155,13 @@
       "last": "2016-08",
       "count": 40,
       "interpretation": "Consistent with the documented BOJ no-policy-rate interval; this is row absence, not a blank OBS_VALUE in present rows."
+    },
+    "repository_copy": {
+      "path": "research/lines/fx-monetary-policy-alignment-v0.1/datasets/bis_cbpol_monthly_8ccy_2009-09_2026-08.csv",
+      "git_blob_sha1": "1dc3057e1d370d9c56c721b9caa6d26e7cd5dfba",
+      "bytes": 34192,
+      "sha256": "2cf878dbd0b8a98c05db741dc40a14d0b62a7cb6c178f86121937b0d41eb7eee",
+      "durability": "PRESERVED_IN_GIT_BRANCH"
     }
   },
   "semantic_guards": [
@@ -187,11 +194,9 @@
     "artifact_name": "fxmp-bis-source-preflight",
     "artifact_digest_sha256": "722d5ff08b0f0a843a81e961809a0de1e79329857db615a9d7d2c4ee924861ed",
     "artifact_expires_at": "2026-11-02T14:33:17Z",
-    "durability_limit": "The GitHub Actions artifact is temporary. Exact source bytes are identified by hashes, but long-term raw-byte preservation is not yet established."
+    "durability_limit": "Raw bulk archive remains identified by hash and the Actions copy is temporary. The exact deterministic predictor slice used by this research is now preserved in Git with matching SHA-256."
   },
   "remaining_gaps": [
-    "Long-term durable storage of the raw archive or deterministic predictor slice is not established.",
-    "Official semantic definitions of observed OBS_STATUS=A and OBS_CONF=F have not yet been locked from the SDMX codelists.",
     "Point-in-time historical vintage availability is not established; scope remains retrospective latest-vintage association."
   ],
   "monthly_feature_guards": {
@@ -218,5 +223,12 @@
     "JPY": "JP",
     "NZD": "NZ",
     "USD": "US"
+  },
+  "observation_code_definitions": {
+    "source": "BIS Technical guidelines for reporting international banking statistics, Version 3.0, February 2014, sections 3.2-3.3",
+    "source_url": "https://www.bis.org/statistics/bankstatsguide_tech.pdf",
+    "OBS_STATUS_A": "Normal value (= default); no break in period",
+    "OBS_CONF_F": "Free, for publication",
+    "applicability_note": "These are BIS SDMX observation-level code definitions. The selected CBPOL slice contains only A/F among present rows."
   }
 }
