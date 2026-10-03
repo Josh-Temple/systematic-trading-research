@@ -16,8 +16,8 @@ from policy_feature import (
     REASON_RATE_UNAVAILABLE,
 )
 
-ROOT = Path(__file__).resolve().parents[2]
-LOCK = ROOT / "source-qualification" / "SOURCE_LOCK.json"
+WORK = Path(__file__).resolve().parents[1]
+LOCK = WORK / "source-qualification" / "SOURCE_LOCK.json"
 
 
 class PolicyFeatureTests(unittest.TestCase):
