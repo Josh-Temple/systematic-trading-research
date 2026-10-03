@@ -193,5 +193,20 @@
     "Long-term durable storage of the raw archive or deterministic predictor slice is not established.",
     "Official semantic definitions of observed OBS_STATUS=A and OBS_CONF=F have not yet been locked from the SDMX codelists.",
     "Point-in-time historical vintage availability is not established; scope remains retrospective latest-vintage association."
-  ]
+  ],
+  "monthly_feature_guards": {
+    "interpretation": "Conservative month-label guards for end-of-period monthly features. A switch month is treated as the new instrument at month-end; any difference spanning the switch is invalid. Any month overlapping a documented no-policy-rate interval is unavailable.",
+    "instrument_switch_months": {
+      "CH": "2019-06",
+      "XM": "2024-09"
+    },
+    "unavailable_month_ranges": {
+      "JP": [
+        [
+          "2013-04",
+          "2016-09"
+        ]
+      ]
+    }
+  }
 }
