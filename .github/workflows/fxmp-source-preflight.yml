@@ -1,0 +1,37 @@
+name: FXMP BIS source preflight
+
+on:
+  push:
+    branches:
+      - research/fx-monetary-policy-alignment-v0.1
+    paths:
+      - ".github/scripts/fxmp_source_preflight.py"
+      - ".github/workflows/fxmp-source-preflight.yml"
+      - "research/lines/fx-monetary-policy-alignment-v0.1/**"
+  pull_request:
+    paths:
+      - ".github/scripts/fxmp_source_preflight.py"
+      - ".github/workflows/fxmp-source-preflight.yml"
+      - "research/lines/fx-monetary-policy-alignment-v0.1/**"
+
+permissions:
+  contents: read
+
+jobs:
+  source-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run outcome-blind BIS source preflight
+        run: python3 .github/scripts/fxmp_source_preflight.py
+
+      - name: Upload predictor-only source preflight artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fxmp-bis-source-preflight
+          path: artifacts/fxmp-source-preflight/
+          if-no-files-found: error
+          retention-days: 30
