@@ -3,8 +3,10 @@ id: SPEC-FXMP-001-v02
 type: Specification
 research_line_id: RL-FXMP-001
 created_at: 2026-10-04
-status: HUMAN_BOUNDARY
-freeze_status: PROPOSED_NOT_FROZEN
+status: ACTIVE
+freeze_status: FROZEN
+frozen_at: 2026-10-04T07:47:20+09:00
+human_decision_ref: HDEC-FXMP-001-20261004
 tests_hypothesis: HYP-FXMP-001
 data_roles_allowed:
   - EXPLORATORY_DISCOVERY
