@@ -1,0 +1,6 @@
+code,asset_sleeve,product_name,trading_currency,lot_units,close_jpy,close_date,lot_notional_jpy,management_fee_pct_annual_incl_tax,total_expense_ratio_pct_annual,expense_measurement_period,listing_date,currency_hedge,source_ids
+1306,日本株,NEXT FUNDS TOPIX連動型上場投信,JPY,10,430.2,2026-10-02,4302,0.0538,0.08,2025-07-11/2026-07-10,2001-07-13,NOT_APPLICABLE,S01;S06
+2513,外国株,NEXT FUNDS 外国株式・MSCI-KOKUSAI指数（為替ヘッジなし）連動型上場投信,JPY,1,3531,2026-10-02,3531,0.187,0.24,2025-09-08/2026-03-07,2017-12-11,UNHEDGED,S02
+2510,国内債券,NEXT FUNDS 国内債券・NOMURA-BPI総合連動型上場投信,JPY,10,789,2026-10-02,7890,0.077,0.09,2025-09-08/2026-03-07,2017-12-11,NOT_APPLICABLE,S03
+2511,外国国債,NEXT FUNDS 外国債券・FTSE世界国債インデックス（除く日本・為替ヘッジなし）連動型上場投信,JPY,10,1125,2026-10-02,11250,0.132,0.17,2025-09-08/2026-03-07,2017-12-11,UNHEDGED,S04
+1540,金,純金上場信託（金の果実）,JPY,1,19820,2026-10-02,19820,0.440,0.46,2025-01-21/2026-01-20,2010-07-02,NOT_APPLICABLE,S05;S07
