@@ -1,0 +1,11 @@
+check_id,scope,status,criterion
+E01,source identity,PASS,"locked archive SHA-256 and predictor-slice SHA-256 match exact expected values"
+E02,currency mapping,PASS,"AUD/CAD/CHF/EUR/GBP/JPY/NZD/USD map exactly to AU/CA/CH/XM/GB/JP/NZ/US"
+E03,static outcome boundary,PASS,"implementation has no network/subprocess/pandas/numpy dependency"
+E04,classification oracle,PASS,"independent ALIGNED/OPPOSED/NEUTRAL cases match implementation"
+E05,CHF semantic break,PASS,"2019-06 crossing fails closed"
+E06,EUR semantic break,PASS,"2024-09 crossing fails closed"
+E07,JPY unavailable regime,PASS,"interval overlapping 2013-04..2016-09 fails closed"
+E08,missing/invalid source,PASS,"missing and nonfinite source values fail closed"
+E09,outcome invariance,PASS,"mutating/removing synthetic future-return/target-price fields leaves canonical ledger bytes unchanged"
+E10,market outcome access,PASS,"no market outcome is accessed"
