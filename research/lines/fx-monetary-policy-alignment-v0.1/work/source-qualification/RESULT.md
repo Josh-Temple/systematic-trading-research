@@ -3,9 +3,9 @@ id: DIAG-FXMP-SOURCE-001
 type: Diagnostic
 research_line_id: RL-FXMP-001
 created_at: 2026-10-03
-status: QUALIFIED_WITH_GAPS
+status: QUALIFIED_FOR_RETROSPECTIVE_SCOPE
 execution_status: SUCCESS
-evidence_validity: VALID_WITH_DURABILITY_GAP
+evidence_validity: VALID_FOR_RETROSPECTIVE_SCOPE
 scientific_status: NOT_APPLICABLE
 tests_hypothesis: NOT_APPLICABLE
 relations:
@@ -189,3 +189,28 @@ The Actions artifact contains the raw archive and deterministic predictor slice 
 **QUALIFIED_WITH_GAPS / SOURCE_IDENTITY_LOCKED / SEMANTIC_GUARDS_REQUIRED**
 
 The source is sufficient to proceed to deterministic outcome-blind implementation and independent audit. It is not sufficient to open market-outcome access.
+
+
+## Durability and SDMX code update — 2026-10-04
+
+The exact deterministic predictor slice is now preserved in Git:
+
+- path: `research/lines/fx-monetary-policy-alignment-v0.1/datasets/bis_cbpol_monthly_8ccy_2009-09_2026-08.csv`
+- Git blob SHA-1: `1dc3057e1d370d9c56c721b9caa6d26e7cd5dfba`
+- bytes: 34,192
+- SHA-256: `2cf878dbd0b8a98c05db741dc40a14d0b62a7cb6c178f86121937b0d41eb7eee`
+
+The raw BIS ZIP remains identified by SHA-256 `707f39206f7c4bc1001ea7f67b182d20e9b2d59fcf6542d0dd566a19f61d7f15`; the predictor slice required by this line no longer depends on the expiring Actions artifact.
+
+BIS technical SDMX guidance defines the observed flags as:
+
+- `OBS_STATUS=A`: normal value; no break in period.
+- `OBS_CONF=F`: free, for publication.
+
+The selected predictor slice contains only A/F among present rows.
+
+### Current qualification
+
+**QUALIFIED_FOR_RETROSPECTIVE_LATEST_VINTAGE / SOURCE_AND_SLICE_IDENTITY_LOCKED**
+
+Remaining limitation: historical point-in-time vintage availability is not established. Therefore this source qualification does not support a real-time historical availability or causal-entry claim.
