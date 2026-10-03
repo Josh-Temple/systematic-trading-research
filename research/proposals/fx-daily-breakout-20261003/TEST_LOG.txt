@@ -1,0 +1,22 @@
+USD/JPY Daily Breakout pre-outcome synthetic test log
+Date: 2026-10-03 JST
+Market outcome access: NO
+Broker/account access: NO
+Selected exit architecture: WEEKEND_FLAT
+
+1) test_fx_quantity_examples.py
+Result: 8 tests PASS
+Verified migrated blob SHA: 138f80d7cebd5a1f297de821c837fad43a783237
+Covered: risk/cost floor, XM minimum size, volume step, effective leverage cap, shared budget, exact boundary, fixed cost, missing/invalid inputs.
+
+2) test_strategy_semantics.py
+Result: 11 tests PASS
+Test blob SHA: 17b5c4f3166f8b9314691ab568c7e81d7cc37245
+Implementation blob SHA: 7ebc9d7de4ac1a8af92240dc35f93911907f3b75
+Covered: 20-prior-bar requirement, signal-day exclusion, strict breakout/equality behavior, long/short symmetry, representative 2026 DST conversion, 13/14 hour review delay, 20:00-20:05 entry window, WEEKEND_FLAT-only active mode, Friday entry block, Monday-Thursday entry eligibility, Friday 23:00 forced-close request.
+
+TOTAL: 19 tests PASS
+
+Boundary: these tests establish deterministic mechanics only. They do not establish profitability, source acceptance, historical replay validity, broker execution quality, or live-trading readiness.
+
+Still unresolved before historical replay: ATR initialization edge cases, stop-path/quote-side execution, Friday 23:00 executable-price/no-quote behavior, missing-data handling, final exit precedence, source acceptance, sample/comparator/cost/metric/threshold freeze.
