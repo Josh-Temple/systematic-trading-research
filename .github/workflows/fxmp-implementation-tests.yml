@@ -30,6 +30,6 @@ jobs:
           sparse-checkout: |
             research/lines/fx-monetary-policy-alignment-v0.1
       - name: Compile
-        run: python3 -m py_compile policy_feature.py test_policy_feature.py
-      - name: Run synthetic tests
-        run: python3 -m unittest -v test_policy_feature.py
+        run: python3 -m py_compile policy_feature.py test_policy_feature.py inference.py test_inference.py
+      - name: Run synthetic feature and inference tests
+        run: python3 -m unittest -v test_policy_feature.py test_inference.py
