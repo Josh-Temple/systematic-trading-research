@@ -48,14 +48,17 @@ def _guard_reason(currency: str, old_month: str, new_month: str, source_lock: di
         return REASON_INVALID
 
     guards = source_lock["monthly_feature_guards"]
+    ref_area = source_lock.get("currency_to_ref_area", {}).get(currency)
+    if ref_area is None:
+        return REASON_INVALID
 
-    for start, end in guards.get("unavailable_month_ranges", {}).get(currency, []):
+    for start, end in guards.get("unavailable_month_ranges", {}).get(ref_area, []):
         start_i = month_index(start)
         end_i = month_index(end)
         if old_i <= end_i and new_i >= start_i:
             return REASON_RATE_UNAVAILABLE
 
-    switch = guards.get("instrument_switch_months", {}).get(currency)
+    switch = guards.get("instrument_switch_months", {}).get(ref_area)
     if switch is not None:
         switch_i = month_index(switch)
         if old_i < switch_i <= new_i:
