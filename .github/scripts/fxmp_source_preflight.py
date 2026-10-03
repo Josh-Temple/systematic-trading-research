@@ -32,6 +32,18 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def column_code(header: str) -> str:
+    """BIS flat CSV uses headers such as FREQ:Frequency."""
+    return header.split(":", 1)[0].strip()
+
+
+def dimension_code(value: str | None) -> str:
+    """BIS flat CSV uses values such as M: Monthly and AU: Australia."""
+    if value is None:
+        return ""
+    return value.split(":", 1)[0].strip()
+
+
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -58,76 +70,97 @@ def main() -> int:
         if len(csv_members) != 1:
             raise RuntimeError(f"Expected exactly one CSV member, found {len(csv_members)}")
         member = csv_members[0]
-        csv_raw = zf.read(member)
+        csv_info = zf.getinfo(member)
 
-    text = csv_raw.decode("utf-8-sig")
-    reader = csv.DictReader(io.StringIO(text))
-    if not reader.fieldnames:
-        raise RuntimeError("CSV has no header")
+        member_hasher = hashlib.sha256()
+        with zf.open(member) as binary_member:
+            while True:
+                chunk = binary_member.read(1024 * 1024)
+                if not chunk:
+                    break
+                member_hasher.update(chunk)
+        member_sha = member_hasher.hexdigest()
 
-    required = {"FREQ", "REF_AREA", "TIME_PERIOD", "OBS_VALUE"}
-    missing_columns = sorted(required - set(reader.fieldnames))
-    if missing_columns:
-        raise RuntimeError(f"Missing required columns: {missing_columns}")
+        with zf.open(member) as binary_member:
+            text_stream = io.TextIOWrapper(binary_member, encoding="utf-8-sig", newline="")
+            reader = csv.DictReader(text_stream)
+            if not reader.fieldnames:
+                raise RuntimeError("CSV has no header")
 
-    per_area = {
-        area: {
-            "row_count": 0,
-            "first_period": None,
-            "last_period": None,
-            "duplicate_period_count": 0,
-            "missing_obs_value_count": 0,
-            "nonnumeric_obs_value_count": 0,
-            "obs_status_counts": Counter(),
-            "obs_conf_counts": Counter(),
-            "nonempty_supp_info_breaks_count": 0,
-            "supp_info_breaks_sha256": hashlib.sha256(),
-        }
-        for area in AREAS
-    }
-    seen_periods = {area: set() for area in AREAS}
-    selected_total = 0
+            raw_headers = list(reader.fieldnames)
+            normalized = {column_code(h): h for h in raw_headers}
+            required = {"FREQ", "REF_AREA", "TIME_PERIOD", "OBS_VALUE"}
+            missing_columns = sorted(required - set(normalized))
+            if missing_columns:
+                raise RuntimeError(
+                    f"Missing required normalized columns: {missing_columns}; "
+                    f"available={sorted(normalized)}"
+                )
 
-    for row in reader:
-        if row.get("FREQ") != "M":
-            continue
-        area = row.get("REF_AREA")
-        if area not in per_area:
-            continue
-        period = (row.get("TIME_PERIOD") or "").strip()
-        if not (START <= period <= END):
-            continue
+            def value(row: dict[str, str], code: str) -> str:
+                return (row.get(normalized[code]) or "").strip()
 
-        rec = per_area[area]
-        selected_total += 1
-        rec["row_count"] += 1
-        if rec["first_period"] is None or period < rec["first_period"]:
-            rec["first_period"] = period
-        if rec["last_period"] is None or period > rec["last_period"]:
-            rec["last_period"] = period
-        if period in seen_periods[area]:
-            rec["duplicate_period_count"] += 1
-        seen_periods[area].add(period)
+            per_area = {
+                area: {
+                    "row_count": 0,
+                    "first_period": None,
+                    "last_period": None,
+                    "duplicate_period_count": 0,
+                    "missing_obs_value_count": 0,
+                    "nonnumeric_obs_value_count": 0,
+                    "obs_status_counts": Counter(),
+                    "obs_conf_counts": Counter(),
+                    "nonempty_supp_info_breaks_count": 0,
+                    "supp_info_breaks_sha256": hashlib.sha256(),
+                }
+                for area in AREAS
+            }
+            seen_periods = {area: set() for area in AREAS}
+            selected_total = 0
 
-        value = (row.get("OBS_VALUE") or "").strip()
-        if not value:
-            rec["missing_obs_value_count"] += 1
-        else:
-            try:
-                Decimal(value)
-            except InvalidOperation:
-                rec["nonnumeric_obs_value_count"] += 1
+            for row in reader:
+                if dimension_code(value(row, "FREQ")) != "M":
+                    continue
+                area = dimension_code(value(row, "REF_AREA"))
+                if area not in per_area:
+                    continue
+                period = value(row, "TIME_PERIOD")
+                if not (START <= period <= END):
+                    continue
 
-        status_value = (row.get("OBS_STATUS") or "").strip() or "<BLANK>"
-        rec["obs_status_counts"][status_value] += 1
-        conf_value = (row.get("OBS_CONF") or "").strip() or "<BLANK>"
-        rec["obs_conf_counts"][conf_value] += 1
+                rec = per_area[area]
+                selected_total += 1
+                rec["row_count"] += 1
+                if rec["first_period"] is None or period < rec["first_period"]:
+                    rec["first_period"] = period
+                if rec["last_period"] is None or period > rec["last_period"]:
+                    rec["last_period"] = period
+                if period in seen_periods[area]:
+                    rec["duplicate_period_count"] += 1
+                seen_periods[area].add(period)
 
-        break_text = (row.get("SUPP_INFO_BREAKS") or "").strip()
-        if break_text:
-            rec["nonempty_supp_info_breaks_count"] += 1
-            rec["supp_info_breaks_sha256"].update(break_text.encode("utf-8"))
-            rec["supp_info_breaks_sha256"].update(b"\0")
+                obs = value(row, "OBS_VALUE")
+                if not obs:
+                    rec["missing_obs_value_count"] += 1
+                else:
+                    try:
+                        Decimal(obs)
+                    except InvalidOperation:
+                        rec["nonnumeric_obs_value_count"] += 1
+
+                if "OBS_STATUS" in normalized:
+                    status_value = dimension_code(value(row, "OBS_STATUS")) or "<BLANK>"
+                    rec["obs_status_counts"][status_value] += 1
+                if "OBS_CONF" in normalized:
+                    conf_value = dimension_code(value(row, "OBS_CONF")) or "<BLANK>"
+                    rec["obs_conf_counts"][conf_value] += 1
+
+                if "SUPP_INFO_BREAKS" in normalized:
+                    break_text = value(row, "SUPP_INFO_BREAKS")
+                    if break_text:
+                        rec["nonempty_supp_info_breaks_count"] += 1
+                        rec["supp_info_breaks_sha256"].update(break_text.encode("utf-8"))
+                        rec["supp_info_breaks_sha256"].update(b"\0")
 
     safe_per_area = {}
     failures = []
@@ -154,16 +187,17 @@ def main() -> int:
             failures.append(f"{area}: nonnumeric OBS_VALUE rows")
 
     report = {
-        "schema_version": "fxmp-source-preflight-v0.1",
+        "schema_version": "fxmp-source-preflight-v0.2",
         "source_url": URL,
         "http_status": status,
         "content_type": content_type,
         "archive_bytes": len(raw),
         "archive_sha256": archive_sha,
         "csv_member": member,
-        "csv_member_bytes": len(csv_raw),
-        "csv_member_sha256": sha256_bytes(csv_raw),
-        "header": reader.fieldnames,
+        "csv_member_uncompressed_bytes": csv_info.file_size,
+        "csv_member_sha256": member_sha,
+        "raw_header": raw_headers,
+        "normalized_header_codes": sorted(normalized),
         "requested_frequency": "M",
         "requested_areas": list(AREAS),
         "requested_period_start": START,
@@ -183,6 +217,7 @@ def main() -> int:
                 "status": report["status"],
                 "archive_sha256": archive_sha,
                 "archive_bytes": len(raw),
+                "csv_member_uncompressed_bytes": csv_info.file_size,
                 "selected_row_count": selected_total,
                 "areas": {
                     a: {
