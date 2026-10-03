@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import ast, importlib.util, json, math, random
+import ast, importlib.util, json, math, random, sys
 from pathlib import Path
 
 LINE=Path(__file__).resolve().parents[2]
@@ -9,7 +9,7 @@ CFG=LINE/"work"/"implementation"/"INFERENCE_CONFIG.json"
 
 def load_impl():
     s=importlib.util.spec_from_file_location("fxmp_inference_audited",IMPL)
-    m=importlib.util.module_from_spec(s); s.loader.exec_module(m); return m
+    m=importlib.util.module_from_spec(s); sys.modules[s.name]=m; s.loader.exec_module(m); return m
 
 def oracle_type7(vals,p):
     vals=sorted(vals); h=(len(vals)-1)*p; lo=math.floor(h); hi=math.ceil(h); f=h-lo
