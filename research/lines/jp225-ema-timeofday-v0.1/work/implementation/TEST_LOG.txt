@@ -2,8 +2,27 @@ Packet B synthetic-only test execution
 Date: 2026-10-03
 Market-data access: NONE
 
-Command:
+Initial test command:
 python -m unittest -v test_jp225_ema_screen.py
+
+Initial result:
+Ran 20 tests
+OK
+
+Self-audit finding:
+The specification required explicit overlap diagnostics. Initial code had documented overlap handling but no dedicated calculation function.
+
+Repair:
+Added overlap_diagnostics.py and test_overlap_diagnostics.py.
+
+Repair test command:
+python -m unittest -v test_overlap_diagnostics.py
+
+Repair result:
+Ran 1 test
+OK
+
+Total current synthetic tests: 21 PASS
 
 Covered:
 - EMA recursion
@@ -26,7 +45,4 @@ Covered:
 - no-advancement state
 - holdout lock without advancement
 - holdout gate states
-
-----------------------------------------------------------------------
-Ran 20 tests
-OK
+- event-window overlap count/share

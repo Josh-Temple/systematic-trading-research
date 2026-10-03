@@ -12,7 +12,7 @@ market_outcome_access: false
 
 ## Result
 
-COMPLETE.
+COMPLETE after self-audit repair.
 
 The frozen calculation semantics were implemented with Python standard-library code and exercised only against synthetic fixtures. No JP225, Nikkei, XM historical, proxy-index, discovery, or holdout market data was loaded.
 
@@ -26,6 +26,7 @@ The frozen calculation semantics were implemented with Python standard-library c
 - directional BID/ASK entry and exit mapping;
 - +5/+15/+30-compatible horizon mapping;
 - explicit missing-entry and missing-target statuses;
+- event-window overlap count/share diagnostic;
 - date-cluster bootstrap with fixed seed;
 - discovery advancement criteria and tie rule;
 - holdout authorization lock;
@@ -33,11 +34,15 @@ The frozen calculation semantics were implemented with Python standard-library c
 
 ## Test result
 
-20/20 unit tests PASS.
+21/21 unit tests PASS across the two test modules.
 
-Command:
+Commands:
 
 `python -m unittest -v test_jp225_ema_screen.py`
+
+`python -m unittest -v test_overlap_diagnostics.py`
+
+The first implementation pass had 20 tests. A self-audit found that the specification required an explicit event-overlap diagnostic but the initial code did not expose one. That gap was repaired before any market data was accessed, and a 21st synthetic test was added.
 
 See `TEST_LOG.txt`.
 
