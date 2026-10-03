@@ -1,12 +1,15 @@
 import unittest
-from datetime import date
+from datetime import date, datetime
 
 from strategy_semantics import (
+    JST,
     breakout_signal,
+    is_new_entry_allowed,
     ny_close_jst,
     review_delay_hours,
     review_window_jst,
     validate_exit_mode,
+    weekend_forced_exit_at,
 )
 
 
@@ -50,12 +53,28 @@ class BreakoutSemanticsTests(unittest.TestCase):
         self.assertEqual((start.hour, start.minute), (20, 0))
         self.assertEqual((end - start).total_seconds(), 300)
 
-    def test_exit_mode_requires_one_explicit_choice(self):
+    def test_exit_mode_is_fixed_to_weekend_flat(self):
         self.assertEqual(validate_exit_mode("WEEKEND_FLAT"), "WEEKEND_FLAT")
-        self.assertEqual(validate_exit_mode("TEN_CHECK_HOLD"), "TEN_CHECK_HOLD")
-        for bad in ("", "BOTH", "AUTO", None):
+        for bad in ("TEN_CHECK_HOLD", "", "BOTH", "AUTO", None):
             with self.subTest(bad=bad), self.assertRaises(ValueError):
                 validate_exit_mode(bad)
+
+    def test_friday_new_entry_is_disabled(self):
+        friday = datetime(2026, 10, 2, 20, 0, tzinfo=JST)
+        self.assertFalse(is_new_entry_allowed(friday))
+
+    def test_monday_through_thursday_entries_are_eligible(self):
+        for day in (5, 6, 7, 8):
+            with self.subTest(day=day):
+                review = datetime(2026, 10, day, 20, 0, tzinfo=JST)
+                self.assertTrue(is_new_entry_allowed(review))
+
+    def test_friday_forced_exit_request_is_2300_jst(self):
+        friday = date(2026, 10, 2)
+        exit_at = weekend_forced_exit_at(friday)
+        self.assertEqual((exit_at.hour, exit_at.minute), (23, 0))
+        self.assertEqual(exit_at.tzinfo, JST)
+        self.assertIsNone(weekend_forced_exit_at(date(2026, 10, 1)))
 
 
 if __name__ == "__main__":
