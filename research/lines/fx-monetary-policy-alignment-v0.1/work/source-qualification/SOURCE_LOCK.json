@@ -208,5 +208,15 @@
         ]
       ]
     }
+  },
+  "currency_to_ref_area": {
+    "AUD": "AU",
+    "CAD": "CA",
+    "CHF": "CH",
+    "EUR": "XM",
+    "GBP": "GB",
+    "JPY": "JP",
+    "NZD": "NZ",
+    "USD": "US"
   }
 }
