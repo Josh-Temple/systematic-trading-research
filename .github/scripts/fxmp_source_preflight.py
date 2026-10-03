@@ -26,6 +26,7 @@ END = "2026-08"
 OUT_DIR = Path("artifacts/fxmp-source-preflight")
 ZIP_PATH = OUT_DIR / "WS_CBPOL_csv_flat.zip"
 REPORT_PATH = OUT_DIR / "fxmp_source_preflight.json"
+SLICE_PATH = OUT_DIR / "bis_cbpol_monthly_8ccy_2009-09_2026-08.csv"
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -116,6 +117,7 @@ def main() -> int:
                 for area in AREAS
             }
             seen_periods = {area: set() for area in AREAS}
+            selected_rows = []
             selected_total = 0
 
             for row in reader:
@@ -162,6 +164,31 @@ def main() -> int:
                         rec["supp_info_breaks_sha256"].update(break_text.encode("utf-8"))
                         rec["supp_info_breaks_sha256"].update(b"\0")
 
+                selected_rows.append(
+                    {
+                        "FREQ": "M",
+                        "REF_AREA": area,
+                        "TIME_PERIOD": period,
+                        "OBS_VALUE": obs,
+                        "OBS_STATUS": dimension_code(value(row, "OBS_STATUS"))
+                        if "OBS_STATUS" in normalized
+                        else "",
+                        "OBS_CONF": dimension_code(value(row, "OBS_CONF"))
+                        if "OBS_CONF" in normalized
+                        else "",
+                    }
+                )
+
+    selected_rows.sort(key=lambda x: (AREAS.index(x["REF_AREA"]), x["TIME_PERIOD"]))
+    slice_stream = io.StringIO(newline="")
+    slice_fields = ["FREQ", "REF_AREA", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS", "OBS_CONF"]
+    slice_writer = csv.DictWriter(slice_stream, fieldnames=slice_fields, lineterminator="\n")
+    slice_writer.writeheader()
+    slice_writer.writerows(selected_rows)
+    slice_bytes = slice_stream.getvalue().encode("utf-8")
+    SLICE_PATH.write_bytes(slice_bytes)
+    slice_sha = sha256_bytes(slice_bytes)
+
     safe_per_area = {}
     failures = []
     for area in AREAS:
@@ -203,6 +230,9 @@ def main() -> int:
         "requested_period_start": START,
         "requested_period_end": END,
         "selected_row_count": selected_total,
+        "selected_slice_file": SLICE_PATH.name,
+        "selected_slice_bytes": len(slice_bytes),
+        "selected_slice_sha256": slice_sha,
         "per_area": safe_per_area,
         "observation_values_emitted": False,
         "fx_price_or_return_data_accessed": False,
@@ -219,6 +249,8 @@ def main() -> int:
                 "archive_bytes": len(raw),
                 "csv_member_uncompressed_bytes": csv_info.file_size,
                 "selected_row_count": selected_total,
+                "selected_slice_sha256": slice_sha,
+                "selected_slice_bytes": len(slice_bytes),
                 "areas": {
                     a: {
                         "rows": safe_per_area[a]["row_count"],
