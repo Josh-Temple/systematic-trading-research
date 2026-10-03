@@ -1,0 +1,33 @@
+name: FXMP freeze candidate identity
+
+on:
+  push:
+    branches:
+      - research/fx-monetary-policy-alignment-v0.1
+    paths:
+      - "research/lines/fx-monetary-policy-alignment-v0.1/specifications/SPEC-FXMP-001-v02.md"
+      - ".github/workflows/fxmp-freeze-candidate.yml"
+  pull_request:
+    paths:
+      - "research/lines/fx-monetary-policy-alignment-v0.1/specifications/SPEC-FXMP-001-v02.md"
+      - ".github/workflows/fxmp-freeze-candidate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify pre-freeze state and print exact identity
+        run: |
+          spec="research/lines/fx-monetary-policy-alignment-v0.1/specifications/SPEC-FXMP-001-v02.md"
+          grep -q '^status: HUMAN_BOUNDARY$' "$spec"
+          grep -q '^freeze_status: PROPOSED_NOT_FROZEN$' "$spec"
+          bytes=$(wc -c < "$spec" | tr -d ' ')
+          sha=$(sha256sum "$spec" | awk '{print $1}')
+          echo "FXMP_FREEZE_CANDIDATE_BYTES=$bytes"
+          echo "FXMP_FREEZE_CANDIDATE_SHA256=$sha"
+          echo "FXMP_FREEZE_CANDIDATE_GIT_BLOB=$(git hash-object "$spec")"
