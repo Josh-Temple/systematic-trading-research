@@ -25,11 +25,20 @@ Use for questions about the Horizontal Reaction research line.
 
 Use for questions about the FX currency-strength / strongest-versus-weakest momentum research line.
 
+### jp225-ema-timeofday-v0.1
+
+- branch: `research/jp225-ema-timeofday-20261003`
+- scope root on that branch: `research/lines/jp225-ema-timeofday-v0.1/`
+- current projection on that branch: `research/lines/jp225-ema-timeofday-v0.1/CURRENT.md`
+- line definition on that branch: `research/lines/jp225-ema-timeofday-v0.1/RESEARCH_LINE.md`
+
+Use for the XM JP225Cash M1 EMA5/EMA200 crossover and time-of-day research line.
+
 Important:
-- the line is not currently present on `main`;
-- do not infer its current research state from this index;
+- non-main lines are not currently canonical on `main`;
+- do not infer current research state from this index;
 - fresh-read the named branch before answering line-specific current-state questions;
-- if the branch is later merged, moved, superseded, or deleted, update this index.
+- if a branch is merged, moved, superseded, or deleted, update this index.
 
 ## Routing rules
 
