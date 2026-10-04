@@ -1,0 +1,79 @@
+name: CSM metadata-only source readiness
+
+on:
+  push:
+    branches:
+      - work/csm-source-readiness-20261004
+  pull_request:
+    paths:
+      - "research/lines/currency-strength-momentum-v0.1/work/source-readiness/**"
+      - ".github/workflows/csm-source-readiness.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize exact Packet C metadata
+        run: |
+          set -euo pipefail
+          c=9870c710c3cba7bb9226c9eee8ec36687b96fd9d
+          root=research/lines/currency-strength-momentum-v0.1/work/source-qualification
+          mkdir -p /tmp/csm-c
+          git show "$c:$root/source-lock.json" > /tmp/csm-c/source-lock.json
+          git show "$c:$root/probe-metadata.json" > /tmp/csm-c/probe-metadata.json
+          git show "$c:$root/expected-calendar.json" > /tmp/csm-c/expected-calendar.json
+          echo "ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71  /tmp/csm-c/source-lock.json" | sha256sum -c -
+          echo "1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533  /tmp/csm-c/probe-metadata.json" | sha256sum -c -
+          echo "6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4  /tmp/csm-c/expected-calendar.json" | sha256sum -c -
+
+      - name: Compile metadata-only checker
+        run: python3 -m py_compile research/lines/currency-strength-momentum-v0.1/work/source-readiness/source_readiness.py
+
+      - name: Run metadata-only full-history readiness
+        id: readiness
+        continue-on-error: true
+        run: |
+          python3 research/lines/currency-strength-momentum-v0.1/work/source-readiness/source_readiness.py \
+            --source-lock /tmp/csm-c/source-lock.json \
+            --probe-metadata /tmp/csm-c/probe-metadata.json \
+            --expected-calendar /tmp/csm-c/expected-calendar.json \
+            --output /tmp/csm-source-readiness-receipt.json
+
+      - name: Verify receipt contains no observation values
+        if: always()
+        run: |
+          test -f /tmp/csm-source-readiness-receipt.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("/tmp/csm-source-readiness-receipt.json")
+          obj=json.loads(p.read_text())
+          assert obj["obs_value_contents_emitted"] is False
+          assert obj["raw_responses_persisted"] is False
+          raw=p.read_text()
+          assert '"OBS_VALUE"' not in raw
+          print("SAFE_RECEIPT_SHA256", __import__("hashlib").sha256(p.read_bytes()).hexdigest())
+          print("SAFE_RECEIPT_STATUS", obj["overall_status"])
+          print("SAFE_RECEIPT_SERIES", obj["series_count"])
+          PY
+
+      - name: Upload safe metadata receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: csm-source-readiness-metadata
+          path: /tmp/csm-source-readiness-receipt.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Propagate readiness failure
+        if: steps.readiness.outcome != 'success'
+        run: exit 1
