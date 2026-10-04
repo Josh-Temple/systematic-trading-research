@@ -18,26 +18,26 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-AUDIT_ID = "AUDIT-CSM-E-20261001-REAUDIT-01"
-I_HEAD = "c2fdbc1f2a9fcccc32717b130a36433819aaa2fa"
-I_GATE_BLOB = "bd6db786a3a1aafe7ce0864def41d5e13123447c"
-I_GATE_SHA256 = "036498e34b85ecbe9fef4c9a6c452b906ee6e680ffe4a08924cb3e3b11fdcbb3"
-I_GATE_MD_BLOB = "28ef6e0c006c08fb721ca6100323f283d5cb84c3"
-I_GATE_MD_SHA256 = "4c8bd37622e412eac5ae806841f40bb61e9ce8b4de2d2ede834ff0521988d387"
-D_HEAD = "6dccd49ee21e4ac29f55162f93ef3e65aa7a5779"
+AUDIT_ID = "AUDIT-CSM-E-20261004-REAUDIT-02"
+I_HEAD = "6bd9ddc5bc53c37aee3b0d82d1ac2c00c00fd73c"
+I_GATE_BLOB = "bfa515df80fb855749d8df1e5ce9d657b8f3f495"
+I_GATE_SHA256 = None  # computed from exact supplied bytes
+I_GATE_MD_BLOB = "62e8399821d7e8c168672f93c1dbc7155deca4b2"
+I_GATE_MD_SHA256 = None  # computed from exact supplied bytes
+D_HEAD = "3695f0a8ed085669ec3644826889f9fc953a6808"
 OLD_E_ID = "AUDIT-CSM-E-20261002"
 NOW = datetime.fromisoformat("2026-10-02T07:00:00+09:00")
 FROZEN_SPEC_BLOB = "7fe114e2fcfa33b0565b51c717455abd8837d5d9"
 FROZEN_SPEC_SHA256 = "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2"
 EXPECTED_D_SHA256 = {
-    "csm.py": "4db33063f0388b8b7ec0613fff8228a4aa3cb00b94855a557c5abcd3b86f4104",
-    "test_csm.py": "3499c6cf4bc52f5052c7ed76ef92da41c272cbb6a31980a51801372775f1f66f",
+    "csm.py": "f57c859dd137bb49f23a23ddf2760681bc3ca14aa23cf82e03e2f35bc5b54535",
+    "test_csm.py": "899332a9e51018d6140a201105eccdad8154d075af1a32354776621976185bf2",
     "config.json": "9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1",
-    "RUNBOOK.md": "7fa355a6b071567ff6d4ea4290033f5635fc44b64159af2438acae69ecc14948",
+    "RUNBOOK.md": "bba147d4da072507ba255cb15a93a9fe0e76fda7df822fe4cfcf626501b91fb7",
     "ENVIRONMENT.md": "8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f",
-    "RESULT.md": "91fba806a72a9d4e103b535d4acc10b525476f7901700ff1279845bfff2a6923",
-    "TEST_MATRIX.md": "7cfbd342057ce8a9517fbbf44e464fb05beb60e6de82e47f4e1d8643e7da4bce",
-    "TEST_LOG.txt": "84a6a88673b0502b53bf3b2eb0ca100d101d8bd57cfab3da08695285fc399f44",
+    "RESULT.md": "3c48c47f87634346ac4c02ff1c73a32f640b50d429f2e303d5668bb7c2eff0ea",
+    "TEST_MATRIX.md": "d5dfa2c76dcaf2c803755d0a03aac803550ce793ad84c7d35257ec899971e0ca",
+    "TEST_LOG.txt": "8b6f5f9c2c6527c9c1b6535ba5fdbdcd6394b2259ce947949a52720734cf3b3b",
     "fixtures/toy_cases.json": "08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c",
 }
 
@@ -241,72 +241,200 @@ def test_signature_controls(csm: Any) -> None:
             "role is not trusted")
 
 
-def actual_i_identity(gate: Mapping[str, Any]) -> dict[str, Any]:
+def actual_i_identity(gate: Mapping[str, Any], gate_raw: bytes, gate_md_raw: bytes) -> dict[str, Any]:
     return {
-        "pr_number": 37, "head_sha": I_HEAD, "gate_blob_sha1": I_GATE_BLOB,
-        "gate_sha256": I_GATE_SHA256, "gate_markdown_blob_sha1": I_GATE_MD_BLOB,
-        "gate_markdown_sha256": I_GATE_MD_SHA256, "gate_status": gate["gate_status"],
+        "pr_number": 37,
+        "head_sha": I_HEAD,
+        "gate_blob_sha1": I_GATE_BLOB,
+        "gate_sha256": hashlib.sha256(gate_raw).hexdigest(),
+        "gate_markdown_blob_sha1": I_GATE_MD_BLOB,
+        "gate_markdown_sha256": hashlib.sha256(gate_md_raw).hexdigest(),
+        "gate_status": gate["gate_status"],
         "market_outcome_access": gate["market_outcome_access"],
     }
 
 
-def valid_gate_payload(csm: Any, lock: Mapping[str, Any], raw_lock: bytes,
-                       current_i: Mapping[str, Any], file_hashes: Mapping[str, str]) -> dict[str, Any]:
-    cal_hash = "a" * 64
+def synthetic_e_identity() -> dict[str, Any]:
     return {
-        "gate_id": "I2-CSM-002-TEST-001", "integrator_principal_id": "integrator-principal-001",
-        "signer_principal_id": "integrator-principal-001", "gate_status": "PASS",
-        "human_freeze_status": "FROZEN", "market_outcome_access_authorized": True,
-        "data_role": "EXPLORATORY_DISCOVERY", "spec_id": csm.SPEC_ID,
-        "spec_git_blob_sha1": csm.SPEC_GIT_BLOB_SHA1, "spec_sha256": csm.SPEC_SHA256,
-        "hypothesis_id": csm.HYPOTHESIS_ID, "human_contract_decision_id": csm.HUMAN_DECISION_ID,
-        "source_lock_id": csm.source_lock_id(lock), "source_transport": csm.source_transport(lock),
+        "audit_id": "AUDIT-CSM-E-SYNTH-DYNAMIC-001",
+        "pr_number": 38,
+        "head_sha": "e" * 40,
+        "result_blob_sha1": "5" * 40,
+        "result_sha256": "6" * 64,
+        "matrix_blob_sha1": "7" * 40,
+        "matrix_sha256": "8" * 64,
+        "status": "PASS",
+        "recommendation": "ALLOW_I2",
+    }
+
+
+def valid_gate_payload(
+    csm: Any,
+    lock: Mapping[str, Any],
+    raw_lock: bytes,
+    current_i: Mapping[str, Any],
+    file_hashes: Mapping[str, str],
+    *,
+    audit_identity: Mapping[str, Any] | None = None,
+    environment_sha256: str = "c" * 64,
+    calendar_sha256: str = "a" * 64,
+) -> dict[str, Any]:
+    audit_identity = dict(audit_identity or synthetic_e_identity())
+    audit_payload = {
+        **audit_identity,
+        "signer_principal_id": "auditor-principal-001",
+        "audited_d_file_hashes": dict(file_hashes),
+        "audited_environment_identity_sha256": environment_sha256,
+        "audited_spec_sha256": csm.SPEC_SHA256,
+        "audited_source_lock_raw_sha256": csm.sha256_bytes(raw_lock),
+        "audited_calendar_sha256": calendar_sha256,
+    }
+    audit_envelope = sign_envelope(csm, audit_payload, "auditor-test-key-001")
+    return {
+        "gate_id": "I2-CSM-002-TEST-001",
+        "integrator_principal_id": "integrator-principal-001",
+        "signer_principal_id": "integrator-principal-001",
+        "gate_status": "PASS",
+        "human_freeze_status": "FROZEN",
+        "market_outcome_access_authorized": True,
+        "data_role": "EXPLORATORY_DISCOVERY",
+        "spec_id": csm.SPEC_ID,
+        "spec_git_blob_sha1": csm.SPEC_GIT_BLOB_SHA1,
+        "spec_sha256": csm.SPEC_SHA256,
+        "hypothesis_id": csm.HYPOTHESIS_ID,
+        "human_contract_decision_id": csm.HUMAN_DECISION_ID,
+        "source_lock_id": csm.source_lock_id(lock),
+        "source_transport": csm.source_transport(lock),
         "source_lock_sha256": csm.sha256_bytes(csm.canonical_json_bytes(lock)),
         "source_lock_raw_sha256": csm.sha256_bytes(raw_lock),
-        "unit_status_map_sha256": csm.sha256_bytes(csm.canonical_json_bytes(csm.source_unit_status_map(lock))),
-        "expected_calendar_sha256": cal_hash, "source_series_keys": list(csm.EXPECTED_SERIES_BY_CURRENCY.values()),
-        "time_range": {"source_start": csm.SOURCE_START, "source_end": csm.SOURCE_END,
-                       "target_start": csm.TARGET_START, "target_end": csm.TARGET_END},
-        "raw_capture_process_id": "capture-process-0001", "access_ledger_id": "access-ledger-0001",
-        "run_id": "csm-run-0001", "outcome_access_operator_id": "operator-account-0001",
-        "outcome_access_operator_name": "Jordan Rivera", "code_file_hashes": dict(file_hashes),
+        "unit_status_map_sha256": csm.sha256_bytes(
+            csm.canonical_json_bytes(csm.source_unit_status_map(lock))
+        ),
+        "expected_calendar_sha256": calendar_sha256,
+        "source_series_keys": list(csm.EXPECTED_SERIES_BY_CURRENCY.values()),
+        "time_range": {
+            "source_start": csm.SOURCE_START,
+            "source_end": csm.SOURCE_END,
+            "target_start": csm.TARGET_START,
+            "target_end": csm.TARGET_END,
+        },
+        "raw_capture_process_id": "capture-process-0001",
+        "access_ledger_id": "access-ledger-0001",
+        "run_id": "csm-run-0001",
+        "outcome_access_operator_id": "operator-account-0001",
+        "outcome_access_operator_name": "Jordan Rivera",
+        "code_file_hashes": dict(file_hashes),
         "synthetic_test_log_sha256": file_hashes["TEST_LOG.txt"],
-        "environment_identity_sha256": "c" * 64, "current_i2_gate_identity": dict(current_i),
-        "independent_audit_identity": dict(csm.CURRENT_E_AUDIT_EXPECTED),
+        "environment_identity_sha256": environment_sha256,
+        "current_i2_gate_identity": dict(current_i),
+        "independent_audit_identity": audit_identity,
+        "independent_audit_attestation": audit_envelope,
+        "independent_audit_envelope_sha256": csm.sha256_bytes(
+            csm.canonical_json_bytes(audit_envelope)
+        ),
         "full_history_run_authorized": True,
     }
 
 
-def test_raw_lock_and_current_identity(csm: Any, gate_doc: Mapping[str, Any]) -> None:
+def validate_synthetic_gate(
+    csm: Any,
+    payload: Mapping[str, Any],
+    lock: Mapping[str, Any],
+    raw_lock: bytes,
+    file_hashes: Mapping[str, str],
+    *,
+    expected_error: str | None = None,
+) -> None:
+    receipt = sign_envelope(csm, payload, "integrator-test-key-001")
+    call = lambda: csm.validate_gate_receipt(
+        receipt,
+        lock,
+        source_lock_raw_bytes=raw_lock,
+        trusted_keys=TEST_KEYS,
+        expected_file_hashes=file_hashes,
+        expected_environment_sha256="c" * 64,
+        expected_probe_metadata_sha256=None,
+        expected_calendar_sha256="a" * 64,
+        now=NOW,
+        allow_synthetic_test_fixtures=True,
+    )
+    if expected_error is None:
+        accepted = call()
+        check(accepted["gate_status"] == "PASS", "valid dynamic signed gate was rejected")
+    else:
+        rejects(call, expected_error)
+
+
+def test_raw_lock_and_dynamic_identity(
+    csm: Any,
+    gate_doc: Mapping[str, Any],
+    gate_raw: bytes,
+    gate_md_raw: bytes,
+) -> None:
     lock = synthetic_lock(csm)
     canonical = csm.canonical_json_bytes(lock)
-    changed_raw = b" \n" + canonical
-    payload = valid_gate_payload(csm, lock, canonical, csm.CURRENT_I2_GATE_EXPECTED,
-                                 {name: f"{i:064x}" for i, name in enumerate((
-                                     "csm.py", "test_csm.py", "config.json", "RUNBOOK.md", "ENVIRONMENT.md",
-                                     "RESULT.md", "TEST_MATRIX.md", "TEST_LOG.txt", "fixtures/toy_cases.json"), 1)})
-    # The parsed objects are equal. A signed claim over canonical bytes must fail on different raw bytes.
-    file_hashes = payload["code_file_hashes"]
-    raw_receipt = sign_envelope(csm, payload, "integrator-test-key-001")
-    rejects(lambda: csm.validate_gate_receipt(
-        raw_receipt, lock, source_lock_raw_bytes=changed_raw, trusted_keys=TEST_KEYS,
-        expected_file_hashes=file_hashes, expected_environment_sha256="c" * 64,
-        expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
-        now=NOW, allow_synthetic_test_fixtures=True), "raw-byte identity mismatch")
+    file_hashes = dict(EXPECTED_D_SHA256)
 
-    current_i = actual_i_identity(gate_doc)
-    check(gate_doc["gate_status"] == "CLOSED" and gate_doc["market_outcome_access"] is False,
-          "current I2 gate is not closed")
-    check(current_i != csm.CURRENT_I2_GATE_EXPECTED, "D current-I pin unexpectedly matches current I gate")
-    check(csm.CURRENT_E_AUDIT_EXPECTED["audit_id"] == OLD_E_ID,
-          "expected D pin no longer identifies the historical E audit")
-    current_payload = valid_gate_payload(csm, lock, canonical, current_i, file_hashes)
-    current_receipt = sign_envelope(csm, current_payload, "integrator-test-key-001")
+    # Semantically equal but byte-different source-lock must still fail raw-byte binding.
+    changed_raw = b" \n" + canonical
+    pass_i = actual_i_identity(gate_doc, gate_raw, gate_md_raw)
+    pass_i["gate_status"] = "PASS"
+    pass_i["market_outcome_access"] = True
+    payload = valid_gate_payload(csm, lock, canonical, pass_i, file_hashes)
+    receipt = sign_envelope(csm, payload, "integrator-test-key-001")
     rejects(lambda: csm.validate_gate_receipt(
-        current_receipt, lock, source_lock_raw_bytes=canonical, trusted_keys=TEST_KEYS,
-        expected_file_hashes=file_hashes, expected_environment_sha256="c" * 64,
-        expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
-        now=NOW, allow_synthetic_test_fixtures=True), "does not identify the current I2 gate")
+        receipt,
+        lock,
+        source_lock_raw_bytes=changed_raw,
+        trusted_keys=TEST_KEYS,
+        expected_file_hashes=file_hashes,
+        expected_environment_sha256="c" * 64,
+        expected_probe_metadata_sha256=None,
+        expected_calendar_sha256="a" * 64,
+        now=NOW,
+        allow_synthetic_test_fixtures=True,
+    ), "raw-byte identity mismatch")
+
+    # Exact current I is CLOSED and must not authorize even with valid synthetic signatures.
+    current_i = actual_i_identity(gate_doc, gate_raw, gate_md_raw)
+    check(current_i["gate_status"] == "CLOSED" and current_i["market_outcome_access"] is False,
+          "fresh current I2 gate is not CLOSED")
+    current_payload = valid_gate_payload(csm, lock, canonical, current_i, file_hashes)
+    validate_synthetic_gate(
+        csm, current_payload, lock, canonical, file_hashes,
+        expected_error="current I2 gate is not PASS",
+    )
+
+    # Non-circularity: rotate immutable I/E identities without changing D code.
+    rotated_i = dict(pass_i)
+    rotated_i["head_sha"] = "c" * 40
+    rotated_i["gate_blob_sha1"] = "d" * 40
+    rotated_i["gate_sha256"] = "e" * 64
+    rotated_i["gate_markdown_blob_sha1"] = "f" * 40
+    rotated_i["gate_markdown_sha256"] = "1" * 64
+    rotated_e = synthetic_e_identity()
+    rotated_e["audit_id"] = "AUDIT-CSM-E-SYNTH-ROTATED"
+    rotated_e["head_sha"] = "2" * 40
+    rotated_payload = valid_gate_payload(
+        csm, lock, canonical, rotated_i, file_hashes, audit_identity=rotated_e
+    )
+    validate_synthetic_gate(csm, rotated_payload, lock, canonical, file_hashes)
+
+    # Stale/wrong E evidence against different D bytes must fail closed.
+    bad_payload = valid_gate_payload(csm, lock, canonical, rotated_i, file_hashes)
+    bad_e = json.loads(json.dumps(bad_payload["independent_audit_attestation"]))
+    bad_e_payload = bad_e["payload"]
+    bad_e_payload["audited_d_file_hashes"]["csm.py"] = "0" * 64
+    bad_e = sign_envelope(csm, bad_e_payload, "auditor-test-key-001")
+    bad_payload["independent_audit_attestation"] = bad_e
+    bad_payload["independent_audit_envelope_sha256"] = csm.sha256_bytes(
+        csm.canonical_json_bytes(bad_e)
+    )
+    validate_synthetic_gate(
+        csm, bad_payload, lock, canonical, file_hashes,
+        expected_error="does not bind the current D file hashes",
+    )
+
 
 
 def stage_success_tree(csm: Any, parent: Path, name: str) -> tuple[Path, Path]:
@@ -392,9 +520,8 @@ def test_failure_cleanup(csm: Any) -> list[str]:
         csm.shutil.rmtree = fail_cleanup
         try:
             rejects(lambda: csm.promote_output_directory(stage, destination), "output promotion failed")
-            check((destination / "run-receipt.json").is_file(),
-                  "expected cleanup-failure reproduction did not leave the success receipt")
-            observed_gaps.append("final directory fsync error plus rollback deletion error leaves run-receipt.json")
+            check(not (destination / "run-receipt.json").exists(),
+                  "compound failure left a SUCCESS receipt after D hardening")
         finally:
             csm._fsync_directory = original_fsync
             csm.shutil.rmtree = original_rmtree
@@ -474,10 +601,10 @@ def main() -> int:
     gate_raw = args.i_gate_json.read_bytes()
     gate_md_raw = args.i_gate_md.read_bytes()
     frozen_spec_raw = args.frozen_spec.read_bytes()
-    check(git_blob_sha1(gate_raw) == I_GATE_BLOB and hashlib.sha256(gate_raw).hexdigest() == I_GATE_SHA256,
-          "current I gate.json identity mismatch")
-    check(git_blob_sha1(gate_md_raw) == I_GATE_MD_BLOB and hashlib.sha256(gate_md_raw).hexdigest() == I_GATE_MD_SHA256,
-          "current I GATE.md identity mismatch")
+    check(git_blob_sha1(gate_raw) == I_GATE_BLOB, "current I gate.json Git blob mismatch")
+    check(git_blob_sha1(gate_md_raw) == I_GATE_MD_BLOB, "current I GATE.md Git blob mismatch")
+    current_i_gate_sha256 = hashlib.sha256(gate_raw).hexdigest()
+    current_i_gate_md_sha256 = hashlib.sha256(gate_md_raw).hexdigest()
     check(git_blob_sha1(frozen_spec_raw) == FROZEN_SPEC_BLOB
           and hashlib.sha256(frozen_spec_raw).hexdigest() == FROZEN_SPEC_SHA256,
           "frozen SPEC identity mismatch")
@@ -489,7 +616,7 @@ def main() -> int:
         ("synthetic formula, 56-pair, quote, tie, numeraire, and baseline oracle", lambda: test_math_and_outcome_blindness(csm)),
         ("formation score ledger target-value and availability invariance", lambda: test_ledger_target_invariance(csm)),
         ("trusted key, role, principal, signature, revocation, and expiry checks", lambda: test_signature_controls(csm)),
-        ("raw source-lock bytes and current I identity rejection", lambda: test_raw_lock_and_current_identity(csm, gate_doc)),
+        ("raw source-lock bytes and dynamic signed I/E binding", lambda: test_raw_lock_and_dynamic_identity(csm, gate_doc, gate_raw, gate_md_raw)),
         ("fault-injected atomic persistence and promotion", lambda: test_failure_cleanup(csm)),
         ("independent fixed circular bootstrap and decision boundaries", lambda: test_bootstrap(csm)),
         ("exact permitted C metadata identity and internal validation", lambda: test_packet_c_metadata(csm, args.source_lock, args.probe_metadata, args.expected_calendar)),
@@ -506,6 +633,8 @@ def main() -> int:
     print("BOUND_D_HEAD:", D_HEAD)
     print("BOUND_I_HEAD:", I_HEAD)
     print("CURRENT_I_GATE_STATE:", gate_doc["gate_status"], gate_doc["market_outcome_access"])
+    print("CURRENT_I_GATE_SHA256:", current_i_gate_sha256)
+    print("CURRENT_I_GATE_MD_SHA256:", current_i_gate_md_sha256)
     return 0
 
 
