@@ -82,3 +82,27 @@ See:
 - `work/implementation/forecast_core.py`
 - `work/implementation/test_forecast_core.py`
 - `work/packets/PACKET_SOURCE_DUKASCOPY_REFERENCE_GATE.md`
+
+
+## Live Market State Journal
+
+- **Protocol:** `OBS-USDJPY-LIVE-STATE-001-v01`
+- **Status:** ACTIVE_OBSERVATIONAL.
+- **Scientific effect:** NONE.
+- **Scored forecast authority:** NONE.
+- **Default checkpoints:** 08:30, 15:00, 21:30 JST.
+- **Additional checkpoints:** EVENT_DRIVEN / MANUAL.
+- **History rule:** append-only; corrections are new entries.
+- **Benchmark boundary:** journal entries cannot overwrite forecasts, cannot retroactively supply post-cutoff information, and cannot replace canonical scored-input snapshots.
+- **Challenger role:** journal observations may motivate separately versioned exploratory challengers.
+- **Initial entry:** `observations/entries/20261005T011400+0900_MANUAL.json`.
+- **Initial state:** weekend market closed; pre-open baseline only; noncanonical prior-Friday price context explicitly labeled.
+- **Validator:** 12/12 synthetic tests PASS.
+
+See:
+
+- `observations/LIVE_MARKET_STATE_JOURNAL_v0.1.md`
+- `observations/README.md`
+- `observations/STATE_ENTRY_TEMPLATE_v0.1.json`
+- `decisions/HDEC-USDJPY-LIVE-JOURNAL-001_2026-10-05.md`
+- `work/implementation/live_state_journal.py`
