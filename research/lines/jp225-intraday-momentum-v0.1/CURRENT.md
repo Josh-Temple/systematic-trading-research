@@ -32,7 +32,7 @@ Synthetic implementation now enforces:
 - no silent rerun after consumed failure;
 - independent-review receipt requirement before any 2026 holdout reader invocation.
 
-GitHub Actions workflow `JP225 intraday momentum synthetic` passed at PR #59 head `9a7a164b0759fe45793588643c96fdd4c3519c30`.
+GitHub Actions workflow `JP225 intraday momentum synthetic` passed at the current reviewed branch before the independent audit fixes; the audit reruns CI after all fixes.
 
 ## Remaining gate before data acquisition
 
