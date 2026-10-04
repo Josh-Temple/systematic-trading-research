@@ -11,7 +11,10 @@ from imom_core import Observation, evaluate_sample
 
 HERE = Path(__file__).resolve().parent
 LINE = HERE.parents[1]
-SPEC = LINE / "specifications" / "SPEC-JP225-IMOM-001-v01.md"
+SPEC_FILES = [
+    LINE / "specifications" / "SPEC-JP225-IMOM-001-v01.md",
+    LINE / "specifications" / "SPEC-JP225-IMOM-001-v01.1_AMENDMENT.md",
+]
 
 
 def digest(path: str | Path) -> str:
@@ -24,6 +27,19 @@ def digest(path: str | Path) -> str:
 
 def canonical(obj) -> bytes:
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
+
+
+def _valid_sha256(value) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(c in "0123456789abcdef" for c in value)
+    )
+
+
+def spec_identity() -> str:
+    payload = {p.name: digest(p) for p in SPEC_FILES}
+    return hashlib.sha256(canonical(payload)).hexdigest()
 
 
 def code_identity() -> str:
@@ -39,11 +55,15 @@ def _positive_price(value) -> float:
     return v
 
 
-def _load_input(path: str | Path) -> list[Observation]:
+def _load_input(path: str | Path, expected_source_manifest_sha256: str) -> list[Observation]:
     obj = json.loads(Path(path).read_text())
-    if set(obj) != {"version", "sample", "rows"}:
+    if set(obj) != {"version", "sample", "source_manifest_sha256", "rows"}:
         raise ValueError("INPUT_SCHEMA_FAILURE")
-    if obj["version"] != "JP225_IMOM_MAPPED_POINTS_v1" or obj["sample"] != "2025_CONFIRMATION":
+    if (
+        obj["version"] != "JP225_IMOM_MAPPED_POINTS_v1"
+        or obj["sample"] != "2025_CONFIRMATION"
+        or obj["source_manifest_sha256"] != expected_source_manifest_sha256
+    ):
         raise ValueError("INPUT_IDENTITY_FAILURE")
     rows = obj["rows"]
     if not isinstance(rows, list):
@@ -95,28 +115,37 @@ def _load_input(path: str | Path) -> list[Observation]:
     return out
 
 
-def run(input_path, gate_path, expected_gate_sha256, out_dir):
+def run(
+    input_path,
+    gate_path,
+    expected_gate_sha256,
+    expected_source_manifest_sha256,
+    out_dir,
+):
+    if not _valid_sha256(expected_source_manifest_sha256):
+        raise ValueError("SOURCE_MANIFEST_IDENTITY_FAILURE")
     if digest(gate_path) != expected_gate_sha256:
         raise PermissionError("GATE_IDENTITY_FAILURE")
 
     gate = json.loads(Path(gate_path).read_text())
     input_sha = digest(input_path)
     identity = {
-        "spec_sha256": digest(SPEC),
+        "spec_sha256": spec_identity(),
         "code_sha256": code_identity(),
         "input_sha256": input_sha,
-        "source_sha256": gate.get("binding", {}).get("source_sha256"),
+        "source_manifest_sha256": expected_source_manifest_sha256,
     }
     if (
         gate.get("status") != "PASS"
         or gate.get("independent_review") != "PASS"
         or gate.get("sample") != "2025_CONFIRMATION"
         or gate.get("binding") != identity
-        or not isinstance(identity["source_sha256"], str)
-        or len(identity["source_sha256"]) != 64
-        or any(c not in "0123456789abcdef" for c in identity["source_sha256"])
     ):
         raise PermissionError("CONFIRMATION_GATE_CLOSED")
+
+    out = Path(out_dir)
+    if out.exists():
+        raise FileExistsError("OUTPUT_ALREADY_EXISTS")
 
     marker = Path(str(input_path) + ".CONSUMED.json")
     with marker.open("xb") as f:
@@ -126,7 +155,6 @@ def run(input_path, gate_path, expected_gate_sha256, out_dir):
             "binding": identity,
         }))
 
-    out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=False)
     (out / "RUN_STARTED.json").write_bytes(canonical({
         "status": "STARTED_SAMPLE_CONSUMPTION",
@@ -135,7 +163,7 @@ def run(input_path, gate_path, expected_gate_sha256, out_dir):
     }))
 
     try:
-        obs = _load_input(input_path)
+        obs = _load_input(input_path, expected_source_manifest_sha256)
         metrics = evaluate_sample(obs, min_rows=180)
         if metrics["status"] == "INSUFFICIENT_EVENTS":
             classification = "INSUFFICIENT_2025_EVENTS"
@@ -151,7 +179,7 @@ def run(input_path, gate_path, expected_gate_sha256, out_dir):
             digest(input_path) != input_sha
             or digest(gate_path) != expected_gate_sha256
             or code_identity() != identity["code_sha256"]
-            or digest(SPEC) != identity["spec_sha256"]
+            or spec_identity() != identity["spec_sha256"]
         ):
             raise PermissionError("INPUT_CHANGED_DURING_RUN")
 
