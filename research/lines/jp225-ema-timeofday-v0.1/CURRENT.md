@@ -35,6 +35,10 @@ While Windows/XM Stage 1 is unavailable, one separate pre-registered proxy candi
 
 Result: **PERSIST5_PROXY_NOT_SUPPORTED_2017**. Valid n=1,204 across 253 Asia/Tokyo dates; mean +15m gross points=-0.287292; day-cluster 95% interval=[-1.671920,+1.127615]. The same-year unfiltered comparator mean was -0.144020. Per the frozen stop rule, 2016 was not accessed and no persistence-length/time-window rescue is allowed.
 
+## Source research update — 2026-10-04
+
+A bounded official-source review identified JPX/OSE J-Quants DataCube historical derivatives one-minute OHLC and transaction-tick data as a materially better **futures proxy/source candidate** than the consumed OANDA midpoint data. It is **not** an XM replacement: the tick product is executed-price history rather than XM BID/ASK, one-minute data is trade-based, and futures contract/roll semantics differ. Do not use this source to unlock Packet C or the 2026 XM holdout. See [JPX OSE source-route review](work/source-research/JPX_OSE_SOURCE_ROUTE_2026-10-04.md).
+
 ## Next action
 
 Exact XM work remains waiting for a future Windows opportunity. When available, run the revised [Stage 1 Windows runbook](work/source-qualification/STAGE1_WINDOWS_RUNBOOK.md) and provide the immutable raw ZIP. Until then, do not relax the XM source gate or promote proxy results to XM conclusions. Stage 1 source review -> frozen signal-only manifest -> event-adjacent Stage 2 ticks -> Packet A execution PASS -> pinned independent Discovery gate -> one-shot 2025 result. See [Stage 2 plan](work/source-qualification/STAGE2_PLAN.md).
