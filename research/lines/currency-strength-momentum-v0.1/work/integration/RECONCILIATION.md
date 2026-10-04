@@ -287,3 +287,39 @@ All C paths above are prefixed by research/lines/currency-strength-momentum-v0.1
 
 All D paths above are prefixed by research/lines/currency-strength-momentum-v0.1/work/implementation/.
 
+
+
+---
+
+## 2026-10-04 integration amendment — hardened D/E and source-readiness boundary
+
+### D/E status
+
+Packet D head `3695f0a8ed085669ec3644826889f9fc953a6808` and E audit `AUDIT-CSM-E-20261004-REAUDIT-02` supersede the prior active code-level findings for exact-current D.
+
+- D exact suite independently rerun: 56/56 PASS.
+- non-circular signed I/E binding: independently PASS.
+- signed E binding to exact current D bytes: independently PASS.
+- prior compound final-fsync + rollback-delete false-success receipt: independently re-injected and PASS; no final SUCCESS receipt remains.
+- E overall remains PARTIAL_WITH_GAPS / BLOCKED because source and production-operational evidence remain open.
+
+Prior negative audit files are preserved under E `history/`.
+
+### Additional exposure disclosure — 2026-10-04
+
+During official ECB web verification of the calendar/publication methodology, a search-result representation of an official ECB reference-rate page incidentally included individual current exchange-rate observations.
+
+Disposition at this stage:
+- the observations were not copied into repository artifacts;
+- they are not reproduced in this reconciliation;
+- they were not compared across currencies;
+- they were not used to calculate a rank, return, signal, result or parameter choice;
+- the event is nevertheless recorded as an exposure disclosure and remains subject to the same explicit human-disposition gate as the earlier disclosures.
+
+No inference that this exposure is harmless or equivalent to no exposure is made.
+
+### Metadata-only source readiness
+
+`DEC-CSM-004-METADATA-SOURCE-READINESS-20261004` authorizes an isolated source-readiness run that may receive full ECB CSV bytes but may emit only dates/status/schema/count/hash metadata. OBS_VALUE contents may not be printed, persisted, uploaded or used analytically.
+
+This does not open I2 or Packet X.
