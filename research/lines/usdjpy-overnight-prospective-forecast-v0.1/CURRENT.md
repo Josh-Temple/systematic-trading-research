@@ -106,3 +106,17 @@ See:
 - `observations/STATE_ENTRY_TEMPLATE_v0.1.json`
 - `decisions/HDEC-USDJPY-LIVE-JOURNAL-001_2026-10-05.md`
 - `work/implementation/live_state_journal.py`
+
+
+## Latest live observation
+
+- **State:** `STATE-USDJPY-20261005T073700+0900-MANUAL`
+- **Observed:** 2026-10-05 07:37 JST.
+- **Market:** OPEN.
+- **USD/JPY:** noncanonical live-source conflict; roughly 157.7–157.8, near prior-week close.
+- **Material change from 01:14:** Brent rose to about $103.06 on new Saudi Aramco attack headlines.
+- **Working interpretation:** prior slight-USDJPY-down bias reduced toward NEUTRAL_TO_SLIGHT_USDJPY_DOWN because the oil shock is yen-negative, while USD/JPY has not yet shown a clean upside breakout.
+- **Confidence:** LOW.
+- **Next:** 08:30 MORNING_STATE / Tokyo bond reaction / 08:50 BOJ release.
+- **Scientific effect:** NONE; journal only.
+
