@@ -258,3 +258,101 @@ Expected identities for the current D deliverables are below; the same values ar
 | `ENVIRONMENT.md` | `bf6d5b4c0381e967226ee0996736d858b524b8eb` | `8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f` |
 | `TEST_MATRIX.md` | `03633916f0190925a01d6b26e5146956e657c31f` | `7cfbd342057ce8a9517fbbf44e464fb05beb60e6de82e47f4e1d8643e7da4bce` |
 | `TEST_LOG.txt` | `c70e610064f92ba15527fb7f99b8796607a9a91f` | `84a6a88673b0502b53bf3b2eb0ca100d101d8bd57cfab3da08695285fc399f44` |
+
+
+## Hardening follow-up — 2026-10-04
+
+### Purpose
+
+Resolve the two code-level blockers independently reproduced by Packet E at D head `6dccd49ee21e4ac29f55162f93ef3e65aa7a5779` without changing the frozen scientific contract:
+
+1. stale mutable I/E identity pins in D;
+2. compound final-directory-fsync plus rollback-deletion failure leaving `run-receipt.json`.
+
+### Code-level resolution
+
+**Non-circular I/E binding**
+
+Production validation no longer embeds current I or E commit SHAs.
+
+Instead, the trusted Integrator-signed I2 envelope must carry a structurally valid immutable I2 identity for PR #37 with:
+- exact 40-hex head and Git-blob identities;
+- exact SHA-256 identities;
+- `gate_status=PASS`;
+- `market_outcome_access=true`.
+
+The separately trusted auditor-signed E attestation must identify PR #38 with:
+- exact current result/matrix blob and SHA identities;
+- `status=PASS`;
+- `recommendation=ALLOW_I2`.
+
+Crucially, the E signature must independently bind:
+- the exact current D file-hash map;
+- the exact current environment identity;
+- frozen SPEC SHA-256;
+- exact source-lock raw-byte SHA-256;
+- expected-calendar SHA-256.
+
+The Integrator gate independently binds the same D/runtime/source/calendar identities plus the named operator, run ID and access-ledger identity.
+
+This removes the D -> I/E-head hard-code cycle while keeping stale evidence fail-closed.
+
+**Final SUCCESS receipt commit**
+
+The output promotion sequence now:
+1. validates/fsyncs the staged tree;
+2. renames the completed tree;
+3. fsyncs the parent;
+4. reads the pending success payload;
+5. removes `_completion-pending.json`;
+6. fsyncs the destination directory to persist the non-success marker removal;
+7. publishes `run-receipt.json` with `atomic_write_verified` as the **last fallible success-path operation**.
+
+No fallible success-path operation follows final SUCCESS receipt publication.
+
+If final receipt publication fails, `atomic_write_verified` removes the receipt before D reports failure. Even if the outer failed-attempt directory deletion also fails, the residual directory has no `run-receipt.json` and cannot be interpreted as a successful run.
+
+### Regression coverage
+
+Three regressions were added:
+
+- `test_compound_final_fsync_and_rollback_delete_failure_never_leaves_success_receipt`
+- `test_dynamic_signed_i_and_e_identities_do_not_require_code_pin_update`
+- `test_signed_e_attestation_must_bind_current_d_hashes`
+
+The first reproduces the exact compound failure class reported by the prior independent E audit.
+
+### Verification
+
+Synthetic verification was executed in an audit-only GitHub Actions wrapper outside D's allowlist.
+
+- audit wrapper PR: #49
+- workflow: `CSM D synthetic verification`
+- workflow run: `37165967827`
+- D code/test head under test: `ab2c7adcb6669efe48fe3e4570f670a623295d57`
+- exact Packet C metadata head: `9870c710c3cba7bb9226c9eee8ec36687b96fd9d`
+- Packet C source-lock/probe-metadata/expected-calendar SHA-256 checks: PASS
+- Python compile: PASS
+- full D synthetic suite: **56/56 PASS; 0 failed; 0 skipped**
+- market outcome access: **none**
+
+### Status after D follow-up
+
+**D code-level status: READY_FOR_INDEPENDENT_E_REAUDIT.**
+
+The two prior E code-level blockers above are addressed in D and directly covered by synthetic regressions.
+
+This is not an E PASS and does not open I2.
+
+Still outside D / unresolved:
+- production trust-key provisioning and protected root-owned trust store;
+- OS-level isolation and filesystem allowlist;
+- durable output destination and restart readback;
+- persistent append-only access/attempt ledger;
+- named outcome-access operator;
+- full-history source readiness and observed missing/status distribution;
+- external calendar authority;
+- historical publication timing and revision/vintage;
+- human disposition of prior observation-exposure disclosures.
+
+No market price/history, ranking, forward return, strategy metric, P/L, Sharpe, or performance plot was accessed or calculated.
