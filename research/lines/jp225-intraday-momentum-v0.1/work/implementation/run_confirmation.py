@@ -1,4 +1,4 @@
-"""One-shot 2025 confirmation runner over a source-qualified normalized price-point file."""
+"""One-shot 2025 confirmation runner over source-qualified mapped transaction prices."""
 from __future__ import annotations
 
 import hashlib
@@ -27,16 +27,23 @@ def canonical(obj) -> bytes:
 
 
 def code_identity() -> str:
-    paths = [Path(__file__), HERE / "imom_core.py"]
+    paths = [Path(__file__), HERE / "imom_core.py", HERE / "holdout_loader.py"]
     payload = {p.name: digest(p) for p in paths}
     return hashlib.sha256(canonical(payload)).hexdigest()
+
+
+def _positive_price(value) -> float:
+    v = float(value)
+    if not isfinite(v) or v <= 0:
+        raise ValueError("INVALID_PRICE")
+    return v
 
 
 def _load_input(path: str | Path) -> list[Observation]:
     obj = json.loads(Path(path).read_text())
     if set(obj) != {"version", "sample", "rows"}:
         raise ValueError("INPUT_SCHEMA_FAILURE")
-    if obj["version"] != "JP225_IMOM_INPUT_v1" or obj["sample"] != "2025_CONFIRMATION":
+    if obj["version"] != "JP225_IMOM_MAPPED_POINTS_v1" or obj["sample"] != "2025_CONFIRMATION":
         raise ValueError("INPUT_IDENTITY_FAILURE")
     rows = obj["rows"]
     if not isinstance(rows, list):
@@ -46,35 +53,43 @@ def _load_input(path: str | Path) -> list[Observation]:
     seen: set[str] = set()
     for row in rows:
         required = {
-            "date", "contract", "early_return", "late_return",
-            "signed_return", "signed_points"
+            "date", "previous_date", "contract",
+            "p_prev_1530", "p_0930", "p_1500", "p_1530",
         }
         if set(row) != required:
             raise ValueError("ROW_SCHEMA_FAILURE")
         d = date.fromisoformat(row["date"])
-        if d.year != 2025 or row["date"] in seen:
+        prev = date.fromisoformat(row["previous_date"])
+        if d.year != 2025 or prev >= d or row["date"] in seen:
             raise ValueError("SAMPLE_BOUNDARY_OR_DUPLICATE")
         seen.add(row["date"])
         if not isinstance(row["contract"], str) or not row["contract"]:
             raise ValueError("CONTRACT_FAILURE")
-        for key in ("early_return", "late_return"):
-            if not isfinite(float(row[key])):
-                raise ValueError("NONFINITE_RETURN")
-        for key in ("signed_return", "signed_points"):
-            if row[key] is not None and not isfinite(float(row[key])):
-                raise ValueError("NONFINITE_SIGN_VALUE")
-        early = float(row["early_return"])
-        if (early == 0) != (row["signed_return"] is None or row["signed_points"] is None):
-            # Both signed fields must be None only for zero predictor.
-            if early == 0 or row["signed_return"] is None or row["signed_points"] is None:
-                raise ValueError("SIGN_TRANSLATION_FAILURE")
+
+        p_prev = _positive_price(row["p_prev_1530"])
+        p_0930 = _positive_price(row["p_0930"])
+        p_1500 = _positive_price(row["p_1500"])
+        p_1530 = _positive_price(row["p_1530"])
+
+        early = p_0930 / p_prev - 1.0
+        late = p_1530 / p_1500 - 1.0
+        if early > 0:
+            signed_return = late
+            signed_points = p_1530 - p_1500
+        elif early < 0:
+            signed_return = -late
+            signed_points = p_1500 - p_1530
+        else:
+            signed_return = None
+            signed_points = None
+
         out.append(Observation(
             trade_date=d,
             contract=row["contract"],
             early_return=early,
-            late_return=float(row["late_return"]),
-            signed_return=None if row["signed_return"] is None else float(row["signed_return"]),
-            signed_points=None if row["signed_points"] is None else float(row["signed_points"]),
+            late_return=late,
+            signed_return=signed_return,
+            signed_points=signed_points,
         ))
     out.sort(key=lambda x: x.trade_date)
     return out
@@ -99,6 +114,7 @@ def run(input_path, gate_path, expected_gate_sha256, out_dir):
         or gate.get("binding") != identity
         or not isinstance(identity["source_sha256"], str)
         or len(identity["source_sha256"]) != 64
+        or any(c not in "0123456789abcdef" for c in identity["source_sha256"])
     ):
         raise PermissionError("CONFIRMATION_GATE_CLOSED")
 
