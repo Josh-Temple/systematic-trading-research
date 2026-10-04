@@ -76,3 +76,16 @@ The pre-outcome audit verified from JPX public materials that:
 - product-specific schema/order semantics and the exact permitted storage/processing route remain Packet A work and must not be assumed.
 
 These facts do not qualify the source by themselves.
+
+
+## Packet A v0.1.2 source-semantic decisions
+
+Before any market outcome access, Packet A fixes the following:
+
+- use DataCube sequence No as the same-timestamp execution ordering key;
+- exclude sco_category=1 strategy-leg prints from all four point-price mappings;
+- require the expected contract_month and execution_date;
+- do not acquire 2024 tick data solely to supply the predecessor for the first 2025 trading date;
+- keep raw purchased DataCube files local-only until the applicable use category is confirmed.
+
+These decisions are frozen in SPEC-JP225-IMOM-001-v01.2_SOURCE_AMENDMENT.md.
