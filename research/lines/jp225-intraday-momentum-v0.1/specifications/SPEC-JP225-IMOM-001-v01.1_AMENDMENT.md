@@ -42,6 +42,8 @@ The gate must bind:
 - mapped-input file identity;
 - source-manifest identity.
 
+The expected mapped-input SHA-256 and source-manifest SHA-256 must be supplied independently of the gate. The runner validates the gate against those expected identities **before opening the mapped input file**. Only after the gate passes and sample consumption is reserved may the runner hash and parse the mapped input.
+
 No value may be sourced from the gate and then used to validate that same gate.
 
 ## C. Sample consumption
