@@ -2,7 +2,7 @@
 
 ## Current status
 
-The implementation validates frozen `SPEC-CSM-002-v01`: Git blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`, SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`. The current config mirror says `FROZEN` and matches those bytes. Freeze is not an open blocker. The current I2 record is `CLOSED` and Packet E audit `AUDIT-CSM-E-20261002` is `PARTIAL_WITH_GAPS` / `BLOCKED`; the default validator therefore rejects outcome access. D does not grant access, capture data, calculate market results, or issue an X instruction.
+The implementation validates frozen `SPEC-CSM-002-v01`: Git blob `7fe114e2fcfa33b0565b51c717455abd8837d5d9`, SHA-256 `a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2`. The current config mirror says `FROZEN` and matches those bytes. Freeze is not an open blocker. The current upstream I2 record is still `CLOSED` and the latest independent E audit remains `PARTIAL_WITH_GAPS` / `BLOCKED`; D therefore remains non-authorizing. The validator no longer hard-codes mutable I/E commit identities. Instead, a trusted Integrator-signed gate must identify a PASS/OPEN I2 artifact, and a separately trusted auditor-signed E attestation must bind the exact current D file hashes, environment identity, frozen SPEC, source-lock raw bytes, and calendar identity. D does not grant access, capture data, calculate market results, or issue an X instruction.
 
 The implementation's score ledger is formed from the two formation endpoints only. It persists `a`, `b`, formation endpoints, per-currency exact-ratio score identities (including input hashes and the score-spec ID), and formation/calendar skip reasons before target endpoint values are accessed. Missing target observations are classified only after that ledger is persisted.
 
@@ -24,11 +24,20 @@ The integration test validates those metadata identities and generates its own s
 
 ## Receipt authentication
 
-The gate input must be a signed envelope. The I2 envelope must be signed by a trusted `integrator` key and contain a separately signed current E attestation from an `independent_auditor` key. Both use RSASSA-PKCS1-v1_5-SHA256; the verifier checks signer role, validity interval, revocation, receipt expiry (maximum 24 hours), payload signature, and exact current I2/E identities. Signed claims bind the frozen SPEC, D file hashes, runtime identity, source-lock canonical-object hash and exact raw-byte SHA-256, metadata/calendar hashes, access ledger, run ID, and named operator.
+The gate input must be a signed envelope. The I2 envelope must be signed by a trusted `integrator` key and contain a separately signed current E attestation from an `independent_auditor` key. Both use RSASSA-PKCS1-v1_5-SHA256; the verifier checks signer role, validity interval, revocation, receipt expiry (maximum 24 hours), payload signature, and immutable Git/blob/digest identities.
+
+The binding is intentionally **non-circular**. D does not embed the current I or E commit SHA. Instead:
+
+- the Integrator-signed gate identifies PR #37, a 40-hex current head, exact gate blob/SHA identities, `gate_status=PASS`, and `market_outcome_access=true`;
+- the auditor-signed E attestation identifies PR #38, exact result/matrix blob and SHA identities, `status=PASS`, and `recommendation=ALLOW_I2`;
+- E must independently bind the exact current D file-hash map, environment identity, frozen SPEC SHA-256, source-lock raw-byte SHA-256, and calendar SHA-256;
+- the Integrator gate independently binds the same D/runtime/source/calendar identities plus the named operator, run ID and access-ledger identity.
+
+Rotating I/E heads therefore does not require a D code edit, while stale E evidence against older D bytes still fails closed.
 
 Production trust keys are not created or assigned by this D change. The runner expects `/etc/csm-002/trusted-keys.json`, a root-owned regular file that is not group/world writable. Platform/security staff must provision the auditor and Integrator public keys, their principal IDs, roles, validity intervals, and revocation state; then independently verify the provisioned fingerprints and file ownership/mode. The file is absent/unverified in this work, so production receipt validation remains unavailable and CLOSED. Synthetic test keys are accepted only by test calls; the production CLI does not enable that path.
 
-The currently pinned I2 identity is PR #37 head `677341e8185bf38b5cc6d4490260ddefb72eb561`, gate.json blob `ba1670b0c13ec58e806838949a80574a5cbab6c4` / SHA-256 `54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6`, and `GATE.md` blob `03707f1aa346945a368e98881e8aa6f99ae91fb9` / SHA-256 `d901a7726355916088ade7ed32e129a241a360cbbcd220a01319413650d9465d`. Its state is CLOSED / access false. The pinned E identity is PR #38 head `d1335b29eeb01cdd4b71cd5ded62033b8468e539`, audit ID `AUDIT-CSM-E-20261002`, result blob `f29a5d38b16b54734a47c719c09922a461ee3fe4` / SHA-256 `c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35`, and matrix blob `3ada00d887bc76f88c777d2a40ea410077e3e594` / SHA-256 `a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7`. Its status is PARTIAL_WITH_GAPS / BLOCKED. Any later I/E update requires fresh identities and D re-audit; old receipts do not carry forward.
+At the time of this update, the upstream I/E repository state remains non-authorizing. That state is recorded by I/E themselves rather than pinned in D.
 
 ## External run requirements — not established by D
 
@@ -48,11 +57,11 @@ The Python audit hook blocks selected network and subprocess events inside this 
 
 `atomic_capture_bytes` writes a same-directory temporary file, checks the exact raw-byte SHA-256 and caller-supplied content validator, flushes and fsyncs it, then promotes it without overwriting an existing capture. The run path reads a source-lock file once into a byte buffer, parses that buffer, and uses the same bytes for raw SHA-256 validation. Capture and gate receipts bind both the canonical object hash and exact raw-byte hash; semantically equal JSON with different bytes fails if its raw hash is not the signed value.
 
-Calculation outputs are written under a same-filesystem temporary directory. Every file is fsynced and hash-checked against a completion manifest before the directory rename. Only after directory promotion and parent fsync does the runner atomically create the final success receipt. Write, flush, file/directory fsync, rename, and receipt-promotion failures are fault-injected in synthetic tests. Failed attempts remain in staging or are removed; they are not promoted as a successful run. The final destination's persistence, reader ACLs, and durable attempt logging remain external requirements above.
+Calculation outputs are written under a same-filesystem temporary directory. Every file is fsynced and hash-checked against a completion manifest before the directory rename. After directory promotion and parent fsync, the runner first removes and fsyncs the non-success pending marker, then publishes `run-receipt.json` as the final fallible commit operation. No fallible success-path operation follows receipt publication. Write, flush, file/directory fsync, rename, receipt-promotion, and the independently reproduced compound final-directory-fsync plus rollback-deletion failure are fault-injected in synthetic tests. A reported failure must not leave `run-receipt.json`, even if the failed-attempt directory itself cannot be removed. The final destination's persistence, reader ACLs, and durable attempt logging remain external requirements above.
 
 ## Future command shape
 
-This command is not currently authorized or runnable: the pinned I2 and E states fail closed, and the trusted production key store and external controls are not established.
+This command is not currently authorized or runnable: upstream I2/E remain non-authorizing, and the trusted production key store and external controls are not established.
 
 ```bash
 python3 csm.py run \
