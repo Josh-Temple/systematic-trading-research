@@ -1,0 +1,78 @@
+name: CSM E independent re-audit 20261004
+
+on:
+  push:
+    branches:
+      - audit/csm-e-reaudit-20261004
+  pull_request:
+    paths:
+      - "research/lines/currency-strength-momentum-v0.1/work/independent-audit/**"
+      - ".github/workflows/csm-e-reaudit-20261004.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  reaudit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize exact D, C, I and frozen SPEC inputs
+        run: |
+          set -euo pipefail
+          d=3695f0a8ed085669ec3644826889f9fc953a6808
+          c=9870c710c3cba7bb9226c9eee8ec36687b96fd9d
+          i=6bd9ddc5bc53c37aee3b0d82d1ac2c00c00fd73c
+          root=research/lines/currency-strength-momentum-v0.1
+
+          mkdir -p /tmp/csm-d/fixtures /tmp/csm-c /tmp/csm-i
+
+          for f in csm.py test_csm.py config.json RUNBOOK.md ENVIRONMENT.md RESULT.md TEST_MATRIX.md TEST_LOG.txt; do
+            git show "$d:$root/work/implementation/$f" > "/tmp/csm-d/$f"
+          done
+          git show "$d:$root/work/implementation/fixtures/toy_cases.json" > /tmp/csm-d/fixtures/toy_cases.json
+
+          git show "$c:$root/work/source-qualification/source-lock.json" > /tmp/csm-c/source-lock.json
+          git show "$c:$root/work/source-qualification/probe-metadata.json" > /tmp/csm-c/probe-metadata.json
+          git show "$c:$root/work/source-qualification/expected-calendar.json" > /tmp/csm-c/expected-calendar.json
+
+          git show "$i:$root/work/integration/gate.json" > /tmp/csm-i/gate.json
+          git show "$i:$root/work/integration/GATE.md" > /tmp/csm-i/GATE.md
+          git show "$i:$root/specifications/SPEC-CSM-002-v01.md" > /tmp/csm-i/SPEC-CSM-002-v01.md
+
+          echo "ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71  /tmp/csm-c/source-lock.json" | sha256sum -c -
+          echo "1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533  /tmp/csm-c/probe-metadata.json" | sha256sum -c -
+          echo "6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4  /tmp/csm-c/expected-calendar.json" | sha256sum -c -
+          echo "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2  /tmp/csm-i/SPEC-CSM-002-v01.md" | sha256sum -c -
+
+      - name: Independently rerun exact D synthetic suite
+        working-directory: /tmp/csm-d
+        env:
+          CSM_PACKET_C_SOURCE_LOCK: /tmp/csm-c/source-lock.json
+          CSM_PACKET_C_PROBE_METADATA: /tmp/csm-c/probe-metadata.json
+          CSM_PACKET_C_EXPECTED_CALENDAR: /tmp/csm-c/expected-calendar.json
+        run: |
+          python3 -m py_compile csm.py test_csm.py
+          python3 -m unittest -v test_csm.py
+
+      - name: Run E independent oracle
+        run: |
+          python3 research/lines/currency-strength-momentum-v0.1/work/independent-audit/toy_oracle.py \
+            --d-root /tmp/csm-d \
+            --i-gate-json /tmp/csm-i/gate.json \
+            --i-gate-md /tmp/csm-i/GATE.md \
+            --frozen-spec /tmp/csm-i/SPEC-CSM-002-v01.md \
+            --source-lock /tmp/csm-c/source-lock.json \
+            --probe-metadata /tmp/csm-c/probe-metadata.json \
+            --expected-calendar /tmp/csm-c/expected-calendar.json
+
+      - name: Print exact E input identities
+        run: |
+          echo "I_GATE_SHA256 $(sha256sum /tmp/csm-i/gate.json | awk '{print $1}')"
+          echo "I_GATE_MD_SHA256 $(sha256sum /tmp/csm-i/GATE.md | awk '{print $1}')"
+          echo "E_ORACLE_BLOB $(git hash-object research/lines/currency-strength-momentum-v0.1/work/independent-audit/toy_oracle.py)"
+          echo "E_ORACLE_SHA256 $(sha256sum research/lines/currency-strength-momentum-v0.1/work/independent-audit/toy_oracle.py | awk '{print $1}')"
