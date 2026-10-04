@@ -25,11 +25,21 @@ Use for questions about the Horizontal Reaction research line.
 
 Use for questions about the FX currency-strength / strongest-versus-weakest momentum research line.
 
+### usdjpy-overnight-prospective-forecast-v0.1
+
+- branch: `research/usdjpy-overnight-prospective-forecast-v0.1`
+- scope root on that branch: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/`
+- current projection: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/CURRENT.md`
+- line definition: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/RESEARCH_LINE.md`
+- Phase 0 candidate: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/specifications/SPEC-USDJPY-FORECAST-001-v01.md`
+
+Use for the proposed prospective USD/JPY overnight forecasting line. It remains PRE-FREEZE until explicit human acceptance and source/readiness gates pass.
+
 Important:
-- the line is not currently present on `main`;
-- do not infer its current research state from this index;
+- non-main lines are not currently part of canonical `main`;
+- do not infer their current research state from this index;
 - fresh-read the named branch before answering line-specific current-state questions;
-- if the branch is later merged, moved, superseded, or deleted, update this index.
+- if a branch is later merged, moved, superseded, or deleted, update this index.
 
 ## Routing rules
 
