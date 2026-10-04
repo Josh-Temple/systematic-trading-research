@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+jp225_mt5_stage*/
+m1_*raw.csv
+ticks_raw.csv
+tick_probes_raw.csv
+event_ticks_raw.csv
+*.zip

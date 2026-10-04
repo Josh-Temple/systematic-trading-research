@@ -25,11 +25,20 @@ Use for questions about the Horizontal Reaction research line.
 
 Use for questions about the FX currency-strength / strongest-versus-weakest momentum research line.
 
+### jp225-ema-timeofday-v0.1
+
+- branch: `research/jp225-ema-timeofday-20261003`
+- scope root on that branch: `research/lines/jp225-ema-timeofday-v0.1/`
+- current projection on that branch: `research/lines/jp225-ema-timeofday-v0.1/CURRENT.md`
+- line definition on that branch: `research/lines/jp225-ema-timeofday-v0.1/RESEARCH_LINE.md`
+
+Use for the XM JP225Cash M1 EMA5/EMA200 crossover and time-of-day research line.
+
 Important:
-- the line is not currently present on `main`;
-- do not infer its current research state from this index;
+- non-main lines are not currently canonical on `main`;
+- do not infer current research state from this index;
 - fresh-read the named branch before answering line-specific current-state questions;
-- if the branch is later merged, moved, superseded, or deleted, update this index.
+- if a branch is merged, moved, superseded, or deleted, update this index.
 
 ## Routing rules
 
@@ -38,3 +47,6 @@ Important:
 3. Prefer the line-local current projection / specification / decision files over this index.
 4. Do not treat a branch name as proof of completion, verification, or current findings.
 5. If no line matches, search the repository rather than inventing a line.
+
+JP225 combined pre-XM audit/hardening review branch: `work/jp225-pre-xm-hardening`.
+Its line-local CURRENT and `work/integration/INDEPENDENT_AUDIT.md` are the combined draft projection; the architecture-only branch above does not include these later corrections. Neither is merged main authority yet.

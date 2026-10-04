@@ -1,0 +1,48 @@
+Packet B synthetic-only test execution
+Date: 2026-10-03
+Market-data access: NONE
+
+Initial test command:
+python -m unittest -v test_jp225_ema_screen.py
+
+Initial result:
+Ran 20 tests
+OK
+
+Self-audit finding:
+The specification required explicit overlap diagnostics. Initial code had documented overlap handling but no dedicated calculation function.
+
+Repair:
+Added overlap_diagnostics.py and test_overlap_diagnostics.py.
+
+Repair test command:
+python -m unittest -v test_overlap_diagnostics.py
+
+Repair result:
+Ran 1 test
+OK
+
+Total current synthetic tests: 21 PASS
+
+Covered:
+- EMA recursion
+- equality crossover boundary
+- long/short EMA crossover
+- price/EMA200 comparator
+- no missing-bar fabrication
+- Tokyo open boundaries
+- Tokyo close boundaries
+- U.S. DST spring conversion
+- U.S. standard-time conversion
+- long ASK-entry/BID-exit
+- short BID-entry/ASK-exit
+- missing entry quote
+- missing target quote
+- exact target quote
+- first quote after target
+- deterministic bootstrap seed
+- discovery tie-break
+- no-advancement state
+- holdout lock without advancement
+- holdout gate states
+- event-window overlap count/share

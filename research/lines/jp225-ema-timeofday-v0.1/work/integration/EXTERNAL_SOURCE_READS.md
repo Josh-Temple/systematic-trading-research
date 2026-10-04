@@ -1,0 +1,9 @@
+# External primary sources read — 2026-10-04
+
+- [MetaTrader Python copy_rates_range](https://www.mql5.com/en/docs/python_metatrader5/mt5copyratesrange_py): date_from >=, date_to <= inclusive; terminal chart-history/maxbars limitation; documented UTC request/return convention. This controls the acquisition boundary correction; it does not certify the specific XM feed.
+- [MetaTrader Python copy_ticks_range](https://www.mql5.com/en/docs/python_metatrader5/mt5copyticksrange_py): raw tick schema and UTC request convention.
+- [MQL5 Symbol Properties](https://www.mql5.com/en/docs/constants/environment_state/marketinfoconstants): chart mode BID/LAST; point/digits, tick and contract size, volume properties. No generic assertion that every MT5 M1 source is BID is adopted.
+- [FutureSharks generator at exact commit](https://github.com/FutureSharks/financial-data/blob/7ba1d404aa8b0e1c0f71321acebadcbfb9bcca8d/pyfinancialdata/oanda_prices.py): actual code expanded candle midpoint, constructed UTC month bounds, deduplicated candles and removed `complete`. Thus completeness cannot be independently recovered from the CSV flag; historical proxy identity is midpoint, not executable quotes.
+- [FutureSharks README at exact commit](https://github.com/FutureSharks/financial-data/blob/7ba1d404aa8b0e1c0f71321acebadcbfb9bcca8d/README.md): source attribution only; raw/code review rather than README assertion controls this audit. Generator history identifies introduction commit f609cab.
+
+Current XM product/server identity was not independently established. Public-source search did not provide usable new XM server evidence in this audit; it does not justify a conversion rule. The local terminal and independent fixed-2025 evidence are blockers. The earlier precheck's forum claim is preserved historically, not freshly verified here.

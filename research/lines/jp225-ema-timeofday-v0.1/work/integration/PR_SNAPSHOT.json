@@ -1,0 +1,65 @@
+{
+  "read_at_utc": "2026-10-04",
+  "main": "a765b33fc0915fdfdcf21287a4418aca4f5b8b7c",
+  "main_protected": false,
+  "rulesets": [],
+  "jp225_check_runs_at_start": [],
+  "pulls": [
+    {
+      "number": 48,
+      "state": "open",
+      "draft": true,
+      "base": {
+        "ref": "work/jp225-ema-implementation-20261003",
+        "sha": "a4f797f4c579d204a1df27a7e63c781640e5e230"
+      },
+      "head": {
+        "ref": "work/jp225-proxy-replication-20261004",
+        "sha": "ed443608d9b778256ed4f5f5ed7a369871a3ee2f"
+      },
+      "updated_at": "2026-10-03T22:21:01Z"
+    },
+    {
+      "number": 45,
+      "state": "open",
+      "draft": true,
+      "base": {
+        "ref": "research/jp225-ema-timeofday-20261003",
+        "sha": "c42f1ce130d49f0aeadcec7010b58627093cb95d"
+      },
+      "head": {
+        "ref": "work/jp225-ema-source-qualification-20261003",
+        "sha": "48ede9665b91b308310fee47b97bcfa81c66cdae"
+      },
+      "updated_at": "2026-10-03T22:23:02Z"
+    },
+    {
+      "number": 44,
+      "state": "open",
+      "draft": true,
+      "base": {
+        "ref": "research/jp225-ema-timeofday-20261003",
+        "sha": "c42f1ce130d49f0aeadcec7010b58627093cb95d"
+      },
+      "head": {
+        "ref": "work/jp225-ema-implementation-20261003",
+        "sha": "a4f797f4c579d204a1df27a7e63c781640e5e230"
+      },
+      "updated_at": "2026-10-03T22:21:54Z"
+    },
+    {
+      "number": 42,
+      "state": "open",
+      "draft": true,
+      "base": {
+        "ref": "main",
+        "sha": "a765b33fc0915fdfdcf21287a4418aca4f5b8b7c"
+      },
+      "head": {
+        "ref": "research/jp225-ema-timeofday-20261003",
+        "sha": "c42f1ce130d49f0aeadcec7010b58627093cb95d"
+      },
+      "updated_at": "2026-10-03T22:21:57Z"
+    }
+  ]
+}
