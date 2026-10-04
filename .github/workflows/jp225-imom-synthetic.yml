@@ -1,0 +1,22 @@
+name: JP225 intraday momentum synthetic
+on:
+  push:
+    paths:
+      - 'research/lines/jp225-intraday-momentum-v0.1/**'
+      - '.github/workflows/jp225-imom-synthetic.yml'
+  pull_request:
+    paths:
+      - 'research/lines/jp225-intraday-momentum-v0.1/**'
+      - '.github/workflows/jp225-imom-synthetic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s research/lines/jp225-intraday-momentum-v0.1/work/implementation -p 'test_*.py' -v
