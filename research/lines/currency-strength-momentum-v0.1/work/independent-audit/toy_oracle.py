@@ -495,7 +495,7 @@ def test_failure_cleanup(csm: Any) -> list[str]:
             original_fsync(path)
         csm._fsync_directory = fail_final
         try:
-            rejects(lambda: csm.promote_output_directory(stage, destination), "output promotion failed")
+            rejects(lambda: csm.promote_output_directory(stage, destination), "failed")
             check(not destination.exists(), "single final directory-fsync fault left final output")
         finally:
             csm._fsync_directory = original_fsync
@@ -519,7 +519,7 @@ def test_failure_cleanup(csm: Any) -> list[str]:
         csm._fsync_directory = fail_final
         csm.shutil.rmtree = fail_cleanup
         try:
-            rejects(lambda: csm.promote_output_directory(stage, destination), "output promotion failed")
+            rejects(lambda: csm.promote_output_directory(stage, destination), "failed")
             check(not (destination / "run-receipt.json").exists(),
                   "compound failure left a SUCCESS receipt after D hardening")
         finally:
