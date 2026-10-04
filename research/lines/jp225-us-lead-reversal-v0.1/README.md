@@ -4,7 +4,7 @@ A separate historical proxy research line motivated by published evidence that t
 
 This line is **not** a rescue of EMA5/EMA200 and is **not** XM execution evidence.
 
-Current stage: pre-outcome 2015 discovery specification frozen. No 2015 price outcomes had been read when the specification was committed.
+Current stage: 2015 proxy discovery completed and stopped as not supported. Git history shows the specification commit precedes the first repository outcome-bearing 2015 receipt. Git history cannot independently prove absence of any off-repository human access.
 
 Target research question:
 
