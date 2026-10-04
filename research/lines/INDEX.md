@@ -34,6 +34,15 @@ Use for questions about the FX currency-strength / strongest-versus-weakest mome
 
 Use for the XM JP225Cash M1 EMA5/EMA200 crossover and time-of-day research line.
 
+
+### jp225-us-lead-reversal-v0.1
+
+- branch: `research/jp225-us-lead-reversal-20261004`
+- scope root on that branch: `research/lines/jp225-us-lead-reversal-v0.1/`
+- current projection on that branch: `research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md`
+
+Use for the literature-motivated prior-U.S.-session / Japanese-opening reversal proxy research line. The 2015 OANDA midpoint proxy discovery is negative and the line is stopped; it is not XM execution evidence.
+
 Important:
 - non-main lines are not currently canonical on `main`;
 - do not infer current research state from this index;
