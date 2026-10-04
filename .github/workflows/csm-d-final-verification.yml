@@ -1,0 +1,52 @@
+name: CSM D final verification
+
+on:
+  push:
+    branches:
+      - audit/csm-d-final-20261004
+  pull_request:
+    paths:
+      - "research/lines/currency-strength-momentum-v0.1/work/implementation/**"
+      - ".github/workflows/csm-d-final-verification.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize exact Packet C metadata
+        run: |
+          mkdir -p /tmp/csm-c
+          git show 9870c710c3cba7bb9226c9eee8ec36687b96fd9d:research/lines/currency-strength-momentum-v0.1/work/source-qualification/source-lock.json > /tmp/csm-c/source-lock.json
+          git show 9870c710c3cba7bb9226c9eee8ec36687b96fd9d:research/lines/currency-strength-momentum-v0.1/work/source-qualification/probe-metadata.json > /tmp/csm-c/probe-metadata.json
+          git show 9870c710c3cba7bb9226c9eee8ec36687b96fd9d:research/lines/currency-strength-momentum-v0.1/work/source-qualification/expected-calendar.json > /tmp/csm-c/expected-calendar.json
+          echo "ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71  /tmp/csm-c/source-lock.json" | sha256sum -c -
+          echo "1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533  /tmp/csm-c/probe-metadata.json" | sha256sum -c -
+          echo "6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4  /tmp/csm-c/expected-calendar.json" | sha256sum -c -
+
+      - name: Compile D
+        working-directory: research/lines/currency-strength-momentum-v0.1/work/implementation
+        run: python3 -m py_compile csm.py test_csm.py
+
+      - name: Run full D synthetic suite
+        working-directory: research/lines/currency-strength-momentum-v0.1/work/implementation
+        env:
+          CSM_PACKET_C_SOURCE_LOCK: /tmp/csm-c/source-lock.json
+          CSM_PACKET_C_PROBE_METADATA: /tmp/csm-c/probe-metadata.json
+          CSM_PACKET_C_EXPECTED_CALENDAR: /tmp/csm-c/expected-calendar.json
+        run: python3 -m unittest -v test_csm.py
+
+      - name: Print exact D artifact identities
+        working-directory: research/lines/currency-strength-momentum-v0.1/work/implementation
+        run: |
+          for f in csm.py test_csm.py config.json fixtures/toy_cases.json RUNBOOK.md ENVIRONMENT.md RESULT.md TEST_MATRIX.md TEST_LOG.txt; do
+            echo "D_SHA256 $(sha256sum "$f" | awk '{print $1}') $f"
+            echo "D_BLOB $(git hash-object "$f") $f"
+          done
