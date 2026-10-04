@@ -41,7 +41,7 @@ These candles are midpoint OHLCV proxy data, not executable XM BID/ASK history.
 
 ## Base crossover
 
-At source bar index `t`:
+At source bar index `t`, the prior source bar `t-1` must exist at the exact preceding one-minute timestamp. A cross spanning a source gap is ineligible.
 
 Long cross:
 - EMA5[t-1] <= EMA200[t-1]
@@ -138,7 +138,7 @@ This fully specifies the historical proxy bootstrap and does not alter the froze
 
 ## Comparator
 
-Report the unfiltered EMA5/EMA200 cross on 2017 using the same +15m bar-open gross outcome, for descriptive context only.
+Report the unfiltered EMA5/EMA200 cross on 2017 for descriptive context only. It uses the same exact-minute base-cross eligibility, entry at the exact next-minute OPEN after the cross bar completes, and exit at the exact OPEN 15 minutes after that entry.
 
 Comparator performance cannot rescue a failed persistence result.
 
