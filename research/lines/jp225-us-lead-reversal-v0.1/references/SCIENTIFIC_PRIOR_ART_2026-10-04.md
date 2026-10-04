@@ -15,7 +15,7 @@ Reported design:
 - January 2001 through December 2024;
 - 5,716 Japanese trading days;
 - prior U.S. return significantly predicts the first 30-minute Japanese return negatively and the last 30-minute return positively;
-- transaction costs reduce profitability but the reported opening-reversal timing strategy remains positive in the study.
+- the public article reports that strategies exploiting the documented intraday reversal/momentum can generate statistically significant positive excess returns. This repository does not independently restate a transaction-cost-adjusted claim unless the exact treatment is verified from the paper.
 
 The paper uses futures and licensed LSEG Tick History. This repository does not reproduce that exact source.
 
