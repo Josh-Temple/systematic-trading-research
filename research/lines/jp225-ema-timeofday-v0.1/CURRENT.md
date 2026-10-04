@@ -5,66 +5,32 @@ projection_generated_at: 2026-10-04
 derived_from_decisions:
   - DEC-JP225-EMA-001
   - DEC-JP225-PROXY-20261004
-derived_from_interpretations:
-  - RESULT-JP225-PROXY-OANDA-2019-REPLICATION
-  - RESULT-JP225-PROXY-EMA200-SLOPE-2018
+  - work/integration/INDEPENDENT_AUDIT.md
 ---
 
 # Current State
 
-## Main scientific status
+Operational state: **WAITING_FOR_XM_STAGE1_DATA**.
 
-- Exact XM hypothesis HYP-JP225-EMA-001: **UNTESTED**
-- XM market outcomes accessed: **NO**
-- Packet A exact XM source: **PARTIAL_WITH_GAPS**
-- Packet B deterministic implementation: **COMPLETE**
-- Packet C XM discovery: **LOCKED**
-- 2026 XM holdout: **UNTOUCHED / LOCKED**
+## Exact XM research
 
-## Frozen XM core
+- HYP-JP225-EMA-001: **UNTESTED**; XM outcomes accessed: **NO**.
+- Original specification bytes fixed by [SPEC_FREEZE.json](work/integration/SPEC_FREEZE.json); its historical draft header is retained.
+- Packet A source: **PARTIAL_WITH_GAPS**. Exact server/time/BID M1/coverage unverified.
+- Packet B + collector/validators/Stage 2/one-shot runner: **SYNTHETIC_TESTS_PASS**. No claim of market edge.
+- Packet C 2025 Discovery: **LOCKED / NOT_EXECUTED** until exact signal+execution source and pinned independent gate PASS.
+- XM 2026-01-01 through 2026-09-30: **UNTOUCHED / LOCKED**. No loader invocation or outcome/count/plot.
 
-- symbol: XM MT5 `JP225Cash`
-- M1 EMA(5)/EMA(200) crossover
-- primary horizon: +15 minutes
-- quote-executable BID/ASK economics required
-- 2025 discovery
-- 2026-01-01 through 2026-09-30 holdout only after a valid discovery advancement
+Core unchanged: exact XM MT5 JP225Cash, M1 EMA5/200, 2025 discovery, +15m BID/ASK primary, ALL / 08:45–09:15 / 15:15–15:45 JST selectable only. +5/+30, night/US open and price/EMA200 remain descriptive/comparator. No rescue search.
 
-## Proxy exploratory evidence
+## Proxy evidence — separate and consumed
 
-Because exact XM data was unavailable in Chat, public OANDA-derived **midpoint** JP225 M1 data was used under separate exploratory labels.
+OANDA-derived midpoint candles are not XM execution data. 2020 partial-year close-window observation was selected post hoc. Frozen 2019 single-candidate replication failed (99 valid/65 dates, mean +0.9303 gross points); 2018 ALL slope test failed (4958/305, mean +0.2374). One-bar EMA200 slope is structurally redundant.
 
-### 2020 partial-year
-
-Broad all-time continuation was small and not statistically separated from zero. Tokyo-open continuation was negative. A historical-close window looked positive post hoc.
-
-### 2019 independent historical replication
-
-The historical-close candidate failed its pre-frozen replication:
-
-- mean +0.9303 points
-- day-cluster 95% interval [-2.9103, +5.0836]
-- HISTORICAL_PROXY_NOT_REPLICATED
-
-### 2018 nearby slope-filter test
-
-A one-bar EMA200 slope-alignment rule produced exactly the same events as the unfiltered crossover. Algebra shows this filter is structurally redundant.
-
-The underlying 2018 broad crossover result was:
-
-- mean +0.2374 gross points
-- day-cluster 95% interval [-0.3830, +0.8841]
-
-No robust gross continuation edge was established.
-
-## Current interpretation
-
-The available proxy evidence is adverse to the simple claim that M1 EMA5/EMA200 crossover has a broad, stable short-horizon continuation edge that only needs a low spread to become profitable.
-
-It does not establish the result for current XM JP225Cash.
+Original negative files and source receipts remain unchanged. Independent raw replay reproduced counts/daily sums and classification; original exact bootstrap RNG provenance remains incomplete. See [independent audit](work/integration/INDEPENDENT_AUDIT.md) and [procedural deviation](work/integration/PROCEDURAL_DEVIATION.md). Overall audit **PARTIAL_WITH_GAPS**, not blanket scientific PASS. Do not optimize consumed proxy samples or promote them to XM results.
 
 ## Next action
 
-Highest priority: obtain exact XM MT5 JP225Cash M1 and BID/ASK tick history using the existing outcome-blind collector, qualify timestamp/instrument semantics, then run the frozen XM 2025 discovery.
+Run the revised [Stage 1 Windows runbook](work/source-qualification/STAGE1_WINDOWS_RUNBOOK.md) and provide the immutable raw ZIP. Use this integration branch's complete scripts, not old PR #45. Stage 1 source review -> frozen signal-only manifest -> event-adjacent Stage 2 ticks -> Packet A execution PASS -> pinned independent Discovery gate -> one-shot 2025 result. See [Stage 2 plan](work/source-qualification/STAGE2_PLAN.md).
 
-Do not continue searching EMA lengths, hours, weekdays, slope lookbacks, or exits on the consumed OANDA proxy data.
+All JP225 PRs remain draft pending complete review. Main has not yet adopted this projection. No broker substitute, credentials, live orders or holdout acquisition is authorized.

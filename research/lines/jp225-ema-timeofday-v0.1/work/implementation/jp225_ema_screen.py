@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from math import inf
+from math import inf, isfinite
 from random import Random
 from statistics import mean
 from typing import Mapping, Sequence
@@ -25,6 +25,8 @@ class Quote:
     def __post_init__(self) -> None:
         if self.timestamp.tzinfo is None:
             raise ValueError("quote timestamp must be timezone-aware")
+        if not all(isfinite(x) and x > 0 for x in (self.bid, self.ask)):
+            raise ValueError("invalid quote")
         if self.ask < self.bid:
             raise ValueError("ask must be >= bid")
 
@@ -46,6 +48,8 @@ def recursive_ema(values: Sequence[float], span: int) -> list[float]:
         raise ValueError("span must be positive")
     if not values:
         return []
+    if not all(isfinite(float(x)) for x in values):
+        raise ValueError("nonfinite EMA input")
     alpha = 2.0 / (span + 1.0)
     out = [float(values[0])]
     for value in values[1:]:
@@ -112,7 +116,12 @@ def map_executable_outcome(
         raise ValueError("signal_close must be timezone-aware")
     if direction not in (-1, 1):
         raise ValueError("direction must be -1 or +1")
+    if horizon_minutes not in (5, 15, 30) or max_quote_delay_seconds != 60:
+        raise ValueError("unfrozen execution mapping")
     ordered = sorted(quotes, key=lambda q: q.timestamp)
+    for a, b in zip(ordered, ordered[1:]):
+        if a.timestamp == b.timestamp and (a.bid, a.ask) != (b.bid, b.ask):
+            raise ValueError("ambiguous same-time quotes require source ordering qualification")
     entry_deadline = signal_close + timedelta(seconds=max_quote_delay_seconds)
     entry = next((q for q in ordered if signal_close < q.timestamp <= entry_deadline), None)
     if entry is None:
@@ -148,7 +157,11 @@ def cluster_bootstrap_mean(
     reps: int = BOOTSTRAP_REPS,
     seed: int = BOOTSTRAP_SEED,
 ) -> tuple[float, float]:
-    dates = list(values_by_date)
+    if reps <= 0:
+        raise ValueError("invalid replications")
+    if any(not v or not all(isfinite(float(x)) for x in v) for v in values_by_date.values()):
+        raise ValueError("invalid cluster")
+    dates = sorted(values_by_date)
     if not dates:
         raise ValueError("no date clusters")
     rng = Random(seed)
@@ -172,6 +185,9 @@ def select_discovery_candidate(metrics: Mapping[str, Mapping[str, float]]) -> st
     for name in SELECTABLE_CANDIDATES:
         m = metrics.get(name)
         if not m:
+            continue
+        if any(not isfinite(float(m.get(k, -inf))) for k in
+               ("event_count", "distinct_dates", "mean_net_points", "ci_lower")):
             continue
         if (
             int(m.get("event_count", 0)) >= 100

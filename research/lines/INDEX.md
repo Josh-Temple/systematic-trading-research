@@ -47,3 +47,6 @@ Important:
 3. Prefer the line-local current projection / specification / decision files over this index.
 4. Do not treat a branch name as proof of completion, verification, or current findings.
 5. If no line matches, search the repository rather than inventing a line.
+
+JP225 combined pre-XM audit/hardening review branch: `work/jp225-pre-xm-hardening`.
+Its line-local CURRENT and `work/integration/INDEPENDENT_AUDIT.md` are the combined draft projection; the architecture-only branch above does not include these later corrections. Neither is merged main authority yet.

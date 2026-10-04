@@ -32,3 +32,9 @@ Dukascopy `JPN.IDX/JPY` is not silently substituted: Dukascopy currently describ
 ## Prohibited before discovery is recorded
 
 Do not tune EMA spans, stop/target, confirmation bars, EMA200 slope, volatility filters, weekdays, ad-hoc clock windows, news filters, or long/short asymmetry.
+
+## 2026-10-04 pre-XM integration
+
+See [independent audit](work/integration/INDEPENDENT_AUDIT.md), [current projection](CURRENT.md), [Stage 1 runbook](work/source-qualification/STAGE1_WINDOWS_RUNBOOK.md) and [Stage 2 plan](work/source-qualification/STAGE2_PLAN.md).
+
+Exact original specification bytes are pinned by the integration freeze receipt. Raw XM qualification/Discovery have not occurred. The old full collector is disabled; use the revised Stage 1 directory. The staged route requires Stage 1 plus event-adjacent Stage 2 ticks before Discovery, not one raw M1 upload alone.
