@@ -30,6 +30,7 @@ class Trade:
     timestamp: datetime
     price: float
     source_order: int | None = None
+    sco_category: int = 0
 
 
 @dataclass(frozen=True)
@@ -65,6 +66,8 @@ def _validate_trade(t: Trade) -> None:
         raise ValueError("INVALID_PRICE")
     if t.source_order is not None and (type(t.source_order) is not int or t.source_order < 0):
         raise ValueError("INVALID_SOURCE_ORDER")
+    if t.sco_category not in (0, 1):
+        raise ValueError("INVALID_SCO_CATEGORY")
 
 
 def first_trade_at_or_after(
@@ -79,6 +82,8 @@ def first_trade_at_or_after(
     candidates: list[Trade] = []
     for trade in trades:
         _validate_trade(trade)
+        if trade.sco_category != 0:
+            continue
         if boundary <= trade.timestamp <= end:
             candidates.append(trade)
 
