@@ -1,0 +1,126 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261005T011400+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-05T01:14:00+09:00",
+  "retrieved_at": "2026-10-05T01:14:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-05T01:14:00+09:00",
+  "market_open_state": "CLOSED",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "Monex historical page / EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Latest completed daily record observed: 2026-10-02 close 157.853, high 158.229, low 156.955. This is not the qualified Dukascopy Bid/Ask benchmark feed."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_CURRENT_EXACT_VALUE_NOT_BOUND_IN_THIS_ENTRY",
+    "us_10y": "ELEVATED_QUALITATIVE_REUTERS_2026-10-02",
+    "jp_2y": "UNKNOWN",
+    "jp_10y": "UNKNOWN"
+  },
+  "policy_state": {
+    "fed": "Target range 3.75%-4.00% after 2026-09-16 increase; weak September payrolls reduced expectations of an October increase.",
+    "boj": "Policy guidance around 1.25%; further-tightening debate remains active.",
+    "japan_fx_authorities": "Recent official warning indicates intervention risk if yen weakness becomes excessive."
+  },
+  "macro_news_facts": [
+    "Reuters 2026-10-02: U.S. September payroll growth +29,000; unemployment 4.2%; expectations shifted toward an October Fed pause.",
+    "Reuters 2026-10-04: Brent closed around $102.25 and softer U.S. rate-hike expectations remained part of the weekend macro backdrop.",
+    "Reuters 2026-10-01: BOJ September discussion included arguments for faster hikes, with government caution."
+  ],
+  "scheduled_events_known": [
+    "2026-10-06: BOJ Governor Ueda scheduled to speak at the National Securities Convention.",
+    "2026-10-07 14:00 ET: FOMC minutes for September 15-16 scheduled.",
+    "BLS calendar shows no national BLS release on 2026-10-05 through 2026-10-09; next listed CPI is 2026-10-14."
+  ],
+  "source_refs": [
+    {
+      "source": "Monex USDJPY historical",
+      "url": "https://stocks.monex.co.jp/USDJPY/historical",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "Federal Reserve FOMC statement 2026-09-16",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "Bank of Japan home/policy state",
+      "url": "https://www.boj.or.jp/",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "BOJ speech schedule",
+      "url": "https://www.boj.or.jp/about/press/index.htm",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "Federal Reserve October 2026 calendar",
+      "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "BLS October 2026 calendar",
+      "url": "https://www.bls.gov/schedule/2026/10_sched_list.htm",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "Reuters U.S. jobs / market reaction 2026-10-02",
+      "url": "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-10-02/",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "Reuters BOJ September debate 2026-10-01",
+      "url": "https://www.reuters.com/world/asia-pacific/boj-debated-need-more-rate-hikes-september-meeting-summary-shows-2026-10-01/",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "Reuters Japan FX intervention warning 2026-09-28",
+      "url": "https://www.reuters.com/world/asia-pacific/japan-top-fx-diplomat-urges-markets-heed-very-clear-warning-yen-2026-09-28/",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    },
+    {
+      "source": "Reuters Gulf/oil weekend update 2026-10-04",
+      "url": "https://www.reuters.com/world/middle-east/most-gulf-shares-end-higher-firmer-oil-us-rate-bets-2026-10-04/",
+      "retrieved_at": "2026-10-05T01:14:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY latest completed daily reference observed on the noncanonical Monex page is 157.853 for 2026-10-02.",
+    "Fed target range is 3.75%-4.00%.",
+    "BOJ guidance is around 1.25%.",
+    "September U.S. payroll growth was weak relative to expectations.",
+    "Ueda is scheduled to speak on 2026-10-06 and FOMC minutes are scheduled for 2026-10-07."
+  ],
+  "interpretations": [
+    "The week begins with competing forces: high U.S. yield/rate support for USD versus weaker U.S. labor data, BOJ tightening risk, and intervention risk supporting JPY.",
+    "Because the FX market is closed at this observation time, the first post-open price/yield reaction is more informative than this pre-open narrative."
+  ],
+  "change_since_prior": "INITIAL_BASELINE_NO_PRIOR_LIVE_JOURNAL_STATE",
+  "base_case": "Slight USDJPY softening / JPY strengthening remains the exploratory central case, but the market-open reaction is required before confidence can be raised.",
+  "alternative_case": "USDJPY resumes upside if high U.S. yields/oil dominate and BOJ communication is cautious.",
+  "invalidation_conditions": [
+    "Strong post-open USDJPY upside accompanied by rising U.S. yields.",
+    "Clearly cautious BOJ communication on further tightening.",
+    "A new geopolitical/oil shock whose dominant transmission is yen-negative."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "First liquid USDJPY state after weekly market open.",
+    "2026-10-05 08:30 JST MORNING_STATE.",
+    "U.S. 2Y/10Y yield direction after open.",
+    "Ueda speech on 2026-10-06.",
+    "FOMC minutes on 2026-10-07."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "251e94ea6624e1b80d5a7a51aad1fa7cf388dce4bcd430548d6ee787f74e130a"
+}
