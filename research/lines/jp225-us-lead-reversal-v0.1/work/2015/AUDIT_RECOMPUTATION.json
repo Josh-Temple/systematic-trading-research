@@ -1,0 +1,27 @@
+{
+  "audit_type": "independent_receipt_recomputation",
+  "date": "2026-10-04",
+  "source_receipts": [
+    "q1_features.json",
+    "q2_features.json",
+    "q3_features.json",
+    "q4_features.json"
+  ],
+  "us_sessions": 249,
+  "jp_windows": 242,
+  "missing_expected_us_session": 9,
+  "zero_us_return": 1,
+  "events": 232,
+  "mean_directional_bps": 0.539672620769603,
+  "median_directional_bps": 2.749935566811468,
+  "win_rate_percent": 52.1551724137931,
+  "bootstrap_ci95_bps": [
+    -3.7925110076003175,
+    4.904078499698961
+  ],
+  "mean_directional_points": 1.082758620689721,
+  "median_directional_points": 5.049999999999272,
+  "raw_correlation": -0.0645296148001824,
+  "unconditional_long_mean_bps": 1.1978472221601904,
+  "classification": "USLEAD_PROXY_NOT_SUPPORTED_2015"
+}

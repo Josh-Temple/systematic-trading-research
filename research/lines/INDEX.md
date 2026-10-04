@@ -14,6 +14,21 @@ It does not summarize current findings, experiment status, or decisions. For tho
 
 Use for questions about the Horizontal Reaction research line.
 
+### jp225-ema-timeofday-v0.1
+
+- scope root: `research/lines/jp225-ema-timeofday-v0.1/`
+- current projection: `research/lines/jp225-ema-timeofday-v0.1/CURRENT.md`
+- line definition: `research/lines/jp225-ema-timeofday-v0.1/RESEARCH_LINE.md`
+
+Use for the exact XM MT5 `JP225Cash` M1 EMA5/EMA200 research line and its explicitly separate historical proxy evidence. Fresh-read the line-local CURRENT/specification/audit before acting.
+
+### jp225-us-lead-reversal-v0.1
+
+- scope root: `research/lines/jp225-us-lead-reversal-v0.1/`
+- current projection: `research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md`
+
+Use for the literature-motivated prior-U.S.-session / Japanese-opening reversal proxy research line. The 2015 OANDA midpoint proxy discovery is negative and stopped; it is not XM execution evidence.
+
 ## Active non-main research branches
 
 ### currency-strength-momentum-v0.1
@@ -36,15 +51,14 @@ Use for questions about the FX currency-strength / strongest-versus-weakest mome
 Use for the proposed prospective USD/JPY overnight forecasting line. It remains PRE-FREEZE until explicit human acceptance and source/readiness gates pass.
 
 Important:
-- non-main lines are not currently part of canonical `main`;
-- do not infer their current research state from this index;
-- fresh-read the named branch before answering line-specific current-state questions;
-- if a branch is later merged, moved, superseded, or deleted, update this index.
+- do not infer current research state from this index;
+- fresh-read the named main/branch ref before answering line-specific current-state questions;
+- if a line is later merged, moved, superseded, or deleted, update this index.
 
 ## Routing rules
 
 1. Match the user's research topic to a line here before broad code search.
 2. Open the line in the ref named above.
 3. Prefer the line-local current projection / specification / decision files over this index.
-4. Do not treat a branch name as proof of completion, verification, or current findings.
+4. Do not treat a branch name or merge state as proof of completion, verification, or current findings.
 5. If no line matches, search the repository rather than inventing a line.

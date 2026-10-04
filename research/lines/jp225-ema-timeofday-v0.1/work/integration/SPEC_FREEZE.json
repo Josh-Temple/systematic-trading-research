@@ -1,0 +1,8 @@
+{
+  "status": "FROZEN_BY_INTEGRATOR_PRE_XM_OUTCOME",
+  "source_commit": "c42f1ce130d49f0aeadcec7010b58627093cb95d",
+  "sha256": "930bf2b7183f3d07a122a1755367b4459275fb51c20271531df51dd7da197c05",
+  "scientific_parameters_changed": false,
+  "xm_outcomes_accessed": false,
+  "basis": "2026-10-04 explicit integration instruction; exact original draft bytes frozen by this receipt"
+}

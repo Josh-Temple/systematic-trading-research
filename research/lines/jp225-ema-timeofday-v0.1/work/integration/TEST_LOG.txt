@@ -1,0 +1,80 @@
+test_bootstrap_seed_deterministic (test_jp225_ema_screen.TestJP225EMAScreen.test_bootstrap_seed_deterministic) ... ok
+test_discovery_tie_prefers_broader (test_jp225_ema_screen.TestJP225EMAScreen.test_discovery_tie_prefers_broader) ... ok
+test_ema_recursion (test_jp225_ema_screen.TestJP225EMAScreen.test_ema_recursion) ... ok
+test_exact_target_quote (test_jp225_ema_screen.TestJP225EMAScreen.test_exact_target_quote) ... ok
+test_first_after_target (test_jp225_ema_screen.TestJP225EMAScreen.test_first_after_target) ... ok
+test_holdout_gate (test_jp225_ema_screen.TestJP225EMAScreen.test_holdout_gate) ... ok
+test_holdout_locked_without_advancement (test_jp225_ema_screen.TestJP225EMAScreen.test_holdout_locked_without_advancement) ... ok
+test_long_cross_from_equality (test_jp225_ema_screen.TestJP225EMAScreen.test_long_cross_from_equality) ... ok
+test_long_execution_ask_to_bid (test_jp225_ema_screen.TestJP225EMAScreen.test_long_execution_ask_to_bid) ... ok
+test_missing_entry (test_jp225_ema_screen.TestJP225EMAScreen.test_missing_entry) ... ok
+test_missing_target (test_jp225_ema_screen.TestJP225EMAScreen.test_missing_target) ... ok
+test_no_advancement (test_jp225_ema_screen.TestJP225EMAScreen.test_no_advancement) ... ok
+test_no_missing_bar_fabrication (test_jp225_ema_screen.TestJP225EMAScreen.test_no_missing_bar_fabrication) ... ok
+test_price_comparator (test_jp225_ema_screen.TestJP225EMAScreen.test_price_comparator) ... ok
+test_short_cross (test_jp225_ema_screen.TestJP225EMAScreen.test_short_cross) ... ok
+test_short_execution_bid_to_ask (test_jp225_ema_screen.TestJP225EMAScreen.test_short_execution_bid_to_ask) ... ok
+test_tokyo_close_boundaries (test_jp225_ema_screen.TestJP225EMAScreen.test_tokyo_close_boundaries) ... ok
+test_tokyo_open_boundaries (test_jp225_ema_screen.TestJP225EMAScreen.test_tokyo_open_boundaries) ... ok
+test_us_dst_spring (test_jp225_ema_screen.TestJP225EMAScreen.test_us_dst_spring) ... ok
+test_us_standard_time (test_jp225_ema_screen.TestJP225EMAScreen.test_us_standard_time) ... ok
+test_marks_both_events_in_overlapping_pair (test_overlap_diagnostics.TestOverlapDiagnostics.test_marks_both_events_in_overlapping_pair) ... ok
+test_ask_below_bid (test_hardening.Hardening.test_ask_below_bid) ... ok
+test_bare_candidate_does_not_unlock_loader (test_hardening.Hardening.test_bare_candidate_does_not_unlock_loader) ... ok
+test_bootstrap_order_invariant (test_hardening.Hardening.test_bootstrap_order_invariant) ... ok
+test_boundary_guard (test_hardening.Hardening.test_boundary_guard) ... ok
+test_credentials (test_hardening.Hardening.test_credentials) ... ok
+test_discovery_one_shot_synthetic (test_hardening.Hardening.test_discovery_one_shot_synthetic) ... ok
+test_duplicate_m1 (test_hardening.Hardening.test_duplicate_m1) ... ok
+test_holdout_before_market_parse (test_hardening.Hardening.test_holdout_before_market_parse) ... ok
+test_holdout_reader_not_called (test_hardening.Hardening.test_holdout_reader_not_called) ... ok
+test_integrity (test_hardening.Hardening.test_integrity) ... ok
+test_manifest_and_stage2 (test_hardening.Hardening.test_manifest_and_stage2) ... ok
+test_manifest_requires_pass (test_hardening.Hardening.test_manifest_requires_pass) ... ok
+test_metadata_allowlist (test_hardening.Hardening.test_metadata_allowlist) ... ok
+test_msc_holdout (test_hardening.Hardening.test_msc_holdout) ... ok
+test_msc_identity (test_hardening.Hardening.test_msc_identity) ... ok
+test_nonfinite (test_hardening.Hardening.test_nonfinite) ... ok
+test_nonfinite_quote (test_hardening.Hardening.test_nonfinite_quote) ... ok
+test_probe_gap (test_hardening.Hardening.test_probe_gap) ... ok
+test_reviewed_pass (test_hardening.Hardening.test_reviewed_pass) ... ok
+test_slope_algebra_synthetic (test_hardening.Hardening.test_slope_algebra_synthetic) ... ok
+test_stage1_actual_collector_allowlist_and_end (test_hardening.Hardening.test_stage1_actual_collector_allowlist_and_end) ... ok
+test_stage1_boundary_before_write (test_hardening.Hardening.test_stage1_boundary_before_write) ... ok
+test_stage2_rejects_tamper_before_api (test_hardening.Hardening.test_stage2_rejects_tamper_before_api) ... ok
+test_symbol (test_hardening.Hardening.test_symbol) ... ok
+test_unverified_partial (test_hardening.Hardening.test_unverified_partial) ... ok
+
+----------------------------------------------------------------------
+Ran 46 tests in 0.558s
+
+OK
+{
+  "status": "STAGE1_RAW_COLLECTION_COMPLETE",
+  "m1_rows": 1012,
+  "tick_probe_rows": 214,
+  "holdout_2026_requested": false,
+  "strategy_outcomes_calculated": false
+}
+{
+  "python": "3.12.14",
+  "tests": 46,
+  "success": true,
+  "market_data_accessed": false,
+  "files_sha256": {
+    "implementation/holdout_loader.py": "3885a7ae1cd7a62079acf2adc120ea457391aadeb5c08dc778cabe172793f4df",
+    "implementation/jp225_ema_screen.py": "bea64d7a14365542d909d6b8e99c574cd57490e70601316ee7b1dbe964bc7644",
+    "implementation/overlap_diagnostics.py": "17ed07b98c365c2fff1b48c6ba4e685b9943163910a81a0e682b75cb7f0133ba",
+    "implementation/run_discovery.py": "4d10ab5c05ccf5d21aac427671ac7991196107c78b722dba353fccab9ceaa47c",
+    "implementation/test_jp225_ema_screen.py": "597893ed3a2b53441d6a39eced377198e5515bfced839ab426af7ead44d3e1a6",
+    "implementation/test_overlap_diagnostics.py": "b5f843c7eb8b3813db19efc52486f85a946b8a7afe5b6d44aa33401dfdc61ffe",
+    "integration/run_synthetic_tests.py": "0523986868200bc0709bd24a5044d3adf0530649ff5d044f23ef5f4a068c5c0c",
+    "source-qualification/collect_mt5_jp225.py": "1d7fe6551329cf6cabf4480545561f64e2f74802a13c1d1a8f694974ed71b1c9",
+    "source-qualification/collect_mt5_jp225_stage1.py": "9fc11bce340bc78d9f17f35ea34fff32d3b4c040219dc0b7c32cbd7f4c3849fd",
+    "source-qualification/stage1_contract.py": "d599be5abe661ee857e4947d86a1b5a1f43042772fbdfbfc1eb17abbdba2f05b",
+    "source-qualification/stage2.py": "fb2804db72edeb1e168ed0c3c2f43f0d52ee1ecddea72a204f39a15b93a97622",
+    "source-qualification/test_hardening.py": "adb158abdb1d6a3e5090846cbf2e6ba96dc8069627cabef7f03cf8a4532e0d54",
+    "source-qualification/validate_stage1.py": "58c24b52dfcaa112b168ef26f05b2f431881463fa417079d45e4636a42fd71f9",
+    "source-qualification/validate_stage2.py": "ae28f3bbfd5273d0cd7ff2904ff5e738ce12b410d08e0077e57665e0e3e1c859"
+  }
+}
