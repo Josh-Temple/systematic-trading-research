@@ -1,4 +1,4 @@
-"""Pure, outcome-agnostic mechanics for SPEC-JP225-IMOM-001-v01."""
+"""Pure, outcome-agnostic mechanics for SPEC-JP225-IMOM-001-v01 + v01.1 amendment."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -92,8 +92,10 @@ def first_trade_at_or_after(
 
     prices = {float(t.price) for t in tied}
     if len(prices) == 1:
-        # Same-time duplicates with identical prices do not change the mapped price.
-        return sorted(tied, key=lambda t: t.source_order if t.source_order is not None else -1)[0]
+        return sorted(
+            tied,
+            key=lambda t: t.source_order if t.source_order is not None else -1,
+        )[0]
 
     if any(t.source_order is None for t in tied):
         raise AmbiguousTrade("AMBIGUOUS_SAME_TIME_TRADES")
@@ -239,11 +241,19 @@ def evaluate_sample(observations: Sequence[Observation], min_rows: int) -> dict:
     if n < min_rows:
         return {"status": "INSUFFICIENT_EVENTS", "n": n}
 
-    alpha, beta = ols_beta(
-        [o.early_return for o in observations],
-        [o.late_return for o in observations],
-    )
-    beta_lo, beta_hi, invalid = bootstrap_beta(observations)
+    try:
+        alpha, beta = ols_beta(
+            [o.early_return for o in observations],
+            [o.late_return for o in observations],
+        )
+        beta_lo, beta_hi, invalid = bootstrap_beta(observations)
+    except DegenerateSample as exc:
+        return {
+            "status": "BOOTSTRAP_DEGENERATE",
+            "n": n,
+            "reason": str(exc),
+        }
+
     signed = [o.signed_return for o in observations if o.signed_return is not None]
     if not signed:
         return {"status": "NO_SIGN_TRADES", "n": n}
