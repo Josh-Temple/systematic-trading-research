@@ -55,6 +55,15 @@ class TestIMOMCore(unittest.TestCase):
         with self.assertRaises(AmbiguousTrade):
             first_trade_at_or_after([Trade(b, 100), Trade(b, 101)], b)
 
+    def test_strategy_trade_is_excluded(self):
+        d = date(2025, 1, 6)
+        b = dt(d, 9, 30)
+        t = first_trade_at_or_after([
+            Trade(b, 999, 1, 1),
+            Trade(b + timedelta(seconds=1), 100, 2, 0),
+        ], b)
+        self.assertEqual(t.price, 100)
+
     def test_source_order_resolves_same_time(self):
         d = date(2025, 1, 6)
         b = dt(d, 9, 30)
