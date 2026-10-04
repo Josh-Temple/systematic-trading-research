@@ -451,3 +451,17 @@ Until accepted:
 - `status = PROPOSED_NOT_FROZEN`;
 - prospective outcome access remains CLOSED;
 - scored v0.1 forecasting remains NOT_AUTHORIZED.
+
+
+## 18. Relationship to weekly outlook track
+
+A separate weekly forecast candidate exists at `SPEC-USDJPY-WEEKLY-001-v01`.
+
+For overnight v0.1:
+
+- weekly forecast outputs are not permitted inputs to A1/A2/A3;
+- weekly forecast scores do not alter the overnight benchmark;
+- overnight forecasts do not rewrite or update the weekly forecast;
+- any analysis of weekly/overnight agreement is exploratory unless preregistered later.
+
+A future successor may explicitly test whether a frozen weekly prior improves overnight forecasting, but that is not part of `SPEC-USDJPY-FORECAST-001-v01`.
