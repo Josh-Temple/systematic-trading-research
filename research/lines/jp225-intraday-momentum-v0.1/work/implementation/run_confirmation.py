@@ -14,6 +14,7 @@ LINE = HERE.parents[1]
 SPEC_FILES = [
     LINE / "specifications" / "SPEC-JP225-IMOM-001-v01.md",
     LINE / "specifications" / "SPEC-JP225-IMOM-001-v01.1_AMENDMENT.md",
+    LINE / "specifications" / "SPEC-JP225-IMOM-001-v01.2_SOURCE_AMENDMENT.md",
 ]
 
 
