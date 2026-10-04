@@ -29,6 +29,14 @@ Use for the exact XM MT5 `JP225Cash` M1 EMA5/EMA200 research line and its explic
 
 Use for the literature-motivated prior-U.S.-session / Japanese-opening reversal proxy research line. The 2015 OANDA midpoint proxy discovery is negative and stopped; it is not XM execution evidence.
 
+### jp225-intraday-momentum-v0.1
+
+- scope root: `research/lines/jp225-intraday-momentum-v0.1/`
+- current projection: `research/lines/jp225-intraday-momentum-v0.1/CURRENT.md`
+- line definition: `research/lines/jp225-intraday-momentum-v0.1/RESEARCH_LINE.md`
+
+Use for the separate OSE Nikkei 225 mini intraday-momentum research line. It is currently pre-outcome / scientifically UNTESTED; do not confuse it with the exact-XM EMA line or the stopped U.S.-lead proxy line.
+
 ## Active non-main research branches
 
 ### currency-strength-momentum-v0.1
