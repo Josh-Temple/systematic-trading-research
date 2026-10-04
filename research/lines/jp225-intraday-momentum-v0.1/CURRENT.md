@@ -6,11 +6,11 @@ projection_generated_at: 2026-10-05
 
 # Current State
 
-Operational state: **SOURCE_QUALIFICATION_PARTIAL_WITH_GAPS / PREPURCHASE**.
+Operational state: **SOURCE_QUALIFICATION_PARTIAL_WITH_GAPS / PREPURCHASE / WAITING_FOR_JPX_LICENSE_CLARIFICATION / OUTCOME_BLINDNESS_COMPROMISED**.
 
 - hypothesis: UNTESTED;
-- JPX/DataCube market outcomes accessed: NO;
-- 2025 confirmation outcomes accessed: NO;
+- JPX DataCube target raw outcomes accessed: NO; external JPX 2025 quote-snippet exposure: YES (see incident record);
+- 2025 target confirmation DataCube outcomes accessed: NO (target files not acquired);
 - 2026 holdout outcomes accessed: NO;
 - source qualification: PARTIAL_WITH_GAPS;
 - specification: FROZEN_PRE_OUTCOME (v0.1 + v0.1.1 + v0.1.2 source amendment);
@@ -37,9 +37,9 @@ Packet A also found that using the first 2025 TSE date would require a 2024-12-3
 
 ## Packet A classification
 
-**PARTIAL_WITH_GAPS / PREPURCHASE_QUALIFICATION_COMPLETE**
+**PARTIAL_WITH_GAPS / WAITING_FOR_JPX_LICENSE_CLARIFICATION / OUTCOME_BLINDNESS_COMPROMISED**
 
-PASS is not available before actual 2025 files exist because Packet A still requires:
+PASS is not available because Packet A still requires actual 2025 files and human gates; the outcome-access incident also requires research-owner disposition. Packet A still requires:
 
 - exact 2025 monthly item/file identities;
 - raw-file byte sizes and SHA-256;
@@ -71,3 +71,14 @@ The next dependency is external and cannot be completed from public metadata alo
 5. independently review the source receipt.
 
 The one-shot 2025 confirmation remains locked.
+
+
+## 2026-10-04 public metadata refresh and integrity correction
+
+Fresh direct review of the current J-Quants DataCube pages identified the public monthly product series as future_tick_19_YYYYMM, with a shared month selector for 2025-01 through 2025-12. All twelve periods are in DATACUBE_2025_PURCHASE_MANIFEST.json. Public display rates total ¥3,960 for the personal/academic tier, ¥79,200 for corporate self-use, or ¥237,600 for external distribution across twelve months; no single tier is selected pending JPX clarification.
+
+The current DataCube FAQ says result-only analysis outputs may be provided within self-use, but the exact classification of the planned public hashes, schema, coverage counts, and unaffiliated individual research is not explicit. The status is LICENSE_PUBLICATION_BOUNDARY_UNRESOLVED. The inquiry draft is complete and has not been sent.
+
+Integrity correction: an official JPX search result exposed a 2025 futures quotation snippet during this Work run. The research line is not outcome-unviewed. No quote values were recorded or used, no calculation was performed, no target DataCube files were acquired or inspected, and no 2026 market data were accessed. See work/source-qualification/OUTCOME_ACCESS_INCIDENT_2026-10-04.md. The 2025 confirmation remains locked pending owner disposition.
+
+New local-only validator and 14 synthetic tests are in work/source-qualification/validate_datacube_2025.py and work/implementation/test_datacube_validator.py. The validator is locked from reporting Packet A PASS while the outcome-access incident remains unresolved. Raw files and any generated receipt remain local-only.

@@ -1,6 +1,6 @@
 # Source qualification contract
 
-Status: PRE_OUTCOME
+Status: PREPURCHASE; OUTCOME_BLINDNESS_COMPROMISED
 
 ## Intended source
 
@@ -89,3 +89,12 @@ Before any market outcome access, Packet A fixes the following:
 - keep raw purchased DataCube files local-only until the applicable use category is confirmed.
 
 These decisions are frozen in SPEC-JP225-IMOM-001-v01.2_SOURCE_AMENDMENT.md.
+
+
+## 2026-10-04 current-read addendum
+
+The product route and twelve month selector periods are recorded in DATACUBE_2025_PURCHASE_MANIFEST.json. The 2025 date/contract calendar is a derivation from JPX TSE closure and mini-contract rules plus the Cabinet Office holiday list; its derived mapping requires independent review.
+
+The public terms/FAQ do not settle the exact category for the planned public hashes, schema, and coverage metadata for an unaffiliated individual research project. Status: LICENSE_PUBLICATION_BOUNDARY_UNRESOLVED. Inquiry draft exists but has not been sent.
+
+Outcome-integrity correction: a JPX public search result exposed a 2025 futures quotation snippet. No price values were retained or used, no calculations were made, the DataCube target files remain unopened, and no 2026 market data were accessed. Current line status is OUTCOME_BLINDNESS_COMPROMISED. See OUTCOME_ACCESS_INCIDENT_2026-10-04.md. This addendum does not change frozen hypothesis/specification rules or the historical Packet A result.
