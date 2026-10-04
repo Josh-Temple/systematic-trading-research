@@ -12,6 +12,7 @@ Official JPX/OSE J-Quants DataCube historical transaction ticks for Nikkei 225 m
 - file format and schema;
 - timezone/timestamp convention;
 - contract code -> contract month mapping;
+- authoritative 2025 TSE cash trading calendar and official OSE quarterly-contract last-trading-day mapping;
 - transaction price and volume field meanings;
 - whether identical timestamps have deterministic source order;
 - coverage of 15:30/09:30/15:00/15:30 boundary windows;
@@ -62,3 +63,16 @@ Before the source gate passes, it must not calculate:
 Source gate is PASS only if the intended 2025 tick source can deterministically map all four required boundary requests without unresolved timestamp/product ambiguity.
 
 Gaps in individual dates may remain and must be represented as unavailable dates; systemic ambiguity is a gate failure.
+
+
+## Official pre-outcome facts already verified
+
+The pre-outcome audit verified from JPX public materials that:
+
+- Nikkei 225 mini trades in the OSE day session through 15:45, so all frozen 09:30/15:00/15:30 boundaries are within the regular/day-session schedule;
+- quarterly contract months and the official last-trading-day rule are published by JPX;
+- J-Quants DataCube offers historical OSE derivatives tick data in CSV form;
+- DataCube tick data is transaction data, not BID/ASK quote history;
+- product-specific schema/order semantics and the exact permitted storage/processing route remain Packet A work and must not be assumed.
+
+These facts do not qualify the source by themselves.
