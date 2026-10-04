@@ -15,10 +15,11 @@ Build prospectively timestamped USD/JPY forecast experiments that test whether f
 2. point-in-time fundamentals and news;
 3. status-preserving relevant repository research.
 
-The line currently contains two scientifically separate horizons:
+The line currently contains two scientifically separate scored-forecast horizons plus one non-scored observation stream:
 
 - **Overnight:** Monday–Thursday 22:00 JST → next-day 08:00 JST.
 - **Weekly:** Sunday 20:00 JST forecast → Monday 08:00 through Friday 22:00 JST target interval.
+- **Live Market State Journal:** append-only observational checkpoints at 08:30, 15:00, 21:30 JST plus event-driven/manual updates.
 
 The line is designed to collect future evidence. It is not a live-trading strategy and grants no broker execution authority.
 
@@ -44,6 +45,19 @@ The overnight and weekly tracks are separate v0.1 experiments.
 - overnight outputs do not rewrite or update the frozen weekly forecast;
 - agreement/disagreement analysis is exploratory unless preregistered later;
 - a later prospective version may explicitly test whether a weekly prior improves nightly forecasts.
+
+## Live observation stream
+
+`OBS-USDJPY-LIVE-STATE-001-v01` is ACTIVE_OBSERVATIONAL.
+
+It may update as market conditions change and may be used for:
+
+- point-in-time situation awareness;
+- change tracking;
+- error-context reconstruction;
+- challenger idea generation.
+
+It is not itself scored and cannot rewrite frozen forecasts or replace canonical forecast source snapshots.
 
 ## Scientific boundaries
 
