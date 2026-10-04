@@ -29,8 +29,14 @@ OANDA-derived midpoint candles are not XM execution data. 2020 partial-year clos
 
 Original negative files and source receipts remain unchanged. Independent raw replay reproduced counts/daily sums and classification; original exact bootstrap RNG provenance remains incomplete. See [independent audit](work/integration/INDEPENDENT_AUDIT.md) and [procedural deviation](work/integration/PROCEDURAL_DEVIATION.md). Overall audit **PARTIAL_WITH_GAPS**, not blanket scientific PASS. Do not optimize consumed proxy samples or promote them to XM results.
 
+## No-PC continuation update — 2026-10-04
+
+While Windows/XM Stage 1 is unavailable, one separate pre-registered proxy candidate was tested on previously unused 2017 OANDA-derived JP225 midpoint M1 data: EMA5/EMA200 cross followed by five complete M1 bars of persistent EMA ordering before entry.
+
+Result: **PERSIST5_PROXY_NOT_SUPPORTED_2017**. Valid n=1,204 across 253 Asia/Tokyo dates; mean +15m gross points=-0.287292; day-cluster 95% interval=[-1.671920,+1.127615]. The same-year unfiltered comparator mean was -0.144020. Per the frozen stop rule, 2016 was not accessed and no persistence-length/time-window rescue is allowed.
+
 ## Next action
 
-Run the revised [Stage 1 Windows runbook](work/source-qualification/STAGE1_WINDOWS_RUNBOOK.md) and provide the immutable raw ZIP. Use this integration branch's complete scripts, not old PR #45. Stage 1 source review -> frozen signal-only manifest -> event-adjacent Stage 2 ticks -> Packet A execution PASS -> pinned independent Discovery gate -> one-shot 2025 result. See [Stage 2 plan](work/source-qualification/STAGE2_PLAN.md).
+Exact XM work remains waiting for a future Windows opportunity. When available, run the revised [Stage 1 Windows runbook](work/source-qualification/STAGE1_WINDOWS_RUNBOOK.md) and provide the immutable raw ZIP. Until then, do not relax the XM source gate or promote proxy results to XM conclusions. Stage 1 source review -> frozen signal-only manifest -> event-adjacent Stage 2 ticks -> Packet A execution PASS -> pinned independent Discovery gate -> one-shot 2025 result. See [Stage 2 plan](work/source-qualification/STAGE2_PLAN.md).
 
 All JP225 PRs remain draft pending complete review. Main has not yet adopted this projection. No broker substitute, credentials, live orders or holdout acquisition is authorized.
