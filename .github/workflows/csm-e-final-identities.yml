@@ -1,0 +1,27 @@
+name: CSM E final identity receipt
+
+on:
+  push:
+    branches:
+      - audit/csm-e-final-identities-20261004
+  pull_request:
+    paths:
+      - "research/lines/currency-strength-momentum-v0.1/work/independent-audit/**"
+      - ".github/workflows/csm-e-final-identities.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print E identities
+        working-directory: research/lines/currency-strength-momentum-v0.1/work/independent-audit
+        run: |
+          for f in RESULT.md AUDIT_MATRIX.csv toy_oracle.py TEST_LOG.txt; do
+            echo "E_SHA256 $(sha256sum "$f" | awk '{print $1}') $f"
+            echo "E_BLOB $(git hash-object "$f") $f"
+          done
