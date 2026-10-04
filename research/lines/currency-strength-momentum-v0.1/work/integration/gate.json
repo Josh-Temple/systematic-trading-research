@@ -56,21 +56,24 @@
     },
     "D": {
       "branch": "work/csm-implementation-20261001",
-      "head": "6dccd49ee21e4ac29f55162f93ef3e65aa7a5779",
-      "pr": 34
+      "head": "3695f0a8ed085669ec3644826889f9fc953a6808",
+      "pr": 34,
+      "verification_run": 37166148389,
+      "tests": "56 passed, 0 failed, 0 skipped"
     },
     "E": {
       "branch": "work/csm-independent-audit-20261001",
-      "head": "4f683901d01fd6b5ce161c874118a34d40bcac82",
+      "head": "970ea9b77e062e7acbc67432993797a0cb4e0d01",
       "pr": 38,
       "base": "e0f42a367b0c3cc94df2bc3d5a42d8a36b17e1ff",
-      "audit_id": "AUDIT-CSM-E-20261001-REAUDIT-01",
+      "audit_id": "AUDIT-CSM-E-20261004-REAUDIT-02",
       "status": "PARTIAL_WITH_GAPS",
       "recommendation": "BLOCKED",
       "applicability": "CURRENT_FOR_D_HEAD",
-      "reaudit_status": "COMPLETE_WITH_GAPS"
+      "reaudit_status": "COMPLETE_WITH_GAPS",
+      "workflow_run": 37166456105
     },
-    "I_reviewed_pre_refresh_head": "c2fdbc1f2a9fcccc32717b130a36433819aaa2fa"
+    "I_reviewed_pre_refresh_head": "6bd9ddc5bc53c37aee3b0d82d1ac2c00c00fd73c"
   },
   "source_identities": {
     "source_lock_id": "CSM-SOURCE-LOCK-ECB-001",
@@ -91,38 +94,38 @@
     "actual_missing_status_distribution": "UNKNOWN"
   },
   "implementation_identities": {
-    "D_head": "6dccd49ee21e4ac29f55162f93ef3e65aa7a5779",
-    "code_git_blob_sha1": "95cf059a5e0d5b6742dfa885fce7b37c58f2362c",
-    "code_sha256": "4db33063f0388b8b7ec0613fff8228a4aa3cb00b94855a557c5abcd3b86f4104",
-    "tests_git_blob_sha1": "e287ab6923d073058cfa0e5e7be46b9ea5bc537a",
-    "tests_sha256": "3499c6cf4bc52f5052c7ed76ef92da41c272cbb6a31980a51801372775f1f66f",
+    "D_head": "3695f0a8ed085669ec3644826889f9fc953a6808",
+    "code_git_blob_sha1": "dbddf33895bc565e215583ad0056c9aba5ed3c1a",
+    "code_sha256": "f57c859dd137bb49f23a23ddf2760681bc3ca14aa23cf82e03e2f35bc5b54535",
+    "tests_git_blob_sha1": "27920cfa92546aba07781915032c7bb5ae999549",
+    "tests_sha256": "899332a9e51018d6140a201105eccdad8154d075af1a32354776621976185bf2",
     "config_git_blob_sha1": "a1c1e140f8c0844fc554ae6fcd975bcb5e610770",
     "config_sha256": "9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1",
-    "test_log_git_blob_sha1": "c70e610064f92ba15527fb7f99b8796607a9a91f",
-    "test_log_sha256": "84a6a88673b0502b53bf3b2eb0ca100d101d8bd57cfab3da08695285fc399f44",
-    "reported_test_result": "53 passed, 0 failed, 0 skipped; independently rerun by E at current D head",
-    "independent_audit": "AUDIT-CSM-E-20261001-REAUDIT-01; PARTIAL_WITH_GAPS; recommendation BLOCKED",
+    "fixture_git_blob_sha1": "4e925eabb4d88772806f0e109c15680f17d73a31",
+    "fixture_sha256": "08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c",
+    "runbook_git_blob_sha1": "4168e0010060586e0301aa221ec653913ea721ea",
+    "runbook_sha256": "bba147d4da072507ba255cb15a93a9fe0e76fda7df822fe4cfcf626501b91fb7",
+    "environment_git_blob_sha1": "bf6d5b4c0381e967226ee0996736d858b524b8eb",
+    "environment_sha256": "8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f",
+    "result_git_blob_sha1": "2b6accb202e8206bf26b5b642a5b2b564a9f639a",
+    "result_sha256": "3c48c47f87634346ac4c02ff1c73a32f640b50d429f2e303d5668bb7c2eff0ea",
+    "test_matrix_git_blob_sha1": "266f4ffc51d215702a60dd077d3cd611ae81cef2",
+    "test_matrix_sha256": "d5dfa2c76dcaf2c803755d0a03aac803550ce793ad84c7d35257ec899971e0ca",
+    "test_log_git_blob_sha1": "4d8e6615a64ea9d5da8fc71fbbda4a4ee67db5ba",
+    "test_log_sha256": "8b6f5f9c2c6527c9c1b6535ba5fdbdcd6394b2259ce947949a52720734cf3b3b",
+    "reported_test_result": "56 passed, 0 failed, 0 skipped; independently rerun by E",
+    "independent_audit": "AUDIT-CSM-E-20261004-REAUDIT-02; PARTIAL_WITH_GAPS; recommendation BLOCKED",
     "config_pinned_spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
     "config_pinned_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
     "frozen_spec_git_blob_sha1": "7fe114e2fcfa33b0565b51c717455abd8837d5d9",
     "frozen_spec_sha256": "a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2",
-    "environment_git_blob_sha1": "bf6d5b4c0381e967226ee0996736d858b524b8eb",
-    "result_git_blob_sha1": "98e36e22a797806d1ee66438825d7a75f42ff21a",
-    "spec_implementation_conformance": "PARTIAL: E verified outcome-blind score-identity behavior and reviewed math/time/bootstrap on synthetic inputs; this is not an overall implementation certification, and current identity-binding/persistence gaps remain.",
-    "environment_sha256": "8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f",
-    "result_sha256": "91fba806a72a9d4e103b535d4acc10b525476f7901700ff1279845bfff2a6923",
-    "runbook_git_blob_sha1": "3142c0291aa979bb80c28d71b4e47fc7408591ab",
-    "runbook_sha256": "7fa355a6b071567ff6d4ea4290033f5635fc44b64159af2438acae69ecc14948",
-    "test_matrix_git_blob_sha1": "03633916f0190925a01d6b26e5146956e657c31f",
-    "test_matrix_sha256": "7cfbd342057ce8a9517fbbf44e464fb05beb60e6de82e47f4e1d8643e7da4bce",
-    "fixture_git_blob_sha1": "4e925eabb4d88772806f0e109c15680f17d73a31",
-    "fixture_sha256": "08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c",
-    "receipt_and_capture_remediation": "PARTIAL_WITH_GAPS: synthetic test-key signature/role/expiry/revocation and raw-byte checks passed; D rejects current I/E identities, production trust keys are unprovisioned, and compound promotion/rollback failure leaves a success receipt.",
-    "score_identity_ledger": "PASS at code/synthetic-test level; E item 4",
-    "signed_receipt_checks": "Synthetic tests pass for configured test keys; current I/E identity pins stale and production keys unprovisioned",
-    "raw_source_lock_byte_check": "PASS in synthetic byte-mismatch tests; current signed gate binding still blocked",
-    "capture_promotion": "GAP: compound parent-fsync plus rollback-deletion failure leaves run-receipt.json after promotion reports failure",
-    "current_gate_binding": "BLOCKED: D's current code pins older I gate and E audit identities; E reproduced rejection of the exact current I/E identities."
+    "spec_implementation_conformance": "PASS for audited synthetic/code scope; no market inference",
+    "receipt_and_capture_remediation": "PASS for audited code/synthetic scope: non-circular signed I/E binding and compound success-receipt failure are independently resolved; production trust/operations remain external gaps",
+    "score_identity_ledger": "PASS at code/synthetic-test level",
+    "signed_receipt_checks": "PASS for synthetic validator behavior; production key provisioning absent",
+    "raw_source_lock_byte_check": "PASS in synthetic byte-mismatch tests",
+    "capture_promotion": "PASS for audited fault-injection scope; failed cleanup may leave a directory but not a SUCCESS receipt",
+    "current_gate_binding": "PASS for non-circular code design; actual current I gate is CLOSED and correctly rejected"
   },
   "conditions": [
     {
@@ -143,27 +146,27 @@
     {
       "id": "synthetic_tests_and_oracle",
       "status": "PASS",
-      "evidence": "E reran all 53 current D tests and its independent synthetic oracle; synthetic/code checks only."
+      "evidence": "E independently reran all 56 current D tests and its seven-check synthetic oracle; no GAP_REPRODUCED line."
     },
     {
       "id": "signature_and_source_lock_raw_bytes",
       "status": "GAP",
-      "evidence": "Test-key signatures and raw-byte mismatch checks passed, but D's exact current I/E identity pins are stale and production key material is unprovisioned."
+      "evidence": "Dynamic signed I/E binding and raw-byte checks PASS synthetically; production trust-key material and protected trust store are not provisioned."
     },
     {
       "id": "current_gate_and_audit_identity_binding",
-      "status": "BLOCKED",
-      "evidence": "E reproduced that D rejects the exact current I gate and new E audit identity because D's code pins old I/E refs."
+      "status": "PASS",
+      "evidence": "E independently verified non-circular dynamic immutable I/E identities, exact current D-hash binding, rejection of tampered E D hashes, and rejection of the actual CLOSED I gate."
     },
     {
       "id": "capture_save_failure_semantics",
-      "status": "BLOCKED",
-      "evidence": "E reproduced parent-directory fsync failure after promotion plus rollback-deletion failure leaving run-receipt.json in the final destination."
+      "status": "PASS",
+      "evidence": "E re-injected the prior compound final-fsync + rollback-delete fault; promotion failed and no run-receipt.json remained."
     },
     {
       "id": "independent_E_audit",
       "status": "BLOCKED",
-      "evidence": "Current E audit AUDIT-CSM-E-20261001-REAUDIT-01 is PARTIAL_WITH_GAPS and recommends BLOCKED; the gate requires a qualifying E PASS."
+      "evidence": "Current E audit AUDIT-CSM-E-20261004-REAUDIT-02 is complete and resolves the prior D code blockers but remains PARTIAL_WITH_GAPS / BLOCKED due source and production-operational evidence."
     },
     {
       "id": "source_full_history_vintage_and_calendar_authority",
@@ -212,8 +215,6 @@
     }
   ],
   "blocking_conditions": [
-    "current_gate_and_audit_identity_binding",
-    "capture_save_failure_semantics",
     "independent_E_audit",
     "source_full_history_vintage_and_calendar_authority",
     "named_outcome_access_operator",
@@ -273,9 +274,10 @@
     "d_current_i_e_identity_binding_pass": false,
     "current_gate_canonical_state": "BLOCKED_CLOSED",
     "current_gate_status": "CLOSED",
-    "market_outcome_access": false
+    "market_outcome_access": false,
+    "refreshed_after_e_audit": "AUDIT-CSM-E-20261004-REAUDIT-02"
   },
-  "updated_at": "2026-10-02",
+  "updated_at": "2026-10-04",
   "recommendation": "BLOCKED",
   "e_audit": {
     "audit_id": "AUDIT-CSM-E-20261001-REAUDIT-01",
@@ -332,5 +334,17 @@
     "audit_matrix_sha256": "a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7",
     "applicability": "HISTORICAL_OLD_D_HEAD"
   },
-  "pr_38_description_sync": "STALE: PR body still summarizes prior 42/42 and 5/5 audit; exact current RESULT/MATRIX at head 4f683901 contain the re-audit"
+  "pr_38_description_sync": "STALE: PR body still summarizes prior 42/42 and 5/5 audit; exact current RESULT/MATRIX at head 4f683901 contain the re-audit",
+  "current_e_audit_identities": {
+    "head": "970ea9b77e062e7acbc67432993797a0cb4e0d01",
+    "audit_id": "AUDIT-CSM-E-20261004-REAUDIT-02",
+    "result_git_blob_sha1": "59ece59a96fe3f7bb9e36da5e93bc56a4ddcd7cd",
+    "result_sha256": "3e9f6e972ce9065ba498a366daa88fbfe09bf8c1261655bf8ffdb3d4e231003f",
+    "matrix_git_blob_sha1": "4ba6cbbddf731e5e226b56af1d4d84847c586cf5",
+    "matrix_sha256": "c3d19bdc8f46e271aaf5e6c04741a21c1c2813864e21e23790c5b2e7aad354bd",
+    "oracle_git_blob_sha1": "f75cb2311d1ac1f6c952cd080e8e3f0016033c69",
+    "oracle_sha256": "5b62f25efdf8937d00204b65e40c0117a13cb111f3f53d5b5d9fd4701ccda0b4",
+    "test_log_git_blob_sha1": "11e0732a261f01ee4d046801d585fa1b30bd3482",
+    "test_log_sha256": "02cda107912c6a883cb471eb2cd86c46794930d84c0c5995beed51d9d03ba945"
+  }
 }
