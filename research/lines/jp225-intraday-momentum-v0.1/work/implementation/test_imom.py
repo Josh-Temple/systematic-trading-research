@@ -191,6 +191,38 @@ class TestConfirmationInput(unittest.TestCase):
             with self.assertRaises(ValueError):
                 _load_input(p, "a" * 64)
 
+
+    def test_gate_is_checked_before_input_file_is_opened(self):
+        source_sha = "a" * 64
+        expected_input_sha = "b" * 64
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            missing_input = root / "missing-input.json"
+            identity = {
+                "spec_sha256": spec_identity(),
+                "code_sha256": code_identity(),
+                "input_sha256": expected_input_sha,
+                "source_manifest_sha256": source_sha,
+            }
+            gate = root / "gate.json"
+            gate.write_bytes(canonical({
+                "status": "FAIL",
+                "independent_review": "FAIL",
+                "sample": "2025_CONFIRMATION",
+                "binding": identity,
+            }))
+            gate_sha = digest(gate)
+            with self.assertRaisesRegex(PermissionError, "CONFIRMATION_GATE_CLOSED"):
+                run(
+                    missing_input,
+                    gate,
+                    gate_sha,
+                    expected_input_sha,
+                    source_sha,
+                    root / "out",
+                )
+            self.assertFalse(Path(str(missing_input) + ".CONSUMED.json").exists())
+
     def test_one_shot_insufficient_run_and_consumption_marker(self):
         source_sha = "a" * 64
         with tempfile.TemporaryDirectory() as td:
@@ -212,11 +244,11 @@ class TestConfirmationInput(unittest.TestCase):
             }))
             gate_sha = digest(gate)
             out = root / "out"
-            result = run(inp, gate, gate_sha, source_sha, out)
+            result = run(inp, gate, gate_sha, digest(inp), source_sha, out)
             self.assertEqual(result["classification"], "INSUFFICIENT_2025_EVENTS")
             self.assertTrue(Path(str(inp) + ".CONSUMED.json").exists())
             with self.assertRaises(FileExistsError):
-                run(inp, gate, gate_sha, source_sha, root / "other-out")
+                run(inp, gate, gate_sha, digest(inp), source_sha, root / "other-out")
 
 
 class TestHoldoutGuard(unittest.TestCase):
