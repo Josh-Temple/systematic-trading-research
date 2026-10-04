@@ -1,55 +1,63 @@
 ---
 type: CurrentProjection
 research_line_id: RL-JP225-IMOM-001
-projection_generated_at: 2026-10-04
+projection_generated_at: 2026-10-05
 ---
 
 # Current State
 
-Operational state: **PRE_OUTCOME_AUDIT_PASS_WITH_KNOWN_GAPS / DATA_NOT_ACQUIRED**.
+Operational state: **SOURCE_QUALIFICATION_PARTIAL_WITH_GAPS / PREPURCHASE**.
 
 - hypothesis: UNTESTED;
 - JPX/DataCube market outcomes accessed: NO;
 - 2025 confirmation outcomes accessed: NO;
 - 2026 holdout outcomes accessed: NO;
-- source qualification: NOT_EXECUTED;
-- specification: FROZEN_PRE_OUTCOME (v0.1 + v0.1.1 hardening amendment);
-- deterministic implementation: SYNTHETIC_TESTS_PASS;
+- source qualification: PARTIAL_WITH_GAPS;
+- specification: FROZEN_PRE_OUTCOME (v0.1 + v0.1.1 + v0.1.2 source amendment);
+- deterministic implementation: SYNTHETIC_TESTS_PENDING_POST_PACKET_A_CHANGE;
 - 2025 confirmation: LOCKED;
 - 2026 holdout: LOCKED;
 - live trading authority: NONE.
 
-## Pre-outcome hardening completed
+## Packet A findings
 
-Synthetic implementation now enforces:
+Public JPX/DataCube material resolves the intended source family and most source semantics:
 
-- quarterly front-contract / roll-transition handling;
-- four fixed transaction-price boundaries with +60-second maximum mapping;
-- internally recomputed early/late returns and sign translation from raw mapped prices;
-- fixed OLS and LCG bootstrap semantics;
-- non-circular source/spec/code/input identity binding;
-- one-shot sample-consumption reservation;
-- no silent rerun after consumed failure;
-- independent-review receipt requirement before any 2026 holdout reader invocation.
+- Financial Derivatives / Tick / Nikkei 225 mini;
+- monthly CSV delivery;
+- Nikkei 225 mini product/index segment 19;
+- trade_date / execution_date / security_code / time / trade_price / trade_volume / sequence No / contract_month / sco_category fields;
+- millisecond timestamp representation for 2025-era OSE data;
+- sequence No provides execution ordering within trade date and security code;
+- contract_month is directly available as YYYYMM;
+- strategy-trade rows are explicitly flagged and are excluded by v0.1.2;
+- all frozen 09:30/15:00/15:30 clock points fall inside the Nikkei 225 mini day session.
 
-GitHub Actions workflow `JP225 intraday momentum synthetic` passed on audit-fixed head `287c5b8a6594c9ec8e72ea04734c069562cdd43d` (run #20).
+Packet A also found that using the first 2025 TSE date would require a 2024-12-30 predecessor price. v0.1.2 excludes that first candidate rather than opening a 2024 monthly tick file.
 
-## Independent pre-outcome audit
+## Packet A classification
 
-The pre-outcome audit found one gate-order blocker and fixed it before any market data access: the runner had hashed the mapped 2025 input before validating the independent gate. The fixed runner validates the gate first, reserves sample consumption, then verifies/opens the mapped input.
+**PARTIAL_WITH_GAPS / PREPURCHASE_QUALIFICATION_COMPLETE**
 
-Audit classification: **PASS_WITH_KNOWN_GAPS / READY_FOR_SOURCE_QUALIFICATION**.
+PASS is not available before actual 2025 files exist because Packet A still requires:
 
-Known gaps are source-side, not market-result gaps:
+- exact 2025 monthly item/file identities;
+- raw-file byte sizes and SHA-256;
+- product-file timezone confirmation;
+- real +60-second boundary coverage;
+- target-file sequence-number diagnostics;
+- final purchase/use category and publication boundary.
 
-- exact DataCube Nikkei 225 mini product/file/schema identity still needs Packet A qualification;
-- timestamp/order semantics still need source confirmation;
-- storage/processing rights must be confirmed for the chosen purchase/use category;
-- this futures study is a mechanism transfer from ETF literature, not an exact instrument replication;
-- v0.1 uses a frozen paired-date bootstrap rather than the cited paper's Newey-West inference.
+The raw DataCube files remain LOCAL_ONLY by default. Do not upload raw rows or reconstructable mapped prices to GitHub, ChatGPT, Drive or another cloud service.
 
-No JPX/DataCube market outcomes have been acquired or inspected.
+See:
+
+- work/source-qualification/PACKET_A_RESULT_2026-10-05.md
+- work/source-qualification/DATACUBE_ACQUISITION_PLAN.md
+- specifications/SPEC-JP225-IMOM-001-v01.2_SOURCE_AMENDMENT.md
 
 ## Next action
 
-Run Packet A source qualification without accessing 2026 data or calculating any 2025 returns. A future independent confirmation gate is still required before the one-shot 2025 runner may open mapped price rows.
+Rerun synthetic CI after the v0.1.2 implementation binding change.
+
+After CI passes, the next external dependency is DataCube acquisition/use-category resolution. The one-shot 2025 confirmation remains locked.
