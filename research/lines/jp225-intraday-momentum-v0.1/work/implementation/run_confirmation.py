@@ -119,20 +119,22 @@ def run(
     input_path,
     gate_path,
     expected_gate_sha256,
+    expected_input_sha256,
     expected_source_manifest_sha256,
     out_dir,
 ):
+    if not _valid_sha256(expected_input_sha256):
+        raise ValueError("INPUT_EXPECTED_IDENTITY_FAILURE")
     if not _valid_sha256(expected_source_manifest_sha256):
         raise ValueError("SOURCE_MANIFEST_IDENTITY_FAILURE")
     if digest(gate_path) != expected_gate_sha256:
         raise PermissionError("GATE_IDENTITY_FAILURE")
 
     gate = json.loads(Path(gate_path).read_text())
-    input_sha = digest(input_path)
     identity = {
         "spec_sha256": spec_identity(),
         "code_sha256": code_identity(),
-        "input_sha256": input_sha,
+        "input_sha256": expected_input_sha256,
         "source_manifest_sha256": expected_source_manifest_sha256,
     }
     if (
@@ -163,6 +165,8 @@ def run(
     }))
 
     try:
+        if digest(input_path) != expected_input_sha256:
+            raise PermissionError("INPUT_IDENTITY_FAILURE")
         obs = _load_input(input_path, expected_source_manifest_sha256)
         metrics = evaluate_sample(obs, min_rows=180)
         if metrics["status"] == "INSUFFICIENT_EVENTS":
@@ -176,7 +180,7 @@ def run(
             advance = False
 
         if (
-            digest(input_path) != input_sha
+            digest(input_path) != expected_input_sha256
             or digest(gate_path) != expected_gate_sha256
             or code_identity() != identity["code_sha256"]
             or spec_identity() != identity["spec_sha256"]
