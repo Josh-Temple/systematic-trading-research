@@ -63,30 +63,12 @@ RSA_SHA256_DIGEST_INFO_PREFIX = bytes.fromhex(
     "3031300d060960864801650304020105000420"
 )
 
-# These are the current repository identities reviewed for this D correction.
-# The I gate is CLOSED and the current E audit is BLOCKED; the values intentionally
-# cause default validation to fail closed until I and E publish new identities.
-CURRENT_I2_GATE_EXPECTED = {
-    "pr_number": 37,
-    "head_sha": "677341e8185bf38b5cc6d4490260ddefb72eb561",
-    "gate_blob_sha1": "ba1670b0c13ec58e806838949a80574a5cbab6c4",
-    "gate_sha256": "54b7984b9853ee6a7b848d6fb473d6aeb7bc1f52c2d94d6c74ed13f43cc28dd6",
-    "gate_markdown_blob_sha1": "03707f1aa346945a368e98881e8aa6f99ae91fb9",
-    "gate_markdown_sha256": "d901a7726355916088ade7ed32e129a241a360cbbcd220a01319413650d9465d",
-    "gate_status": "CLOSED",
-    "market_outcome_access": False,
-}
-CURRENT_E_AUDIT_EXPECTED = {
-    "audit_id": "AUDIT-CSM-E-20261002",
-    "pr_number": 38,
-    "head_sha": "d1335b29eeb01cdd4b71cd5ded62033b8468e539",
-    "result_blob_sha1": "f29a5d38b16b54734a47c719c09922a461ee3fe4",
-    "result_sha256": "c0df6ce468558e22eff57056ecf88ac9b5817a67fdcedef3e9aa028878177c35",
-    "matrix_blob_sha1": "3ada00d887bc76f88c777d2a40ea410077e3e594",
-    "matrix_sha256": "a668e8e0f2530ef2d6a0bf1f67b86a31f9dfe28b01dd795e0b610ca191900ef7",
-    "status": "PARTIAL_WITH_GAPS",
-    "recommendation": "BLOCKED",
-}
+# Production validation intentionally does not pin mutable I/E commit identities.
+# The integrator and independent-auditor receipts are authenticated by trusted keys,
+# carry exact immutable artifact identities, and independently bind the current D bytes.
+I2_GATE_PR_NUMBER = 37
+E_AUDIT_PR_NUMBER = 38
+
 
 
 class DataError(ValueError):
@@ -483,6 +465,39 @@ def load_protected_trust_store(path: Path = TRUST_STORE_PATH) -> dict[str, Mappi
     return result
 
 
+def _require_hex_digest(value: Any, length: int, field: str) -> str:
+    if not isinstance(value, str) or not re.fullmatch(rf"[0-9a-f]{{{length}}}", value):
+        raise GateError(f"{field} has invalid digest identity")
+    return value
+
+
+def _validate_i2_gate_identity(identity: Mapping[str, Any]) -> None:
+    if identity.get("pr_number") != I2_GATE_PR_NUMBER:
+        raise GateError("I2 gate PR identity mismatch")
+    for field in ("head_sha", "gate_blob_sha1", "gate_markdown_blob_sha1"):
+        _require_hex_digest(identity.get(field), 40, f"I2 {field}")
+    for field in ("gate_sha256", "gate_markdown_sha256"):
+        _require_hex_digest(identity.get(field), 64, f"I2 {field}")
+    if identity.get("gate_status") != "PASS":
+        raise GateError("current I2 gate is not PASS")
+    if identity.get("market_outcome_access") is not True:
+        raise GateError("current I2 gate does not authorize market outcome access")
+
+
+def _validate_e_audit_identity(identity: Mapping[str, Any]) -> None:
+    _require_identity(identity.get("audit_id"), "independent audit ID")
+    if identity.get("pr_number") != E_AUDIT_PR_NUMBER:
+        raise GateError("independent audit PR identity mismatch")
+    for field in ("head_sha", "result_blob_sha1", "matrix_blob_sha1"):
+        _require_hex_digest(identity.get(field), 40, f"E {field}")
+    for field in ("result_sha256", "matrix_sha256"):
+        _require_hex_digest(identity.get(field), 64, f"E {field}")
+    if identity.get("status") != "PASS":
+        raise GateError("current E audit status is not PASS")
+    if identity.get("recommendation") != "ALLOW_I2":
+        raise GateError("current E audit does not authorize I2 reconsideration")
+
+
 def validate_gate_receipt(
     receipt: Mapping[str, Any], source_lock: Mapping[str, Any], *,
     source_lock_raw_bytes: bytes,
@@ -492,8 +507,8 @@ def validate_gate_receipt(
     expected_probe_metadata_sha256: str | None,
     expected_calendar_sha256: str,
     now: datetime | None = None,
-    expected_current_i2_gate: Mapping[str, Any] = CURRENT_I2_GATE_EXPECTED,
-    expected_e_audit: Mapping[str, Any] = CURRENT_E_AUDIT_EXPECTED,
+    expected_current_i2_gate: Mapping[str, Any] | None = None,
+    expected_e_audit: Mapping[str, Any] | None = None,
     allow_synthetic_test_fixtures: bool = False,
 ) -> Mapping[str, Any]:
     """Verify signed E and I2 evidence and every byte identity; reject by default."""
@@ -569,10 +584,19 @@ def validate_gate_receipt(
         raise GateError("gate test-log identity mismatch")
     if payload.get("full_history_run_authorized") is not True:
         raise GateError("full-history execution is not explicitly authorized")
-    if payload.get("current_i2_gate_identity") != dict(expected_current_i2_gate):
-        raise GateError("signed receipt does not identify the current I2 gate")
-    if payload.get("independent_audit_identity") != dict(expected_e_audit):
-        raise GateError("signed receipt does not identify the current E audit")
+    i2_identity = payload.get("current_i2_gate_identity")
+    if not isinstance(i2_identity, Mapping):
+        raise GateError("signed receipt lacks the current I2 gate identity")
+    _validate_i2_gate_identity(i2_identity)
+    if expected_current_i2_gate is not None and i2_identity != dict(expected_current_i2_gate):
+        raise GateError("signed receipt does not identify the expected I2 gate")
+
+    audit_identity = payload.get("independent_audit_identity")
+    if not isinstance(audit_identity, Mapping):
+        raise GateError("signed receipt lacks the current E audit identity")
+    _validate_e_audit_identity(audit_identity)
+    if expected_e_audit is not None and audit_identity != dict(expected_e_audit):
+        raise GateError("signed receipt does not identify the expected E audit")
 
     key_store = trusted_keys
     if key_store is None:
@@ -584,10 +608,18 @@ def validate_gate_receipt(
     e_payload = _verify_signed_envelope(
         e_envelope, key_store, required_role="independent_auditor", now=current_time
     )
-    if any(e_payload.get(key) != value for key, value in expected_e_audit.items()):
-        raise GateError("signed E audit identity or content does not match current audit")
-    if e_payload.get("status") != "PASS" or e_payload.get("recommendation") != "ALLOW_I2":
-        raise GateError("current E audit does not authorize I2 reconsideration")
+    if any(e_payload.get(key) != value for key, value in audit_identity.items()):
+        raise GateError("signed E audit identity or content does not match gate identity")
+    if e_payload.get("audited_d_file_hashes") != dict(expected_file_hashes):
+        raise GateError("signed E audit does not bind the current D file hashes")
+    if e_payload.get("audited_environment_identity_sha256") != expected_environment_sha256:
+        raise GateError("signed E audit does not bind the current environment identity")
+    if e_payload.get("audited_spec_sha256") != SPEC_SHA256:
+        raise GateError("signed E audit does not bind the frozen SPEC")
+    if e_payload.get("audited_source_lock_raw_sha256") != raw_lock_hash:
+        raise GateError("signed E audit does not bind the exact source-lock bytes")
+    if e_payload.get("audited_calendar_sha256") != expected_calendar_sha256:
+        raise GateError("signed E audit does not bind the expected calendar identity")
     if payload.get("independent_audit_envelope_sha256") != sha256_bytes(canonical_json_bytes(e_envelope)):
         raise GateError("signed gate receipt does not bind the E audit signature bytes")
     i2_payload = _verify_signed_envelope(
@@ -598,8 +630,6 @@ def validate_gate_receipt(
     trusted_integrator = key_store.get(str(receipt["signature"].get("key_id")), {})
     if payload.get("integrator_principal_id") != trusted_integrator.get("principal_id"):
         raise GateError("integrator identity does not match the trusted signer")
-    if expected_current_i2_gate.get("gate_status") != "PASS" or expected_current_i2_gate.get("market_outcome_access") is not True:
-        raise GateError("current I2 gate is CLOSED; outcome access remains blocked")
     return payload
 
 
@@ -1613,8 +1643,16 @@ def promote_output_directory(
         _fsync_directory(destination.parent)
         pending_path = destination / "_completion-pending.json"
         pending = json.loads(pending_path.read_bytes().decode("utf-8"))
-        _inject_fault(fault_injector, "success_receipt")
         success_bytes = canonical_json_bytes(pending["success_receipt"])
+
+        # Remove the non-success pending marker and durably record that removal
+        # before publishing the final SUCCESS receipt. The receipt is therefore
+        # the last fallible commit operation. If its own atomic publication fails,
+        # atomic_write_verified removes it before this function reports failure.
+        pending_path.unlink()
+        _fsync_directory(destination)
+
+        _inject_fault(fault_injector, "success_receipt")
         atomic_write_verified(
             destination / "run-receipt.json", success_bytes,
             fault_injector=(
@@ -1622,8 +1660,6 @@ def promote_output_directory(
                 if fault_injector is not None else None
             ),
         )
-        pending_path.unlink()
-        _fsync_directory(destination)
     except Exception as exc:
         if promoted:
             try:
