@@ -14,7 +14,7 @@ Operational state: **SOURCE_QUALIFICATION_PARTIAL_WITH_GAPS / PREPURCHASE**.
 - 2026 holdout outcomes accessed: NO;
 - source qualification: PARTIAL_WITH_GAPS;
 - specification: FROZEN_PRE_OUTCOME (v0.1 + v0.1.1 + v0.1.2 source amendment);
-- deterministic implementation: SYNTHETIC_TESTS_PENDING_POST_PACKET_A_CHANGE;
+- deterministic implementation: SYNTHETIC_TESTS_PASS;
 - 2025 confirmation: LOCKED;
 - 2026 holdout: LOCKED;
 - live trading authority: NONE.
@@ -56,8 +56,18 @@ See:
 - work/source-qualification/DATACUBE_ACQUISITION_PLAN.md
 - specifications/SPEC-JP225-IMOM-001-v01.2_SOURCE_AMENDMENT.md
 
+## Post-Packet-A validation
+
+GitHub Actions workflow `JP225 intraday momentum synthetic` passed on head `13401c0bf32ad8ebcdf13ea1bf7da0d59442d4e5` (run #34) after v0.1.2 was bound into the code identity and strategy-trade exclusion was tested.
+
 ## Next action
 
-Rerun synthetic CI after the v0.1.2 implementation binding change.
+The next dependency is external and cannot be completed from public metadata alone:
 
-After CI passes, the next external dependency is DataCube acquisition/use-category resolution. The one-shot 2025 confirmation remains locked.
+1. confirm the applicable DataCube purchase/use category and publication boundary;
+2. purchase/download the 2025 Nikkei 225 mini monthly tick files;
+3. keep raw files local;
+4. run coverage-only source qualification and bind exact SHA-256 identities;
+5. independently review the source receipt.
+
+The one-shot 2025 confirmation remains locked.
