@@ -624,28 +624,78 @@ class GateAndReceiptTests(unittest.TestCase):
         with self.assertRaisesRegex(csm.GateError, "raw-byte identity mismatch"):
             validate_test_gate(changed, lock, raw, keys)
 
-    def test_current_i2_closed_and_current_e_blocked_are_not_authorizing(self) -> None:
+    def test_closed_i2_identity_is_not_authorizing(self) -> None:
         lock = synthetic_source_lock()
-        receipt, keys, raw = synthetic_gate_receipt(lock)
-        with self.assertRaisesRegex(csm.GateError, "does not identify the current I2 gate"):
-            validate_test_gate(
-                receipt, lock, raw, keys,
-                expected_current_i2_gate=csm.CURRENT_I2_GATE_EXPECTED,
-                expected_e_audit=TEST_E_AUDIT,
+        closed = dict(TEST_CURRENT_I2_GATE)
+        closed["gate_status"] = "CLOSED"
+        closed["market_outcome_access"] = False
+        receipt, keys, raw = synthetic_gate_receipt(lock, current_i2_gate=closed)
+        with self.assertRaisesRegex(csm.GateError, "current I2 gate is not PASS"):
+            csm.validate_gate_receipt(
+                receipt, lock, source_lock_raw_bytes=raw,
+                trusted_keys=keys, expected_file_hashes=TEST_FILE_HASHES,
+                expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
+                expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
+                now=TEST_NOW, allow_synthetic_test_fixtures=True,
             )
 
-    def test_current_e_partial_recommendation_blocks_even_a_valid_signature(self) -> None:
+    def test_partial_e_recommendation_blocks_even_a_valid_signature(self) -> None:
         lock = synthetic_source_lock()
+        partial = dict(TEST_E_AUDIT)
+        partial["status"] = "PARTIAL_WITH_GAPS"
+        partial["recommendation"] = "BLOCKED"
         receipt, keys, raw = synthetic_gate_receipt(
-            lock, current_i2_gate=TEST_CURRENT_I2_GATE,
-            e_audit=csm.CURRENT_E_AUDIT_EXPECTED,
+            lock, current_i2_gate=TEST_CURRENT_I2_GATE, e_audit=partial,
         )
-        with self.assertRaisesRegex(csm.GateError, "current E audit does not authorize"):
-            validate_test_gate(
-                receipt, lock, raw, keys,
-                expected_current_i2_gate=TEST_CURRENT_I2_GATE,
-                expected_e_audit=csm.CURRENT_E_AUDIT_EXPECTED,
+        with self.assertRaisesRegex(csm.GateError, "current E audit status is not PASS"):
+            csm.validate_gate_receipt(
+                receipt, lock, source_lock_raw_bytes=raw,
+                trusted_keys=keys, expected_file_hashes=TEST_FILE_HASHES,
+                expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
+                expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
+                now=TEST_NOW, allow_synthetic_test_fixtures=True,
             )
+
+    def test_signed_e_attestation_must_bind_current_d_hashes(self) -> None:
+        lock = synthetic_source_lock()
+        gate, keys, raw = synthetic_gate_receipt(lock)
+        tampered = json.loads(json.dumps(gate))
+        e_payload = tampered["payload"]["independent_audit_attestation"]["payload"]
+        e_payload["audited_d_file_hashes"]["csm.py"] = "0" * 64
+        tampered["payload"]["independent_audit_attestation"] = sign_envelope(
+            e_payload, "auditor-test-key-001"
+        )
+        tampered["payload"]["independent_audit_envelope_sha256"] = csm.sha256_bytes(
+            csm.canonical_json_bytes(tampered["payload"]["independent_audit_attestation"])
+        )
+        tampered = sign_gate_payload(tampered["payload"])
+        with self.assertRaisesRegex(csm.GateError, "does not bind the current D file hashes"):
+            csm.validate_gate_receipt(
+                tampered, lock, source_lock_raw_bytes=raw,
+                trusted_keys=keys, expected_file_hashes=TEST_FILE_HASHES,
+                expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
+                expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
+                now=TEST_NOW, allow_synthetic_test_fixtures=True,
+            )
+
+    def test_dynamic_signed_i_and_e_identities_do_not_require_code_pin_update(self) -> None:
+        lock = synthetic_source_lock()
+        i2 = dict(TEST_CURRENT_I2_GATE)
+        i2["head_sha"] = "c" * 40
+        i2["gate_blob_sha1"] = "d" * 40
+        i2["gate_sha256"] = "e" * 64
+        audit = dict(TEST_E_AUDIT)
+        audit["audit_id"] = "AUDIT-CSM-E-SYNTH-ROTATED"
+        audit["head_sha"] = "f" * 40
+        gate, keys, raw = synthetic_gate_receipt(lock, current_i2_gate=i2, e_audit=audit)
+        accepted = csm.validate_gate_receipt(
+            gate, lock, source_lock_raw_bytes=raw,
+            trusted_keys=keys, expected_file_hashes=TEST_FILE_HASHES,
+            expected_environment_sha256=TEST_ENVIRONMENT_SHA256,
+            expected_probe_metadata_sha256=None, expected_calendar_sha256="a" * 64,
+            now=TEST_NOW, allow_synthetic_test_fixtures=True,
+        )
+        self.assertEqual(accepted["current_i2_gate_identity"]["head_sha"], "c" * 40)
 
     def test_network_audit_hook_rejects_connect(self) -> None:
         with self.assertRaisesRegex(PermissionError, "disabled"):
@@ -757,6 +807,43 @@ class AtomicPersistenceTests(unittest.TestCase):
                 self.assertFalse(destination.exists())
                 if stage.exists():
                     self.assertTrue((stage / "_completion-pending.json").exists())
+
+    def test_compound_final_fsync_and_rollback_delete_failure_never_leaves_success_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            destination = root / "published-run"
+            stage = self.build_stage(root, destination.name)
+            original_fsync = csm._fsync_directory
+            original_rmtree = csm.shutil.rmtree
+            count = {"destination": 0}
+
+            def fail_second_destination_fsync(path: Path) -> None:
+                if path == destination:
+                    count["destination"] += 1
+                    if count["destination"] == 2:
+                        raise OSError("synthetic final directory fsync fault")
+                original_fsync(path)
+
+            def fail_cleanup(path: object, *args: object, **kwargs: object) -> object:
+                if Path(path) == destination:
+                    raise OSError("synthetic rollback deletion fault")
+                return original_rmtree(path, *args, **kwargs)
+
+            csm._fsync_directory = fail_second_destination_fsync
+            csm.shutil.rmtree = fail_cleanup
+            try:
+                with self.assertRaisesRegex(csm.GateError, "failed"):
+                    csm.promote_output_directory(stage, destination)
+                self.assertFalse(
+                    (destination / "run-receipt.json").exists(),
+                    "failed promotion must never leave a SUCCESS receipt",
+                )
+            finally:
+                csm._fsync_directory = original_fsync
+                csm.shutil.rmtree = original_rmtree
+                if destination.exists():
+                    original_rmtree(destination)
+
 
     def test_output_promotion_validates_all_bytes_before_final_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -999,9 +1086,17 @@ def synthetic_gate_receipt(
 ) -> tuple[dict[str, object], dict[str, dict[str, object]], bytes]:
     raw_lock = source_lock_raw_bytes or csm.canonical_json_bytes(source_lock)
     audit_identity = dict(e_audit or TEST_E_AUDIT)
-    audit_payload = {**audit_identity, "signer_principal_id": "auditor-principal-001"}
-    e_envelope = sign_envelope(audit_payload, "auditor-test-key-001")
     file_hashes = TEST_FILE_HASHES
+    audit_payload = {
+        **audit_identity,
+        "signer_principal_id": "auditor-principal-001",
+        "audited_d_file_hashes": dict(file_hashes),
+        "audited_environment_identity_sha256": TEST_ENVIRONMENT_SHA256,
+        "audited_spec_sha256": csm.SPEC_SHA256,
+        "audited_source_lock_raw_sha256": csm.sha256_bytes(raw_lock),
+        "audited_calendar_sha256": expected_calendar_sha256,
+    }
+    e_envelope = sign_envelope(audit_payload, "auditor-test-key-001")
     payload: dict[str, object] = {
         "gate_id": "I2-CSM-002-20261002-TEST-001",
         "integrator_principal_id": "integrator-principal-001",
@@ -1049,8 +1144,8 @@ def synthetic_gate_receipt(
 def validate_test_gate(
     receipt: dict[str, object], source_lock: dict[str, object], source_lock_raw_bytes: bytes,
     trusted_keys: dict[str, dict[str, object]], *,
-    expected_current_i2_gate: dict[str, object] = TEST_CURRENT_I2_GATE,
-    expected_e_audit: dict[str, object] = TEST_E_AUDIT,
+    expected_current_i2_gate: dict[str, object] | None = TEST_CURRENT_I2_GATE,
+    expected_e_audit: dict[str, object] | None = TEST_E_AUDIT,
 ) -> dict[str, object]:
     return csm.validate_gate_receipt(
         receipt, source_lock, source_lock_raw_bytes=source_lock_raw_bytes,
