@@ -46,9 +46,10 @@ Use for questions about the FX currency-strength / strongest-versus-weakest mome
 - scope root on that branch: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/`
 - current projection: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/CURRENT.md`
 - line definition: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/RESEARCH_LINE.md`
-- Phase 0 candidate: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/specifications/SPEC-USDJPY-FORECAST-001-v01.md`
+- overnight Phase 0 candidate: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/specifications/SPEC-USDJPY-FORECAST-001-v01.md`
+- weekly Phase 0 candidate: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/specifications/SPEC-USDJPY-WEEKLY-001-v01.md`
 
-Use for the proposed prospective USD/JPY overnight forecasting line. It remains PRE-FREEZE until explicit human acceptance and source/readiness gates pass.
+Use for the proposed prospective USD/JPY overnight and weekly forecasting line. Each horizon remains PRE-FREEZE until explicit human acceptance and its source/readiness gates pass.
 
 Important:
 - do not infer current research state from this index;
