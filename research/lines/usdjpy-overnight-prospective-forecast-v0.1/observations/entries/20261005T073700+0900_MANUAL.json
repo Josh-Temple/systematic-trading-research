@@ -1,0 +1,86 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261005T073700+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-05T07:37:00+09:00",
+  "retrieved_at": "2026-10-05T07:37:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-05T07:37:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "MULTI_SOURCE_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Noncanonical live-source conflict: Investing technical page showed 157.69 at 2026-10-05 06:17 JST; GoldPriceZ showed about 157.84 around 06:33 JST. Treat current bounded level as roughly 157.7-157.8, not a qualified benchmark quote."
+  },
+  "rates_state": {
+    "us_2y": "4.83% latest Friday close/context from CME-distributed market report",
+    "us_10y": "5.28% latest Friday close/context from CME-distributed market report",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "UNKNOWN_CURRENT_BEFORE_TOKYO_BOND_SESSION_CHECK"
+  },
+  "policy_state": {
+    "fed": "Target range remains 3.75%-4.00%; September payroll weakness reduced October hike odds, but Friday yields retraced higher after an initial decline.",
+    "boj": "Policy guidance around 1.25%; further-tightening debate remains active. Governor Ueda is scheduled to speak on 2026-10-06 at 15:35 JST.",
+    "japan_fx_authorities": "Recent official intervention warning remains relevant if yen weakness accelerates."
+  },
+  "macro_news_facts": [
+    "Reuters 2026-10-05 morning: Brent crude rose about 0.79% to $103.06 after Houthi claims of attacks on Saudi Aramco facilities; WTI about $91.57.",
+    "OPEC+ kept November output targets steady on 2026-10-04.",
+    "Latest Friday U.S. Treasury context: 2-year yield around 4.83%, 10-year around 5.28% after yields rebounded from post-payroll lows.",
+    "Noncanonical early-morning USDJPY sources disagree within roughly 157.69-157.84."
+  ],
+  "scheduled_events_known": [
+    "2026-10-05 08:50 JST: BOJ Sources of Changes in Current Account Balances (October projection).",
+    "2026-10-05 14:00 JST: BOJ Output Gap, Potential Growth Rate, and Labor Market Indicators.",
+    "2026-10-06 15:35 JST: BOJ Governor Ueda speech at National Securities Convention.",
+    "2026-10-07 14:00 ET: FOMC minutes for September 15-16 meeting."
+  ],
+  "source_refs": [
+    {"source":"Reuters oil morning 2026-10-05","ref_id":"turn666418news37","retrieved_at":"2026-10-05T07:37:00+09:00"},
+    {"source":"Reuters OPEC+ 2026-10-04","ref_id":"turn666418news38","retrieved_at":"2026-10-05T07:37:00+09:00"},
+    {"source":"Investing USDJPY technical","ref_id":"turn959149search0","retrieved_at":"2026-10-05T07:37:00+09:00"},
+    {"source":"GoldPriceZ USDJPY live","ref_id":"turn690654search5","retrieved_at":"2026-10-05T07:37:00+09:00"},
+    {"source":"CME-distributed Treasury market report","ref_id":"turn594628search1","retrieved_at":"2026-10-05T07:37:00+09:00"},
+    {"source":"BOJ release schedule","ref_id":"turn757183search0","retrieved_at":"2026-10-05T07:37:00+09:00"},
+    {"source":"BOJ speeches schedule","ref_id":"turn757183search4","retrieved_at":"2026-10-05T07:37:00+09:00"},
+    {"source":"Federal Reserve monetary policy calendar","ref_id":"turn757183search1","retrieved_at":"2026-10-05T07:37:00+09:00"}
+  ],
+  "facts": [
+    "USDJPY is trading near the prior-week close in the available noncanonical early-morning sources, but exact quoted levels conflict.",
+    "Brent crude has risen to about $103.06 in Monday trading after new Middle East supply-risk headlines.",
+    "Latest Friday U.S. 2-year and 10-year yield context remains high at about 4.83% and 5.28%, respectively.",
+    "BOJ has scheduled releases today at 08:50 and 14:00 JST; Ueda speaks tomorrow at 15:35 JST."
+  ],
+  "interpretations": [
+    "The clearest change since the 01:14 pre-open baseline is renewed oil/geopolitical pressure, which is a yen-negative counterforce through Japan's import bill and potentially higher global inflation/yields.",
+    "Despite that oil shock, the available early USDJPY indications have not shown a clear upside break from the prior-week close. This weakens, but does not invalidate, the immediate USDJPY-up scenario.",
+    "The prior slight-USDJPY-down exploratory bias should therefore be reduced toward neutral until Tokyo cash/bond markets provide a cleaner cross-asset reaction."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: Brent rose from the weekend ~$102.25 reference to about $103.06 on new Saudi Aramco attack headlines; FX opened but noncanonical USDJPY quotes remain near prior close with source conflict.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_DOWN: no strong opening confirmation yet; oil shock adds meaningful upside risk and reduces conviction in the earlier JPY-strengthening view.",
+  "alternative_case": "USDJPY_UP: oil remains above $103, U.S. yields stay elevated/rise, and Tokyo trading confirms yen underperformance.",
+  "invalidation_conditions": [
+    "Clean USDJPY break higher accompanied by rising U.S./Japanese yield differential or broad yen weakness.",
+    "Brent extends materially higher and the FX market starts pricing a Japan terms-of-trade shock.",
+    "Conversely, sustained USDJPY decline despite high oil and yields would strengthen the JPY-positive interpretation."
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "08:30 JST default MORNING_STATE with fresher USDJPY quote.",
+    "Tokyo bond/cash-market reaction and current 10-year JGB yield.",
+    "Whether Brent holds above $103 after the initial Houthi/Aramco headline.",
+    "08:50 JST BOJ current-account balance projection.",
+    "14:00 JST BOJ output gap/potential growth/labor-market indicators."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "f6a06dd2df0f71147e89a9a81bfbfb89a573fd87315219910ea1c657c41bdcc2"
+}
