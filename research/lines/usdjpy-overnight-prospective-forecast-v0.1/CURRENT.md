@@ -60,3 +60,25 @@ Until both requirements pass for a horizon:
 - do not inspect future outcomes under that protocol for specification selection;
 - do not call any current research hypothesis a proven predictor;
 - do not create a trading decision rule from the proposal.
+
+
+## Operational preparation status
+
+- Exploratory weekly dry run for 2026-10-05 through 2026-10-09: RECORDED / NOT_IN_COHORT.
+- Dry-run full-system-style view: p_week_up 0.45, point forecast -15 bps, LOW_TO_MEDIUM confidence; this is not WA3 and has no scientific promotion effect.
+- Deterministic helper implementation: COMPLETE_FOR_CANDIDATE.
+- Synthetic helper tests: 19/19 PASS; no market data used.
+- Fed / BOJ / U.S. Treasury / official calendar source routes: partially qualified for the fundamental layer.
+- Dukascopy reference-feed bounded raw sample: BLOCKED_PENDING_RETRIEVAL.
+- Durable news snapshot contract: PARTIAL / NOT_FROZEN.
+- Formal scored start: BLOCKED.
+- Earliest clean weekly cohort candidate remains Sunday 2026-10-11 cutoff, only if human freeze and all readiness gates pass first.
+
+See:
+
+- `work/EXPLORATORY_WEEKLY_DRY_RUN_2026-10-04.md`
+- `work/SOURCE_READINESS_2026-10-04.md`
+- `work/SOURCE_READINESS_UPDATE_2026-10-04_IMPLEMENTATION.md`
+- `work/implementation/forecast_core.py`
+- `work/implementation/test_forecast_core.py`
+- `work/packets/PACKET_SOURCE_DUKASCOPY_REFERENCE_GATE.md`
