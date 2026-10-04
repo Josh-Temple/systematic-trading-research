@@ -1,0 +1,85 @@
+Packet E independent re-audit — hardened D
+Audit ID: AUDIT-CSM-E-20261004-REAUDIT-02
+Audit date: 2026-10-04
+Overall status: PARTIAL_WITH_GAPS
+Recommendation: BLOCKED
+I2: BLOCKED / CLOSED
+market_outcome_access: false
+
+Exact inputs
+D head: 3695f0a8ed085669ec3644826889f9fc953a6808
+I head: 6bd9ddc5bc53c37aee3b0d82d1ac2c00c00fd73c
+C metadata head: 9870c710c3cba7bb9226c9eee8ec36687b96fd9d
+Frozen SPEC blob: 7fe114e2fcfa33b0565b51c717455abd8837d5d9
+Frozen SPEC SHA-256: a1ba23f0b2c6ff25201779f18779e75f013ba8af84cdf8b531ce650f35a9c6a2
+
+Current I exact identity
+gate.json blob: bfa515df80fb855749d8df1e5ce9d657b8f3f495
+gate.json SHA-256: 3c57f65ede07695764fabc13964bb2d98c6b418166b687ca9662dd02cd839a4d
+GATE.md blob: 62e8399821d7e8c168672f93c1dbc7155deca4b2
+GATE.md SHA-256: 4eac722fc0c34cbfecf2bca99bdbaed236c209575e3c242ec3ab8311711e5648
+gate status: CLOSED
+market_outcome_access: false
+
+Exact D raw SHA-256
+csm.py f57c859dd137bb49f23a23ddf2760681bc3ca14aa23cf82e03e2f35bc5b54535
+test_csm.py 899332a9e51018d6140a201105eccdad8154d075af1a32354776621976185bf2
+config.json 9235142b336080ccd87c731d95fe266f64402c202e0de3b7e372521747cccfe1
+fixtures/toy_cases.json 08e0cb95402f5110bcfac494e590cb2d57fd033dde2e5d79a038454526c39f6c
+RUNBOOK.md bba147d4da072507ba255cb15a93a9fe0e76fda7df822fe4cfcf626501b91fb7
+ENVIRONMENT.md 8290c920ea74a05ef759281bcba2792f446f7cc53774f319bf9a57ec5e1e7d8f
+RESULT.md 3c48c47f87634346ac4c02ff1c73a32f640b50d429f2e303d5668bb7c2eff0ea
+TEST_MATRIX.md d5dfa2c76dcaf2c803755d0a03aac803550ce793ad84c7d35257ec899971e0ca
+TEST_LOG.txt 8b6f5f9c2c6527c9c1b6535ba5fdbdcd6394b2259ce947949a52720734cf3b3b
+
+Execution
+Audit wrapper PR: #51
+Workflow: CSM E independent re-audit 20261004
+Run: 37166456105
+Job: 111330239715
+Result: SUCCESS
+
+Independent D rerun:
+- compile PASS
+- unittest: 56 tests
+- 56 passed
+- 0 failed
+- 0 skipped
+- observed runtime 0.911s
+
+E oracle:
+Git blob: f75cb2311d1ac1f6c952cd080e8e3f0016033c69
+SHA-256: 5b62f25efdf8937d00204b65e40c0117a13cb111f3f53d5b5d9fd4701ccda0b4
+
+E oracle checks:
+PASS: synthetic formula, 56-pair, quote, tie, numeraire, and baseline oracle
+PASS: formation score ledger target-value and availability invariance
+PASS: trusted key, role, principal, signature, revocation, and expiry checks
+PASS: raw source-lock bytes and dynamic signed I/E binding
+PASS: fault-injected atomic persistence and promotion
+PASS: independent fixed circular bootstrap and decision boundaries
+PASS: exact permitted C metadata identity and internal validation
+
+No GAP_REPRODUCED lines were emitted.
+
+Prior D code findings:
+- stale hard-coded mutable I/E identities: independently resolved
+- compound final-directory-fsync + rollback-deletion leaving success receipt: independently resolved
+
+Still blocking:
+- source full-history/readiness, external calendar authority, missing/status distribution, publication timing and revision/vintage
+- production trust-key provisioning and protected trust store
+- OS/file/process isolation and filesystem allowlist
+- durable protected destination and persistent append-only/tamper-evident access/attempt ledger
+- named outcome-access operator
+- human disposition of prior exposure disclosures
+- lineage gaps including B path/base and original pre-proposal brief
+
+Access boundary
+No C raw probe response or OBS_VALUE was read.
+No market price/history, ranking, forward return, P/L, Sharpe, performance plot, broker, live/paper, H3, DATA-HR-003 or Pilot input was accessed.
+No X instruction was issued.
+Scientific status remains NOT_APPLICABLE because the experiment has not run.
+
+Historical preservation
+The prior audit that reproduced the two D defects is preserved under work/independent-audit/history/.
