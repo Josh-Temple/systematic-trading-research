@@ -32,9 +32,10 @@ class ForecastCoreTests(unittest.TestCase):
 
     def test_intraday_window(self):
         got = intraday_event_times(date(2026, 10, 6), scheduled_jpx_trading_day=True)
-        self.assertEqual(got.forecast_cutoff, datetime(2026, 10, 6, 9, 0, tzinfo=TOKYO))
+        self.assertEqual(got.forecast_cutoff, datetime(2026, 10, 6, 8, 0, tzinfo=TOKYO))
+        self.assertEqual(got.target_start, datetime(2026, 10, 6, 9, 0, tzinfo=TOKYO))
         self.assertEqual(got.target_end, datetime(2026, 10, 6, 15, 30, tzinfo=TOKYO))
-        self.assertEqual(got.forecast_cutoff, got.target_start)
+        self.assertLess(got.forecast_cutoff, got.target_start)
 
     def test_intraday_rejects_weekend(self):
         with self.assertRaises(ValueError):
@@ -91,7 +92,7 @@ class ForecastCoreTests(unittest.TestCase):
         self.assertEqual(absolute_error_bps(-15.0, 10.0), 25.0)
 
     def test_future_information_rejected(self):
-        cutoff = datetime(2026, 10, 6, 9, 0, tzinfo=TOKYO)
+        cutoff = datetime(2026, 10, 6, 8, 0, tzinfo=TOKYO)
         with self.assertRaises(PermissionError):
             reject_future_information(
                 [{"available_at": cutoff + timedelta(seconds=1)}],
@@ -99,7 +100,7 @@ class ForecastCoreTests(unittest.TestCase):
             )
 
     def test_pre_cutoff_schedule_metadata_allowed(self):
-        cutoff = datetime(2026, 10, 6, 9, 0, tzinfo=TOKYO)
+        cutoff = datetime(2026, 10, 6, 8, 0, tzinfo=TOKYO)
         reject_future_information(
             [{"available_at": cutoff - timedelta(minutes=5),
               "scheduled_for": cutoff + timedelta(hours=3)}],
