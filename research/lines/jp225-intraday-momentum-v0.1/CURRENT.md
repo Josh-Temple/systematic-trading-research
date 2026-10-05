@@ -82,3 +82,25 @@ The current DataCube FAQ says result-only analysis outputs may be provided withi
 Integrity correction: an official JPX search result exposed a 2025 futures quotation snippet during this Work run. The research line is not outcome-unviewed. No quote values were recorded or used, no calculation was performed, no target DataCube files were acquired or inspected, and no 2026 market data were accessed. See work/source-qualification/OUTCOME_ACCESS_INCIDENT_2026-10-04.md. The 2025 confirmation remains locked pending owner disposition.
 
 New local-only validator and 14 synthetic tests are in work/source-qualification/validate_datacube_2025.py and work/implementation/test_datacube_validator.py. The validator is locked from reporting Packet A PASS while the outcome-access incident remains unresolved. Raw files and any generated receipt remain local-only.
+
+
+## Research-owner source-policy disposition — 2026-10-05
+
+The research owner has decided to avoid paid market-data services for now.
+
+Accordingly:
+
+- JPX/J-Quants DataCube acquisition: **DEFERRED_NO_PAID_DATA**;
+- prepared license inquiry: **NOT_REQUIRED_FOR_CURRENT_PRIORITY / UNSENT**;
+- Packet A cannot progress to raw-file PASS under the current policy;
+- 2025 confirmation remains locked and is not to be rescued with another instrument;
+- the outcome-access incident remains append-only and unresolved as a confirmatory-integrity issue;
+- this branch's architecture, validator, specifications and incident record are preserved for possible future reuse.
+
+Current disposition:
+
+**QUARANTINED / DEFERRED_NO_PAID_DATA / INFRASTRUCTURE_PRESERVED**
+
+This is not a negative scientific result. The hypothesis remains UNTESTED.
+
+The project's active no-paid-data JP225 route is exact XM MT5 JP225Cash on the separate main-line EMA research line. Dukascopy JPN.IDX/JPY is not an accepted Nikkei 225 substitute.
