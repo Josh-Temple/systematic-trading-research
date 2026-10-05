@@ -25,7 +25,7 @@ This specification evaluates forecast quality only. It does not evaluate a trada
 Candidate v0.1 timing:
 
 - timezone: `Asia/Tokyo`;
-- forecast cutoff: 09:00:00 JST;
+- forecast information cutoff / intended issuance: 08:00:00 JST;
 - target start: 09:00:00 JST;
 - target end: 15:30:00 JST on the same calendar day;
 - eligible date: scheduled JPX cash-equity trading day, subject to the exact-XM quote availability rules below.
@@ -49,7 +49,7 @@ Quote construction:
 Start price:
 
 - last valid Bid/Ask tick with mapped timestamp `<= 09:00:00 JST`;
-- tick must be no older than 60 seconds before cutoff;
+- tick must be no older than 60 seconds before the target start;
 - otherwise the event is `NO_FORECAST_REQUIRED_MARKET_INPUT_MISSING`.
 
 End price:
@@ -106,8 +106,8 @@ Permitted input:
 
 - event date / weekday;
 - cutoff timestamp;
-- current XM JP225Cash Bid, Ask, Mid;
-- deterministic JP225Cash midpoint returns ending at cutoff for 1 hour, 4 hours, and 24 hours;
+- current XM JP225Cash Bid, Ask, Mid observed at the 08:00 cutoff;
+- deterministic JP225Cash midpoint returns ending at the 08:00 cutoff for 1 hour, 4 hours, and 24 hours;
 - deterministic JP225Cash midpoint high-low range in basis points for 4 hours and 24 hours;
 - current Bid/Ask spread in basis points;
 - explicit missingness flags.
@@ -145,7 +145,7 @@ The snapshot must preserve labels including UNTESTED, BLOCKED, exploratory, nega
 
 ## 6. Information cutoff and provenance
 
-Only information observable at or before 09:00:00 JST may influence a forecast.
+Only information observable at or before 08:00:00 JST may influence a forecast.
 
 For every material item preserve where feasible:
 
@@ -264,7 +264,7 @@ Before the first scored forecast, establish without using future outcomes for se
 2. Bid/Ask tick timestamp semantics;
 3. XM server-time ↔ UTC/JST mapping including DST handling if applicable;
 4. ability to obtain pre-cutoff 1h/4h/24h features without future leakage;
-5. deterministic 09:00 and 15:30 quote selection;
+5. deterministic 08:00 pre-cutoff input snapshot plus 09:00 and 15:30 outcome-quote selection;
 6. required A2 source routes and point-in-time capture rules;
 7. A3 repository-ref pinning;
 8. append-preserving forecast storage;
@@ -298,3 +298,10 @@ Until then:
 - status remains `PROPOSED_NOT_FROZEN`;
 - scored cohort access remains CLOSED;
 - exploratory prospective dry runs are allowed under Section 14.
+
+
+## 17. Pre-freeze timing amendment — 2026-10-06
+
+Before any forecast had been issued and while this specification remained `PROPOSED_NOT_FROZEN`, the human operator requested that forecast issuance move earlier for operational reliability. The candidate timing is therefore amended to 08:00 JST information cutoff / intended issuance, with the scientific target unchanged at the exact-XM 09:00→15:30 midpoint move.
+
+The request occurred before 08:00 JST on 2026-10-06, but repository implementation occurred after 08:00. Consequently, a 2026-10-06 forecast issued after this amendment is a late-issued exploratory dry run, must declare the deviation, and cannot be treated as an on-time 08:00 forecast or as part of the future scored cohort.
