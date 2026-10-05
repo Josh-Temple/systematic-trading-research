@@ -18,8 +18,9 @@ derived_from_interpretations: []
 ## Candidate benchmark
 
 - scheduled JPX cash-equity trading days;
-- 09:00 JST forecast cutoff / start;
-- 15:30 JST endpoint;
+- 08:00 JST forecast information cutoff / intended issuance;
+- 09:00 JST target start;
+- 15:30 JST target endpoint;
 - exact XM MT5 `JP225Cash` Bid/Ask midpoint reference;
 - B0 / A1 / A2 / A3 comparison family;
 - Brier score primary;
@@ -38,7 +39,7 @@ At main `40c1a04b793622d30e42fc298ef6a138407d46fa`:
 
 ## Earliest operational use
 
-The next scheduled JPX trading day may be used for an exploratory prospective dry run if the forecast can be frozen using only pre-cutoff information.
+The next scheduled JPX trading day may be used for an exploratory prospective dry run if the forecast can be frozen using only information available at or before the 08:00 JST cutoff.
 
 It must not enter the 60-event scored cohort unless the full source/readiness gate has passed before that event.
 
@@ -50,3 +51,8 @@ If exact XM endpoint quotes are unavailable, preserve the forecast and mark the 
 2. Run deterministic synthetic tests for timing, quote tolerance, scoring, missingness, and future-information rejection.
 3. Operate exploratory forecast/review dry runs while readiness remains incomplete.
 4. Freeze/activate the scored v0.1 cohort only after explicit human acceptance of the exact specification and readiness PASS.
+
+
+## Timing amendment — 2026-10-06
+
+Before the first forecast was issued, the human operator requested a work-compatible timing change: forecast information cutoff / intended issuance moves from 09:00 JST to 08:00 JST, while the scored target remains the 09:00→15:30 exact-XM move. The request was made before 08:00; repository implementation occurred after 08:00. Therefore any 2026-10-06 forecast issued after implementation must be labeled a late-issued exploratory dry run and cannot be represented as an on-time 08:00 forecast.
