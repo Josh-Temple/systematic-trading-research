@@ -110,16 +110,16 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261005T232900+0900-EVENT_DRIVEN`
-- **Observed:** 2026-10-05 23:29 JST.
-- **Event:** U.S. September ISM Services.
-- **Result:** 54.9 vs 55.0 expected, 55.4 prior.
-- **Important detail:** Prices 74.0; New Orders 59.8; mixed/slower-growth but hotter-inflation signal.
-- **USD/JPY reaction:** UNKNOWN in this entry; no reliable timestamped post-release quote bound yet.
-- **Forecast relation:** original exploratory `p_up=0.53 / +4 bps` remains unchanged; this is post-cutoff information only.
-- **Confidence in event interpretation:** LOW until yield/FX reaction is bound.
-- **Next:** capture post-ISM USDJPY + U.S. 2Y/10Y; evaluate endpoint after 08:00 JST.
-- **Scientific effect:** NONE; journal/error-context only.
+- **State:** `STATE-USDJPY-20261006T020700+0900-MANUAL`
+- **Observed:** 2026-10-06 02:07 JST.
+- **ISM reaction:** USDJPY 158.30 → 158.12 immediately after release.
+- **Later noncanonical FX proxy:** SMBC 01:05 USD TTB/TTS 157.51 / 158.01, rough center ~157.76; not a qualified benchmark quote.
+- **U.S. rates:** 10Y ~5.32–5.33%, 2Y ~4.83–4.86%; yields rose after the initial ISM reaction.
+- **Oil:** WTI around $90.2–90.7; Brent around $101.15, below the early-Monday spike.
+- **Working interpretation:** original slight-up forecast is provisionally under pressure; current path bias is NEUTRAL_TO_SLIGHT_USDJPY_DOWN.
+- **Forecast relation:** original `p_up=0.53 / +4 bps` remains unchanged and unscored until the 08:00 endpoint.
+- **Next:** better timestamped FX quote / 08:00 endpoint / exploratory evaluation.
+- **Scientific effect:** NONE; journal only.
 ## Latest exploratory overnight forecast
 
 - **Forecast:** `XPF-USDJPY-20261005-215400`
