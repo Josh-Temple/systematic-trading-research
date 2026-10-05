@@ -12,8 +12,8 @@ BASE_FORECAST = {
     "system_id": "A3",
     "forecast_system_version": "candidate-v0.1",
     "model_identifier": "test-model",
-    "information_cutoff": "2026-10-06T09:00:00+09:00",
-    "issued_at": "2026-10-06T09:00:10+09:00",
+    "information_cutoff": "2026-10-06T08:00:00+09:00",
+    "issued_at": "2026-10-06T08:00:10+09:00",
     "p_up": 0.55,
     "forecast_return_bps": 5.0,
     "top_drivers": [],
@@ -58,13 +58,13 @@ class RecordContractTests(unittest.TestCase):
 
     def test_pre_cutoff_issuance_rejected(self):
         x = deepcopy(BASE_FORECAST)
-        x["issued_at"] = "2026-10-06T08:59:59+09:00"
+        x["issued_at"] = "2026-10-06T07:59:59+09:00"
         with self.assertRaises(ValueError):
             validate_forecast_record(x)
 
     def test_wrong_cutoff_rejected(self):
         x = deepcopy(BASE_FORECAST)
-        x["information_cutoff"] = "2026-10-06T09:01:00+09:00"
+        x["information_cutoff"] = "2026-10-06T08:01:00+09:00"
         with self.assertRaises(ValueError):
             validate_forecast_record(x)
 
