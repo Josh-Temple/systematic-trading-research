@@ -110,15 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261006T020700+0900-MANUAL`
-- **Observed:** 2026-10-06 02:07 JST.
-- **ISM reaction:** USDJPY 158.30 → 158.12 immediately after release.
-- **Later noncanonical FX proxy:** SMBC 01:05 USD TTB/TTS 157.51 / 158.01, rough center ~157.76; not a qualified benchmark quote.
-- **U.S. rates:** 10Y ~5.32–5.33%, 2Y ~4.83–4.86%; yields rose after the initial ISM reaction.
-- **Oil:** WTI around $90.2–90.7; Brent around $101.15, below the early-Monday spike.
-- **Working interpretation:** original slight-up forecast is provisionally under pressure; current path bias is NEUTRAL_TO_SLIGHT_USDJPY_DOWN.
-- **Forecast relation:** original `p_up=0.53 / +4 bps` remains unchanged and unscored until the 08:00 endpoint.
-- **Next:** better timestamped FX quote / 08:00 endpoint / exploratory evaluation.
+- **State:** `STATE-USDJPY-20261006T073800+0900-MANUAL`
+- **Observed:** 2026-10-06 07:38 JST.
+- **USD/JPY:** New York close about 157.91; exact qualified 07:38 quote unavailable.
+- **Overnight range/context:** Monday 157.44-158.30; no durable break at either extreme.
+- **U.S. rates:** 10Y closed about 5.30%, +3 bp.
+- **Oil:** WTI closed about $89.43, well below the Monday morning spike.
+- **Working interpretation:** NEUTRAL_INTO_ENDPOINT; the 02:07 downside pressure on the original slight-up forecast has eased.
+- **Forecast relation:** original `p_up=0.53 / +4 bps` remains unchanged; no result call before 08:00.
+- **Next:** capture 08:00 endpoint and perform exploratory evaluation only.
 - **Scientific effect:** NONE; journal only.
 ## Latest exploratory overnight forecast
 
