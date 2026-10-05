@@ -1,0 +1,76 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261006T081200+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-06T08:12:00+09:00",
+  "retrieved_at": "2026-10-06T08:12:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-06T08:12:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "07:28 and 07:41 public reports placed USDJPY around 157.90. Exact 08:00 qualified Bid/Ask endpoint remains unavailable."
+  },
+  "rates_state": {
+    "us_2y": "OVERNIGHT_ELEVATED_EXACT_08:12_UNKNOWN",
+    "us_10y": "New York close about 5.30%",
+    "jp_2y": "UNKNOWN",
+    "jp_10y": "AWAITING_TOKYO_SESSION"
+  },
+  "policy_state": {
+    "fed": "October hold still favored; hot ISM prices preserve later tightening risk.",
+    "boj": "Governor Ueda scheduled 15:35 JST today.",
+    "japan_fx_authorities": "Intervention sensitivity remains relevant around rapid yen weakening."
+  },
+  "macro_news_facts": [
+    "USDJPY was around 157.90 in public reports shortly before the 08:00 endpoint.",
+    "The overnight high reached about 158.30 but was not sustained.",
+    "U.S. 10-year Treasury yield closed near 5.30%.",
+    "WTI ended near $89.43, materially below Monday's early oil spike."
+  ],
+  "scheduled_events_known": [
+    "2026-10-06 12:35 JST Japan 10-year JGB auction.",
+    "2026-10-06 15:35 JST BOJ Governor Ueda speech."
+  ],
+  "source_refs": [
+    "OANDA/Kyodo 2026-10-05 21:54 JST: USDJPY 158.10-158.20",
+    "FISCO/Kabutan 2026-10-05 22:45 JST: USDJPY high 158.30",
+    "Minkabu 2026-10-06 07:28 JST: USDJPY about 157.90",
+    "Minkabu pair page 2026-10-06 07:41 JST: USDJPY around 157.90",
+    "OANDA/DZH New York close: USDJPY about 157.91, U.S. 10Y about 5.30%, WTI about $89.43"
+  ],
+  "facts": [
+    "Near-end public observations are below the near-start 21:54 public range.",
+    "Exact protocol-compliant 22:00 and 08:00 qualified Bid/Ask ticks are unavailable.",
+    "Formal scoring therefore remains unavailable."
+  ],
+  "interpretations": [
+    "The exploratory slight-up forecast appears directionally wrong on the available public evidence.",
+    "The miss should be preserved rather than rationalized away.",
+    "The most useful diagnostic is the failure of higher U.S. yields to sustain USDJPY upside."
+  ],
+  "change_since_prior": "ENDPOINT_PASSED: public evidence supports a likely down outcome, but the source/timestamp gate prevents formal scoring.",
+  "base_case": "POST_EVENT_EVALUATION_ONLY; no new forecast is created from this entry.",
+  "alternative_case": "NOT_APPLICABLE",
+  "invalidation_conditions": [
+    "A later qualified reference feed could change the exact magnitude and, in principle, the exact binary outcome; such a correction must be appended rather than overwriting this record."
+  ],
+  "confidence": "MEDIUM",
+  "next_watch_items": [
+    "Qualify the reference Bid/Ask feed.",
+    "Observe Tokyo morning state separately.",
+    "Do not use this exploratory miss to rewrite the candidate protocol."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "TO_BE_COMPUTED"
+}
