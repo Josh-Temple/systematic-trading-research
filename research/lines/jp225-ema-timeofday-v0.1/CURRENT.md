@@ -44,3 +44,23 @@ A bounded official-source review identified JPX/OSE J-Quants DataCube historical
 Exact XM work remains waiting for a future Windows opportunity. When available, run the revised [Stage 1 Windows runbook](work/source-qualification/STAGE1_WINDOWS_RUNBOOK.md) and provide the immutable raw ZIP. Until then, do not relax the XM source gate or promote proxy results to XM conclusions. Stage 1 source review -> frozen signal-only manifest -> event-adjacent Stage 2 ticks -> Packet A execution PASS -> pinned independent Discovery gate -> one-shot 2025 result. See [Stage 2 plan](work/source-qualification/STAGE2_PLAN.md).
 
 Repository integration state: PR #54 (pre-XM hardening) and PR #55 (2017 persistence negative result) are merged on `main`; the separate US-lead negative line is also on `main` via PR #56. These merges do not change the scientific gate: exact XM source qualification remains incomplete, Packet C is locked, and the 2026 holdout remains untouched. No broker substitute, credentials, live orders or holdout acquisition is authorized.
+
+
+## Free-source policy update — 2026-10-05
+
+Research-owner policy: **do not use a separate paid market-data service for now**.
+
+Source routing is now:
+
+- exact XM MT5 JP225Cash: **PRIMARY / FREE-SOURCE PRIORITY**;
+- Dukascopy JPN.IDX/JPY: **REJECTED_AS_JP225_PROXY** because Dukascopy documents it as Japan 200+ Index, not Nikkei 225;
+- JPX/J-Quants DataCube: **DEFERRED_NO_PAID_DATA**;
+- consumed OANDA midpoint data: **NO_FURTHER_RESCUE_MINING**.
+
+This does not change the frozen EMA specification or scientific status. Exact XM remains UNTESTED and WAITING_FOR_XM_STAGE1_DATA.
+
+See:
+
+- work/source-research/FREE_SOURCE_ROUTE_DECISION_2026-10-05.md
+- work/source-research/DUKASCOPY_JPN_IDX_SOURCE_QUALIFICATION_2026-10-05.md
+- work/packets/PACKET_FREE_XM_STAGE1_READINESS.md
