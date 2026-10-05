@@ -110,16 +110,24 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261006T073800+0900-MANUAL`
-- **Observed:** 2026-10-06 07:38 JST.
-- **USD/JPY:** New York close about 157.91; exact qualified 07:38 quote unavailable.
-- **Overnight range/context:** Monday 157.44-158.30; no durable break at either extreme.
-- **U.S. rates:** 10Y closed about 5.30%, +3 bp.
-- **Oil:** WTI closed about $89.43, well below the Monday morning spike.
-- **Working interpretation:** NEUTRAL_INTO_ENDPOINT; the 02:07 downside pressure on the original slight-up forecast has eased.
-- **Forecast relation:** original `p_up=0.53 / +4 bps` remains unchanged; no result call before 08:00.
-- **Next:** capture 08:00 endpoint and perform exploratory evaluation only.
-- **Scientific effect:** NONE; journal only.
+- **State:** `STATE-USDJPY-20261006T081200+0900-MANUAL`
+- **Observed:** 2026-10-06 08:12 JST.
+- **Near-end USD/JPY:** public reports around 157.90 shortly before 08:00; exact qualified 08:00 Bid/Ask unavailable.
+- **Evaluation relation:** near-start public quote was 158.10-158.20 at 21:54, with USDJPY still reaching 158.30 at 22:45; available evidence therefore favors a DOWN outcome.
+- **Working interpretation:** first exploratory overnight forecast was directionally wrong on available evidence.
+- **Formal score:** UNAVAILABLE because exact protocol-compliant 22:00 and 08:00 qualified quotes are missing.
+- **Scientific effect:** NONE; not in cohort.
+
+## Latest exploratory overnight evaluation
+
+- **Evaluation:** `XEV-USDJPY-20261005-215400`
+- **Forecast:** `p_up=0.53 / +4 bps / SLIGHT_USDJPY_UP`.
+- **Status:** INDICATIVE_DIRECTIONAL_MISS_FORMAL_SCORE_UNAVAILABLE.
+- **Indicative public-price return:** roughly -13 to -19 bps using 158.10-158.20 near-start and ~157.90 near-end observations.
+- **Indicative point-forecast error:** roughly 17 to 23 bps.
+- **Illustrative only if Y_up=0 is later confirmed:** Brier 0.2809 vs neutral 0.2500, delta +0.0309.
+- **Research lesson:** elevated U.S. yields did not translate into sustained USDJPY upside; preserve this as a challenger diagnostic, not a reason to rewrite v0.1.
+- **Benchmark effect:** NONE_NOT_IN_COHORT.
 ## Latest exploratory overnight forecast
 
 - **Forecast:** `XPF-USDJPY-20261005-215400`
