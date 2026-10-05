@@ -1,0 +1,79 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_EVALUATION_v0.1",
+  "evaluation_id": "XEV-USDJPY-20261005-215400",
+  "forecast_id": "XPF-USDJPY-20261005-215400",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "evaluated_at": "2026-10-06T08:12:00+09:00",
+  "status": "INDICATIVE_DIRECTIONAL_MISS_FORMAL_SCORE_UNAVAILABLE",
+  "forecast_as_issued": {
+    "p_up": 0.53,
+    "forecast_return_bps": 4.0,
+    "direction_label": "SLIGHT_USDJPY_UP",
+    "information_cutoff": "2026-10-05T21:54:00+09:00",
+    "target_window": "2026-10-05T22:00:00+09:00 -> 2026-10-06T08:00:00+09:00"
+  },
+  "source_gate": {
+    "qualified_reference_feed_available": false,
+    "exact_start_tick_within_60s_available": false,
+    "exact_end_tick_within_60s_available": false,
+    "formal_binary_outcome_authorized": false,
+    "formal_brier_authorized": false,
+    "formal_continuous_return_authorized": false
+  },
+  "public_timestamped_evidence": {
+    "near_start": [
+      {
+        "time": "2026-10-05T21:54:00+09:00",
+        "usd_jpy": "158.10-158.20",
+        "source": "OANDA/Kyodo",
+        "note": "6 minutes before nominal 22:00 start; outside the frozen 60-second quote rule."
+      },
+      {
+        "time": "2026-10-05T22:45:00+09:00",
+        "usd_jpy": "up to 158.30",
+        "source": "FISCO/Kabutan",
+        "note": "Post-start evidence only; confirms USDJPY was still above 158 after nominal start but cannot replace exact start tick."
+      }
+    ],
+    "near_end": [
+      {
+        "time": "2026-10-06T07:28:00+09:00",
+        "usd_jpy": "about 157.90",
+        "source": "Minkabu market report",
+        "note": "32 minutes before nominal 08:00 endpoint; outside the frozen 60-second quote rule."
+      },
+      {
+        "time": "2026-10-06T07:41:00+09:00",
+        "usd_jpy": "about 157.90",
+        "source": "Minkabu pair page/news",
+        "note": "19 minutes before endpoint; outside the frozen 60-second quote rule."
+      }
+    ]
+  },
+  "indicative_assessment": {
+    "direction": "DOWN_LIKELY",
+    "forecast_direction_result": "MISS_LIKELY",
+    "indicative_return_bps_range": "-13 to -19 bps using 158.10-158.20 near-start and 157.90 near-end public values",
+    "indicative_point_error_bps_range": "17 to 23 bps versus +4 bps forecast",
+    "illustrative_binary_outcome_if_down_confirmed": 0,
+    "illustrative_brier_if_y_up_0": 0.2809,
+    "neutral_brier_if_y_up_0": 0.25,
+    "illustrative_brier_delta_vs_neutral": 0.0309,
+    "scientific_score": "NOT_AVAILABLE"
+  },
+  "error_attribution": [
+    "The pre-cutoff system gave too much weight to elevated U.S. yields as a source of overnight USDJPY support.",
+    "Post-ISM yields rose, but USDJPY did not sustain the 158.30 area, showing that the rate channel alone was insufficient.",
+    "Lower oil reduced a yen-negative terms-of-trade force during the night.",
+    "Intervention sensitivity and Japan-side support may have contributed, but this remains interpretation rather than a proven causal attribution.",
+    "The forecast was deliberately low-confidence at p_up=0.53; the miss, if confirmed with qualified data, would be small-probability calibration evidence rather than a large conviction failure."
+  ],
+  "lessons_for_challenger_only": [
+    "Track divergence between U.S. yield changes and USDJPY response explicitly.",
+    "Do not assume rising Treasury yields translate one-for-one into USDJPY upside when intervention sensitivity is elevated.",
+    "Do not modify the current frozen-candidate specification from this single exploratory observation."
+  ],
+  "benchmark_effect": "NONE_NOT_IN_COHORT",
+  "forecast_record_mutated": false,
+  "next_action": "Keep the original forecast and this evaluation immutable; obtain a qualified reference-feed route before any formal scored cohort."
+}
