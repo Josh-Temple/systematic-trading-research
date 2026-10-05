@@ -74,8 +74,8 @@ def validate_forecast_record(record: Mapping[str, Any]) -> None:
     cutoff = _parse_iso(record["information_cutoff"], "information_cutoff").astimezone(TOKYO)
     issued = _parse_iso(record["issued_at"], "issued_at").astimezone(TOKYO)
 
-    if cutoff.timetz().replace(tzinfo=None) != time(9, 0):
-        raise ValueError("information cutoff must be 09:00 JST")
+    if cutoff.timetz().replace(tzinfo=None) != time(8, 0):
+        raise ValueError("information cutoff must be 08:00 JST")
     if issued < cutoff:
         raise ValueError("issued_at cannot be before cutoff")
     if issued.date() != cutoff.date():
