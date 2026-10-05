@@ -54,9 +54,10 @@ def intraday_event_times(
         raise ValueError("JP225 intraday observation date cannot be weekend")
     if not scheduled_jpx_trading_day:
         raise ValueError("date is not a scheduled JPX cash-equity trading day")
+    cutoff = datetime.combine(observation_date, time(8, 0), TOKYO)
     start = datetime.combine(observation_date, time(9, 0), TOKYO)
     end = datetime.combine(observation_date, time(15, 30), TOKYO)
-    return EventTimes(forecast_cutoff=start, target_start=start, target_end=end)
+    return EventTimes(forecast_cutoff=cutoff, target_start=start, target_end=end)
 
 
 def select_last_quote_at_or_before(
