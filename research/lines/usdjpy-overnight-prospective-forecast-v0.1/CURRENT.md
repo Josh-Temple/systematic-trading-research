@@ -110,13 +110,14 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261005T073700+0900-MANUAL`
-- **Observed:** 2026-10-05 07:37 JST.
+- **State:** `STATE-USDJPY-20261005T125700+0900-MANUAL`
+- **Observed:** 2026-10-05 12:57 JST.
 - **Market:** OPEN.
-- **USD/JPY:** noncanonical live-source conflict; roughly 157.7–157.8, near prior-week close.
-- **Material change from 01:14:** Brent rose to about $103.06 on new Saudi Aramco attack headlines.
-- **Working interpretation:** prior slight-USDJPY-down bias reduced toward NEUTRAL_TO_SLIGHT_USDJPY_DOWN because the oil shock is yen-negative, while USD/JPY has not yet shown a clean upside breakout.
-- **Confidence:** LOW.
-- **Next:** 08:30 MORNING_STATE / Tokyo bond reaction / 08:50 BOJ release.
+- **USD/JPY:** failed below 158.00; available noncanonical reports place it in the mid-157s during late morning.
+- **Material change from 07:37:** Brent reversed from about $103.06 to about $101.59; USDJPY weakened rather than confirming an oil-driven upside move.
+- **JGB:** 10-year around 3.10% in early Tokyo trade, broadly steady.
+- **Working interpretation:** SLIGHT_USDJPY_DOWN; morning evidence modestly favors yen strength / USDJPY softness.
+- **Confidence:** LOW_TO_MEDIUM.
+- **Next:** 14:00 BOJ data / Takaichi fiscal messaging / 15:00 TOKYO_CLOSE_STATE.
 - **Scientific effect:** NONE; journal only.
 
