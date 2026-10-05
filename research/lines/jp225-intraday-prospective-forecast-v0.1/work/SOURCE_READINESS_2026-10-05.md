@@ -22,8 +22,8 @@ Required before formal scoring:
 - Bid/Ask tick availability;
 - exact server timestamp semantics;
 - server-time to UTC/JST mapping;
-- deterministic retrieval around 09:00 and 15:30 JST;
-- deterministic 1h/4h/24h pre-cutoff lookback retrieval;
+- deterministic retrieval around the 08:00 input cutoff and the 09:00 / 15:30 outcome endpoints;
+- deterministic 1h/4h/24h lookback retrieval ending at the 08:00 cutoff;
 - raw/canonical snapshot identity and hash;
 - no fallback to Dukascopy, OANDA, JPX futures, or another broker for a missing formal event.
 
@@ -64,7 +64,7 @@ Required:
 - explicit observation-state vocabulary;
 - no record overwrite after issuance.
 
-Current: helper implementation added on this branch; synthetic tests required before readiness claim.
+Current: SYNTHETIC_PASS. Deterministic helpers and record-contract tests pass in GitHub Actions. This does not resolve Gate A exact-XM acquisition or Gate C point-in-time source qualification.
 
 ## Dry-run policy
 
@@ -76,4 +76,4 @@ The dry run may test workflow and error-attribution mechanics. It cannot be prom
 
 SCORED_COHORT_CLOSED.
 
-The next safe action is synthetic validation plus an exploratory 09:00→15:30 prospective dry run on the next eligible JPX trading day, while exact XM acquisition remains fail-closed.
+The next safe action is an exploratory forecast using an 08:00 information cutoff for the unchanged 09:00→15:30 target on an eligible JPX trading day, while exact XM acquisition remains fail-closed.
