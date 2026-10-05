@@ -23,3 +23,5 @@ Dry-run records must include:
 Formal v0.1 records are not permitted until the source/readiness gate passes and the exact specification is explicitly frozen.
 
 Issued forecast files must not be replaced to correct a forecast. Corrections or annotations are new artifacts.
+
+Candidate v0.1 timing after the 2026-10-06 pre-freeze amendment is: 08:00 JST information cutoff / intended issuance, 09:00 JST target start, 15:30 JST target end.
