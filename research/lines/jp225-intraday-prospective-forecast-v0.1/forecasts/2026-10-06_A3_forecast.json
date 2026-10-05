@@ -1,0 +1,43 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261006",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261006-0800-amended",
+  "model_identifier": "GPT-5.6 Sol",
+  "information_cutoff": "2026-10-06T08:00:00+09:00",
+  "issued_at": "2026-10-06T08:22:44+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.56,
+  "forecast_return_bps": 9,
+  "top_drivers": [
+    "A2's pre-cutoff market context is mildly supportive, especially U.S. technology strength, weak yen, lower oil and positive Nikkei futures.",
+    "Repository evidence does not provide a validated reason to amplify the bullish prior: exact-XM EMA research is still UNTESTED / WAITING_FOR_XM_STAGE1_DATA.",
+    "The separate U.S.-lead opening-reversal proxy line is STOPPED / NOT_SUPPORTED, so U.S. market direction is not treated as a proven JP225 intraday predictor."
+  ],
+  "counterevidence": [
+    "Existing JP225 proxy research contains negative or unsupported results rather than a confirmed current-day edge.",
+    "The prior-day 2.40% rise and high opening setup leave meaningful profit-taking risk.",
+    "Exact XM input data are unavailable and the relevant repository evidence is not a validated forecasting model for this 09:00-15:30 target."
+  ],
+  "invalidation_conditions": [
+    "Post-open price action rejects the 70,000 area and the technology leadership fails.",
+    "A sharp yen appreciation or further U.S./Japan yield increase changes the intraday risk balance.",
+    "Any later exact-XM evidence shows that the public proxy context materially misrepresented the target instrument."
+  ],
+  "source_refs": [
+    "https://minkabu.jp/news/4629968",
+    "https://nikkeiyosoku.com/",
+    "https://nikkei225minisaki.seesaa.net/article/521720127.html?seesaa_related=category",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/40c1a04b793622d30e42fc298ef6a138407d46fa/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/40c1a04b793622d30e42fc298ef6a138407d46fa/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md"
+  ],
+  "canonical_sha256": "a961ee449ceb34ba630723c6fc6010a78b72e87c2f3a66614d7f9e8caa8248e9"
+}
