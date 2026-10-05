@@ -110,14 +110,14 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261005T125700+0900-MANUAL`
-- **Observed:** 2026-10-05 12:57 JST.
+- **State:** `STATE-USDJPY-20261005T205000+0900-MANUAL`
+- **Observed:** 2026-10-05 20:50 JST.
 - **Market:** OPEN.
-- **USD/JPY:** failed below 158.00; available noncanonical reports place it in the mid-157s during late morning.
-- **Material change from 07:37:** Brent reversed from about $103.06 to about $101.59; USDJPY weakened rather than confirming an oil-driven upside move.
-- **JGB:** 10-year around 3.10% in early Tokyo trade, broadly steady.
-- **Working interpretation:** SLIGHT_USDJPY_DOWN; morning evidence modestly favors yen strength / USDJPY softness.
+- **USD/JPY:** intraday high 158.17, 17:00 around 157.65-157.67, latest verified 19:34 around 157.93-157.95; exact qualified 20:50 quote unavailable.
+- **Material change from 12:57:** USDJPY broke above 158 intraday, reversed after Takaichi's fiscal-discipline message, then rebounded in London; clean yen-strengthening trend did not persist.
+- **JGB:** 30-year yield hit record 4.235%; fiscal-duration stress remains material.
+- **Working interpretation:** NEUTRAL_RANGE before the 23:00 U.S. ISM Services catalyst.
 - **Confidence:** LOW_TO_MEDIUM.
-- **Next:** 14:00 BOJ data / Takaichi fiscal messaging / 15:00 TOKYO_CLOSE_STATE.
+- **Next:** 21:30 PRE_FORECAST_STATE / 23:00 ISM Services / U.S. yield reaction.
 - **Scientific effect:** NONE; journal only.
 
