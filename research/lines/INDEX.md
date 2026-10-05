@@ -31,6 +31,15 @@ Use for the literature-motivated prior-U.S.-session / Japanese-opening reversal 
 
 ## Active non-main research branches
 
+### jp225-intraday-prospective-forecast-v0.1
+
+- branch: `research/jp225-intraday-prospective-forecast-v0.1`
+- scope root on that branch: `research/lines/jp225-intraday-prospective-forecast-v0.1/`
+- current projection: `research/lines/jp225-intraday-prospective-forecast-v0.1/CURRENT.md`
+- specification: `research/lines/jp225-intraday-prospective-forecast-v0.1/specifications/SPEC-JP225-FORECAST-001-v01.md`
+
+Use for the prospective 09:00→15:30 JST JP225 forecast/review experiment. It is scientifically separate from the EMA and intraday-momentum strategy lines. Until source/readiness passes, dry runs are NOT_IN_COHORT and exact-XM outcome gaps must fail closed.
+
 ### currency-strength-momentum-v0.1
 
 - branch: `research/currency-strength-momentum-v0.1`
