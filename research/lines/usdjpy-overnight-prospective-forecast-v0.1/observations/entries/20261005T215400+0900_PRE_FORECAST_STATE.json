@@ -1,0 +1,85 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261005T215400+0900-PRE_FORECAST_STATE",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-05T21:54:00+09:00",
+  "retrieved_at": "2026-10-05T21:54:00+09:00",
+  "checkpoint_type": "PRE_FORECAST_STATE",
+  "source_cutoff": "2026-10-05T21:54:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "TIMESTAMPED_PUBLIC_MARKET_REPORTS_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Latest verified public quote located before cutoff: USDJPY about 157.93-157.95 at 19:34 JST; today's range 157.44-158.17. Exact 21:54 qualified benchmark quote unavailable."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_EXACT_21:54",
+    "us_10y": "about 5.277% in latest Reuters U.S. market report",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "3.085% at Tokyo close",
+    "jp_30y": "record 4.235% today"
+  },
+  "policy_state": {
+    "fed": "3.75%-4.00%; October hold strongly favored after weak September payrolls, but long Treasury yields remain elevated.",
+    "boj": "around 1.25%; normalization debate remains active. Ueda speech is after the overnight horizon and is not an overnight input catalyst.",
+    "japan_fx_authorities": "intervention warning remains an asymmetric cap on sharp yen weakness.",
+    "japan_fiscal": "Takaichi pledged fiscal discipline and control of bond issuance, partly offsetting earlier fiscal-risk yen pressure."
+  },
+  "macro_news_facts": [
+    "USDJPY traded a wide 157.44-158.17 intraday range and was about 157.93-157.95 in the latest verified 19:34 JST public quote.",
+    "U.S. 10-year Treasury yield remained elevated near 5.277% in the latest Reuters U.S. market report.",
+    "Brent/oil pressure eased from the morning spike as supply/logistics news improved relative to the initial shock.",
+    "Euro weakness supported the dollar intraday, but that impulse partially reversed later.",
+    "22:45 JST S&P Global U.S. services/composite PMI revisions and 23:00 JST ISM Services are known scheduled events inside the forecast horizon; their results are not yet known and are excluded."
+  ],
+  "scheduled_events_known": [
+    "2026-10-05 22:45 JST: U.S. September Services PMI final and Composite PMI final.",
+    "2026-10-05 23:00 JST: U.S. September ISM Services PMI; market consensus around 55 in secondary reporting."
+  ],
+  "source_refs": [
+    {"source":"Minkabu London FX 19:34","ref_id":"turn660169search3","retrieved_at":"2026-10-05T21:54:00+09:00"},
+    {"source":"Reuters Wall Street/Treasury yields","ref_id":"turn746526news37","retrieved_at":"2026-10-05T21:54:00+09:00"},
+    {"source":"Reuters Takaichi fiscal discipline","ref_id":"turn746526news36","retrieved_at":"2026-10-05T21:54:00+09:00"},
+    {"source":"Reuters Middle East oil exports/logistics","ref_id":"turn746526news39","retrieved_at":"2026-10-05T21:54:00+09:00"},
+    {"source":"OANDA USDJPY event calendar","ref_id":"turn746526search1","retrieved_at":"2026-10-05T21:54:00+09:00"},
+    {"source":"Barron's ISM consensus context","ref_id":"turn120306news52","retrieved_at":"2026-10-05T21:54:00+09:00"}
+  ],
+  "facts": [
+    "USDJPY has not established a durable break above 158.17 or below 157.44 today.",
+    "U.S. long yields remain elevated despite weaker payrolls.",
+    "Japan fiscal-discipline messaging reduced one yen-negative risk channel.",
+    "Two U.S. services surveys are scheduled shortly after the forecast cutoff."
+  ],
+  "interpretations": [
+    "The market is balanced but slightly dollar-supportive because high U.S. yields and repeated rebounds from intraday lows offset weaker payrolls and Japan-side support.",
+    "The overnight distribution is unusually event-sensitive because PMI/ISM releases occur shortly after the cutoff, so conviction should remain low.",
+    "A strong services/inflation reading would likely favor USDJPY upside; a weak employment/activity reading would favor downside."
+  ],
+  "change_since_prior": "NO_CLEAR_DIRECTIONAL_BREAK: since 20:50, no newer verified public quote was found that establishes a break from the 157.44-158.17 range. The pre-forecast state remains balanced.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_UP into the overnight horizon, with event-driven volatility around U.S. services data.",
+  "alternative_case": "USDJPY_DOWN if services data disappoints and Treasury yields fall, reactivating post-payroll Fed-pause pricing.",
+  "invalidation_conditions": [
+    "Post-cutoff services data materially weakens and U.S. 2Y/10Y yields fall.",
+    "USDJPY breaks below 157.44 with broad dollar weakness.",
+    "Unexpected Japan intervention-related headline before 08:00 JST."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "22:45 JST S&P Global U.S. services/composite PMI results (post-cutoff; error-attribution only).",
+    "23:00 JST ISM Services headline, employment and prices components (post-cutoff; error-attribution only).",
+    "U.S. 2Y/10Y yield reaction.",
+    "USDJPY reaction around 158.17 and 157.44.",
+    "08:00 JST exploratory horizon endpoint."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "a6909b115bdd6fd6d7e7980f7f761de06c456b6282f2ff21da33251a2db4fe4b"
+}
