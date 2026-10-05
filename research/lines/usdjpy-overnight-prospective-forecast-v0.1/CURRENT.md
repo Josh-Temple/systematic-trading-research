@@ -110,15 +110,16 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261005T215400+0900-PRE_FORECAST_STATE`
-- **Observed:** 2026-10-05 21:54 JST.
-- **Market:** OPEN.
-- **USD/JPY:** latest verified public quote before cutoff ~157.93-157.95 at 19:34; today's verified range 157.44-158.17; exact qualified 21:54 quote unavailable.
-- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_UP into the overnight horizon.
-- **Confidence:** LOW_TO_MEDIUM.
-- **Known post-cutoff catalysts:** 22:45 U.S. services/composite PMI finals; 23:00 ISM Services.
-- **Scientific effect:** NONE; journal only.
-
+- **State:** `STATE-USDJPY-20261005T232900+0900-EVENT_DRIVEN`
+- **Observed:** 2026-10-05 23:29 JST.
+- **Event:** U.S. September ISM Services.
+- **Result:** 54.9 vs 55.0 expected, 55.4 prior.
+- **Important detail:** Prices 74.0; New Orders 59.8; mixed/slower-growth but hotter-inflation signal.
+- **USD/JPY reaction:** UNKNOWN in this entry; no reliable timestamped post-release quote bound yet.
+- **Forecast relation:** original exploratory `p_up=0.53 / +4 bps` remains unchanged; this is post-cutoff information only.
+- **Confidence in event interpretation:** LOW until yield/FX reaction is bound.
+- **Next:** capture post-ISM USDJPY + U.S. 2Y/10Y; evaluate endpoint after 08:00 JST.
+- **Scientific effect:** NONE; journal/error-context only.
 ## Latest exploratory overnight forecast
 
 - **Forecast:** `XPF-USDJPY-20261005-215400`
