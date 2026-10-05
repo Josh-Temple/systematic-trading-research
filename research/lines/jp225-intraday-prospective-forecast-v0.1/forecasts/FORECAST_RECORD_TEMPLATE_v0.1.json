@@ -6,7 +6,7 @@
   "system_id": "A1|A2|A3",
   "forecast_system_version": "string",
   "model_identifier": "string_or_unavailable",
-  "information_cutoff": "YYYY-MM-DDT09:00:00+09:00",
+  "information_cutoff": "YYYY-MM-DDT08:00:00+09:00",
   "issued_at": "ISO-8601",
   "p_up": 0.5,
   "forecast_return_bps": 0.0,
