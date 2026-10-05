@@ -29,7 +29,8 @@ Existing research may enter A3 only through a pinned, status-preserving pre-cuto
 
 - timezone: Asia/Tokyo;
 - eligible date: scheduled JPX cash-equity trading day;
-- forecast cutoff / target start: 09:00 JST;
+- forecast information cutoff / intended issuance: 08:00 JST;
+- target start: 09:00 JST;
 - target end: 15:30 JST;
 - reference instrument: exact XM MT5 `JP225Cash`;
 - reference quote: qualified best Bid/Ask midpoint;
