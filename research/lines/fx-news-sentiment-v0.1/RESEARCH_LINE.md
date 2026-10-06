@@ -9,68 +9,73 @@ created_at: 2026-10-07
 
 ## Purpose
 
-Test a bounded, prospectively timestamped workflow in which ChatGPT classifies forward-looking FX-news sentiment and a deterministic rule converts those classifications into a EUR/JPY shadow-trading signal.
+Test a bounded, prospectively timestamped workflow in which ChatGPT classifies forward-looking FX **headlines** and a deterministic rule converts those classifications into a EUR/JPY shadow-trading signal.
 
-The line is designed for a user who can operate ChatGPT Plus and retail FX accounts without paid API infrastructure. It is not an autonomous trading agent and does not authorize live orders.
+The line is designed for ChatGPT Plus plus a retail FX environment, without a paid LLM API or paid news feed. It is not an autonomous trading agent and does not authorize live orders.
 
-## Why this line
+## Evidence basis
 
-The strongest directly relevant prior evidence found so far is Ballinari and Maly (Swiss National Bank Working Paper 2025/11), which fine-tunes Llama 3.1 for G10 FX sentiment and constructs next-day currency portfolios from forward-looking article classifications. Their EUR/JPY illustration enters only when EUR and JPY sentiment scores differ in sign.
+The primary FX mechanism prior is Ballinari and Maly (SNB Working Paper 2025/11): a fine-tuned Llama 3.1 classifies forward-looking G10 sentiment, aggregates appreciation/depreciation counts, and feeds next-day currency portfolios; their EUR/JPY illustration uses relative, opposite-sign sentiment.
 
-This line does **not** claim that an off-the-shelf ChatGPT model reproduces their fine-tuned model. v0.1 is a new prospective test of that operationally cheaper substitution.
+This v0.1 is **not** a direct replication:
+- the SNB study uses full-text provider content and a fine-tuned model;
+- DailyFX, one of its sources, closed in 2024;
+- current FXStreet / Investing.com preservation terms make them poor fits for a public auditable pipeline;
+- v0.1 therefore proposes title/headline metadata from GDELT and an off-the-shelf ChatGPT product model.
+
+That substitution is exactly what the prospective experiment tests.
 
 ## Candidate v0.1 adaptation
 
 - pair: EUR/JPY only;
-- model role: text classification only;
+- LLM role: headline classification only;
+- preferred news route: GDELT Article List / title metadata, pending runtime qualification;
 - candidate news window: 24 hours ending at 08:00 JST;
 - information cutoff: 08:00 JST;
 - intended shadow entry: 08:15 JST;
 - intended shadow exit: 08:15 JST on the next eligible event day;
-- eligible issuance days: Monday through Thursday when the qualified XM EURJPY quote route is available;
-- news-source set: unresolved until source qualification;
+- eligible issuance days: Monday through Thursday;
 - reference/execution research feed: exact XM MT5 EURJPY Bid/Ask, subject to qualification;
 - live trading: forbidden in v0.1.
 
-The 15-minute delay between information cutoff and shadow entry is deliberate. It makes the workflow executable by a human/ChatGPT process without pretending that a classification produced after the cutoff could have been traded at the cutoff price.
+The 15-minute delay is deliberate: it avoids pretending that a model output produced after 08:00 could have been executed at 08:00.
 
 ## Signal family
 
-For each source article, ChatGPT classifies EUR and JPY independently as:
+For each frozen GDELT headline record, ChatGPT classifies EUR and JPY independently as:
 
 - APPRECIATION;
 - DEPRECIATION;
 - UNCHANGED;
-- NOT_MENTIONED / INSUFFICIENT.
+- NOT_MENTIONED;
+- INSUFFICIENT.
 
-For each currency and event date, aggregate the forward-looking classifications using the SNB-style score:
+For each currency and event date:
 
 `S_i = log(1 + N_appreciation) - log(1 + N_depreciation)`.
 
-Pair action candidate:
+Candidate pair action:
 
-- LONG EURJPY when `S_EUR > S_JPY` and the two scores do not have the same sign;
-- SHORT EURJPY when `S_EUR < S_JPY` and the two scores do not have the same sign;
+- LONG EURJPY when `S_EUR > S_JPY` and the signs differ;
+- SHORT EURJPY when `S_EUR < S_JPY` and the signs differ;
 - NO_TRADE otherwise.
 
-Exact zero/sign semantics are frozen in the specification before any scored prospective event.
+Exact zero/sign semantics are fixed in the proposed specification and must remain unchanged once frozen.
 
 ## Scientific boundary
 
-v0.1 tests whether this exact ChatGPT-assisted news-classification workflow has prospective predictive/economic value on EURJPY under its frozen source, timing, model, prompt, and execution assumptions.
-
-It does not establish:
+v0.1 tests one concrete ChatGPT-assisted headline workflow. It does not establish:
 
 - general LLM trading skill;
 - validity for other pairs;
 - equivalence to the fine-tuned SNB model;
 - profitability on Matsui FX;
-- robustness to another news provider;
+- robustness to another source/query;
 - optimality of the 08:00/08:15 timing;
-- value of adding price indicators, macro filters, or repository research.
+- value of adding technical indicators, price-based currency strength, macro filters, or repository research.
 
-No historical parameter search is authorized.
+No historical EURJPY parameter search is authorized.
 
 ## Current next action
 
-Complete source qualification and prompt/input-contract design without inspecting prospective outcomes for rule selection. Then implement deterministic aggregation, quote selection, cost accounting, append-only records, and synthetic tests. Formal prospective scoring remains closed until explicit human freeze.
+Finish GDELT runtime/query qualification, freeze the headline input contract and ChatGPT prompt, qualify XM EURJPY Bid/Ask/cost semantics, then implement deterministic aggregation/quote selection with synthetic tests. Formal prospective scoring remains closed until independent audit and explicit human freeze.
