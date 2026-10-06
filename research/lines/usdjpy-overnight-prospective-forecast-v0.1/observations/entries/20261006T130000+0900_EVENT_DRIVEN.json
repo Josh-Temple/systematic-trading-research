@@ -1,0 +1,86 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261006T130000+0900-EVENT_DRIVEN",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-06T13:00:00+09:00",
+  "retrieved_at": "2026-10-06T13:00:00+09:00",
+  "checkpoint_type": "EVENT_DRIVEN",
+  "source_cutoff": "2026-10-06T13:00:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Pre-auction public observations: 11:56 JST about 157.77; another public quote at 11:45:53 showed 157.98. No sufficiently reliable post-12:35 auction USDJPY quote was captured by 13:00, so immediate FX reaction remains UNKNOWN."
+  },
+  "rates_state": {
+    "us_2y": "4.816% at New York close",
+    "us_10y": "5.309% at New York close",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "Morning cash yield about 3.105%; auction average yield 3.101%, highest accepted yield 3.103%"
+  },
+  "policy_state": {
+    "fed": "October hold remains favored; high U.S. yields remain USD-supportive.",
+    "boj": "No new BOJ policy action before 13:00; Ueda speech remains scheduled for 15:35 JST.",
+    "japan_fx_authorities": "Intervention sensitivity remains relevant.",
+    "japan_fiscal": "Takaichi fiscal-discipline messaging plus a well-covered 10-year auction reduce immediate bond-demand/fiscal-stress concerns."
+  },
+  "macro_news_facts": [
+    "MOF 10-year JGB No.384 auction: applications JPY7.4011tn, competitive accepted JPY1.9661tn.",
+    "Derived simple bid-to-cover ratio was about 3.76x, versus about 3.29x in the September 1 10-year auction.",
+    "Highest accepted yield was 3.103% and average accepted yield 3.101%, a 0.2 bp yield tail versus about 1.6 bp on September 1.",
+    "The new issue coupon is 3.1%, the highest level in roughly 30 years.",
+    "Immediate post-auction USDJPY price reaction was not reliably captured by 13:00."
+  ],
+  "scheduled_events_known": [
+    "2026-10-06 15:00 JST: Finance Minister Katayama at National Securities Convention.",
+    "2026-10-06 15:35 JST: BOJ Governor Ueda at National Securities Convention.",
+    "2026-10-06 21:30 JST: U.S. August trade balance.",
+    "2026-10-06 22:05 JST: New York Fed President Williams discussion.",
+    "2026-10-06 23:45 JST: Fed Vice Chair Bowman speech."
+  ],
+  "source_refs": [
+    "MOF 10-year JGB No.384 auction result 2026-10-06",
+    "MOF 10-year JGB No.383 auction result 2026-09-01",
+    "WSJ 2026-10-06 long-term JGB yield context",
+    "Minkabu 2026-10-06 11:56 USDJPY",
+    "Investing 2026-10-06 11:45:53 USDJPY"
+  ],
+  "facts": [
+    "The October 6 10-year JGB auction had stronger demand metrics than the September 1 auction.",
+    "The auction yield tail was materially tighter than the prior auction.",
+    "The coupon was raised to 3.1%.",
+    "A reliable immediate post-auction USDJPY reaction is currently unavailable."
+  ],
+  "interpretations": [
+    "The auction reduces the immediate risk of a disorderly demand failure in the 10-year sector.",
+    "For USDJPY the effect is two-sided: lower fiscal/bond-market stress can support JPY, while stronger bond demand can limit Japanese yields and preserve the U.S.-Japan rate differential.",
+    "Because the immediate FX and secondary-market yield reaction is not yet bound, the correct response is not to overstate a directional signal.",
+    "The earlier mild JPY-strengthening bias remains but confidence should stay low until the market digests the auction and Ueda speaks."
+  ],
+  "change_since_prior": "MATERIAL_EVENT: 10-year JGB auction printed stronger demand than the previous auction, with ~3.76x derived bid-to-cover and a ~0.2 bp yield tail. Immediate USDJPY reaction remains unbound.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_DOWN pending post-auction price/yield confirmation and Ueda's 15:35 speech.",
+  "alternative_case": "USDJPY rebounds if the auction lowers JGB yields enough to widen the rate differential or if Ueda is interpreted as cautious.",
+  "invalidation_conditions": [
+    "Sustained USDJPY move above 158.0-158.3 with falling JGB yields.",
+    "Ueda materially pushes back against further tightening.",
+    "Renewed oil/geopolitical shock that weakens JPY."
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "Post-auction 10-year JGB secondary-market yield.",
+    "Post-auction USDJPY reaction.",
+    "15:00 Katayama remarks.",
+    "15:35 Ueda speech and immediate FX/JGB response."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "f6ce3809d320bb9fb47d84446cdcd5d0d2872802c7110e14da52c7ad2a8213f6"
+}
