@@ -72,10 +72,12 @@ Therefore v0.1 intentionally narrows ChatGPT to semantic classification and reli
 - ChatGPT prompt/output schema not frozen;
 - observable model-identity policy not frozen;
 - exact XM EURJPY Bid/Ask timestamp and account-cost route not qualified;
-- live GDELT/XM adapters and formal cohort runner not implemented;
+- XM outcome-blind Windows collector is prepared and syntax-checked, but has not been run against the user's MT5 terminal;
+- GDELT schema probe code/workflow is prepared, but this environment could not establish a successful live API response; runtime remains UNVERIFIED;
+- formal cohort runner is not implemented;
 - independent pre-outcome audit not yet run;
 - human freeze not granted.
 
 ## Next action
 
-Complete Packet B source/prompt/XM qualification. The deterministic Packet C core can then be extended only as required by the qualified schemas, followed by an independent pre-outcome audit. No formal EURJPY market outcome should be opened before explicit human freeze.
+Complete the two external source gates: a successful GDELT runtime/schema readback and a local XM EURJPY source-probe collection/review. Then freeze the prompt/query/source identities, extend the deterministic core only as required by those qualified schemas, and obtain an independent pre-outcome audit. No formal EURJPY market outcome should be opened before explicit human freeze.
