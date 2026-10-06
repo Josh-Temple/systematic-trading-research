@@ -11,56 +11,62 @@ market_outcome_access: CLOSED_FOR_FORMAL_COHORT
 
 ## 1. Scientific question
 
-Does a fixed ChatGPT classification of point-in-time FX news produce a deterministic EURJPY signal with positive prospective executable value after qualified trading costs?
+Does a fixed ChatGPT classification of point-in-time FX **headlines** produce a deterministic EURJPY signal with positive prospective executable value after qualified trading costs?
 
-This is a test of one workflow, not of "ChatGPT trading" in general.
+This tests one workflow, not "ChatGPT trading" in general.
 
-## 2. Why EUR/JPY
+## 2. Prior-art relationship
 
-EUR/JPY is chosen before this line sees any prospective outcome because the primary prior-art paper explicitly illustrates this pair under its sentiment-difference rule. It is not selected from this repository's historical EURJPY outcomes.
+EUR/JPY is chosen before any prospective outcome because the primary SNB FX-sentiment paper explicitly illustrates this pair under a sentiment-difference rule.
+
+The candidate adapts rather than replicates that paper:
+- SNB uses full-text provider content and a fine-tuned Llama;
+- v0.1 proposes GDELT title/headline metadata and an off-the-shelf ChatGPT product model.
+
+That substitution must be judged prospectively.
 
 ## 3. Event schedule
 
-Candidate schedule:
-
 - timezone: Asia/Tokyo;
 - eligible issuance days: Monday through Thursday;
-- news information cutoff: 08:00:00 JST;
-- intended classification/signal freeze: after cutoff and before 08:15:00 JST;
+- information cutoff: 08:00:00 JST;
+- classification/signal must freeze before 08:15:00 JST;
 - shadow entry target: 08:15:00 JST;
 - shadow exit target: 08:15:00 JST on the next eligible calendar day;
-- Friday issuance excluded in v0.1 to avoid a structurally different weekend holding horizon.
+- Friday issuance excluded to avoid a structurally different weekend horizon.
 
-If the signal is not frozen before the entry target, the event is `LATE_ISSUANCE_NO_SCORE`.
+Late issuance: `LATE_ISSUANCE_NO_SCORE`.
 
-## 4. News input window and source contract
+## 4. News input
 
-Candidate input window:
+Preferred candidate source: GDELT Article List / DOC API.
 
-- articles with qualified publication timestamps in (previous event cutoff, current event cutoff];
-- only sources on the frozen source allowlist;
-- only content demonstrably available by the cutoff.
+Candidate window:
+- GDELT records first seen by the frozen pipeline in (previous event cutoff, current event cutoff];
+- GDELT seen timestamp, not inferred publisher time, controls eligibility;
+- English-language query;
+- exact query string / MAXRECORDS / deduplication remain unresolved until Packet B.
 
-The source allowlist is unresolved until Packet B. Formal scoring cannot begin before it is frozen.
+For each input record preserve at least:
 
-For each article preserve:
-
-- source/provider;
-- canonical URL or source ID;
+- event-local ID;
+- GDELT seen timestamp;
 - title;
-- publication timestamp with timezone;
+- URL;
+- source domain/outlet if supplied;
 - retrieval timestamp;
-- exact text span/input shown to ChatGPT where legally permitted;
-- otherwise a private snapshot reference plus cryptographic hash;
-- extraction status and any truncation.
+- raw-response artifact SHA-256;
+- query/version identity.
 
-Date-only items are not eligible for the formal same-day input set.
+Underlying publisher article body is not part of v0.1 model input.
 
-## 5. ChatGPT classification contract
+If the frozen query reaches an unresolved output cap or response completeness cannot be established, the event fails closed.
 
-ChatGPT receives article text plus no post-cutoff prices or outcomes.
+## 5. ChatGPT classification
 
-For EUR and JPY separately it must emit one enum:
+Input to ChatGPT is the frozen headline record only.
+
+For EUR and JPY separately emit one enum:
 
 - `APPRECIATION`;
 - `DEPRECIATION`;
@@ -68,28 +74,26 @@ For EUR and JPY separately it must emit one enum:
 - `NOT_MENTIONED`;
 - `INSUFFICIENT`.
 
-The task is explicitly forward-looking: classify the article's implication for the currency after publication, not describe a move that has already happened.
+Classify the headline's forward implication after availability. Do not turn a purely retrospective price-move description into a forward signal.
 
-The frozen record must include:
+Preserve:
 
 - prompt version/hash;
-- model identifier visible in the product, if available;
-- thinking-effort/configuration label observable to the operator;
+- visible model identifier, if available;
+- observable thinking/configuration label;
 - issued_at;
 - raw structured response;
 - validation status.
 
-If the named product model changes during a formal cohort, stop that cohort administratively and open a new protocol version. Unobservable underlying weight changes remain a limitation and must not be falsely claimed as controlled.
+If the visible product model identity changes during a formal cohort, stop administratively and version the protocol. Unobservable underlying model updates remain an explicit limitation.
 
-## 6. Daily currency score
+## 6. Daily score
 
 For currency i:
 
 `S_i = log(1 + N_appreciation_i) - log(1 + N_depreciation_i)`.
 
-`UNCHANGED`, `NOT_MENTIONED`, and `INSUFFICIENT` contribute zero to both counts.
-
-If no eligible article produces APPRECIATION or DEPRECIATION for either currency, both scores are zero.
+UNCHANGED / NOT_MENTIONED / INSUFFICIENT contribute zero.
 
 ## 7. Pair action
 
@@ -99,120 +103,108 @@ Define `sgn(0)=0`.
 - SHORT EURJPY if `S_EUR < S_JPY` and `sgn(S_EUR) != sgn(S_JPY)`;
 - NO_TRADE otherwise.
 
-No magnitude threshold is permitted in v0.1.
+No magnitude/confidence threshold is permitted.
 
-## 8. Reference and executable shadow return
+## 8. Executable shadow return
 
-Formal reference feed candidate:
+Reference candidate: exact XM MT5 EURJPY Bid/Ask from a qualified account/server route.
 
-- exact XM MT5 EURJPY Bid/Ask from a qualified user account/server route.
+Entry within 60 seconds after 08:15:
+- LONG: Ask;
+- SHORT: Bid.
 
-Entry:
+Exit on the next eligible event day within 60 seconds after 08:15:
+- LONG: Bid;
+- SHORT: Ask.
 
-- LONG: Ask at first valid quote at/after 08:15:00 JST within 60 seconds;
-- SHORT: Bid at first valid quote at/after 08:15:00 JST within 60 seconds.
+Missing exact quote => `MARKET_OUTCOME_UNAVAILABLE`; no provider rescue.
 
-Exit on next eligible event day:
-
-- LONG: Bid at first valid quote at/after 08:15:00 JST within 60 seconds;
-- SHORT: Ask at first valid quote at/after 08:15:00 JST within 60 seconds.
-
-If the exact quote is unavailable within tolerance, result is `MARKET_OUTCOME_UNAVAILABLE`; do not replace it with another provider.
-
-Primary executable log return in basis points:
-
+Executable log return, bps:
 - LONG: `10000 * ln(exit_bid / entry_ask)`;
 - SHORT: `10000 * ln(entry_bid / exit_ask)`;
 - NO_TRADE: 0.
 
-Any account commission/swap/other fee must be independently qualified. Until complete costs are known, the result is "spread-aware" rather than "fully net profitable".
+Commission/swap/other fees must be qualified separately. Until all relevant costs are known, claims are "spread-aware", not "fully net profitable".
 
-## 9. Event ledger and primary metric
+## 9. Ledger and metrics
 
-Every eligible issuance day remains in the ledger, including NO_TRADE.
+Keep every eligible event, including NO_TRADE.
 
-Primary metric:
-
-`mean_event_executable_return_bps` across all eligible scored events, with NO_TRADE = 0.
-
-This prevents the system from improving the headline result merely by dropping low-confidence or difficult days after the fact.
+Primary:
+- mean executable return bps per eligible event, with NO_TRADE = 0.
 
 Secondary:
+- executed-trade expectancy;
+- LONG/SHORT/NO_TRADE counts;
+- win rate;
+- midpoint gross vs Bid/Ask executable difference;
+- maximum cumulative drawdown in one-unit bps;
+- event bootstrap 95% interval.
 
-- mean return per executed shadow trade;
-- number and rate of LONG / SHORT / NO_TRADE;
-- win rate on executed trades;
-- midpoint gross versus Bid/Ask executable return;
-- maximum cumulative drawdown in bps under one-unit notional;
-- session/event bootstrap interval for the mean.
+## 10. Cohort
 
-## 10. Candidate cohort and stopping rule
-
-Before human freeze, the cohort size remains proposed.
-
-Recommended v0.1 cohort for human acceptance:
-
+Recommended for human freeze:
 - 60 eligible issuance events;
-- no early scientific stop for favorable or unfavorable results.
+- no early scientific stop for good/bad performance.
 
-Administrative stop:
-
-- outcome leakage before signal freeze;
-- changed prompt/rule/source set/model identity policy;
+Administrative stop for:
+- pre-freeze outcome leakage;
+- prompt/rule/source/model-policy mutation;
 - mutable issued records;
-- unqualified timestamp semantics;
-- source input that cannot prove pre-cutoff availability.
+- unqualified time semantics;
+- incomplete/truncated input corpus;
+- execution-source integrity failure.
 
-Administrative stop is not a negative market result.
+Administrative stop is not a market result.
 
-## 11. Candidate advancement / rejection rule
+## 11. Candidate advance rule
 
-Before the first formal outcome, human freeze must decide the exact rule.
+Before any formal outcome, human freeze must accept the exact rule.
 
 Recommended minimum:
-
-Advance only if, over the fixed cohort:
-
-1. primary mean event executable return > 0;
+1. mean event executable return > 0;
 2. event-bootstrap 95% lower bound > 0;
-3. observed spread/cost accounting is complete enough for the economic claim being made;
-4. no unresolved integrity violation affects the cohort.
+3. cost accounting complete enough for the stated economic claim;
+4. no unresolved integrity violation affecting the cohort.
 
-Otherwise do not rescue the cohort by changing provider, prompt, pair, cutoff, horizon, neutral treatment, or threshold and calling the revision validated.
+Failure cannot be rescued on the same cohort by changing query terms, source, prompt, pair, cutoff, horizon, neutral treatment or threshold.
 
 ## 12. Historical-data boundary
 
-No historical EURJPY outcome may be searched to choose:
-
-- cutoff;
-- 15-minute processing delay;
-- source provider;
-- pair;
+Do not inspect historical EURJPY outcomes to choose:
+- GDELT query terms;
+- 08:00 cutoff / 08:15 entry;
+- EURJPY;
 - prompt;
 - sentiment threshold;
-- holding period.
+- holding horizon.
 
-Historical/synthetic data may be used only for pipeline mechanics where market outcomes cannot influence scientific choices.
+Synthetic data may test mechanics only.
 
-## 13. Relationship to currency-strength research
+## 13. Independence from other research lines
 
-This line is independent of `currency-strength-momentum-v0.1`.
+Do not combine price-based `currency-strength-momentum-v0.1`, JP225 research, technical indicators or accumulated Trading results with v0.1 inputs.
 
-Do not combine price-based currency strength with news sentiment in v0.1. Any later combined model is a separate hypothesis and requires a new unused/prospective cohort.
+Any combined model is a new hypothesis with a new unused/prospective cohort.
 
 ## 14. Broker boundary
 
-No order submission, automatic position sizing, or live-capital action is authorized by this specification.
+No order submission, automatic position sizing or live capital action.
 
-Matsui FX portability is a later execution-replication question. A positive XM-reference shadow result does not establish Matsui net profitability.
+Matsui FX portability is a later independent execution question. A positive XM-reference shadow result would not establish Matsui profitability.
 
 ## 15. Human freeze
 
-This specification is currently `PROPOSED_NOT_FROZEN`.
+Status remains `PROPOSED_NOT_FROZEN`.
 
-Formal prospective outcome scoring begins only after:
+Formal prospective scoring requires:
+- GDELT source qualification PASS;
+- prompt/output freeze;
+- XM quote/cost qualification;
+- deterministic implementation + synthetic tests PASS;
+- independent pre-outcome audit PASS;
+- explicit human acceptance of final query, prompt, model policy, timing, cohort size, cost boundary and advance rule.
 
-- source qualification PASS;
-- deterministic implementation and synthetic tests PASS;
-- independent pre-outcome audit;
-- explicit human acceptance of the final source set, prompt, timing, cohort size, cost contract and advancement rule.
+### Pre-freeze amendment — 2026-10-07
+
+The initial draft contemplated publisher full-text inputs from a frozen provider allowlist. Source preflight found that the historical DailyFX route is no longer current and that current provider preservation restrictions undermine an auditable public pipeline. Before any formal outcome, the candidate was narrowed to GDELT title/headline metadata. This amendment is pre-outcome and does not consume a sample.
