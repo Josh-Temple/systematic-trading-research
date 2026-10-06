@@ -11,52 +11,55 @@ derived_from_interpretations: []
 ## Current state
 
 - Scientific status: UNTESTED.
-- Specification: PROPOSED_NOT_FROZEN.
+- Specification: `SPEC-FXNS-001-v01` is PROPOSED_NOT_FROZEN.
 - Historical market-outcome search for tuning: NOT_AUTHORIZED.
 - Formal prospective cohort: CLOSED.
-- Exploratory source/prompt dry runs: PERMITTED only without using subsequent market outcomes to modify the candidate rule.
 - Live or paper broker order submission: NOT_AUTHORIZED.
 
 ## Candidate question
 
-Can a fixed ChatGPT prompt classify pre-cutoff FX news into forward-looking EUR and JPY sentiment such that the deterministic EURJPY rule in this line produces positive prospective executable returns after measured Bid/Ask costs?
+Can a fixed ChatGPT prompt classify point-in-time FX headlines into forward-looking EUR and JPY sentiment such that a deterministic EURJPY rule produces positive prospective executable returns after qualified costs?
+
+## Current source direction
+
+Preflight completed on 2026-10-07 without viewing EURJPY outcomes.
+
+- Historical DailyFX route: not current; IG states DailyFX closed in 2024.
+- Investing.com: not selected for a canonical reproducible input under current preservation terms.
+- FXStreet: not selected without permission under current copying/AI-use restrictions.
+- GDELT: preferred v0.1 candidate because its released datasets are open for unrestricted reuse and its article-list data provide title/URL plus point-in-time observation metadata.
+
+The candidate is therefore **GDELT headline/title classification**, not publisher full-text ingestion.
+
+GDELT is not yet SOURCE PASS: exact query, runtime response fields, record-limit behavior, deduplication, raw-response hashing and attribution still need qualification.
 
 ## Candidate implementation
 
-- ChatGPT is a bounded classifier, not the trading-rule author.
-- A deterministic program aggregates classifications and creates LONG / SHORT / NO_TRADE.
-- A separate deterministic program reads qualified XM EURJPY Bid/Ask observations after the forecast is frozen and computes the shadow result.
-- Issued classification/signal records are append-only and never overwritten.
+- GDELT provides the frozen point-in-time headline corpus.
+- ChatGPT is a bounded classifier, not the trade-rule author.
+- Deterministic code aggregates labels and creates LONG / SHORT / NO_TRADE.
+- Separate deterministic code reads qualified XM EURJPY Bid/Ask only after the signal is frozen.
+- Issued input/classification/signal records are append-only.
 
 ## Evidence state
 
-Relevant external evidence is mixed:
+1. SNB Working Paper 2025/11 provides the direct FX sentiment mechanism prior, but uses fine-tuned Llama and full-text providers.
+2. Lopez-Lira & Tang provide peer-reviewed headline-based GPT evidence in U.S. equities.
+3. FX headline sentiment work using ChatGPT 3.5 provides direct task-level support, but not a prospective retail trading validation.
+4. FINSABER and leakage research are adverse evidence against broad autonomous LLM-trader claims.
 
-1. SNB Working Paper 2025/11 reports useful FX sentiment classification and trading performance from a **fine-tuned** Llama 3.1 model, including a EUR/JPY pair illustration.
-2. Lopez-Lira and Tang report that GPT-4 news interpretation predicts subsequent U.S.-equity return drift, supporting LLM text interpretation as a plausible signal-extraction task, but not this FX rule.
-3. FINSABER's long-horizon evaluation finds that broad LLM trading-agent advantages often disappear under longer, broader and bias-aware tests.
-4. Recent leakage research reports large post-cutoff performance decay in several financial LLM agents.
+Therefore v0.1 intentionally narrows ChatGPT to semantic classification and relies on prospective evidence.
 
-Therefore v0.1 adopts the narrow text-classification use case and rejects autonomous free-form LLM trading as the default.
+## Remaining blockers
 
-## Current blockers
-
-- exact permitted news-source set is not frozen;
-- point-in-time article availability and publication timestamps are not qualified;
-- public/private preservation rules for article input text are not fixed;
-- ChatGPT prompt/output schema is not frozen;
-- observable model-identity handling across product updates is not fixed;
-- exact XM EURJPY Bid/Ask timestamp/cost route is not qualified for this line;
-- deterministic implementation and synthetic tests do not yet exist.
+- exact GDELT query/field contract not frozen;
+- runtime source qualification incomplete;
+- ChatGPT prompt/output schema not frozen;
+- observable model-identity handling not frozen;
+- exact XM EURJPY Bid/Ask timestamp and account-cost route not qualified;
+- deterministic implementation/synthetic tests not yet present;
+- independent pre-outcome audit not yet run.
 
 ## Next action
 
-Execute Packets A-C outcome-blind:
-
-1. complete literature / GitHub prior-art record;
-2. qualify the news and XM source contracts;
-3. freeze the ChatGPT classification prompt and deterministic rule;
-4. implement and test the pipeline with synthetic fixtures only;
-5. obtain independent pre-outcome audit.
-
-Only then request human freeze for a prospective shadow cohort.
+Complete Packet B source/prompt qualification, then Packet C outcome-blind implementation. After an independent PASS, present the final unresolved choices for human freeze. No formal market outcome should be opened before that boundary.
