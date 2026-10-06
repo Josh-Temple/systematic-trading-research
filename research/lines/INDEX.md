@@ -40,6 +40,15 @@ Use for the literature-motivated prior-U.S.-session / Japanese-opening reversal 
 
 Use for questions about the FX currency-strength / strongest-versus-weakest momentum research line.
 
+### fx-news-sentiment-v0.1
+
+- branch: `research/fx-news-sentiment-v0.1`
+- scope root on that branch: `research/lines/fx-news-sentiment-v0.1/`
+- current projection on that branch: `research/lines/fx-news-sentiment-v0.1/CURRENT.md`
+- line definition on that branch: `research/lines/fx-news-sentiment-v0.1/RESEARCH_LINE.md`
+
+Use for the prospective EUR/JPY headline-sentiment research line where ChatGPT performs bounded forward-looking classification and deterministic code owns the signal/return calculation. The candidate source is GDELT headline metadata; formal scoring is closed until source/prompt/XM qualification and human freeze.
+
 Important:
 - do not infer current research state from this index;
 - fresh-read the named main/branch ref before answering line-specific current-state questions;
