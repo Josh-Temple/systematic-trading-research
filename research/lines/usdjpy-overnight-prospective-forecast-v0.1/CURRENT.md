@@ -110,15 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261006T221800+0900-MANUAL`
-- **Observed:** 2026-10-06 22:18 JST.
-- **USD/JPY:** Ueda speech high 158.24; BOJ 17:00 reference 158.10-158.13; Yahoo 20:30 about 158.07; exact qualified 22:18 quote unavailable.
-- **Ueda:** conditional further tightening bias maintained; no specific October hike signal.
-- **U.S. data:** August trade deficit $105.6bn vs $102.0bn expected.
-- **Oil:** Brent ~98.62 / WTI ~87.60, materially below the prior day's stress levels.
-- **Williams 22:05:** moderator role; official NY Fed schedule says no prepared text expected, so not a scheduled policy-signal release.
-- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_DOWN, LOW_TO_MEDIUM confidence.
-- **Forecast timing:** the 22:00 cutoff passed without an on-time prospective forecast; no retrospective forecast will be created.
+- **State:** `STATE-USDJPY-20261007T075400+0900-MANUAL`
+- **Observed:** 2026-10-07 07:54 JST.
+- **USD/JPY:** early-morning public quotes around 158.12-158.13; prior session close 158.10, range 157.77-158.25; exact qualified 07:54 quote unavailable.
+- **U.S. rates:** 2Y ~4.787%, 10Y ~5.265%, both lower on the day.
+- **Key divergence:** USDJPY stayed firm near 158.1 even as U.S. yields and the broader dollar softened.
+- **Oil:** Brent ~100.58 / WTI ~89.64, below earlier-week stress highs.
+- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_UP into Tokyo open, LOW_TO_MEDIUM confidence.
+- **Resistance/risk:** 158.25-158.5 area and rising intervention sensitivity toward 159.
+- **Next:** 08:50 BOJ/MOF releases / Tokyo JGB reaction / tonight's FOMC minutes.
 - **Scientific effect:** NONE; journal only.
 
 ## Latest overnight forecast event
