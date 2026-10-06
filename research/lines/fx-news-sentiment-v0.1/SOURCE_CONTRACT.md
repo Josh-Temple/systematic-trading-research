@@ -1,71 +1,96 @@
 # Source contract — FX News Sentiment with ChatGPT v0.1
 
-Status: UNRESOLVED / PRE-FREEZE
+Status: PREFERRED_CANDIDATE_IDENTIFIED / NOT_FROZEN
 
-## News-source qualification
+## News source
 
-The primary external paper used DailyFX, Investing.com and FXStreet separately. That does not automatically authorize any of them for v0.1.
+Preferred v0.1 route: GDELT Article List / DOC API metadata.
 
-Packet B must determine, for each candidate provider:
+Reason:
+- GDELT states its released datasets may be used and redistributed without restriction with attribution;
+- Article List outputs include article URLs/titles;
+- point-in-time seen/processed timestamps exist;
+- precise time-window queries are supported;
+- headline metadata can be preserved without copying publisher article bodies.
 
-- stable publication timestamp availability;
-- timezone semantics;
-- article edit/update behavior;
-- whether historical/current content can be retrieved without post-cutoff contamination;
-- robots/access constraints;
-- terms relevant to storing the exact model input;
-- whether public GitHub may store text, only metadata/hash, or neither;
-- duplicate/syndicated-article handling;
-- article identity after edits;
-- operational availability from ChatGPT/manual workflow.
+This is a new prospective headline protocol, not a direct reproduction of the SNB full-text provider setup.
 
-No provider may enter the formal source set merely because it performed well in the prior paper.
+## Availability-time semantics
 
-## Input preservation
+Do not infer publisher publication time when it is not explicitly known.
 
-Preferred order:
+For formal inclusion, use the frozen GDELT observation/ingestion timestamp as the operational "available to this pipeline" time.
 
-1. preserve exact input text privately plus SHA-256 and public metadata;
-2. if exact text may be stored publicly, also save the bounded text snapshot;
-3. if neither is allowed, the source is unsuitable for confirmatory reproducibility unless another lawful identity-preserving route exists.
+Required condition:
+- GDELT seen timestamp <= 08:00:00 JST cutoff.
 
-Public repository records must never pretend that a URL alone proves what text ChatGPT saw.
+If the underlying publisher page later changes, the classifier still uses only the GDELT title metadata preserved in the event snapshot.
 
-## Timestamp rule
+## Required frozen GDELT fields
 
-Formal news input requires an explicit publication timestamp.
+At minimum:
 
-- publication timestamp <= 08:00 JST cutoff;
-- retrieval can occur after cutoff only if the source preserves a trustworthy publication time and the article state used is demonstrably the pre-cutoff state;
-- an article materially updated after cutoff is excluded unless a pre-cutoff snapshot is available.
+- event-local record ID;
+- GDELT seen timestamp;
+- title;
+- article URL;
+- source domain/outlet when supplied;
+- raw-response artifact hash;
+- query/version identifier;
+- retrieval timestamp.
+
+## Query contract still to freeze
+
+Packet B must establish:
+
+- exact query string;
+- language restriction;
+- STARTDATETIME / ENDDATETIME semantics or equivalent;
+- sort order;
+- MAXRECORDS;
+- what happens if the result count reaches MAXRECORDS;
+- URL deduplication;
+- near-duplicate title handling;
+- attribution text.
+
+Formal cohort remains closed until the intended runtime successfully fetches and preserves the exact response.
+
+## Excluded current provider routes
+
+For v0.1 canonical inputs, do not use without a new governance decision:
+
+- DailyFX historical route as though it were still current;
+- Investing.com content requiring restricted storage/reproduction;
+- FXStreet content requiring authorization for the intended preservation/AI workflow;
+- arbitrary web-search ranking as a substitute for the frozen GDELT query.
 
 ## XM quote-source qualification
 
 Before formal scoring establish:
 
-- exact symbol identity for EURJPY;
+- exact XM symbol identity for EURJPY;
 - account/server identity;
-- Bid/Ask field semantics;
+- Bid/Ask semantics;
 - server timestamp and UTC/JST mapping;
-- quote retrieval route;
-- 08:15 boundary selection behavior;
-- weekend / maintenance / missing-quote handling;
-- account commission and swap schedule relevant to the candidate holding window;
+- 08:15 boundary selection;
+- weekend/maintenance/missing-quote handling;
+- commission, swap and other relevant account costs;
 - raw source preservation and hash procedure.
 
-If exact XM qualification fails, formal cohort remains closed. Do not silently use OANDA, Dukascopy, Yahoo, another broker, or midpoint-only public data.
+If exact XM qualification fails, formal cohort remains closed. Do not substitute another provider for the same cohort.
 
 ## Model-input boundary
 
-The classifier receives only the qualified article input and the currency labels it is asked to classify.
+The classifier receives only the frozen GDELT headline record and the fixed classification instructions.
 
-Forbidden inputs for v0.1 article classification:
+Forbidden:
 
 - post-cutoff EURJPY prices;
 - future returns;
+- accumulated strategy P&L;
+- later article revisions;
 - prior scored outcomes;
-- "what happened next" summaries;
 - repository performance results;
-- adaptive instructions based on accumulated P&L.
+- adaptive prompt changes based on results.
 
-The classifier may know historical facts from pretraining; this is an uncontrolled limitation and a reason to rely on prospective evaluation.
+Pretraining may contain historical market facts. This remains an uncontrolled model limitation and is why v0.1 is prospective.
