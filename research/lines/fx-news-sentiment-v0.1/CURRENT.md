@@ -15,6 +15,9 @@ derived_from_interpretations: []
 - Historical market-outcome search for tuning: NOT_AUTHORIZED.
 - Formal prospective cohort: CLOSED.
 - Live or paper broker order submission: NOT_AUTHORIZED.
+- Outcome-blind deterministic core: SYNTHETIC_CORE_PASS.
+- Synthetic test result: 24/24 PASS on Python 3.13.5.
+- Market outcome access during implementation: NONE.
 
 ## Candidate question
 
@@ -35,11 +38,22 @@ GDELT is not yet SOURCE PASS: exact query, runtime response fields, record-limit
 
 ## Candidate implementation
 
-- GDELT provides the frozen point-in-time headline corpus.
-- ChatGPT is a bounded classifier, not the trade-rule author.
-- Deterministic code aggregates labels and creates LONG / SHORT / NO_TRADE.
-- Separate deterministic code reads qualified XM EURJPY Bid/Ask only after the signal is frozen.
-- Issued input/classification/signal records are append-only.
+The deterministic outcome-blind core now implements:
+
+- headline cutoff validation;
+- exact-URL deduplication;
+- fixed sentiment enums;
+- SNB-style appreciation/depreciation score aggregation;
+- EURJPY LONG / SHORT / NO_TRADE selection;
+- signal-freeze timing guard;
+- exact quote validation and first-quote-at/after-target selection;
+- 60-second quote tolerance;
+- spread-aware LONG/SHORT return arithmetic;
+- midpoint gross comparator;
+- visible model-identity change guard;
+- canonical JSON SHA-256.
+
+The first synthetic test run exposed six implementation errors caused by Python `str Enum` normalization. Those code defects were corrected without changing the scientific rule, and the complete 24-test suite then passed.
 
 ## Evidence state
 
@@ -53,13 +67,15 @@ Therefore v0.1 intentionally narrows ChatGPT to semantic classification and reli
 ## Remaining blockers
 
 - exact GDELT query/field contract not frozen;
-- runtime source qualification incomplete;
+- GDELT runtime source qualification incomplete;
+- near-duplicate headline and MAXRECORDS fail-closed rules not frozen;
 - ChatGPT prompt/output schema not frozen;
-- observable model-identity handling not frozen;
+- observable model-identity policy not frozen;
 - exact XM EURJPY Bid/Ask timestamp and account-cost route not qualified;
-- deterministic implementation/synthetic tests not yet present;
-- independent pre-outcome audit not yet run.
+- live GDELT/XM adapters and formal cohort runner not implemented;
+- independent pre-outcome audit not yet run;
+- human freeze not granted.
 
 ## Next action
 
-Complete Packet B source/prompt qualification, then Packet C outcome-blind implementation. After an independent PASS, present the final unresolved choices for human freeze. No formal market outcome should be opened before that boundary.
+Complete Packet B source/prompt/XM qualification. The deterministic Packet C core can then be extended only as required by the qualified schemas, followed by an independent pre-outcome audit. No formal EURJPY market outcome should be opened before explicit human freeze.
