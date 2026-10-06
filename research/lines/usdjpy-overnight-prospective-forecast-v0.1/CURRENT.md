@@ -110,16 +110,26 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261006T160100+0900-EVENT_DRIVEN`
-- **Observed:** 2026-10-06 16:01 JST.
-- **Pre-Ueda USD/JPY:** 158.07 at 15:00 after intraday high 158.22.
-- **Ueda remarks captured so far:** economy recovering gradually despite some weak spots; Tankan business sentiment favorable.
-- **New explicit hike-timing signal:** NOT YET CAPTURED by 16:01.
-- **Post-speech USD/JPY/JGB reaction:** UNKNOWN; sufficiently reliable timestamped reaction not yet bound.
-- **Working interpretation:** NEUTRAL_PENDING_UEDA_REACTION.
-- **Confidence:** LOW.
-- **Next:** fuller Ueda text / post-speech USDJPY + JGB / 21:30 PRE_FORECAST_STATE.
+- **State:** `STATE-USDJPY-20261006T221800+0900-MANUAL`
+- **Observed:** 2026-10-06 22:18 JST.
+- **USD/JPY:** Ueda speech high 158.24; BOJ 17:00 reference 158.10-158.13; Yahoo 20:30 about 158.07; exact qualified 22:18 quote unavailable.
+- **Ueda:** conditional further tightening bias maintained; no specific October hike signal.
+- **U.S. data:** August trade deficit $105.6bn vs $102.0bn expected.
+- **Oil:** Brent ~98.62 / WTI ~87.60, materially below the prior day's stress levels.
+- **Williams 22:05:** moderator role; official NY Fed schedule says no prepared text expected, so not a scheduled policy-signal release.
+- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_DOWN, LOW_TO_MEDIUM confidence.
+- **Forecast timing:** the 22:00 cutoff passed without an on-time prospective forecast; no retrospective forecast will be created.
 - **Scientific effect:** NONE; journal only.
+
+## Latest overnight forecast event
+
+- **Event:** `XPF-EVENT-USDJPY-20261006-220000`
+- **Status:** NO_FORECAST_ISSUED_CUTOFF_PASSED.
+- **Reason:** at 22:18, post-cutoff information was already available; issuing a 22:00 forecast would violate prospective/outcome-blind timing.
+- **Forecast values:** NOT_APPLICABLE.
+- **Benchmark effect:** NONE.
+- **Operational interpretation:** MISSED_CUTOFF_NEGATIVE_OPERATIONAL_RESULT.
+
 ## Latest exploratory overnight evaluation
 
 - **Evaluation:** `XEV-USDJPY-20261005-215400`
