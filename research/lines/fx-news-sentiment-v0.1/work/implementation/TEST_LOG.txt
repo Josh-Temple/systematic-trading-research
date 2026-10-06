@@ -1,0 +1,22 @@
+FX News Sentiment v0.1 synthetic implementation test log
+Date: 2026-10-07
+Environment: Python 3.13.5
+
+python -m py_compile fxns.py test_fxns.py
+PASS
+
+python -m unittest -v test_fxns.py
+Ran 24 tests in 0.001s
+OK
+
+Initial development run:
+Ran 24 tests
+FAILED (errors=6)
+Cause: Python str-Enum normalization bug in sentiment/action helpers.
+Correction: explicit _as_sentiment / _as_action normalization.
+Scientific rules changed: NO
+Market outcomes accessed: NO
+
+sha256:
+2210fa27bfd3d061656ac5c3f39b42bbdbb81c2994a42ef564b175016de275c9  fxns.py
+70661e7084df967fc9c504f863ba3b0b59be9a9e07e88313803064dce042fdf4  test_fxns.py
