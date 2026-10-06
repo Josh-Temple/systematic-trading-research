@@ -1,0 +1,27 @@
+name: FXNS GDELT source probe
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/fxns-gdelt-source-probe.yml"
+      - "research/lines/fx-news-sentiment-v0.1/work/source-probe/**"
+
+permissions:
+  contents: read
+
+jobs:
+  gdelt-schema-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Probe GDELT DOC schema
+        run: python research/lines/fx-news-sentiment-v0.1/work/source-probe/gdelt_schema_probe.py
+      - name: Upload schema-only probe summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: fxns-gdelt-schema-probe
+          path: gdelt_probe_summary.json
