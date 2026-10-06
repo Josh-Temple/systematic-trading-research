@@ -110,14 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261006T081200+0900-MANUAL`
-- **Observed:** 2026-10-06 08:12 JST.
-- **Near-end USD/JPY:** public reports around 157.90 shortly before 08:00; exact qualified 08:00 Bid/Ask unavailable.
-- **Evaluation relation:** near-start public quote was 158.10-158.20 at 21:54, with USDJPY still reaching 158.30 at 22:45; available evidence therefore favors a DOWN outcome.
-- **Working interpretation:** first exploratory overnight forecast was directionally wrong on available evidence.
-- **Formal score:** UNAVAILABLE because exact protocol-compliant 22:00 and 08:00 qualified quotes are missing.
-- **Scientific effect:** NONE; not in cohort.
-
+- **State:** `STATE-USDJPY-20261006T121200+0900-MANUAL`
+- **Observed:** 2026-10-06 12:12 JST.
+- **USD/JPY:** about 157.77 at 11:56; MUFG fixing 157.96 at 10:06; exact qualified 12:12 quote unavailable.
+- **U.S. rates:** 2Y 4.816%, 10Y 5.309% at New York close.
+- **Oil:** Brent ~100.28 / WTI ~89.33 in Asian trading, below Monday morning spike.
+- **Japan rates event:** 10-year JGB auction result due 12:35; coupon 3.1%, planned issuance about JPY2.6tn.
+- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_DOWN; mild JPY-strengthening drift, still range-bound.
+- **Next:** 12:35 JGB auction / 15:00 Tokyo close / 15:35 Ueda speech.
+- **Scientific effect:** NONE; journal only.
 ## Latest exploratory overnight evaluation
 
 - **Evaluation:** `XEV-USDJPY-20261005-215400`
