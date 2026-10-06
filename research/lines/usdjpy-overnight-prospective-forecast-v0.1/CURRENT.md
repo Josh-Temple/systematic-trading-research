@@ -110,14 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261006T121200+0900-MANUAL`
-- **Observed:** 2026-10-06 12:12 JST.
-- **USD/JPY:** about 157.77 at 11:56; MUFG fixing 157.96 at 10:06; exact qualified 12:12 quote unavailable.
-- **U.S. rates:** 2Y 4.816%, 10Y 5.309% at New York close.
-- **Oil:** Brent ~100.28 / WTI ~89.33 in Asian trading, below Monday morning spike.
-- **Japan rates event:** 10-year JGB auction result due 12:35; coupon 3.1%, planned issuance about JPY2.6tn.
-- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_DOWN; mild JPY-strengthening drift, still range-bound.
-- **Next:** 12:35 JGB auction / 15:00 Tokyo close / 15:35 Ueda speech.
+- **State:** `STATE-USDJPY-20261006T130000+0900-EVENT_DRIVEN`
+- **Observed:** 2026-10-06 13:00 JST.
+- **Event:** 10-year JGB auction result.
+- **Auction:** applications JPY7.4011tn / competitive accepted JPY1.9661tn; derived bid-to-cover ~3.76x vs ~3.29x on 2026-09-01.
+- **Tail:** highest accepted yield 3.103% vs average 3.101% = ~0.2 bp, much tighter than prior ~1.6 bp.
+- **Interpretation:** stronger auction demand reduces immediate disorderly JGB-demand risk, but FX impact is two-sided.
+- **USD/JPY reaction:** UNKNOWN; no sufficiently reliable post-12:35 timestamped quote captured by 13:00.
+- **Working bias:** NEUTRAL_TO_SLIGHT_USDJPY_DOWN, LOW confidence.
+- **Next:** post-auction JGB/FX reaction / 15:00 Katayama / 15:35 Ueda.
 - **Scientific effect:** NONE; journal only.
 ## Latest exploratory overnight evaluation
 
