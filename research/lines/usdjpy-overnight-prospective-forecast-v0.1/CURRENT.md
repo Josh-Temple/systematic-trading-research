@@ -110,15 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261006T130000+0900-EVENT_DRIVEN`
-- **Observed:** 2026-10-06 13:00 JST.
-- **Event:** 10-year JGB auction result.
-- **Auction:** applications JPY7.4011tn / competitive accepted JPY1.9661tn; derived bid-to-cover ~3.76x vs ~3.29x on 2026-09-01.
-- **Tail:** highest accepted yield 3.103% vs average 3.101% = ~0.2 bp, much tighter than prior ~1.6 bp.
-- **Interpretation:** stronger auction demand reduces immediate disorderly JGB-demand risk, but FX impact is two-sided.
-- **USD/JPY reaction:** UNKNOWN; no sufficiently reliable post-12:35 timestamped quote captured by 13:00.
-- **Working bias:** NEUTRAL_TO_SLIGHT_USDJPY_DOWN, LOW confidence.
-- **Next:** post-auction JGB/FX reaction / 15:00 Katayama / 15:35 Ueda.
+- **State:** `STATE-USDJPY-20261006T160100+0900-EVENT_DRIVEN`
+- **Observed:** 2026-10-06 16:01 JST.
+- **Pre-Ueda USD/JPY:** 158.07 at 15:00 after intraday high 158.22.
+- **Ueda remarks captured so far:** economy recovering gradually despite some weak spots; Tankan business sentiment favorable.
+- **New explicit hike-timing signal:** NOT YET CAPTURED by 16:01.
+- **Post-speech USD/JPY/JGB reaction:** UNKNOWN; sufficiently reliable timestamped reaction not yet bound.
+- **Working interpretation:** NEUTRAL_PENDING_UEDA_REACTION.
+- **Confidence:** LOW.
+- **Next:** fuller Ueda text / post-speech USDJPY + JGB / 21:30 PRE_FORECAST_STATE.
 - **Scientific effect:** NONE; journal only.
 ## Latest exploratory overnight evaluation
 
