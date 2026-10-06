@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>Systematic Trading Research</title>
+  <meta name="description" content="Systematic Trading Research の human-facing derived view">
+  <meta name="google-site-verification" content="b9nfpuA9jwHYTec0Rx6jx1EAxkTrDSkCnbPI2Vc4df8" />
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap head-grid">
+      <a class="brand" href="#top" aria-label="Systematic Trading Research home">
+        <span class="brand-mark" aria-hidden="true">STR</span>
+        <span>Systematic Trading Research</span>
+      </a>
+      <a id="canonical-link" class="repo-link" href="#" target="_blank" rel="noreferrer">Current summary ↗</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <p class="eyebrow">RESEARCH LINE · <span id="line-id"></span></p>
+      <h1 id="line-title"></h1>
+      <p id="line-scope" class="lead"></p>
+      <div class="authority-strip">
+        <span>DERIVED VIEW</span>
+        <p>この画面は研究正本ではありません。表示内容の根拠はGitHub上のcanonical research recordです。</p>
+      </div>
+    </section>
+
+    <nav class="section-nav" aria-label="Section navigation">
+      <div class="wrap nav-scroll">
+        <a href="#current">Current</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#diagnostics">Diagnostics</a>
+        <a href="#data">Data</a>
+        <a href="#timeline">Timeline</a>
+      </div>
+    </nav>
+
+    <section id="current" class="wrap section">
+      <div class="section-heading">
+        <p class="eyebrow">CURRENT</p>
+        <h2>現在地</h2>
+      </div>
+
+      <div id="current-status" class="current-lines"></div>
+
+      <div id="conflict" class="conflict-panel"></div>
+
+      <div class="split-rule">
+        <div>
+          <p class="eyebrow">NEXT ADMISSIBLE TEST</p>
+          <h3 id="next-title"></h3>
+          <p id="next-body"></p>
+          <p id="next-status" class="status-line"></p>
+        </div>
+        <div>
+          <p class="eyebrow">FORBIDDEN REUSE / RESCUE</p>
+          <ul id="forbidden-list" class="plain-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence" class="wrap section ruled">
+      <div class="section-heading">
+        <p class="eyebrow">EVIDENCE</p>
+        <h2>主要な検証</h2>
+        <p>科学的な結果と、次に検証中の仮説を分けて表示します。</p>
+      </div>
+      <div id="hypotheses" class="evidence-stack"></div>
+    </section>
+
+    <section id="diagnostics" class="wrap section ruled">
+      <div class="section-heading">
+        <p class="eyebrow">H1 DIAGNOSTICS</p>
+        <h2>v0.1の損失要因をどう見ているか</h2>
+        <p class="status-line" id="diag-label"></p>
+      </div>
+      <p id="diag-summary" class="measure"></p>
+      <div id="diag-points" class="diag-table"></div>
+      <p id="diag-links" class="footnote"></p>
+      <p class="footnote">診断はconsumed H1 sample上のexploratory evidenceです。因果や将来profitabilityを確定しません。</p>
+    </section>
+
+    <section id="data" class="wrap section ruled">
+      <div class="section-heading">
+        <p class="eyebrow">DATA BOUNDARIES</p>
+        <h2>使ってよいデータ、使ってはいけないデータ</h2>
+      </div>
+      <div id="datasets" class="data-list"></div>
+    </section>
+
+    <section id="timeline" class="wrap section ruled">
+      <div class="section-heading">
+        <p class="eyebrow">HISTORY</p>
+        <h2>研究履歴</h2>
+        <p>BLOCKEDは科学的な否定結果ではありません。履歴として別に残します。</p>
+      </div>
+      <ol id="timeline-list" class="timeline"></ol>
+    </section>
+
+    <section class="wrap section ruled sources">
+      <div class="section-heading">
+        <p class="eyebrow">AUTHORITY</p>
+        <h2>正本へ戻る</h2>
+      </div>
+      <p>このUIはnavigation layerです。判断や再利用条件を確認するときはcanonical fileを参照してください。</p>
+      <a id="all-files-link" class="text-link" href="#" target="_blank" rel="noreferrer">Horizontal Reaction canonical directory ↗</a>
+      <p class="snapshot">Projection generated: <span id="generated-at"></span></p>
+      <p class="snapshot">Research source commit: <a id="source-commit" class="text-link" href="#" target="_blank" rel="noreferrer"></a></p>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>Systematic Trading Research · evidence first, current state separate from history.</p>
+    </div>
+  </footer>
+
+  <script src="./data/horizontal-reaction-v0.1.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
