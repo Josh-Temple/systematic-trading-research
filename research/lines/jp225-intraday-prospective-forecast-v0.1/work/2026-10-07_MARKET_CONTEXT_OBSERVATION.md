@@ -137,3 +137,63 @@ Interpretive note: sustained real-wage growth is compatible with continued BOJ n
 
 Source:
 https://www.reuters.com/world/asia-pacific/japans-real-wages-rise-eighth-straight-month-august-2026-10-06/
+
+
+## Midday observation — 2026-10-07 12:15 JST
+
+### Nikkei 225 public cash index
+
+Observed public cash-index values:
+
+- previous close: 70,683.98
+- 09:00 open: 70,582.11
+- morning high: 70,793.29
+- morning low: 70,017.19
+- 11:30 morning close: 70,074.13
+- change versus previous close: -609.85 / -0.86%
+- 09:00→11:30 log return: approximately -72.23 bps
+
+Source:
+https://minkabu.jp/stock/100000018
+
+### USDJPY
+
+Morning Tokyo FX observations:
+
+- around 158.10 near the early session;
+- high around 158.50 by 10:00;
+- around 158.36 at 10:36.
+
+The yen therefore remained weak in absolute terms even as Japanese equities fell.
+
+Sources:
+https://minkabu.jp/news/4630838
+https://minkabu.jp/news/4630930
+
+### Cross-market context
+
+Reuters reported that Asian equities were generally softer despite record U.S. closes.
+
+Relevant same-morning context:
+
+- MSCI Asia ex-Japan approximately -0.3%;
+- crude oil rebounded, with WTI around USD 90.38 and Brent around USD 101.65;
+- U.S. 10-year Treasury yield rebounded toward 5.3%;
+- markets were awaiting the September FOMC minutes.
+
+Source:
+https://www.reuters.com/world/china/global-markets-global-markets-2026-10-07/
+
+## Midday interpretation
+
+Today's public cash-index path shows that weak-yen conditions and positive U.S. equity context were not sufficient to sustain JP225 gains after the open.
+
+The index initially rose above the opening level but then reversed sharply, ending the morning about 72 bps below the 09:00 open. This strengthens the operational importance of separating:
+
+1. overnight / pre-open risk-on context;
+2. opening-gap information;
+3. the actual 09:00→15:30 intraday move.
+
+The observation is consistent with the previously identified risk that, after a rapid multi-session advance, positive overnight information may be incorporated into the opening level and followed by profit-taking.
+
+This remains observation-only evidence. It does not change A1/A2/A3 rules before the first on-time run.
