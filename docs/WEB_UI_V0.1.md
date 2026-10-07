@@ -146,6 +146,12 @@ When canonical Horizontal Reaction research changes:
 
 A canonical-only change is expected to make the consistency check fail until the derived Web projection is refreshed. This is intentional. Do not bypass the failure by pointing `canonicalSourceCommit` at an unmerged or unrelated commit.
 
+### Publication validation update — 2026-10-08
+
+The validator now checks the working-tree canonical bytes, including staged, unstaged and untracked additions, and requires the source commit to be in `origin/main` history. Malformed frontmatter, invalid record identities and Result/Run execution-status conflicts fail explicitly. Synthetic regression fixtures exercise these failure paths.
+
+Pages publication now depends on a validation job. That job uploads the exact Web artifact only after `npm run check` succeeds; the deployment job publishes that artifact. A failed check prevents a new publication and leaves the previously deployed site available. See [repository validation](VALIDATION.md) for prerequisites, commands and scope limits.
+
 ## Acceptance criteria
 
 The initial page passes if, on a mobile screen, a reviewer can determine within a short read:

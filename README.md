@@ -26,6 +26,7 @@ Horizontal Reaction Strategy v0.1 は、仮説・仕様・データ・実験・R
 Human-facing Web UI はGitHub Pagesへ公開済みで、公開URLに対するモバイル幅のブラウザ検証まで完了しています。
 
 - Public URL: https://josh-temple.github.io/systematic-trading-research/
+- Research line and proposal routing: [research/lines/INDEX.md](research/lines/INDEX.md)
 - Current research projection: [research/lines/horizontal-reaction-v0.1/CURRENT.md](research/lines/horizontal-reaction-v0.1/CURRENT.md)
 - Repository review follow-up: [docs/REVIEW_FOLLOWUP_2026-09-27.md](docs/REVIEW_FOLLOWUP_2026-09-27.md)
 - Phase 4 exit review: [web/PHASE4_EXIT_REVIEW.md](web/PHASE4_EXIT_REVIEW.md)
@@ -33,6 +34,21 @@ Human-facing Web UI はGitHub Pagesへ公開済みで、公開URLに対するモ
 Phase 4のpublic mobile validationは、GitHub Actions上のChromiumを360 / 390 / 412px幅・touch有効で実行し、スクリーンショットも目視確認しています。物理Android端末そのものでは別途確認していないため、その差はexit reviewに限界として残しています。
 
 Separately, research/pilots/autonomous-research-v0.1/ では synthetic data only の evaluator-integrity pilot を進めています。これはHorizontal Reactionのunused holdoutを消費せず、既存研究結果を変更しません。
+
+## Local validation
+
+Node.js 24とPython 3.12を使い、full Git historyを取得したcheckoutで実行します。
+
+```sh
+git fetch origin main
+npm ci --ignore-scripts
+npm run check
+python research/lines/jp225-ema-timeofday-v0.1/work/integration/run_synthetic_tests.py
+```
+
+`npm run check`は検証器のsynthetic failure testsと、既存のHorizontal Reaction正本・Web表示の整合性を確認します。未コミット・未追跡の正本文書も鮮度検査の対象です。Pages workflowはこの検証に成功したWeb artifactを公開します。
+
+追加のsynthetic suitesとprocess boundary testの実行手順は [docs/VALIDATION.md](docs/VALIDATION.md) を参照してください。検証成功は科学的仮説の支持や、市場データへのアクセス許可を意味しません。
 
 ## Research rules
 

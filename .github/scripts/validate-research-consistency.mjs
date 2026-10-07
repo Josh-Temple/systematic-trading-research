@@ -2,13 +2,25 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import { execFileSync } from "node:child_process";
+import { pathToFileURL } from "node:url";
 import yaml from "js-yaml";
 
 const ROOT = process.cwd();
 const REPO = "Josh-Temple/systematic-trading-research";
 const CANONICAL_ROOT = "research/lines/horizontal-reaction-v0.1";
 const WEB_DATA_PATH = "web/data/horizontal-reaction-v0.1.js";
-const ID_RE = /^(?:RL|HYP|SPEC|DATA|EXP|RUN|RES|INT|DEC|DIAG)-HR-\d{3}(?:-v\d{2}|-ATTEMPT-\d+)?$/i;
+const ID_RE = /^(?:RL|HYP|SPEC|DATA|EXP|RUN|RES|INT|DEC|DIAG)-HR-\d{3}(?:-v\d{2}|-ATTEMPT-\d+)?$/;
+const RECORD_TYPES = new Map([
+  ["RL", "ResearchLine"], ["HYP", "Hypothesis"], ["SPEC", "Specification"],
+  ["DATA", "Dataset"], ["EXP", "Experiment"], ["RES", "Result"],
+  ["INT", "Interpretation"], ["DEC", "Decision"], ["RUN", "Run"],
+  ["DIAG", "Diagnostic"],
+]);
+const RELATION_TYPES = new Set([
+  "tests_hypothesis", "uses_specification", "uses_dataset", "produced_by_run",
+  "interprets_result", "supports", "contradicts", "supersedes", "invalidates",
+  "corrects", "derived_from",
+]);
 
 const EXECUTION_STATUSES = new Set(["NOT_RUN", "SUCCESS", "FAILED", "BLOCKED"]);
 const EVIDENCE_STATUSES = new Set(["VALID", "INVALID", "PARTIAL", "UNVERIFIED"]);
@@ -34,17 +46,20 @@ function walk(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   return entries.flatMap((entry) => {
     const p = path.join(dir, entry.name);
+    assert(!entry.isSymbolicLink(), `${p}: symbolic links are not canonical records`);
     return entry.isDirectory() ? walk(p) : [p];
   });
 }
 
-function repoRelative(filePath) {
-  return path.relative(ROOT, filePath).replaceAll(path.sep, "/");
+function repoRelative(filePath, root = ROOT) {
+  return path.relative(root, filePath).replaceAll(path.sep, "/");
 }
 
-function parseFrontmatter(text, file) {
-  const match = text.match(/^---\s*\n([\s\S]*?)\n---(?:\s*\n|\s*$)/);
-  if (!match) return null;
+export function parseFrontmatter(text, file) {
+  const normalized = text.replace(/^\uFEFF/, "").replaceAll("\r\n", "\n");
+  if (!/^---[ \t]*(?:\n|$)/.test(normalized)) return null;
+  const match = normalized.match(/^---[ \t]*\n([\s\S]*?)^---[ \t]*(?:\n|$)/m);
+  assert(match, `${file}: YAML frontmatter is missing its closing delimiter`);
   try {
     return yaml.load(match[1], { schema: yaml.JSON_SCHEMA });
   } catch (error) {
@@ -52,19 +67,37 @@ function parseFrontmatter(text, file) {
   }
 }
 
-function loadRecords() {
-  const root = path.join(ROOT, CANONICAL_ROOT);
+// YAML aliases can form cycles. Reject them before recursive reference scanning;
+// ordinary shared aliases are valid and are visited only once.
+function validateMetadataGraph(value, file, active = new Set(), seen = new Set(), depth = 0) {
+  if (!value || typeof value !== "object") return;
+  assert(!active.has(value), `${file}: cyclic YAML aliases are not valid record metadata`);
+  if (seen.has(value)) return;
+  assert(depth <= 100, `${file}: record metadata nesting exceeds 100 levels`);
+  assert(seen.size < 100_000, `${file}: record metadata exceeds 100000 objects`);
+  seen.add(value);
+  active.add(value);
+  for (const child of Object.values(value)) validateMetadataGraph(child, file, active, seen, depth + 1);
+  active.delete(value);
+}
+
+export function loadRecords(repositoryRoot = ROOT) {
+  const root = path.join(repositoryRoot, CANONICAL_ROOT);
   const files = walk(root).filter((p) => /\.(?:md|ya?ml)$/i.test(p));
   const records = [];
 
   for (const filePath of files) {
-    const rel = repoRelative(filePath);
+    const rel = repoRelative(filePath, repositoryRoot);
+    const filenameId = path.basename(filePath).replace(/\.(?:md|ya?ml)$/i, "");
     const text = fs.readFileSync(filePath, "utf8");
     let data = null;
 
     if (/\.md$/i.test(filePath)) {
       data = parseFrontmatter(text, rel);
-      if (!data) continue;
+      if (data === null) {
+        assert(!ID_RE.test(filenameId), `${rel}: canonical record is missing YAML frontmatter`);
+        continue;
+      }
     } else {
       try {
         data = yaml.load(text, { schema: yaml.JSON_SCHEMA });
@@ -73,7 +106,8 @@ function loadRecords() {
       }
     }
 
-    if (!data || typeof data !== "object" || Array.isArray(data)) continue;
+    assert(data && typeof data === "object" && !Array.isArray(data), `${rel}: metadata must be a mapping`);
+    validateMetadataGraph(data, rel);
 
     const primaryId =
       typeof data.id === "string"
@@ -84,7 +118,18 @@ function loadRecords() {
             ? data.diagnostic_id
             : null;
 
-    if (!primaryId || !ID_RE.test(primaryId)) continue;
+    if (!primaryId) {
+      assert(
+        !ID_RE.test(filenameId) && ![...RECORD_TYPES.values()].includes(data.type)
+          && !["id", "run_id", "diagnostic_id"].some((key) => Object.hasOwn(data, key)),
+        `${rel}: canonical record is missing a valid stable ID`
+      );
+      continue;
+    }
+    assert(ID_RE.test(primaryId), `${rel}: invalid stable ID ${primaryId}`);
+    if (ID_RE.test(filenameId)) {
+      assert(primaryId === filenameId, `${rel}: stable ID ${primaryId} does not match filename ${filenameId}`);
+    }
 
     records.push({ path: rel, data, primaryId });
   }
@@ -92,25 +137,38 @@ function loadRecords() {
   return records;
 }
 
-function collectExactIdStrings(value, out = new Set()) {
+function collectExactIdStrings(value, out = new Set(), seen = new Set()) {
   if (typeof value === "string") {
     if (ID_RE.test(value)) out.add(value);
     return out;
   }
-  if (Array.isArray(value)) {
-    for (const item of value) collectExactIdStrings(item, out);
-    return out;
-  }
   if (value && typeof value === "object") {
-    for (const item of Object.values(value)) collectExactIdStrings(item, out);
+    if (seen.has(value)) return out;
+    seen.add(value);
+    for (const item of Object.values(value)) collectExactIdStrings(item, out, seen);
   }
   return out;
 }
 
-function validateRecordStructure(records) {
+export function validateRecordStructure(records) {
   const byId = new Map();
 
   for (const record of records) {
+    const prefix = record.primaryId.split("-")[0].toUpperCase();
+    const expectedType = RECORD_TYPES.get(prefix);
+    assert(expectedType, `${record.path}: unsupported stable ID ${record.primaryId}`);
+    if (prefix === "RUN" || prefix === "DIAG") {
+      const identityField = prefix === "RUN" ? "run_id" : "diagnostic_id";
+      assert(record.data[identityField] === record.primaryId, `${record.path}: invalid ${identityField}`);
+      assert(record.data.type === undefined || record.data.type === expectedType,
+        `${record.path}: type must be ${expectedType} when present`);
+    } else {
+      assert(record.data.id === record.primaryId && record.data.type === expectedType,
+        `${record.path}: ID ${record.primaryId} requires type ${expectedType}`);
+      if (prefix !== "RL") {
+        assert(record.data.research_line_id === "RL-HR-001", `${record.path}: missing or wrong research_line_id`);
+      }
+    }
     if (byId.has(record.primaryId)) {
       fail(
         `duplicate stable ID ${record.primaryId}: ${byId.get(record.primaryId).path} and ${record.path}`
@@ -120,6 +178,14 @@ function validateRecordStructure(records) {
   }
 
   for (const record of records) {
+    if (record.data.relations !== undefined) {
+      assert(Array.isArray(record.data.relations), `${record.path}: relations must be an array`);
+      for (const relation of record.data.relations) {
+        assert(relation && RELATION_TYPES.has(relation.type) && typeof relation.target === "string"
+          && ID_RE.test(relation.target) && byId.has(relation.target),
+        `${record.path}: invalid relation type or target`);
+      }
+    }
     const refs = collectExactIdStrings(record.data);
     for (const ref of refs) {
       if (!byId.has(ref)) {
@@ -141,6 +207,26 @@ function validateRecordStructure(records) {
         SCIENTIFIC_STATUSES.has(scientific_status),
         `${record.path}: invalid or missing scientific_status: ${scientific_status}`
       );
+      assert(typeof record.data.run_id === "string" && record.data.run_id.startsWith("RUN-HR-"),
+        `${record.path}: Result requires a run_id`);
+      const run = byId.get(record.data.run_id);
+      assert(run?.data.execution_status === execution_status,
+        `${record.path}: Result execution_status differs from its Run`);
+      if (execution_status !== "SUCCESS") {
+        assert(scientific_status === "NOT_APPLICABLE",
+          `${record.path}: a non-successful execution cannot have a scientific outcome`);
+      }
+    }
+    if (record.primaryId.startsWith("RUN-")) {
+      assert(EXECUTION_STATUSES.has(record.data.execution_status), `${record.path}: invalid Run execution_status`);
+      for (const [key, prefix] of [["experiment_id", "EXP-HR-"], ["specification_id", "SPEC-HR-"]]) {
+        assert(typeof record.data[key] === "string" && record.data[key].startsWith(prefix) && byId.has(record.data[key]),
+          `${record.path}: invalid or missing ${key}`);
+      }
+    }
+    if (record.primaryId.startsWith("DIAG-")) {
+      assert(typeof record.data.target_run === "string" && record.data.target_run.startsWith("RUN-HR-")
+        && byId.has(record.data.target_run), `${record.path}: invalid or missing target_run`);
     }
   }
 
@@ -354,23 +440,29 @@ function validateProjection(web, byId) {
   validateWebLinks(web, byId);
 }
 
-function validateSourceCommit(web) {
+export function validateSourceCommit(web, repositoryRoot = ROOT) {
   const sourceCommit = web.meta.canonicalSourceCommit;
+  assert(typeof sourceCommit === "string" && /^[0-9a-f]{40}$/.test(sourceCommit),
+    "web meta.canonicalSourceCommit must be a full 40-character commit SHA");
+  const git = (args) => execFileSync("git", args, { cwd: repositoryRoot, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
   try {
-    execFileSync("git", ["cat-file", "-e", `${sourceCommit}^{commit}`], { stdio: "ignore" });
-    execFileSync("git", ["merge-base", "--is-ancestor", sourceCommit, "HEAD"], { stdio: "ignore" });
+    git(["cat-file", "-e", `${sourceCommit}^{commit}`]);
+    git(["merge-base", "--is-ancestor", sourceCommit, "HEAD"]);
   } catch {
     fail(`web canonicalSourceCommit ${sourceCommit} is missing or is not an ancestor of HEAD`);
   }
+  try {
+    git(["merge-base", "--is-ancestor", sourceCommit, "refs/remotes/origin/main"]);
+  } catch {
+    fail(`web canonicalSourceCommit ${sourceCommit} is not in origin/main history, or origin/main is missing; fetch full main history before validation`);
+  }
 
-  const changedCanonical = execFileSync(
-    "git",
-    ["diff", "--name-only", `${sourceCommit}..HEAD`, "--", CANONICAL_ROOT],
-    { encoding: "utf8" }
-  )
-    .trim()
-    .split("\n")
-    .filter(Boolean);
+  // Compare the bytes being validated, including staged/unstaged changes.
+  // A HEAD-only diff misses local edits and an untracked new canonical record.
+  const changedCanonical = [
+    ...git(["diff", "--name-only", "-z", sourceCommit, "--", CANONICAL_ROOT]).split("\0"),
+    ...git(["ls-files", "--others", "-z", "--", CANONICAL_ROOT]).split("\0"),
+  ].filter(Boolean);
 
   assert(
     changedCanonical.length === 0,
@@ -408,27 +500,27 @@ function runNegativeSelfTests(web, byId) {
   assert(linkFailed, "negative self-test failed: deliberate missing canonical link was not detected");
 }
 
-const records = loadRecords();
-const byId = validateRecordStructure(records);
-const web = loadWebData();
+export function validateResearchConsistency() {
+  const records = loadRecords();
+  const byId = validateRecordStructure(records);
+  const web = loadWebData();
 
-validateProjection(web, byId);
-validateSourceCommit(web);
-runNegativeSelfTests(web, byId);
+  validateProjection(web, byId);
+  validateSourceCommit(web);
+  runNegativeSelfTests(web, byId);
 
-const results = [...byId.values()].filter((record) => record.data.type === "Result").length;
-console.log(
-  JSON.stringify(
-    {
-      status: "PASS",
-      canonicalRecordCount: byId.size,
-      resultRecordCount: results,
-      webProjection: WEB_DATA_PATH,
-      canonicalSourceCommit: web.meta.canonicalSourceCommit,
-      negativeSelfTests: ["metric mismatch detected", "missing canonical link detected"],
-      note: "This checks structural/projection consistency only; it does not recompute scientific results.",
-    },
-    null,
-    2
-  )
-);
+  const results = [...byId.values()].filter((record) => record.data.type === "Result").length;
+  return {
+    status: "PASS",
+    canonicalRecordCount: byId.size,
+    resultRecordCount: results,
+    webProjection: WEB_DATA_PATH,
+    canonicalSourceCommit: web.meta.canonicalSourceCommit,
+    negativeSelfTests: ["metric mismatch detected", "missing canonical link detected"],
+    note: "This checks structural/projection consistency only; it does not recompute scientific results.",
+  };
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  console.log(JSON.stringify(validateResearchConsistency(), null, 2));
+}
