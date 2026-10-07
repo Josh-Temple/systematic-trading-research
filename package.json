@@ -1,0 +1,12 @@
+{
+  "name": "systematic-trading-research-validation",
+  "private": true,
+  "scripts": {
+    "test": "node --test .github/scripts/test-research-consistency.mjs",
+    "validate": "node .github/scripts/validate-research-consistency.mjs",
+    "check": "npm test && npm run validate"
+  },
+  "devDependencies": {
+    "js-yaml": "4.3.2"
+  }
+}
