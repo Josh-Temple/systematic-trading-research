@@ -1,0 +1,111 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261008T075200+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-08T07:52:00+09:00",
+  "retrieved_at": "2026-10-08T07:52:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-08T07:52:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "NY 17:00 close was 158.04-158.14 at 07:17 JST. Nomura showed 158.07-158.09 at 05:48. Around 03:32 after the FOMC minutes USDJPY was about 157.96. Exact qualified 07:52 Bid/Ask remains unavailable."
+  },
+  "rates_state": {
+    "us_2y": "about 4.762% after the strong 10-year Treasury auction",
+    "us_10y": "about 5.276%-5.29% after retreating from intraday highs",
+    "jp_2y": "UNKNOWN_PRE_TOKYO_OPEN",
+    "jp_10y": "UNKNOWN_PRE_TOKYO_OPEN_CURRENT"
+  },
+  "policy_state": {
+    "fed": "September minutes showed broad support for the September hike and most participants saw another hike this year as likely appropriate, but views on the rationale and near-term path remained divided; October hike odds remain low relative to December.",
+    "boj": "Conditional tightening guidance remains intact; no new overnight BOJ policy signal.",
+    "japan_fx_authorities": "Intervention sensitivity remains relevant in the upper-158/159 area."
+  },
+  "macro_news_facts": [
+    "USDJPY traded as high as about 158.40 in New York and fell to about 157.92-157.96 around/after the FOMC minutes before recovering toward 158.08 into the New York close.",
+    "The FOMC minutes were mildly hawkish in that most participants saw another hike this year as likely appropriate, but the market reaction was limited.",
+    "A strong $39 billion U.S. 10-year Treasury auction pulled the 10-year yield down from earlier highs toward roughly 5.28%-5.29%.",
+    "Brent settled near $100.20 and WTI near $88.28 after the IEA agreed to accelerate reserve releases.",
+    "The broader dollar held gains, but the yen improved slightly after the FOMC minutes."
+  ],
+  "scheduled_events_known": [
+    "2026-10-08 08:00 JST: nominal overnight forecast endpoint.",
+    "2026-10-08 08:50 JST: Japan August current account / balance of payments."
+  ],
+  "source_refs": [
+    {
+      "source": "Kobe Shimbun/Kyodo NY close 07:17 JST",
+      "ref_id": "turn639859search3",
+      "retrieved_at": "2026-10-08T07:52:00+09:00"
+    },
+    {
+      "source": "Nomura USDJPY 05:48 JST",
+      "ref_id": "turn619462search2",
+      "retrieved_at": "2026-10-08T07:52:00+09:00"
+    },
+    {
+      "source": "Fisco/Yahoo post-FOMC FX 03:32 JST",
+      "ref_id": "turn639859search7",
+      "retrieved_at": "2026-10-08T07:52:00+09:00"
+    },
+    {
+      "source": "Reuters FOMC minutes",
+      "ref_id": "turn516935news37",
+      "retrieved_at": "2026-10-08T07:52:00+09:00"
+    },
+    {
+      "source": "Reuters Treasury auction/yields",
+      "ref_id": "turn737551news24",
+      "retrieved_at": "2026-10-08T07:52:00+09:00"
+    },
+    {
+      "source": "WSJ Treasury yields after auction",
+      "ref_id": "turn737551news29",
+      "retrieved_at": "2026-10-08T07:52:00+09:00"
+    },
+    {
+      "source": "Reuters oil settlement",
+      "ref_id": "turn698403news48",
+      "retrieved_at": "2026-10-08T07:52:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY is ending the New York session near 158.1, below the 158.17-158.27 area seen in a public report near the nominal 22:00 start window.",
+    "The FOMC minutes did not trigger sustained USDJPY upside despite their mildly hawkish year-end-rate message.",
+    "U.S. long yields fell from intraday highs after a strong 10-year auction.",
+    "Oil settled lower after the IEA reserve-release decision.",
+    "The 08:00 endpoint has not yet occurred and exact qualified start/end quotes remain unavailable."
+  ],
+  "interpretations": [
+    "The original SLIGHT_USDJPY_UP forecast is under pressure and currently appears more likely to finish on the wrong side of direction.",
+    "The main forecast drivers weakened during the night: long yields retreated and oil settled lower, while the FOMC minutes produced only limited dollar-yen upside.",
+    "The forecast's downside scenario—less sustained rate pressure and mean reversion below 158.0-158.1—partly materialized, although USDJPY recovered back near 158.1.",
+    "No final hit/miss call should be made before 08:00, and no formal score is available without the qualified reference feed."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: after the 21:46 forecast, USDJPY failed to sustain upside, dipped below 158 after the FOMC minutes, and recovered only to about 158.08 into the New York close as Treasury yields and oil eased.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_DOWN into the 08:00 endpoint relative to the near-cutoff public price context; final result still pending.",
+  "alternative_case": "A last-minute move above the near-cutoff level could rescue the directional forecast, but this is not the base case.",
+  "invalidation_conditions": [
+    "Qualified 08:00 endpoint above the qualified 22:00 start.",
+    "A reliable public 08:00 observation materially above the available near-cutoff public context."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "08:00 JST endpoint quote.",
+    "Preserve exact timestamp/source if a near-end public quote is obtainable.",
+    "Perform exploratory evaluation only after endpoint; do not treat as formal cohort evidence."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "2d445eaad31ad4924c21a7ad6dd2276d7255ec7d289447485748d9bc33c0c80b"
+}
