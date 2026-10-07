@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "query_id",
+    "parameters",
+    "request_url",
+    "request_started_at",
+    "retrieval_completed_at",
+    "status",
+    "market_outcomes_accessed",
+    "formal_cohort_authorized"
+  ],
+  "properties": {
+    "query_id": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "required": [
+        "query",
+        "mode",
+        "maxrecords",
+        "startdatetime",
+        "enddatetime",
+        "sort",
+        "format"
+      ]
+    },
+    "request_url": {
+      "type": "string"
+    },
+    "request_started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "retrieval_completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "raw_path": {
+      "type": "string"
+    },
+    "raw_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "raw_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "http_status": {
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "SOURCE_QUALIFICATION_BLOCKED",
+        "SCHEMA_PROBE_PASS_SOURCE_NOT_QUALIFIED"
+      ]
+    },
+    "market_outcomes_accessed": {
+      "const": false
+    },
+    "formal_cohort_authorized": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "http_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "response_headers",
+          "raw_path",
+          "raw_bytes",
+          "raw_sha256"
+        ]
+      }
+    }
+  ]
+}

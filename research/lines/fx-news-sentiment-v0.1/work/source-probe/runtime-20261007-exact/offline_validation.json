@@ -1,0 +1,98 @@
+{
+  "article_count": 12,
+  "retained_count": 10,
+  "article_keys": [
+    "domain",
+    "language",
+    "seendate",
+    "socialimage",
+    "sourcecountry",
+    "title",
+    "url",
+    "url_mobile"
+  ],
+  "records": [
+    {
+      "url": "https://santamariatimes.com/ap/business/asian-shares-mostly-advance-after-wall-street-gains-and-oil-prices-fall/article_519ad095-a5c6-5e50-a178-aa4e4e58865b.html",
+      "title": "Asian shares mostly advance after Wall Street gains and oil prices fall",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "santamariatimes.com",
+      "record_id": "8f314d09bb5859d85daaae266589646398aadbbf83662f619571100014386938"
+    },
+    {
+      "url": "https://theeagleonline.com.ng/dangote-stops-selling-petrol-to-fuel-importers/",
+      "title": "Dangote stops selling petrol to fuel importers",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "theeagleonline.com.ng",
+      "record_id": "5ad752400c8cd20d0e0d67446b0e11cf5b93c7c6080f6f7c222044e25b026dd5"
+    },
+    {
+      "url": "https://www.cityam.com/old-fault-lines-are-threatening-to-rock-the-eurozone/",
+      "title": "Old fault lines are threatening to rock the Eurozone",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "cityam.com",
+      "record_id": "097d17484d95c7e41f4e969b40b7d41b084685557338e59ead858002ac2303cf"
+    },
+    {
+      "url": "https://www.ecb.europa.eu/press/inter/date/2026/html/ecb.in261006~bc94400297.en.html",
+      "title": "Interview with Ansa",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "ecb.europa.eu",
+      "record_id": "b17a88a8e7d7668ec673d898c291fa3d9bf34c93d813390074cf2f6877cbe76f"
+    },
+    {
+      "url": "https://www.ecb.europa.eu/press/intro/events/html/fs_20261006.en.html",
+      "title": "Focus session on the digital euro pilot ( IV ) ",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "ecb.europa.eu",
+      "record_id": "4594edd61951dc5b9aee281d7a7d3db7a0c487f873c7ef9c142388a1961a54cf"
+    },
+    {
+      "url": "https://www.euronews.com/2026/10/06/frances-sovereign-debt-crisis-explained-how-dangerous-could-it-be",
+      "title": "France sovereign debt crisis explained : How dangerous could it be ? ",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "euronews.com",
+      "record_id": "9024b348b7acc96939779009f3d6760a47d594c7acb49b8a3eaadc02e78737f6"
+    },
+    {
+      "url": "https://www.ibtimes.com.au/japan-nikkei-closes-above-70000-1876319",
+      "title": "Nikkei Tops 70 , 000 at Close , Hits Three - Month High as Wall Street Rally and Cheaper Oil Lift Tokyo Stocks",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "ibtimes.com.au",
+      "record_id": "040386fa7877b8b49f2fc23079ebba90b7c68a91bd685b76e8d4a5834377dfa1"
+    },
+    {
+      "url": "https://www.lalibre.be/economie/mes-finances/2026/10/06/baisse-du-prix-du-diesel-a-la-pompe-mais-le-prix-du-mazout-de-chauffage-augmente-HYQSUJUNPVHKZCNQD7FUMHNAUI/",
+      "title": "Baisse du prix du diesel à la pompe , mais le prix du mazout de chauffage augmente",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "lalibre.be",
+      "record_id": "fa76158ffce77f88ca4cb04ced6519b40ffad7ba8811f0378a92bed1d10cea77"
+    },
+    {
+      "url": "https://www.shannonside.ie/news/increase-win-fuel-allowance-and-renters-tax-credit-as-part-of-budget-298525",
+      "title": "Increase win fuel allowance and renters tax credit as part of budget",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "shannonside.ie",
+      "record_id": "45ec2beadb6d01726dc245d8141ee092707243a5b59e048bb8a9f8faa4b0fa1e"
+    },
+    {
+      "url": "https://www.shannonside.ie/news/over-e2m-spent-by-local-hospitals-to-private-labs-last-year-298528",
+      "title": "Over €2m spent by local hospitals to private labs last year",
+      "gdelt_seen_at": "2026-10-06T08:30:00+00:00",
+      "source_domain": "shannonside.ie",
+      "record_id": "c4f269314da56e93d460a8d197004f039a03c7fc1688c23526b9b28de112fead"
+    }
+  ],
+  "excluded": [
+    {
+      "url": "https://www.union-bulletin.com/news/world/asian-shares-mostly-advance-after-wall-street-gains-and-oil-prices-fall/article_3e2a9d1a-d521-5045-900a-48c3a6688b98.html",
+      "reason": "NORMALIZED_TITLE"
+    },
+    {
+      "url": "https://www.wral.com/news/ap/e8285-asian-shares-are-mixed-after-wall-street-gains-oil-price-steadies/",
+      "reason": "NORMALIZED_TITLE"
+    }
+  ],
+  "completeness": "UNVERIFIED_EVEN_BELOW_CAP",
+  "boundary_semantics": "UNVERIFIED_CONSERVATIVE_OPEN_ENDPOINTS"
+}

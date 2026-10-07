@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FXNS classification v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "EUR",
+    "JPY",
+    "reason_code_EUR",
+    "reason_code_JPY"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "EUR": {
+      "type": "string",
+      "enum": [
+        "APPRECIATION",
+        "DEPRECIATION",
+        "UNCHANGED",
+        "NOT_MENTIONED",
+        "INSUFFICIENT"
+      ]
+    },
+    "JPY": {
+      "type": "string",
+      "enum": [
+        "APPRECIATION",
+        "DEPRECIATION",
+        "UNCHANGED",
+        "NOT_MENTIONED",
+        "INSUFFICIENT"
+      ]
+    },
+    "reason_code_EUR": {
+      "type": "string",
+      "enum": [
+        "POLICY",
+        "MACRO",
+        "RISK_SENTIMENT",
+        "DIRECT_FX",
+        "OTHER",
+        "NONE"
+      ]
+    },
+    "reason_code_JPY": {
+      "type": "string",
+      "enum": [
+        "POLICY",
+        "MACRO",
+        "RISK_SENTIMENT",
+        "DIRECT_FX",
+        "OTHER",
+        "NONE"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "EUR": {
+            "const": "NOT_MENTIONED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reason_code_EUR": {
+            "const": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "JPY": {
+            "const": "NOT_MENTIONED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reason_code_JPY": {
+            "const": "NONE"
+          }
+        }
+      }
+    }
+  ]
+}
