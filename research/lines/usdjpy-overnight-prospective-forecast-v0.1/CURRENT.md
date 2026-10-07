@@ -110,15 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261007T214100+0900-PRE_FORECAST_STATE`
-- **Observed:** 2026-10-07 21:41 JST.
-- **USD/JPY:** intraday high 158.50-158.51, afternoon low around 157.95, recovered to 158.37 by 20:20; exact qualified 21:41 quote unavailable.
-- **U.S. rates:** 10Y around 5.325%; 30Y briefly around 5.70%, showing renewed long-end pressure.
-- **Japan rates:** 10Y around 3.122% on a noncanonical current page, above the Oct 6 close.
-- **Oil:** Brent back around $101.5, restoring some yen-negative pressure.
-- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_UP, LOW confidence.
-- **Key tension:** 158.5 resistance held, but USDJPY recovered after falling below 158; higher U.S. yields/oil support upside while higher JGB yields and intervention sensitivity cap it.
-- **Next:** 22:00 cutoff / 03:00 JST FOMC minutes / 04:00 consumer credit.
+- **State:** `STATE-USDJPY-20261008T075200+0900-MANUAL`
+- **Observed:** 2026-10-08 07:52 JST.
+- **USD/JPY:** NY close 158.04-158.14; 05:48 quote 158.07-158.09; exact qualified 07:52 quote unavailable.
+- **FOMC minutes:** most participants saw another hike this year as likely appropriate, but views on the path remained divided.
+- **U.S. rates:** 10Y retreated toward ~5.28-5.29% after a strong 10-year auction; 2Y ~4.762%.
+- **Oil:** Brent settled ~100.20 / WTI ~88.28 after IEA reserve-release news.
+- **Forecast relation:** `p_up=0.55 / +6 bps / SLIGHT_USDJPY_UP` is under pressure and currently appears more likely to finish directionally wrong.
+- **Final result:** PENDING until 08:00; no formal score without the qualified reference feed.
+- **Working state:** NEUTRAL_TO_SLIGHT_USDJPY_DOWN into endpoint, LOW_TO_MEDIUM confidence.
 - **Scientific effect:** NONE; journal only.
 
 ## Latest overnight forecast event
