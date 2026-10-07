@@ -197,3 +197,88 @@ The index initially rose above the opening level but then reversed sharply, endi
 The observation is consistent with the previously identified risk that, after a rapid multi-session advance, positive overnight information may be incorporated into the opening level and followed by profit-taking.
 
 This remains observation-only evidence. It does not change A1/A2/A3 rules before the first on-time run.
+
+
+## End-of-day observation — 2026-10-07 21:41 JST
+
+### Nikkei 225 final public cash-index outcome
+
+Official Nikkei 225 daily summary:
+
+- previous close: 70,683.98
+- 09:00 open: 70,582.11
+- high: 70,793.29 at 09:28
+- low: 70,017.19 at 11:24
+- 15:30 close: 70,035.71
+- close versus previous close: -648.27 / -0.92%
+- 09:00→15:30 log return: approximately -77.71 bps
+- advancers / decliners / unchanged: 90 / 134 / 1
+
+Source:
+https://indexes.nikkei.co.jp/nkave/archives/summary?dt=20261007&idx=nk225
+
+A market wrap attributed the decline mainly to profit-taking in semiconductor-related shares, higher long-term yields, the rebound in crude oil, and risk reduction ahead of the week's option SQ. The index finished near the day's low despite a positive opening.
+
+Source:
+https://s.kabutan.jp/news/n202610070971/
+
+### Official Tokyo FX snapshot
+
+Bank of Japan foreign-exchange reference data for 2026-10-07:
+
+- USDJPY at 09:00 JST: 158.31-33
+- USDJPY at 17:00 JST: 158.10-11
+- intraday reported range: 158.51 to 158.04
+
+The yen therefore remained weak in absolute terms, but the weak-yen condition did not prevent the JP225 cash index from declining during the 09:00→15:30 target window.
+
+Source:
+https://www.boj.or.jp/en/statistics/market/forex/fxdaily/fxlist/fx261007.pdf
+
+### Evening global context before the 2026-10-08 run
+
+At the time of this observation:
+
+- U.S. equity futures were softer;
+- Treasury yields had rebounded;
+- crude oil had risen back above USD 100/bbl for Brent;
+- investors were awaiting the September FOMC minutes.
+
+Reuters reported the U.S. 30-year Treasury yield around 5.71%, its highest since 2002.
+
+Source:
+https://www.reuters.com/business/wall-st-futures-slip-yields-oil-rebound-fed-minutes-focus-2026-10-07/
+
+### FOMC minutes boundary for tomorrow
+
+The Federal Reserve calendar schedules the September 15-16 FOMC minutes for 2:00 p.m. U.S. Eastern time on 2026-10-07, corresponding to 03:00 JST on 2026-10-08.
+
+Therefore, for the 2026-10-08 08:00 JST forecast:
+
+- the released minutes are eligible pre-cutoff information if successfully retrieved before 08:00;
+- any later market reaction observed after 08:00 is not eligible;
+- the minutes should be preserved as a bounded point-in-time snapshot rather than interpreted from later commentary.
+
+Source:
+https://www.federalreserve.gov/newsevents/2026-october.htm
+
+## End-of-day interpretation
+
+The two observation days now demonstrate an important process point without changing the specification:
+
+- 2026-10-06 public proxy: 09:00→15:30 approximately +103.72 bps;
+- 2026-10-07 public proxy: 09:00→15:30 approximately -77.71 bps.
+
+Both days began with broadly supportive overnight / pre-open context, but their intraday outcomes differed materially.
+
+This is not enough evidence for a new predictor or a rule change. It does support keeping the current design outcome-blind and separating pre-open context from the 09:00→15:30 target. No retrospective feature selection, threshold change, or source weighting is authorized from these two observations.
+
+## Readiness for 2026-10-08
+
+Tomorrow's intended on-time dry run remains:
+
+- information cutoff: 08:00 JST;
+- target start: 09:00 JST;
+- target end: 15:30 JST;
+- B0 / A1 / A2 / A3 unchanged;
+- formal exact-XM scored cohort remains closed until source readiness passes.
