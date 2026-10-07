@@ -108,7 +108,24 @@ See:
 - `work/implementation/live_state_journal.py`
 
 
-## Latest live observation
+## 2026-10-08 post-endpoint exploratory check — forecast #2
+
+- **Evaluation:** `XEV-USDJPY-20261007-214634`.
+- **As-of:** 2026-10-08 08:21:56 JST, after the nominal 08:00 endpoint.
+- **Fixed original forecast:** `XPF-USDJPY-20261007-214634`, issued at 21:46:34, p_up=0.55, point return +6 bps, SLIGHT_USDJPY_UP, LOW. Forecast file unchanged.
+- **Noncanonical public observations:** 2026-10-07 21:26 JST USDJPY 158.28 (Minkabu 21:50 report); 2026-10-08 07:28 JST approximately 158.00 (Minkabu morning report).
+- **Indicative direction:** DOWN between these two observations. The up forecast is **LIKELY A DIRECTIONAL MISS**, not independently proven at the exact 22:00/08:00 target quote.
+- **Boundary:** Neither public point is within the candidate 60-second start/end window; exact qualified Bid/Ask midpoint remains unavailable.
+- **Formal realized return:** NOT_AVAILABLE.
+- **Formal Brier:** NOT_AVAILABLE.
+- **Indicative target-window return/point error:** NOT_AVAILABLE (no valid near-boundary pair).
+- **Illustrative conditional calculation only:** if Y_up=0, forecast Brier 0.3025 versus B0 0.2500 (delta +0.0525). If Y_up=1, forecast Brier 0.2025. Neither value is a formal score.
+- **Cohort effect:** NONE_NOT_IN_COHORT. Protocol deviation and source/readiness BLOCK remain unchanged.
+- **Journal:** `STATE-USDJPY-20261008T082156+0900-MANUAL`, append-only and observational.
+- **Evidence:** `forecasts/exploratory/evaluations/20261007T214634+0900_OVERNIGHT_EVALUATION.json` and `observations/entries/20261008T082156+0900_MANUAL.json`.
+- **Status:** Formal source qualification, mandatory point-in-time inputs, and explicit human specification freeze are still outstanding. Neither the overnight nor weekly cohort is authorized. Do not create broker rules or modify forecast/specification retroactively.
+
+## Prior live observation (2026-10-08 07:52)
 
 - **State:** `STATE-USDJPY-20261008T075200+0900-MANUAL`
 - **Observed:** 2026-10-08 07:52 JST.
@@ -130,7 +147,7 @@ See:
 - **Benchmark effect:** NONE.
 - **Operational interpretation:** MISSED_CUTOFF_NEGATIVE_OPERATIONAL_RESULT.
 
-## Latest exploratory overnight evaluation
+## Previous exploratory overnight evaluation (forecast #1)
 
 - **Evaluation:** `XEV-USDJPY-20261005-215400`
 - **Forecast:** `p_up=0.53 / +4 bps / SLIGHT_USDJPY_UP`.
@@ -140,7 +157,7 @@ See:
 - **Illustrative only if Y_up=0 is later confirmed:** Brier 0.2809 vs neutral 0.2500, delta +0.0309.
 - **Research lesson:** elevated U.S. yields did not translate into sustained USDJPY upside; preserve this as a challenger diagnostic, not a reason to rewrite v0.1.
 - **Benchmark effect:** NONE_NOT_IN_COHORT.
-## Latest exploratory overnight forecast
+## Most recent issued exploratory overnight forecast (forecast #2)
 
 - **Forecast:** `XPF-USDJPY-20261007-214634`
 - **Status:** EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT.
