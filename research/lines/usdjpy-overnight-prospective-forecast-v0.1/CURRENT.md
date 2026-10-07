@@ -110,16 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261007T121600+0900-MANUAL`
-- **Observed:** 2026-10-07 12:16 JST.
-- **USD/JPY:** broke the prior 158.25 high and reached 158.47-158.49 in Tokyo morning; latest accessible noncanonical readings remain around the mid/high 158.3s.
-- **U.S. rates:** 10Y rebounded toward ~5.30%.
-- **Japan rates:** 10Y around ~3.07-3.08% on noncanonical current pages, below the Oct 6 close.
-- **Oil:** Brent ~101.5-101.7 / WTI ~90.3, rebounding from the prior evening.
-- **Working interpretation:** SLIGHT_USDJPY_UP, LOW_TO_MEDIUM confidence.
-- **Key change:** the prior 158.25 resistance was broken while U.S. yields and oil rose and Japan yields softened.
-- **Risk zone:** 158.5-159, where resistance and intervention sensitivity increase.
-- **Next:** 14:00 Japan/BOJ activity data / 03:00 JST FOMC minutes.
+- **State:** `STATE-USDJPY-20261007T214100+0900-PRE_FORECAST_STATE`
+- **Observed:** 2026-10-07 21:41 JST.
+- **USD/JPY:** intraday high 158.50-158.51, afternoon low around 157.95, recovered to 158.37 by 20:20; exact qualified 21:41 quote unavailable.
+- **U.S. rates:** 10Y around 5.325%; 30Y briefly around 5.70%, showing renewed long-end pressure.
+- **Japan rates:** 10Y around 3.122% on a noncanonical current page, above the Oct 6 close.
+- **Oil:** Brent back around $101.5, restoring some yen-negative pressure.
+- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_UP, LOW confidence.
+- **Key tension:** 158.5 resistance held, but USDJPY recovered after falling below 158; higher U.S. yields/oil support upside while higher JGB yields and intervention sensitivity cap it.
+- **Next:** 22:00 cutoff / 03:00 JST FOMC minutes / 04:00 consumer credit.
 - **Scientific effect:** NONE; journal only.
 
 ## Latest overnight forecast event
