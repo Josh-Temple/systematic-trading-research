@@ -4,7 +4,7 @@ Status: PREFERRED_CANDIDATE_IDENTIFIED / NOT_FROZEN
 
 ## News source
 
-Preferred v0.1 route: GDELT Article List / DOC API metadata.
+Preferred v0.1 route: GDELT DOC API `mode=artlist` metadata only; not the separate GAL dataset.
 
 Reason:
 - GDELT states its released datasets may be used and redistributed without restriction with attribution;
@@ -94,3 +94,12 @@ Forbidden:
 - adaptive prompt changes based on results.
 
 Pretraining may contain historical market facts. This remains an uncontrolled model limitation and is why v0.1 is prospective.
+
+## Packet B candidate lock (2026-10-07)
+
+The exact query, 24-hour window, MAXRECORDS=250, normalized-title/exact-URL policy,
+raw-preservation rules and runtime evidence are specified in
+`work/SOURCE_QUALIFICATION_RESULT.md`; manifest shape is
+`work/source-probe/SOURCE_MANIFEST_SCHEMA.json`.
+No SOURCE PASS: endpoint/first-seen/completeness and point-in-time pipeline proof
+remain unverified. Do not equate GDELT time with actual pipeline retrieval time.

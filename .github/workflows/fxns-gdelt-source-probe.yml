@@ -18,10 +18,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+      - name: Validate synthetic source contracts
+        run: python -m unittest discover -s research/lines/fx-news-sentiment-v0.1/work/source-probe -v
       - name: Probe GDELT DOC schema
         run: python research/lines/fx-news-sentiment-v0.1/work/source-probe/gdelt_schema_probe.py
-      - name: Upload schema-only probe summary
+      - name: Upload raw response and source manifest
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: fxns-gdelt-schema-probe
-          path: gdelt_probe_summary.json
+          name: fxns-gdelt-source-probe
+          path: gdelt_probe/

@@ -1,0 +1,9 @@
+{
+  "status": "FREEZE_READY_CANDIDATE_NOT_HUMAN_FROZEN",
+  "files": {
+    "PROMPT_v0.1.txt": "83958924048f1455e4b2dc2b6b147f4dce83a9f5d31c0ed4f6111cec75c058e9",
+    "OUTPUT_SCHEMA_v0.1.json": "bc46262c89529f3cf22e2b992685a35816af1e3cb887d1aec8901adeee6cd4bf"
+  },
+  "hash_semantics": "SHA-256 over exact UTF-8 file bytes including final newline",
+  "market_outcome_access": "NONE"
+}

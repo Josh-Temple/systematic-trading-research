@@ -56,3 +56,9 @@ SHA-256 from the local verified files:
 - human freeze.
 
 No historical or prospective EURJPY market result was loaded or calculated.
+
+## Packet B follow-up — 2026-10-07
+
+Core remains 24/24 PASS, plus 5 strict prompt-output parser tests PASS on Python 3.12.
+Source module adds 9 synthetic/preservation tests PASS. Total 38/38. No market result.
+Source qualification remains blocked; see `../SOURCE_QUALIFICATION_RESULT.md`.

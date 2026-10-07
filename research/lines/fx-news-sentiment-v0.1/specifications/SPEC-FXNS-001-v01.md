@@ -42,10 +42,10 @@ Late issuance: `LATE_ISSUANCE_NO_SCORE`.
 Preferred candidate source: GDELT Article List / DOC API.
 
 Candidate window:
-- GDELT records first seen by the frozen pipeline in (previous event cutoff, current event cutoff];
+- GDELT DOC records in the exact 24-hour window ending at the current cutoff; Monday is also 24 hours, not since the previous issuance;
 - GDELT seen timestamp, not inferred publisher time, controls eligibility;
 - English-language query;
-- exact query string / MAXRECORDS / deduplication remain unresolved until Packet B.
+- candidate query / MAXRECORDS / deduplication are locked for qualification in `work/SOURCE_QUALIFICATION_RESULT.md`, but runtime completeness and boundary semantics remain unqualified.
 
 For each input record preserve at least:
 
@@ -208,3 +208,15 @@ Formal prospective scoring requires:
 ### Pre-freeze amendment — 2026-10-07
 
 The initial draft contemplated publisher full-text inputs from a frozen provider allowlist. Source preflight found that the historical DailyFX route is no longer current and that current provider preservation restrictions undermine an auditable public pipeline. Before any formal outcome, the candidate was narrowed to GDELT title/headline metadata. This amendment is pre-outcome and does not consume a sample.
+
+### Packet B pre-freeze clarification — 2026-10-07
+
+Only DOC API `artlist` is the selected candidate route; the separate GAL dataset
+and its mixed `date` semantics are not interchangeable. A runtime query returned
+HTTP 200 and raw bytes were hashed, but SOURCE PASS is not granted.
+Prompt and strict output schema are exact-byte hashed approval candidates, not frozen.
+Qualification raw snapshots are not formal events and cannot be backfilled.
+GDELT observation and pipeline retrieval timestamps are distinct. Point-in-time
+acquisition proof and endpoint behavior remain blockers before formal issuance.
+The next-eligible-day Thursday-to-Monday exit versus weekend-avoidance rationale
+must be resolved before human freeze; this update does not change the exit rule.

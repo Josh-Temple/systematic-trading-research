@@ -16,7 +16,7 @@ derived_from_interpretations: []
 - Formal prospective cohort: CLOSED.
 - Live or paper broker order submission: NOT_AUTHORIZED.
 - Outcome-blind deterministic core: SYNTHETIC_CORE_PASS.
-- Synthetic test result: 24/24 PASS on Python 3.13.5.
+- Synthetic test result: 38/38 PASS on Python 3.12 (24 core + 5 prompt parser + 9 source tests).
 - Market outcome access during implementation: NONE.
 
 ## Candidate question
@@ -69,11 +69,11 @@ Therefore v0.1 intentionally narrows ChatGPT to semantic classification and reli
 - exact GDELT query/field contract not frozen;
 - GDELT runtime source qualification incomplete;
 - near-duplicate headline and MAXRECORDS fail-closed rules not frozen;
-- ChatGPT prompt/output schema not frozen;
+- ChatGPT prompt/output schema exact-byte hashed and FREEZE_READY_CANDIDATE_NOT_HUMAN_FROZEN;
 - observable model-identity policy not frozen;
 - exact XM EURJPY Bid/Ask timestamp and account-cost route not qualified;
 - XM outcome-blind Windows collector is prepared and syntax-checked, but has not been run against the user's MT5 terminal;
-- GDELT schema probe code/workflow is prepared, but this environment could not establish a successful live API response; runtime remains UNVERIFIED;
+- GDELT exact candidate query returned HTTP 200, raw response/hash preserved; source remains BLOCKED on completeness/time semantics and 429 cap-comparison failure;
 - formal cohort runner is not implemented;
 - independent pre-outcome audit not yet run;
 - human freeze not granted.
@@ -81,3 +81,11 @@ Therefore v0.1 intentionally narrows ChatGPT to semantic classification and reli
 ## Next action
 
 Complete the two external source gates: a successful GDELT runtime/schema readback and a local XM EURJPY source-probe collection/review. Then freeze the prompt/query/source identities, extend the deterministic core only as required by those qualified schemas, and obtain an independent pre-outcome audit. No formal EURJPY market outcome should be opened before explicit human freeze.
+
+## Packet B runtime review — 2026-10-07
+
+See `work/SOURCE_QUALIFICATION_RESULT.md` for the current evidence and blockers.
+12 raw DOC records -> 10 deterministic retained records; no headline classification
+or EURJPY market outcome. Runtime reachability observed, SOURCE PASS not granted.
+XM gate needs local Windows MT5 execution; no replacement feed is authorized.
+Thursday exit/weekend rationale conflict remains a pre-freeze design question.

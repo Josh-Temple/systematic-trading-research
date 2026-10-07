@@ -1,0 +1,14 @@
+test_bad_fields_language_timestamp_domain_url (test_gdelt_schema_probe.GDELTTest.test_bad_fields_language_timestamp_domain_url) ... ok
+test_cap_before_dedupe (test_gdelt_schema_probe.GDELTTest.test_cap_before_dedupe) ... ok
+test_missing_array_not_empty (test_gdelt_schema_probe.GDELTTest.test_missing_array_not_empty) ... ok
+test_stable_dedupe (test_gdelt_schema_probe.GDELTTest.test_stable_dedupe) ... ok
+test_unicode_key (test_gdelt_schema_probe.GDELTTest.test_unicode_key) ... ok
+test_valid_and_empty (test_gdelt_schema_probe.GDELTTest.test_valid_and_empty) ... ok
+test_window_and_limit (test_gdelt_schema_probe.GDELTTest.test_window_and_limit) ... ok
+test_http_error_preserved_and_nonzero (test_gdelt_schema_probe.PreservationTest.test_http_error_preserved_and_nonzero) ... ok
+test_transport_failure_does_not_fabricate_raw_hash (test_gdelt_schema_probe.PreservationTest.test_transport_failure_does_not_fabricate_raw_hash) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.033s
+
+OK

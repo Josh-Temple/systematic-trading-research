@@ -51,3 +51,10 @@ Do not repeat broad provider search unless GDELT fails a required gate.
 ## Stop
 
 If GDELT runtime semantics, result completeness, or exact input preservation cannot be established, record `SOURCE_QUALIFICATION_BLOCKED`. Do not silently switch provider and preserve the same protocol identity.
+
+## Execution result — 2026-10-07
+
+PARTIAL_WITH_GAPS / SOURCE_QUALIFICATION_BLOCKED. See
+`../SOURCE_QUALIFICATION_RESULT.md`. Actual HTTP 200 response and 429 comparison
+bodies/hashes preserved; prompt/output candidate and source/JSON parser tests ready.
+XM requires local MT5. No full Packet B completion or formal freeze granted.
