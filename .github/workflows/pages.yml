@@ -5,37 +5,66 @@ on:
     branches: [main]
     paths:
       - "web/**"
+      - "research/lines/horizontal-reaction-v0.1/**"
+      - "schema/v0.1/**"
+      - "docs/KNOWLEDGE_BASE_V0.1.md"
+      - ".github/scripts/validate-research-consistency.mjs"
+      - ".github/scripts/test-research-consistency.mjs"
+      - ".github/workflows/research-consistency.yml"
       - ".github/workflows/pages.yml"
+      - "package.json"
+      - "package-lock.json"
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
+  validate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install locked validation dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Validate canonical records, Web projection and failure cases
+        run: npm run check
+
+      - name: Upload validated static site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: web
+
   deploy:
+    needs: validate
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
-
-      - name: Upload static site
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: web
 
       - name: Deploy
         id: deployment

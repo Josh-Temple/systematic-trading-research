@@ -8,7 +8,11 @@ on:
       - "schema/v0.1/**"
       - "docs/KNOWLEDGE_BASE_V0.1.md"
       - ".github/scripts/validate-research-consistency.mjs"
+      - ".github/scripts/test-research-consistency.mjs"
       - ".github/workflows/research-consistency.yml"
+      - ".github/workflows/pages.yml"
+      - "package.json"
+      - "package-lock.json"
   push:
     branches:
       - main
@@ -18,7 +22,11 @@ on:
       - "schema/v0.1/**"
       - "docs/KNOWLEDGE_BASE_V0.1.md"
       - ".github/scripts/validate-research-consistency.mjs"
+      - ".github/scripts/test-research-consistency.mjs"
       - ".github/workflows/research-consistency.yml"
+      - ".github/workflows/pages.yml"
+      - "package.json"
+      - "package-lock.json"
   workflow_dispatch:
 
 permissions:
@@ -37,10 +45,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
-      - name: Install YAML parser
-        run: npm install --no-save js-yaml@4.1.0
+      - name: Install locked validation dependencies
+        run: npm ci --ignore-scripts
 
       - name: Validate canonical records and Web projection
-        run: node .github/scripts/validate-research-consistency.mjs
+        run: npm run check

@@ -1,4 +1,4 @@
-name: Autonomous pilot Phase A
+name: Autonomous pilot synthetic tests
 
 on:
   push:
@@ -17,6 +17,7 @@ permissions:
 jobs:
   evaluator-integrity:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,7 +25,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run Phase A evaluator tests
+      - name: Run synthetic evaluator and Phase B mechanics tests
         working-directory: research/pilots/autonomous-research-v0.1
         run: python -m unittest -v
       - name: Run Phase A process boundary test
