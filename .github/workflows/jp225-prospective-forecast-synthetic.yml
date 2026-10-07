@@ -26,3 +26,5 @@ jobs:
         run: python research/lines/jp225-intraday-prospective-forecast-v0.1/work/implementation/test_forecast_core.py
       - name: Test append-only record contract
         run: python research/lines/jp225-intraday-prospective-forecast-v0.1/work/implementation/test_record_contract.py
+      - name: Validate actual issued forecast files and canonical hashes
+        run: python research/lines/jp225-intraday-prospective-forecast-v0.1/work/implementation/validate_issued_forecasts.py
