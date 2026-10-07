@@ -106,3 +106,11 @@ Existing three fixed probes include a Thursday but no Friday: they alone cannot
 qualify Friday exit. Do not infer Friday availability from weekday scheduling;
 any additional Friday source-only probe must be fixed and reviewed before execution.
 No market outcomes, order submission or substitute feed is authorized by this report.
+
+
+## Subsequent collector preparation update — 2026-10-07
+
+The missing-Friday collector gap described above is superseded by xm-source/RESULT.md:
+v0.2 preserves the original three windows and adds three calendar-selected Friday
+windows. FRIDAY_EXIT_PROBE_READY_NOT_RUN; actual source qualification remains
+LOCAL_XM_EXECUTION_REQUIRED. Historical v0.1 validation remains unchanged.

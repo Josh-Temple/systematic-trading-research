@@ -72,7 +72,7 @@ Therefore v0.1 intentionally narrows ChatGPT to semantic classification and reli
 - ChatGPT prompt/output schema exact-byte hashed and FREEZE_READY_CANDIDATE_NOT_HUMAN_FROZEN;
 - observable model-identity policy not frozen;
 - exact XM EURJPY Bid/Ask timestamp and account-cost route not qualified;
-- XM outcome-blind Windows collector is prepared and syntax-checked, but has not been run against the user's MT5 terminal;
+- XM v0.2 collector: FRIDAY_EXIT_PROBE_READY_NOT_RUN (six fixed windows, three Friday); local execution and independent source qualification remain pending;
 - GDELT exact candidate query returned HTTP 200, raw response/hash preserved; source remains BLOCKED on completeness/time semantics and 429 cap-comparison failure;
 - formal cohort runner is not implemented;
 - independent pre-outcome audit not yet run;

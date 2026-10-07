@@ -11,12 +11,13 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 from zoneinfo import ZoneInfo
 
-VERSION = "FXNS_EURJPY_SOURCE_PROBE_v0.1"
+VERSION = "FXNS_EURJPY_SOURCE_PROBE_v0.2"
 SYMBOL = "EURJPY"
 JST = ZoneInfo("Asia/Tokyo")
 
@@ -25,6 +26,9 @@ PROBES_JST = (
     ("winter_2026", "2026-01-15T08:14:00+09:00", "2026-01-15T08:16:00+09:00"),
     ("summer_2026", "2026-07-15T08:14:00+09:00", "2026-07-15T08:16:00+09:00"),
     ("autumn_2026", "2026-10-06T08:14:00+09:00", "2026-10-06T08:16:00+09:00"),
+    ("winter_friday_2026", "2026-01-16T08:14:00+09:00", "2026-01-16T08:16:00+09:00"),
+    ("summer_friday_2026", "2026-07-17T08:14:00+09:00", "2026-07-17T08:16:00+09:00"),
+    ("autumn_friday_2026", "2026-10-02T08:14:00+09:00", "2026-10-02T08:16:00+09:00"),
 )
 
 SYMBOL_FIELDS = (
@@ -101,7 +105,7 @@ def validate_tick_array(arr: Any) -> None:
     for row in arr:
         bid = float(row["bid"])
         ask = float(row["ask"])
-        if bid <= 0 or ask <= 0 or bid > ask:
+        if not (math.isfinite(bid) and math.isfinite(ask)) or bid <= 0 or ask <= 0 or bid > ask:
             raise RuntimeError("INVALID_BID_ASK_ROW")
 
 
@@ -125,7 +129,10 @@ def main() -> None:
                 s.name for s in (mt5.symbols_get() or [])
                 if "EURJPY" in s.name.upper().replace("/", "")
             )
+            print(json.dumps({"status": "EXACT_SYMBOL_IDENTITY_REQUIRES_PRE_FREEZE_DECISION",
+                              "eurjpy_like_symbol_names": candidates}))
             raise RuntimeError(
+                "EXACT_SYMBOL_IDENTITY_REQUIRES_PRE_FREEZE_DECISION; "
                 f"Exact candidate symbol {args.symbol!r} unavailable; "
                 f"EURJPY-like visible symbols={candidates!r}. No substitution performed."
             )
@@ -163,6 +170,8 @@ def main() -> None:
                     ])
                 probe_meta.append({
                     "probe_id": probe_id,
+                    "purpose": "FRIDAY_EXIT_FEASIBILITY" if "friday" in probe_id else "SOURCE_TIME_SCHEMA",
+                    "intended_weekday": parse_aware(start_jst).strftime("%A"),
                     "request_start_jst": start_jst,
                     "request_end_jst": end_jst,
                     "request_start_utc": start_utc.isoformat(),
@@ -185,6 +194,7 @@ def main() -> None:
             "account": {"server": account.get("server")},
             "symbol": symbol_info,
             "commission_status": "UNVERIFIED_NOT_INFERRED_FROM_ACCOUNT_HISTORY",
+            "other_costs_status": "UNVERIFIED_NOT_CALCULATED",
             "swap_metadata_status": "PRESERVED_FROM_SYMBOL_INFO_NOT_YET_ECONOMICALLY_QUALIFIED",
             "tick_probes": probe_meta,
         }
