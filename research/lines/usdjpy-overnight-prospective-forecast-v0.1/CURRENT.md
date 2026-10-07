@@ -142,14 +142,16 @@ See:
 - **Benchmark effect:** NONE_NOT_IN_COHORT.
 ## Latest exploratory overnight forecast
 
-- **Forecast:** `XPF-USDJPY-20261005-215400`
+- **Forecast:** `XPF-USDJPY-20261007-214634`
 - **Status:** EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT.
-- **Information cutoff:** 2026-10-05 21:54 JST.
+- **Issued:** 2026-10-07 21:46:34 JST.
+- **Information cutoff:** 2026-10-07 21:46:34 JST.
 - **Nominal target:** 22:00 JST → 08:00 JST.
-- **p_up:** 0.53.
-- **Point forecast:** +4 bps.
+- **p_up:** 0.55.
+- **Point forecast:** +6 bps.
 - **Direction:** SLIGHT_USDJPY_UP.
-- **Confidence:** LOW_TO_MEDIUM.
-- **Protocol deviation:** issued 6 minutes before nominal cutoff and qualified reference feed remains unavailable; not eligible for frozen benchmark.
-- **Post-cutoff PMI/ISM results:** forbidden as forecast inputs; may be used only in later error attribution.
-
+- **Confidence:** LOW.
+- **Main support:** elevated U.S. long yields, oil back above $100, broad-dollar firmness, USDJPY resilience after the afternoon dip.
+- **Main counterevidence:** 158.5 resistance, higher JGB yields, intervention sensitivity near 159, and FOMC-minutes event risk.
+- **Protocol deviation:** issued 13m26s before nominal cutoff and qualified reference feed remains unavailable; not eligible for frozen benchmark.
+- **Post-cutoff FOMC/credit results:** forbidden as forecast inputs; may be used only in later error attribution.
