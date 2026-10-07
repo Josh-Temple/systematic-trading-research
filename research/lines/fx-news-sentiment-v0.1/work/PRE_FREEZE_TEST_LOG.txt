@@ -1,0 +1,65 @@
+Python 3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]
+Synthetic only; no network or MT5 execution.
+test_canonical_hash_order_independent (test_fxns.FXNSTest.test_canonical_hash_order_independent) ... ok
+test_currency_score (test_fxns.FXNSTest.test_currency_score) ... ok
+test_cutoff_headline_allowed (test_fxns.FXNSTest.test_cutoff_headline_allowed) ... ok
+test_daily_scores_reject_duplicate_ids (test_fxns.FXNSTest.test_daily_scores_reject_duplicate_ids) ... ok
+test_exact_url_dedupe_preserves_first (test_fxns.FXNSTest.test_exact_url_dedupe_preserves_first) ... ok
+test_invalid_quote_rejected (test_fxns.FXNSTest.test_invalid_quote_rejected) ... ok
+test_invalid_sentiment_rejected (test_fxns.FXNSTest.test_invalid_sentiment_rejected) ... ok
+test_late_issuance_rejected (test_fxns.FXNSTest.test_late_issuance_rejected) ... ok
+test_long_action (test_fxns.FXNSTest.test_long_action) ... ok
+test_long_executable_uses_ask_bid (test_fxns.FXNSTest.test_long_executable_uses_ask_bid) ... ok
+test_midpoint_gross_is_directional (test_fxns.FXNSTest.test_midpoint_gross_is_directional) ... ok
+test_model_change_rejected (test_fxns.FXNSTest.test_model_change_rejected) ... ok
+test_model_same_allowed (test_fxns.FXNSTest.test_model_same_allowed) ... ok
+test_neutral_labels_do_not_count (test_fxns.FXNSTest.test_neutral_labels_do_not_count) ... ok
+test_no_trade_requires_no_quotes (test_fxns.FXNSTest.test_no_trade_requires_no_quotes) ... ok
+test_on_time_issuance (test_fxns.FXNSTest.test_on_time_issuance) ... ok
+test_post_cutoff_headline_rejected (test_fxns.FXNSTest.test_post_cutoff_headline_rejected) ... ok
+test_quote_boundary_exact (test_fxns.FXNSTest.test_quote_boundary_exact) ... ok
+test_quote_boundary_outside_tolerance (test_fxns.FXNSTest.test_quote_boundary_outside_tolerance) ... ok
+test_quote_boundary_within_tolerance (test_fxns.FXNSTest.test_quote_boundary_within_tolerance) ... ok
+test_same_sign_no_trade (test_fxns.FXNSTest.test_same_sign_no_trade) ... ok
+test_short_action (test_fxns.FXNSTest.test_short_action) ... ok
+test_short_executable_uses_bid_ask (test_fxns.FXNSTest.test_short_executable_uses_bid_ask) ... ok
+test_zero_vs_positive_has_action (test_fxns.FXNSTest.test_zero_vs_positive_has_action) ... ok
+test_below_cap_needs_source_and_acquisition (test_pre_freeze.PreFreezeTest.test_below_cap_needs_source_and_acquisition) ... ok
+test_core_probe_deduplication_parity (test_pre_freeze.PreFreezeTest.test_core_probe_deduplication_parity) ... ok
+test_exact_prompt_hashes (test_pre_freeze.PreFreezeTest.test_exact_prompt_hashes) ... ok
+test_friday_exit_tolerance (test_pre_freeze.PreFreezeTest.test_friday_exit_tolerance) ... ok
+test_friday_rejected (test_pre_freeze.PreFreezeTest.test_friday_rejected) ... ok
+test_holiday_no_rollover (test_pre_freeze.PreFreezeTest.test_holiday_no_rollover) ... ok
+test_incomplete_source_never_classified_or_joined (test_pre_freeze.PreFreezeTest.test_incomplete_source_never_classified_or_joined) ... ok
+test_missing_friday_exit_quote (test_pre_freeze.PreFreezeTest.test_missing_friday_exit_quote) ... ok
+test_monday_tuesday (test_pre_freeze.PreFreezeTest.test_monday_tuesday) ... ok
+test_old_monday_exit_rejected (test_pre_freeze.PreFreezeTest.test_old_monday_exit_rejected) ... ok
+test_open_window (test_pre_freeze.PreFreezeTest.test_open_window) ... ok
+test_thursday_friday (test_pre_freeze.PreFreezeTest.test_thursday_friday) ... ok
+test_tuesday_wednesday (test_pre_freeze.PreFreezeTest.test_tuesday_wednesday) ... ok
+test_wednesday_thursday (test_pre_freeze.PreFreezeTest.test_wednesday_thursday) ... ok
+test_weekend_rejected (test_pre_freeze.PreFreezeTest.test_weekend_rejected) ... ok
+test_duplicate_keys (test_prompt_contract.PromptContractTest.test_duplicate_keys) ... ok
+test_markdown_and_array_rejected (test_prompt_contract.PromptContractTest.test_markdown_and_array_rejected) ... ok
+test_missing_and_duplicate_batch (test_prompt_contract.PromptContractTest.test_missing_and_duplicate_batch) ... ok
+test_missing_extra_identity_enum_reason (test_prompt_contract.PromptContractTest.test_missing_extra_identity_enum_reason) ... ok
+test_valid (test_prompt_contract.PromptContractTest.test_valid) ... ok
+
+----------------------------------------------------------------------
+Ran 44 tests in 0.003s
+
+OK
+test_bad_fields_language_timestamp_domain_url (test_gdelt_schema_probe.GDELTTest.test_bad_fields_language_timestamp_domain_url) ... ok
+test_cap_before_dedupe (test_gdelt_schema_probe.GDELTTest.test_cap_before_dedupe) ... ok
+test_missing_array_not_empty (test_gdelt_schema_probe.GDELTTest.test_missing_array_not_empty) ... ok
+test_stable_dedupe (test_gdelt_schema_probe.GDELTTest.test_stable_dedupe) ... ok
+test_unicode_key (test_gdelt_schema_probe.GDELTTest.test_unicode_key) ... ok
+test_valid_and_empty (test_gdelt_schema_probe.GDELTTest.test_valid_and_empty) ... ok
+test_window_and_limit (test_gdelt_schema_probe.GDELTTest.test_window_and_limit) ... ok
+test_http_error_preserved_and_nonzero (test_gdelt_schema_probe.PreservationTest.test_http_error_preserved_and_nonzero) ... ok
+test_transport_failure_does_not_fabricate_raw_hash (test_gdelt_schema_probe.PreservationTest.test_transport_failure_does_not_fabricate_raw_hash) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.018s
+
+OK

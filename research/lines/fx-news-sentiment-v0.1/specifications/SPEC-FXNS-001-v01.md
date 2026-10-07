@@ -32,8 +32,8 @@ That substitution must be judged prospectively.
 - information cutoff: 08:00:00 JST;
 - classification/signal must freeze before 08:15:00 JST;
 - shadow entry target: 08:15:00 JST;
-- shadow exit target: 08:15:00 JST on the next eligible calendar day;
-- Friday issuance excluded to avoid a structurally different weekend horizon.
+- shadow exit target: 08:15:00 JST on the next normal FX weekday (Tuesday–Friday);
+- Friday is exit-only: Thursday entry exits Friday 08:15 JST; no Friday re-entry.
 
 Late issuance: `LATE_ISSUANCE_NO_SCORE`.
 
@@ -113,7 +113,7 @@ Entry within 60 seconds after 08:15:
 - LONG: Ask;
 - SHORT: Bid.
 
-Exit on the next eligible event day within 60 seconds after 08:15:
+Exit on the next normal FX weekday within 60 seconds after 08:15:
 - LONG: Bid;
 - SHORT: Ask.
 
@@ -218,5 +218,55 @@ Prompt and strict output schema are exact-byte hashed approval candidates, not f
 Qualification raw snapshots are not formal events and cannot be backfilled.
 GDELT observation and pipeline retrieval timestamps are distinct. Point-in-time
 acquisition proof and endpoint behavior remain blockers before formal issuance.
-The next-eligible-day Thursday-to-Monday exit versus weekend-avoidance rationale
-must be resolved before human freeze; this update does not change the exit rule.
+The schedule conflict is resolved by the pre-freeze amendment below.
+
+
+### Pre-outcome / pre-freeze hardening amendment — 2026-10-07
+
+No EURJPY outcome was accessed. This supersedes the initial next-issuance-day exit.
+Monday–Thursday issue; Tuesday–Friday exit at 08:15 JST, normally 24 hours later.
+The SNB next-day prior and weekend-avoidance rationale support this internal repair;
+Thursday–Monday was the alternative but creates a different multi-day horizon.
+No claim of superior market performance is made. Formal cohort remains CLOSED.
+
+- Eligible issuance day: JST Monday–Thursday with both planned sessions available.
+- Eligible exit day: the immediate following JST weekday, including Friday.
+- FX business day: a normal Monday–Friday session on the qualified XM route;
+  Japanese/public holidays alone do not establish a closure. Known broker closure
+  on entry or exit date blocks issuance; never roll an exit forward to Monday.
+- A missing/invalid boundary quote or liquidity absence fails closed as
+  MARKET_OUTCOME_UNAVAILABLE, not zero/NO_TRADE. An already-issued event remains
+  in the immutable ledger; halt and review rather than drop a missing outcome or
+  extend the horizon. This is shadow research; no actual positions are opened.
+- First valid quote at/after target through target+60 seconds inclusive; never use
+  a pre-target/stale quote or a later rescue. Thursday–Friday is implemented
+  synthetically; actual Friday quote feasibility remains an XM qualification gate.
+- MAXRECORDS remains 250. Raw returned_count >= configured_MAXRECORDS before any
+  filtering/deduplication means INPUT_CORPUS_COMPLETENESS_UNVERIFIED. Preserve
+  failure evidence, never classify for formal score or associate market outcome,
+  never rescue by new query/window/limit or later retrieval, never count as valid
+  cohort event. Below-cap is only a cap check, not proof of exhaustive coverage.
+  Other source gaps also block formal use, including empty below-cap responses.
+- Candidate news window is (previous calendar day 08:00 JST, current day 08:00 JST),
+  strict open endpoints, including Monday's previous Sunday. Exact elapsed width
+  is 24 hours; both equality boundaries block the event rather than silently drop
+  rows. Half-open inclusion at the lower endpoint is not adopted: official DOC
+  wording says after STARTDATETIME and before ENDDATETIME. Runtime equality and
+  mapping to seendate remain unverified. 08:00:00 is exclusive for formal input.
+- DOC field is seendate, observed format YYYYMMDDTHHMMSSZ, second precision; Z is
+  parsed as UTC. Its precise observation/first-seen meaning and immutability are
+  UNVERIFIED, not publisher publication time. The official parameter wording uses
+  publication terminology and does not prove equivalence to immutable ingestion.
+  Raw retrieval time is separate; prospective acquisition proof remains required.
+- Deterministic deduplication: sort (seen, exact URL, title), keep the first unseen
+  exact URL AND normalized title (NFKC, casefold, whitespace collapse); mark every
+  encountered URL/title, including exclusions. URL bytes are not normalized;
+  www handling is only domain validation. Same normalized title/different URL,
+  including identical syndicated headlines, is excluded; different-title near
+  duplicates remain separate. Do not strip query parameters or use semantic matching.
+  Legacy dedupe_exact_url is a utility only, not the formal input policy.
+- Canonical task/schema hashes remain in PROMPT_MANIFEST_v0.1.json. Candidate
+  bytes unchanged; human model/configuration selection and freeze remain pending.
+  Classification never chooses source/query/threshold, BUY/SELL, sizing or prices.
+
+Evidence and remaining limitations: work/PRE_FREEZE_HARDENING_RESULT.md.

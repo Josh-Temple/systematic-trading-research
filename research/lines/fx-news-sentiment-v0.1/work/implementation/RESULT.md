@@ -62,3 +62,8 @@ No historical or prospective EURJPY market result was loaded or calculated.
 Core remains 24/24 PASS, plus 5 strict prompt-output parser tests PASS on Python 3.12.
 Source module adds 9 synthetic/preservation tests PASS. Total 38/38. No market result.
 Source qualification remains blocked; see `../SOURCE_QUALIFICATION_RESULT.md`.
+
+
+Pre-freeze hardening: 53/53 synthetic tests PASS across implementation/source suites;
+see ../PRE_FREEZE_HARDENING_RESULT.md and ../PRE_FREEZE_TEST_LOG.txt. No formal runner,
+market outcome, SOURCE PASS or human freeze is claimed.

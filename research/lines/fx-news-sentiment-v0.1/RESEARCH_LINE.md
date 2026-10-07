@@ -33,7 +33,7 @@ That substitution is exactly what the prospective experiment tests.
 - candidate news window: 24 hours ending at 08:00 JST;
 - information cutoff: 08:00 JST;
 - intended shadow entry: 08:15 JST;
-- intended shadow exit: 08:15 JST on the next eligible event day;
+- intended shadow exit: 08:15 JST on the next normal FX weekday (Thursday → Friday; Friday exit-only);
 - eligible issuance days: Monday through Thursday;
 - reference/execution research feed: exact XM MT5 EURJPY Bid/Ask, subject to qualification;
 - live trading: forbidden in v0.1.
@@ -79,3 +79,14 @@ No historical EURJPY parameter search is authorized.
 ## Current next action
 
 Finish GDELT runtime/query qualification, freeze the headline input contract and ChatGPT prompt, qualify XM EURJPY Bid/Ask/cost semantics, then implement deterministic aggregation/quote selection with synthetic tests. Formal prospective scoring remains closed until independent audit and explicit human freeze.
+
+
+## Pre-freeze hardening update — 2026-10-07
+
+The amended specification governs Thursday → Friday exit, distinct issuance/exit
+days, strict open 24-hour news boundaries and MAXRECORDS fail-closed disposition.
+See `work/PRE_FREEZE_HARDENING_RESULT.md` for current verification. Earlier runtime/history
+statements describe the previous review; this update supersedes its schedule blocker.
+Scientific UNTESTED; specification PROPOSED_NOT_FROZEN; GDELT PARTIAL_WITH_GAPS
+(SOURCE_QUALIFICATION_BLOCKED for formal use); prompt FREEZE_READY_CANDIDATE;
+XM LOCAL_XM_EXECUTION_REQUIRED; formal cohort CLOSED. No SOURCE PASS or freeze.

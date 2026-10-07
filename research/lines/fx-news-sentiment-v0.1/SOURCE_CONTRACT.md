@@ -22,7 +22,8 @@ Do not infer publisher publication time when it is not explicitly known.
 For formal inclusion, use the frozen GDELT observation/ingestion timestamp as the operational "available to this pipeline" time.
 
 Required condition:
-- GDELT seen timestamp <= 08:00:00 JST cutoff.
+- previous calendar day 08:00 JST < GDELT seendate < current 08:00 JST;
+  exact field meaning remains unqualified. GDELT time does not prove pipeline acquisition.
 
 If the underlying publisher page later changes, the classifier still uses only the GDELT title metadata preserved in the event snapshot.
 
@@ -103,3 +104,14 @@ raw-preservation rules and runtime evidence are specified in
 `work/source-probe/SOURCE_MANIFEST_SCHEMA.json`.
 No SOURCE PASS: endpoint/first-seen/completeness and point-in-time pipeline proof
 remain unverified. Do not equate GDELT time with actual pipeline retrieval time.
+
+
+## Pre-freeze hardening update — 2026-10-07
+
+The amended specification governs Thursday → Friday exit, distinct issuance/exit
+days, strict open 24-hour news boundaries and MAXRECORDS fail-closed disposition.
+See `work/PRE_FREEZE_HARDENING_RESULT.md` for current verification. Earlier runtime/history
+statements describe the previous review; this update supersedes its schedule blocker.
+Scientific UNTESTED; specification PROPOSED_NOT_FROZEN; GDELT PARTIAL_WITH_GAPS
+(SOURCE_QUALIFICATION_BLOCKED for formal use); prompt FREEZE_READY_CANDIDATE;
+XM LOCAL_XM_EXECUTION_REQUIRED; formal cohort CLOSED. No SOURCE PASS or freeze.

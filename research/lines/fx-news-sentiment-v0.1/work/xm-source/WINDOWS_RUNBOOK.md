@@ -70,3 +70,12 @@ Independent review must confirm:
 Commission is explicitly left `UNVERIFIED_NOT_INFERRED_FROM_ACCOUNT_HISTORY`; do not inspect trade history merely to infer it.
 
 Raw probe prices should remain source-qualification material. Do not use them to tune the signal, cutoff, pair, or holding period.
+
+
+## Thursday → Friday amendment boundary
+
+Friday is exit-only at 08:15 JST; Thursday exits Friday, never rolls to Monday.
+The fixed collector has no Friday probe. Its success alone does not qualify Friday
+exit quotes; independent review must establish Friday session feasibility and costs.
+Do not add or run an unreviewed market probe in this cloud task. Status remains
+LOCAL_XM_EXECUTION_REQUIRED.

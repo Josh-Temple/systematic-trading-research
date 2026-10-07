@@ -45,12 +45,13 @@ def title_key(title):
 
 
 def normalize(raw, start, end, limit):
+    parameters(start, end, limit)  # Validate configuration even for offline replay.
     payload = json.loads(raw.decode('utf-8'))
     if not isinstance(payload, dict) or not isinstance(payload.get('articles'), list):
         raise ValueError('expected explicit articles array; missing is not an empty event')
     articles = payload['articles']
     if len(articles) >= limit:
-        raise ValueError('MAXRECORDS reached before deduplication; completeness unresolved')
+        raise ValueError('INPUT_CORPUS_COMPLETENESS_UNVERIFIED')
     records = []
     for row in articles:
         if not isinstance(row, dict):

@@ -3,6 +3,8 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import unicodedata
+from zoneinfo import ZoneInfo
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
@@ -197,3 +199,60 @@ def canonical_json_bytes(record: Mapping[str, object]) -> bytes:
 
 def canonical_sha256(record: Mapping[str, object]) -> str:
     return hashlib.sha256(canonical_json_bytes(record)).hexdigest()
+
+
+JST = ZoneInfo("Asia/Tokyo")
+
+
+def event_schedule(event_date, unavailable_dates=()):
+    """Mon-Thu issuance; next weekday exit, with no holiday rollover/rescue."""
+    if event_date.weekday() > 3:
+        raise ValueError("INELIGIBLE_ISSUANCE_DAY")
+    exit_date = event_date + timedelta(days=1)
+    if event_date in unavailable_dates or exit_date in unavailable_dates:
+        raise ValueError("FX_SESSION_UNAVAILABLE_NO_SCORE")
+    cutoff = datetime.combine(event_date, datetime.min.time(), JST).replace(hour=8)
+    entry = cutoff + timedelta(minutes=15)
+    return cutoff, entry, entry + timedelta(days=1)
+
+
+def validate_event_timing(cutoff, issued_at, entry_target, exit_target):
+    if entry_target.tzinfo is None:
+        raise ValueError("aware entry required")
+    expected = event_schedule(entry_target.astimezone(JST).date())
+    if (cutoff, entry_target, exit_target) != expected:
+        raise ValueError("EVENT_SCHEDULE_MISMATCH")
+    validate_signal_timing(cutoff, issued_at, entry_target)
+
+
+def validate_formal_source(summary, *, source_qualified=False, acquisition_proven=False):
+    """Must run before classification or market-outcome association, even NO_TRADE."""
+    count = summary.get("article_count")
+    if type(count) is not int or count < 0 or count >= 250:
+        raise ValueError("INPUT_CORPUS_COMPLETENESS_UNVERIFIED")
+    if summary.get("completeness") != "UNVERIFIED_EVEN_BELOW_CAP":
+        raise ValueError("INPUT_CORPUS_COMPLETENESS_UNVERIFIED")
+    if not source_qualified or not acquisition_proven:
+        raise ValueError("SOURCE_QUALIFICATION_BLOCKED")
+
+
+def validate_news_window(record, cutoff):
+    """Formal candidate uses strict open endpoints, independently of the legacy upper-bound helper."""
+    validate_headline_record(record, cutoff)
+    seen = parse_iso_aware(str(record["gdelt_seen_at"]))
+    if not cutoff - timedelta(hours=24) < seen < cutoff:
+        raise ValueError("NEWS_WINDOW_BOUNDARY_OR_OUTSIDE")
+
+
+def dedupe_headlines(records):
+    """Same frozen keeper policy as DOC normalization; raw rows remain preserved."""
+    ordered = sorted(records, key=lambda r: (r["gdelt_seen_at"], r["url"], r["title"]))
+    result, urls, titles = [], set(), set()
+    for row in ordered:
+        key = " ".join(unicodedata.normalize("NFKC", row["title"]).casefold().split())
+        duplicate = row["url"] in urls or key in titles
+        urls.add(row["url"])
+        titles.add(key)
+        if not duplicate:
+            result.append(row)
+    return result

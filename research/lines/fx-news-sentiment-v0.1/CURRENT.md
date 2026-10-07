@@ -16,7 +16,7 @@ derived_from_interpretations: []
 - Formal prospective cohort: CLOSED.
 - Live or paper broker order submission: NOT_AUTHORIZED.
 - Outcome-blind deterministic core: SYNTHETIC_CORE_PASS.
-- Synthetic test result: 38/38 PASS on Python 3.12 (24 core + 5 prompt parser + 9 source tests).
+- Synthetic test result: 53/53 PASS (44 core/prompt/schedule + 9 source/preservation); see hardening test log.
 - Market outcome access during implementation: NONE.
 
 ## Candidate question
@@ -34,7 +34,7 @@ Preflight completed on 2026-10-07 without viewing EURJPY outcomes.
 
 The candidate is therefore **GDELT headline/title classification**, not publisher full-text ingestion.
 
-GDELT is not yet SOURCE PASS: exact query, runtime response fields, record-limit behavior, deduplication, raw-response hashing and attribution still need qualification.
+GDELT is PARTIAL_WITH_GAPS, not SOURCE PASS: reachability/raw preservation observed; time semantics, scoped completeness and acquisition integrity remain unqualified.
 
 ## Candidate implementation
 
@@ -68,7 +68,7 @@ Therefore v0.1 intentionally narrows ChatGPT to semantic classification and reli
 
 - exact GDELT query/field contract not frozen;
 - GDELT runtime source qualification incomplete;
-- near-duplicate headline and MAXRECORDS fail-closed rules not frozen;
+- deduplication/MAXRECORDS candidate rules now explicit; human freeze pending;
 - ChatGPT prompt/output schema exact-byte hashed and FREEZE_READY_CANDIDATE_NOT_HUMAN_FROZEN;
 - observable model-identity policy not frozen;
 - exact XM EURJPY Bid/Ask timestamp and account-cost route not qualified;
@@ -88,4 +88,15 @@ See `work/SOURCE_QUALIFICATION_RESULT.md` for the current evidence and blockers.
 12 raw DOC records -> 10 deterministic retained records; no headline classification
 or EURJPY market outcome. Runtime reachability observed, SOURCE PASS not granted.
 XM gate needs local Windows MT5 execution; no replacement feed is authorized.
-Thursday exit/weekend rationale conflict remains a pre-freeze design question.
+Thursday → Friday exit is the amended candidate; Friday issuance stays excluded.
+
+
+## Pre-freeze hardening update — 2026-10-07
+
+The amended specification governs Thursday → Friday exit, distinct issuance/exit
+days, strict open 24-hour news boundaries and MAXRECORDS fail-closed disposition.
+See `work/PRE_FREEZE_HARDENING_RESULT.md` for current verification. Earlier runtime/history
+statements describe the previous review; this update supersedes its schedule blocker.
+Scientific UNTESTED; specification PROPOSED_NOT_FROZEN; GDELT PARTIAL_WITH_GAPS
+(SOURCE_QUALIFICATION_BLOCKED for formal use); prompt FREEZE_READY_CANDIDATE;
+XM LOCAL_XM_EXECUTION_REQUIRED; formal cohort CLOSED. No SOURCE PASS or freeze.

@@ -58,3 +58,14 @@ PARTIAL_WITH_GAPS / SOURCE_QUALIFICATION_BLOCKED. See
 `../SOURCE_QUALIFICATION_RESULT.md`. Actual HTTP 200 response and 429 comparison
 bodies/hashes preserved; prompt/output candidate and source/JSON parser tests ready.
 XM requires local MT5. No full Packet B completion or formal freeze granted.
+
+
+## Pre-freeze hardening update — 2026-10-07
+
+The amended specification governs Thursday → Friday exit, distinct issuance/exit
+days, strict open 24-hour news boundaries and MAXRECORDS fail-closed disposition.
+See `../PRE_FREEZE_HARDENING_RESULT.md` for current verification. Earlier runtime/history
+statements describe the previous review; this update supersedes its schedule blocker.
+Scientific UNTESTED; specification PROPOSED_NOT_FROZEN; GDELT PARTIAL_WITH_GAPS
+(SOURCE_QUALIFICATION_BLOCKED for formal use); prompt FREEZE_READY_CANDIDATE;
+XM LOCAL_XM_EXECUTION_REQUIRED; formal cohort CLOSED. No SOURCE PASS or freeze.

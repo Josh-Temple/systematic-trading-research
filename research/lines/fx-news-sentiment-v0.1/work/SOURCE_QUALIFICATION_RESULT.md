@@ -124,3 +124,14 @@ The first documents DOC full-text queries, caps and date parameters; the second
 is evidence for distinguishing GAL mixed date semantics, not a DOC field guarantee.
 Prior provider legal/preflight conclusions were read as existing evidence and were
 not independently re-adjudicated in this runtime task.
+
+
+## Pre-freeze hardening update — 2026-10-07
+
+The amended specification governs Thursday → Friday exit, distinct issuance/exit
+days, strict open 24-hour news boundaries and MAXRECORDS fail-closed disposition.
+See `PRE_FREEZE_HARDENING_RESULT.md` for current verification. Earlier runtime/history
+statements describe the previous review; this update supersedes its schedule blocker.
+Scientific UNTESTED; specification PROPOSED_NOT_FROZEN; GDELT PARTIAL_WITH_GAPS
+(SOURCE_QUALIFICATION_BLOCKED for formal use); prompt FREEZE_READY_CANDIDATE;
+XM LOCAL_XM_EXECUTION_REQUIRED; formal cohort CLOSED. No SOURCE PASS or freeze.
