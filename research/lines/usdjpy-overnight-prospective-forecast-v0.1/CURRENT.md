@@ -110,15 +110,15 @@ See:
 
 ## Latest live observation
 
-- **State:** `STATE-USDJPY-20261007T075400+0900-MANUAL`
-- **Observed:** 2026-10-07 07:54 JST.
-- **USD/JPY:** early-morning public quotes around 158.12-158.13; prior session close 158.10, range 157.77-158.25; exact qualified 07:54 quote unavailable.
-- **U.S. rates:** 2Y ~4.787%, 10Y ~5.265%, both lower on the day.
-- **Key divergence:** USDJPY stayed firm near 158.1 even as U.S. yields and the broader dollar softened.
-- **Oil:** Brent ~100.58 / WTI ~89.64, below earlier-week stress highs.
-- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_UP into Tokyo open, LOW_TO_MEDIUM confidence.
-- **Resistance/risk:** 158.25-158.5 area and rising intervention sensitivity toward 159.
-- **Next:** 08:50 BOJ/MOF releases / Tokyo JGB reaction / tonight's FOMC minutes.
+- **State:** `STATE-USDJPY-20261007T094100+0900-MANUAL`
+- **Observed:** 2026-10-07 09:41 JST.
+- **USD/JPY:** 158.17 at 08:00; around 158.08 around the 08:30 wage release; exact qualified 09:41 quote unavailable.
+- **Japan wages:** real wages +1.5% y/y in August, eighth straight increase; yen-supportive in principle.
+- **JGB:** futures slightly firmer in early Tokyo trading; no fresh Japan-yield spike.
+- **Working interpretation:** NEUTRAL_TO_SLIGHT_USDJPY_UP, but confidence reduced to LOW.
+- **Key read:** favorable Japan wage data produced only a small yen-positive FX move; USDJPY remains resilient near 158.1.
+- **Resistance:** 158.25-158.5; below ~157.9 would weaken the upside case.
+- **Next:** 14:00 Japan/BOJ activity data / tonight 03:00 JST FOMC minutes.
 - **Scientific effect:** NONE; journal only.
 
 ## Latest overnight forecast event
