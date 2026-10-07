@@ -1,0 +1,42 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261008",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261008-0800-amended",
+  "model_identifier": "UNOBSERVED_IN_PRE_CUTOFF_ASSESSMENT",
+  "information_cutoff": "2026-10-08T08:00:00+09:00",
+  "issued_at": "2026-10-08T08:21:45+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.42,
+  "forecast_return_bps": -12,
+  "top_drivers": [
+    "Pre-cutoff Nikkei futures weakened overnight; CME Nikkei futures were around 69,845.",
+    "Prior U.S. equities declined: Dow -0.66%, S&P 500 -0.22%, Nasdaq -0.22%; SOX about -1.8%.",
+    "September FOMC minutes released at 03:00 JST preserved a high-rate valuation headwind."
+  ],
+  "counterevidence": [
+    "WTI fell to USD 88.28 (-1.30%), a mitigating factor.",
+    "USDJPY ended the prior NY session around 158.08, keeping the yen weak.",
+    "Some overnight weakness may already be reflected in the 09:00 opening."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/542b8ac951719672ff9e356300f6b8974b8fe293/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-08_PRE_CUTOFF_ASSESSMENT.md",
+    "https://minkabu.jp/news/4631563",
+    "https://www.reuters.com/business/wall-st-futures-slip-yields-oil-rebound-fed-minutes-focus-2026-10-07/",
+    "https://indexes.nasdaq.com/Index/Overview/sox",
+    "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260916.htm",
+    "https://fx.minkabu.jp/news/381051",
+    "https://fx.minkabu.jp/news/381052"
+  ],
+  "canonical_sha256": "558aa8a281fd4f349927dd24ee374ba7f51853f7bfc4861ef3739733230ae412"
+}
