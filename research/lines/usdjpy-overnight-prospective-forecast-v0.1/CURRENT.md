@@ -123,6 +123,7 @@ See:
 - **Cohort effect:** NONE_NOT_IN_COHORT. Protocol deviation and source/readiness BLOCK remain unchanged.
 - **Journal:** `STATE-USDJPY-20261008T082156+0900-MANUAL`, append-only and observational.
 - **Evidence:** `forecasts/exploratory/evaluations/20261007T214634+0900_OVERNIGHT_EVALUATION.json` and `observations/entries/20261008T082156+0900_MANUAL.json`.
+- **Append-only source correction (08:24:24 JST):** `forecasts/exploratory/evaluations/20261008T082424+0900_SOURCE_PROVENANCE_CORRECTION.json` retracts an auxiliary Click365 live-board quote because its URL did not preserve a stable historical observation. The provisional assessment rests on the independently timestamped 21:26 and 07:28 spot commentary only; no score was computed.
 - **Status:** Formal source qualification, mandatory point-in-time inputs, and explicit human specification freeze are still outstanding. Neither the overnight nor weekly cohort is authorized. Do not create broker rules or modify forecast/specification retroactively.
 
 ## Prior live observation (2026-10-08 07:52)
