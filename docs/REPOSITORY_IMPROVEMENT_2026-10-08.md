@@ -42,7 +42,19 @@ Environment: Node.js 24.19.0, Python 3.12.14.
 | Branch-specific index entry paths | 7/7 exist in the named fresh-fetched branch trees |
 | Existing cross-user process-boundary test | LOCAL_ENVIRONMENT_BLOCKED: creating AF_UNIX socket failed with `PermissionError: [Errno 1] Operation not permitted`; no successful local process-boundary claim |
 
-The process-boundary failure is an execution-environment restriction, not a negative scientific finding. Remote validation will be recorded after the PR workflows finish.
+The process-boundary failure is an execution-environment restriction, not a negative scientific finding. Remote verification of the supported Linux environment is recorded below.
+
+## GitHub verification
+
+Implementation head: `60919148fa3efe7c2d533a9272bb7b8831bc26d3`, [PR #64](https://github.com/Josh-Temple/systematic-trading-research/pull/64).
+
+- [Consistency run 37688968001](https://github.com/Josh-Temple/systematic-trading-research/actions/runs/37688968001): SUCCESS. Job logs confirm the locked dependency install, 27/27 regression tests and successful consistency validation of 41 records / 7 Result records.
+- [Autonomous-pilot PR run 37688967843](https://github.com/Josh-Temple/systematic-trading-research/actions/runs/37688967843): SUCCESS. Logs confirm 83/83 synthetic tests and the cross-user process-boundary test. Direct hidden-data reading was denied; dataset-selection and future-outcome-source injections were rejected; the valid evaluator API remained available.
+- [Autonomous-pilot push run 37688920432](https://github.com/Josh-Temple/systematic-trading-research/actions/runs/37688920432): SUCCESS.
+
+Workflow/job status and the relevant decoded job logs were read directly from GitHub. These checks close the process-boundary verification gap for the GitHub Actions Linux environment; they do not remove the local runtime restriction or confer scientific validity. The Web artifact itself is unchanged, and this PR has not published a new site.
+
+The complete remote tree was read back; all 13 changed files had Git blob identities matching the exact reviewed UTF-8 bytes supplied for the implementation commit. No frozen research or Web file appears in that commit's changed-file list.
 
 ## Boundaries and remaining work
 
