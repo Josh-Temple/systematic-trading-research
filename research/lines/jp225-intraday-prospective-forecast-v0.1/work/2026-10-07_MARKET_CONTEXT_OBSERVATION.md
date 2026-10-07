@@ -118,3 +118,22 @@ This observation does not change the candidate specification.
 At the time of this observation, available public web pages showed inconsistent/stale intraday Nikkei cash-index timestamps. No exact 09:40 cash-index level is recorded here rather than guessing or silently mixing stale data.
 
 For tomorrow's formal workflow, preserve the 08:00 source snapshot first and treat any later market data as post-cutoff.
+
+
+## Post-cutoff 08:30 wage release observed on 2026-10-07
+
+Japan's August labour data, released at 08:30 JST after the candidate forecast cutoff:
+
+- real wages: +1.5% year on year, eighth consecutive monthly gain;
+- nominal total cash earnings: +3.8% year on year;
+- regular/base pay: +3.8% year on year;
+- overtime pay: +5.2% year on year.
+
+This is post-cutoff information for a hypothetical 2026-10-07 08:00 forecast and therefore must not be retroactively admitted as a forecast input.
+
+For tomorrow's 2026-10-08 run, however, this release is already public before the 08:00 cutoff and may be included in A2 if the final source contract permits this macro field.
+
+Interpretive note: sustained real-wage growth is compatible with continued BOJ normalization pressure, but one release does not mechanically imply a same-day JP225 direction.
+
+Source:
+https://www.reuters.com/world/asia-pacific/japans-real-wages-rise-eighth-straight-month-august-2026-10-06/
