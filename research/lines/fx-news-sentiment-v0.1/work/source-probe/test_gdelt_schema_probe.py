@@ -59,3 +59,44 @@ class PreservationTest(unittest.TestCase):
             m=json.loads((out/'manifest.json').read_text())
             self.assertNotIn('raw_sha256',m)
             self.assertFalse((out/'response.raw').exists())
+
+    def test_non_utf8_http_200_preserves_raw_manifest_and_blocks(self):
+        import tempfile, sys, hashlib
+        from pathlib import Path
+        from unittest.mock import patch, Mock
+        from gdelt_schema_probe import main
+        raw = b'\xff\xfe synthetic invalid UTF-8'
+        response = Mock(status=200, headers={'Content-Type': 'application/json'})
+        response.read.return_value = raw
+        response.__enter__ = Mock(return_value=response)
+        response.__exit__ = Mock(return_value=False)
+        with tempfile.TemporaryDirectory() as temp:
+            out = Path(temp) / 'attempt'
+            with patch.object(sys, 'argv', ['probe', '--output', str(out), '--end', '20261006230000']), patch('urllib.request.urlopen', return_value=response), patch('builtins.print'):
+                self.assertEqual(main(), 2)
+            manifest = json.loads((out / 'manifest.json').read_text())
+            self.assertEqual(manifest['status'], 'SOURCE_QUALIFICATION_BLOCKED')
+            self.assertEqual(manifest['error_type'], 'UnicodeDecodeError')
+            self.assertEqual(manifest['http_status'], 200)
+            self.assertEqual((out / 'response.raw').read_bytes(), raw)
+            self.assertEqual(manifest['raw_sha256'], hashlib.sha256(raw).hexdigest())
+            self.assertFalse((out / 'normalized.json').exists())
+
+    def test_http_429_preserves_network_completion_timestamp(self):
+        import tempfile, sys, io, urllib.error
+        from pathlib import Path
+        from unittest.mock import patch
+        from datetime import datetime, timedelta, timezone
+        from gdelt_schema_probe import main
+        from gdelt_schema_probe import UTC
+        times = [datetime(2026,10,8,tzinfo=timezone.utc)+timedelta(seconds=i) for i in range(4)]
+        error = urllib.error.HTTPError('https://example.com',429,'rate limit',{},io.BytesIO(b'429'))
+        with tempfile.TemporaryDirectory() as temp:
+            out = Path(temp) / 'attempt'
+            with patch.object(sys,'argv',['probe','--output',str(out),'--end','20261006230000']), patch('urllib.request.urlopen',side_effect=error), patch('gdelt_schema_probe.datetime') as clock, patch('builtins.print'):
+                clock.now.side_effect=times
+                clock.strptime=datetime.strptime
+                self.assertEqual(main(),2)
+            manifest=json.loads((out/'manifest.json').read_text())
+            self.assertEqual(manifest['request_started_at'], times[1].isoformat())
+            self.assertEqual(manifest['retrieval_completed_at'], times[2].isoformat())
