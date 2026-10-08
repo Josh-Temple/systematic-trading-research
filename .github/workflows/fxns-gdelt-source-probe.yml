@@ -1,16 +1,21 @@
-name: FXNS GDELT source probe
+name: FXNS offline synthetic validation
 
+# This workflow MUST NOT contact the live GDELT DOC API.
+# Source-only live qualification is a separate, explicit, bounded action.
 on:
   pull_request:
     paths:
       - ".github/workflows/fxns-gdelt-source-probe.yml"
+      - ".github/scripts/fxns_offline_unittest.py"
       - "research/lines/fx-news-sentiment-v0.1/work/source-probe/**"
+      - "research/lines/fx-news-sentiment-v0.1/work/implementation/**"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  gdelt-schema-probe:
+  fxns-synthetic-offline:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -18,13 +23,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: Validate synthetic source contracts
-        run: python -m unittest discover -s research/lines/fx-news-sentiment-v0.1/work/source-probe -v
-      - name: Probe GDELT DOC schema
-        run: python research/lines/fx-news-sentiment-v0.1/work/source-probe/gdelt_schema_probe.py
-      - name: Upload raw response and source manifest
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fxns-gdelt-source-probe
-          path: gdelt_probe/
+      - name: Run FXNS synthetic tests with Python socket connections denied
+        run: python .github/scripts/fxns_offline_unittest.py
+      - name: Syntax-compile FXNS source and implementation
+        run: |
+          python -m compileall -q research/lines/fx-news-sentiment-v0.1/work/implementation
+          python -m compileall -q research/lines/fx-news-sentiment-v0.1/work/source-probe
