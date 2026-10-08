@@ -11,7 +11,7 @@ from unittest.mock import patch
 from event_ledger import (EventBlocked, SyntheticSourceEvidence, associate_market_outcome,
                           build_synthetic_event, issue_formal_event, verify_synthetic_event,
                           write_synthetic_event, write_blocked_receipt)
-from fxns import event_schedule
+from fxns import event_schedule, canonical_json_bytes, canonical_sha256
 
 
 class SyntheticEventLedgerTest(unittest.TestCase):
@@ -143,5 +143,59 @@ class SyntheticEventLedgerTest(unittest.TestCase):
     def test_missing_market_price_not_translated_into_no_trade(self):
         event=self.build();self.assertEqual(event["market_outcome"],"UNAVAILABLE_NOT_REQUESTED")
         self.assertNotEqual(event["decision"],"NO_TRADE")
+
+
+    def test_direct_writer_cannot_label_external_fields_as_synthetic(self):
+        event = self.build()
+        with tempfile.TemporaryDirectory() as tmp:
+            for patch_record, rejected in (
+                ({"market_outcome": "synthetic-fabricated-outcome"}, "SYNTHETIC_MARKET_OUTCOME_FORBIDDEN"),
+                ({"extra_price_field": "synthetic-not-a-price"}, "INVALID_SYNTHETIC_EVENT_SHAPE"),
+                ({"version": "SPEC-FXNS-001-v02"}, "SYNTHETIC_VERSION_OR_COHORT_MISMATCH"),
+            ):
+                forged = copy.deepcopy(event)
+                forged.update(patch_record)
+                with self.subTest(patch_record=patch_record), self.assertRaisesRegex(EventBlocked, rejected):
+                    write_synthetic_event(forged, Path(tmp))
+            for field, replacement in (
+                ("raw_ref", "https://example.com/real"),
+                ("independent_review_ref", "https://example.com/real"),
+                ("synthetic_fixture_only", False),
+            ):
+                forged = copy.deepcopy(event)
+                forged["source"][field] = replacement
+                with self.subTest(field=field), self.assertRaises(EventBlocked):
+                    write_synthetic_event(forged, Path(tmp))
+            forged = copy.deepcopy(event)
+            forged["model"]["observed_visible_identity"] = "real-model"
+            with self.assertRaisesRegex(EventBlocked, "REAL_MODEL_IDENTITY"):
+                write_synthetic_event(forged, Path(tmp))
+            self.assertEqual(list(Path(tmp).iterdir()), [])
+
+    def test_verifier_rejects_rehashed_synthetic_label_bypass(self):
+        event = self.build()
+        with tempfile.TemporaryDirectory() as tmp:
+            file, _ = write_synthetic_event(event, Path(tmp))
+            for change in ("market_outcome", "raw_ref", "extra_field"):
+                forged = copy.deepcopy(event)
+                if change == "market_outcome":
+                    forged["market_outcome"] = "synthetic-forged-outcome"
+                elif change == "raw_ref":
+                    forged["source"]["raw_ref"] = "https://example.com/not-synthetic"
+                else:
+                    forged["extra_field"] = "synthetic-only"
+                payload = {"record": forged, "record_sha256": canonical_sha256(forged)}
+                file.write_bytes(canonical_json_bytes(payload) + b"\n")
+                with self.subTest(change=change), self.assertRaises(EventBlocked):
+                    verify_synthetic_event(file)
+            blocked = write_blocked_receipt(event_id="SYNTHETIC-FXNS-20261008",
+                reason="SOURCE_QUALIFICATION_BLOCKED", directory=Path(tmp))
+            receipt = verify_synthetic_event(blocked)
+            forged = copy.deepcopy(receipt)
+            forged["decision"] = "NO_TRADE"
+            blocked.write_bytes(canonical_json_bytes({"record": forged,
+                "record_sha256": canonical_sha256(forged)}) + b"\n")
+            with self.assertRaisesRegex(EventBlocked, "BLOCKED_RECEIPT_CANNOT_BE_A_DECISION"):
+                verify_synthetic_event(blocked)
 
 if __name__ == "__main__": unittest.main()
