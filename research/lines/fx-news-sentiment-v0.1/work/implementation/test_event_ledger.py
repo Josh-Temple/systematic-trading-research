@@ -112,7 +112,10 @@ class SyntheticEventLedgerTest(unittest.TestCase):
         self.assertTrue(event["is_no_trade"])
         with tempfile.TemporaryDirectory() as tmp:
             file,_=write_synthetic_event(event,Path(tmp))
-            replacement=copy.deepcopy(event);replacement["decision"]="LONG_EURJPY"
+            # Use a second *valid* synthetic event: guard validation must pass,
+            # then the existing event ID must still be protected by O_EXCL.
+            replacement=self.build()
+            self.assertEqual(replacement["decision"], "LONG_EURJPY")
             with self.assertRaises(FileExistsError): write_synthetic_event(replacement,Path(tmp))
             self.assertEqual(verify_synthetic_event(file)["decision"],"NO_TRADE")
             changed=json.loads(file.read_text());changed["record"]["decision"]="SHORT_EURJPY"
