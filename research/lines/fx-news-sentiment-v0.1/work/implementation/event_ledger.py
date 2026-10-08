@@ -199,6 +199,123 @@ def build_synthetic_event(*, event_date: date, issued_at: str, raw_records: list
     }
 
 
+
+_SYNTHETIC_EVENT_KEYS = frozenset({
+    "event_id", "version", "formal_cohort_status", "record_type",
+    "frozen_at", "information_cutoff", "entry_target", "exit_target",
+    "source", "prompt_and_schema", "model", "input_record_ids",
+    "input_snapshot_sha256", "classification_raw", "classification_parsed",
+    "decision", "is_no_trade", "synthetic_scores", "market_outcome",
+    "blocked_reason",
+})
+_BLOCKED_RECEIPT_KEYS = frozenset({
+    "event_id", "record_type", "formal_cohort_status", "decision",
+    "is_no_trade", "market_outcome", "blocked_reason", "version",
+})
+_SYNTHETIC_SOURCE_KEYS = frozenset({
+    "source_status", "acquisition_status", "independent_review_ref",
+    "independent_review_sha256", "raw_ref", "raw_sha256", "metadata_ref",
+    "metadata_sha256", "query_version", "retrieved_at", "raw_count",
+    "retained_count", "synthetic_fixture_only",
+})
+_SYNTHETIC_MODEL_KEYS = frozenset({
+    "expected_visible_identity", "observed_visible_identity",
+    "expected_config", "observed_config",
+})
+
+
+def _validate_synthetic_record(record: dict, *, allow_blocked: bool = False):
+    """Check *untrusted* writer/verifier input; a record hash alone is not provenance.
+
+    The guard is deliberately synthetic-only. It neither verifies a real source
+    nor provides an authorization path to formal issuance or outcome joining.
+    """
+    if not isinstance(record, dict):
+        raise EventBlocked("INVALID_SYNTHETIC_RECORD")
+    if record.get("version") != SPEC_VERSION or record.get("formal_cohort_status") != COHORT_STATE:
+        raise EventBlocked("SYNTHETIC_VERSION_OR_COHORT_MISMATCH")
+    event_id = record.get("event_id")
+    if not isinstance(event_id, str) or not re.fullmatch(r"SYNTHETIC-FXNS-[0-9]{8}", event_id):
+        raise EventBlocked("INVALID_SYNTHETIC_EVENT_ID")
+    if record.get("market_outcome") != "UNAVAILABLE_NOT_REQUESTED":
+        raise EventBlocked("SYNTHETIC_MARKET_OUTCOME_FORBIDDEN")
+
+    if record.get("record_type") == "BLOCKED_SYNTHETIC_PREFLIGHT":
+        if not allow_blocked or set(record) != _BLOCKED_RECEIPT_KEYS:
+            raise EventBlocked("INVALID_BLOCKED_SYNTHETIC_RECEIPT")
+        if record.get("decision") is not None or record.get("is_no_trade") is not None:
+            raise EventBlocked("BLOCKED_RECEIPT_CANNOT_BE_A_DECISION")
+        _required_text(record.get("blocked_reason"), "BLOCK_REASON")
+        return
+
+    if record.get("record_type") != "SYNTHETIC_ONLY_NOT_FORMAL" or set(record) != _SYNTHETIC_EVENT_KEYS:
+        raise EventBlocked("INVALID_SYNTHETIC_EVENT_SHAPE")
+    if record.get("blocked_reason") is not None:
+        raise EventBlocked("SYNTHETIC_EVENT_MUST_NOT_BE_BLOCKED")
+
+    source = record.get("source")
+    if not isinstance(source, dict) or set(source) != _SYNTHETIC_SOURCE_KEYS:
+        raise EventBlocked("INVALID_SYNTHETIC_SOURCE_SHAPE")
+    if source.get("synthetic_fixture_only") is not True:
+        raise EventBlocked("REAL_SOURCE_NOT_ACCEPTED_IN_SYNTHETIC_PATH")
+    if source.get("source_status") != "PASS" or source.get("acquisition_status") != "PASS":
+        raise EventBlocked("SOURCE_QUALIFICATION_BLOCKED")
+    for name in ("raw", "metadata", "independent_review"):
+        ref = _required_text(source.get(name + "_ref"), name.upper() + "_REF")
+        if not ref.startswith("synthetic://"):
+            raise EventBlocked("REAL_SOURCE_NOT_ACCEPTED_IN_SYNTHETIC_PATH")
+        _sha(source.get(name + "_sha256"), name.upper())
+    if not str(source.get("query_version", "")).startswith("synthetic-"):
+        raise EventBlocked("NON_SYNTHETIC_QUERY_VERSION")
+    if (type(source.get("raw_count")) is not int
+            or not 0 < source["raw_count"] < MAXRECORDS
+            or type(source.get("retained_count")) is not int
+            or not 0 < source["retained_count"] <= source["raw_count"]):
+        raise EventBlocked("INVALID_SYNTHETIC_RECORD_COUNTS")
+
+    model = record.get("model")
+    if not isinstance(model, dict) or set(model) != _SYNTHETIC_MODEL_KEYS:
+        raise EventBlocked("INVALID_SYNTHETIC_MODEL")
+    for name in _SYNTHETIC_MODEL_KEYS:
+        if not str(model.get(name, "")).startswith("synthetic-"):
+            raise EventBlocked("REAL_MODEL_IDENTITY_NOT_ACCEPTED_IN_SYNTHETIC_PATH")
+    if (model["expected_visible_identity"] != model["observed_visible_identity"]
+            or model["expected_config"] != model["observed_config"]):
+        raise EventBlocked("MODEL_IDENTITY_OR_CONFIG_CHANGED")
+
+    if record.get("prompt_and_schema") != _candidate_hashes():
+        raise EventBlocked("PROMPT_SCHEMA_HASH_MISMATCH")
+    ids = record.get("input_record_ids")
+    if (not isinstance(ids, list) or len(ids) != source["retained_count"]
+            or not all(isinstance(r, str) and r.startswith("synthetic-") for r in ids)
+            or len(set(ids)) != len(ids)):
+        raise EventBlocked("INVALID_SYNTHETIC_INPUT_IDENTITIES")
+    _sha(record.get("input_snapshot_sha256"), "INPUT_SNAPSHOT")
+    if (not isinstance(record.get("classification_raw"), list)
+            or len(record["classification_raw"]) != len(ids)
+            or not all(isinstance(item, str) for item in record["classification_raw"])):
+        raise EventBlocked("INVALID_SYNTHETIC_CLASSIFICATION_RAW")
+    parsed = record.get("classification_parsed")
+    if (not isinstance(parsed, list) or len(parsed) != len(ids)
+            or any(not isinstance(row, dict) for row in parsed)
+            or [row.get("record_id") for row in parsed] != ids):
+        raise EventBlocked("INVALID_SYNTHETIC_CLASSIFICATION_PARSED")
+    if not isinstance(record.get("synthetic_scores"), dict) or set(record["synthetic_scores"]) != {"EUR", "JPY"}:
+        raise EventBlocked("INVALID_SYNTHETIC_SCORES")
+    if record.get("decision") not in ("LONG_EURJPY", "SHORT_EURJPY", "NO_TRADE"):
+        raise EventBlocked("INVALID_SYNTHETIC_DECISION")
+    if type(record.get("is_no_trade")) is not bool or record["is_no_trade"] != (record["decision"] == "NO_TRADE"):
+        raise EventBlocked("INCONSISTENT_NO_TRADE")
+    cutoff = _time(record.get("information_cutoff"), "INFORMATION_CUTOFF")
+    frozen_at = _time(record.get("frozen_at"), "FROZEN_AT")
+    entry = _time(record.get("entry_target"), "ENTRY_TARGET")
+    exit_ = _time(record.get("exit_target"), "EXIT_TARGET")
+    retrieved_at = _time(source.get("retrieved_at"), "RETRIEVED_AT")
+    if not (retrieved_at <= cutoff <= frozen_at < entry < exit_):
+        raise EventBlocked("INVALID_SYNTHETIC_EVENT_TIMELINE")
+    if cutoff.date().strftime("%Y%m%d") != event_id.rsplit("-", 1)[-1]:
+        raise EventBlocked("SYNTHETIC_EVENT_DATE_MISMATCH")
+
 def write_blocked_receipt(*, event_id: str, reason: str, directory: Path):
     """Append-only synthetic failed-preflight receipt; never an issued event."""
     if not re.fullmatch(r"SYNTHETIC-FXNS-[0-9]{8}", event_id):
@@ -208,6 +325,7 @@ def write_blocked_receipt(*, event_id: str, reason: str, directory: Path):
                "formal_cohort_status": COHORT_STATE, "decision": None,
                "is_no_trade": None, "market_outcome": "UNAVAILABLE_NOT_REQUESTED",
                "blocked_reason": reason, "version": SPEC_VERSION}
+    _validate_synthetic_record(receipt, allow_blocked=True)
     target_dir = Path(directory)
     target_dir.mkdir(parents=True, exist_ok=True)
     file = target_dir / (event_id + ".blocked.json")
@@ -221,8 +339,7 @@ def write_blocked_receipt(*, event_id: str, reason: str, directory: Path):
 
 def write_synthetic_event(event: dict, directory: Path):
     """Append one immutable event file by exclusive create, then verify byte/hash readback."""
-    if event.get("record_type") != "SYNTHETIC_ONLY_NOT_FORMAL" or event.get("formal_cohort_status") != "CLOSED":
-        raise EventBlocked("FORMAL_RECORD_WRITE_FORBIDDEN")
+    _validate_synthetic_record(event)
     event_id = event.get("event_id")
     if not isinstance(event_id, str) or not re.fullmatch(r"SYNTHETIC-FXNS-[0-9]{8}", event_id):
         raise EventBlocked("INVALID_SYNTHETIC_EVENT_ID")
@@ -249,6 +366,5 @@ def verify_synthetic_event(file: Path):
     record = payload["record"]
     if payload.get("record_sha256") != canonical_sha256(record):
         raise EventBlocked("LEDGER_TAMPER_DETECTED")
-    if record.get("record_type") not in {"SYNTHETIC_ONLY_NOT_FORMAL", "BLOCKED_SYNTHETIC_PREFLIGHT"}:
-        raise EventBlocked("NON_SYNTHETIC_RECORD")
+    _validate_synthetic_record(record, allow_blocked=True)
     return record
