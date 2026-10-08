@@ -89,6 +89,18 @@ class RecordContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_review_record(x)
 
+    def test_formal_scores_rejected_when_xm_unavailable(self):
+        x = deepcopy(BASE_REVIEW)
+        x["scores"] = {"A3_brier": 0.1936}
+        with self.assertRaises(ValueError):
+            validate_review_record(x)
+
+    def test_review_scores_must_be_object(self):
+        x = deepcopy(BASE_REVIEW)
+        x["scores"] = []
+        with self.assertRaises(ValueError):
+            validate_review_record(x)
+
     def test_rule_change_rejected(self):
         x = deepcopy(BASE_REVIEW)
         x["rule_change"] = "MOVE_CUTOFF"
