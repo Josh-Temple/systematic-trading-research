@@ -141,8 +141,13 @@ def validate_review_record(record: Mapping[str, Any]) -> None:
     if record["rule_change"] != "NONE_FROM_SINGLE_DRY_RUN":
         raise PermissionError("single dry run cannot modify v0.1")
 
+    if not isinstance(record["scores"], dict):
+        raise ValueError("scores must be a JSON object")
+
     outcome_status = record["exact_xm_outcome_status"]
     if outcome_status != "AVAILABLE":
+        if record["scores"]:
+            raise ValueError("formal scores must be empty without exact XM outcome")
         forbidden_nonnull = (
             "start_quote",
             "end_quote",
