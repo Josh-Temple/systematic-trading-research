@@ -1,0 +1,44 @@
+CSM I2 standalone synthetic-only denial model — local execution log
+Date: 2026-10-09 JST
+Environment: isolated Linux container, Python 3.13.5; standard library.
+Source: test_synthetic_controls.py
+Exact file SHA-256: bef93b827742930b37bb3d0089f8b3e149aa8458a975a40063bd5a4cd78902a3
+Exact Git blob SHA-1: c037c918eae219b6f47b139437b525e5538ca0bc
+Pre-commit source verified; no external source, market data, network, subprocess, production trust key or broker accessed.
+Local commands:
+  python -m py_compile /mnt/data/csm_d_work/test_synthetic_controls.py
+  python /mnt/data/csm_d_work/test_synthetic_controls.py
+  git hash-object /mnt/data/csm_d_work/test_synthetic_controls.py
+Compile: PASS
+Execution: PASS, exit code 0, 23 tests / 0 failures / 0 errors / 0 skips.
+
+test_access_false (__main__.SignedHeadAndRoleTests.test_access_false) ... ok
+test_auditor_envelope_mutation (__main__.SignedHeadAndRoleTests.test_auditor_envelope_mutation) ... ok
+test_auditor_negative_recommendation (__main__.SignedHeadAndRoleTests.test_auditor_negative_recommendation) ... ok
+test_baseline_toy_envelope_accepts (__main__.SignedHeadAndRoleTests.test_baseline_toy_envelope_accepts) ... ok
+test_closed_gate (__main__.SignedHeadAndRoleTests.test_closed_gate) ... ok
+test_current_i_head_mismatch_is_denied (__main__.SignedHeadAndRoleTests.test_current_i_head_mismatch_is_denied) ... ok
+test_expired_key (__main__.SignedHeadAndRoleTests.test_expired_key) ... ok
+test_expired_signed_receipt (__main__.SignedHeadAndRoleTests.test_expired_signed_receipt) ... ok
+test_forged_signature (__main__.SignedHeadAndRoleTests.test_forged_signature) ... ok
+test_old_d_hash_is_denied (__main__.SignedHeadAndRoleTests.test_old_d_hash_is_denied) ... ok
+test_old_e_head_is_denied (__main__.SignedHeadAndRoleTests.test_old_e_head_is_denied) ... ok
+test_revoked_key (__main__.SignedHeadAndRoleTests.test_revoked_key) ... ok
+test_same_signer_and_auditor_is_denied (__main__.SignedHeadAndRoleTests.test_same_signer_and_auditor_is_denied) ... ok
+test_unapproved_pass (__main__.SignedHeadAndRoleTests.test_unapproved_pass) ... ok
+test_unnamed_operator (__main__.SignedHeadAndRoleTests.test_unnamed_operator) ... ok
+test_unresolved_exposure (__main__.SignedHeadAndRoleTests.test_unresolved_exposure) ... ok
+test_unsigned_pass_is_denied (__main__.SignedHeadAndRoleTests.test_unsigned_pass_is_denied) ... ok
+test_untrusted_signer (__main__.SignedHeadAndRoleTests.test_untrusted_signer) ... ok
+test_wrong_role (__main__.SignedHeadAndRoleTests.test_wrong_role) ... ok
+test_complete_chain_rewrite_detected_by_saved_anchor (__main__.StorageAndDenialSimulationTests.test_complete_chain_rewrite_detected_by_saved_anchor) ... ok
+test_failed_append_cannot_claim_success (__main__.StorageAndDenialSimulationTests.test_failed_append_cannot_claim_success) ... ok
+test_local_readback_new_instance_and_tamper_detection (__main__.StorageAndDenialSimulationTests.test_local_readback_new_instance_and_tamper_detection) ... ok
+test_simulated_file_read_write_and_event_denials_recorded (__main__.StorageAndDenialSimulationTests.test_simulated_file_read_write_and_event_denials_recorded) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 1.065s
+
+OK
+
+Disclosure: This is a distinct toy model of the signed-envelope contract, not an invocation of the production D verifier. Its test-only I/E fictitious PASS and same published RSA modulus do not demonstrate real identity segregation. File/network/process denials are simulated. New-instance readback is not an OS reboot; anchors are not protected. New GitHub Actions execution: NOT_RERUN (no trigger intentionally, to avoid any ECB raw fetch). Previous 56/56 job (37166456105, job 111330239715) predates current I2 head.
