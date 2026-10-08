@@ -201,4 +201,105 @@ class SyntheticEventLedgerTest(unittest.TestCase):
             with self.assertRaisesRegex(EventBlocked, "BLOCKED_RECEIPT_CANNOT_BE_A_DECISION"):
                 verify_synthetic_event(blocked)
 
+
+    def test_nested_classification_writer_and_rehashed_readback_fail_closed(self):
+        original = self.build()
+        def malformed_json(e): e["classification_raw"][0] = "{broken"
+        def extra_raw_key(e):
+            row = json.loads(e["classification_raw"][0]); row["market_outcome"] = "synthetic-forbidden"
+            e["classification_raw"][0] = json.dumps(row)
+        def extra_parsed_key(e): e["classification_parsed"][0]["market_outcome"] = "synthetic-forbidden"
+        def raw_parsed_divergence(e): e["classification_parsed"][0]["JPY"] = "APPRECIATION"
+        def invalid_reason(e):
+            row = json.loads(e["classification_raw"][0]); row["reason_code_JPY"] = "INVALID"
+            e["classification_raw"][0] = json.dumps(row)
+        def identity_shift(e): e["input_record_ids"][0] = "synthetic-different"
+        def nested_url(e): e["classification_parsed"][0]["url"] = "https://example.com/real"
+        def missing_parsed_key(e): del e["classification_parsed"][0]["reason_code_EUR"]
+        for label, mutation in (
+            ("invalid_json", malformed_json),
+            ("extra_raw_market_outcome", extra_raw_key),
+            ("extra_parsed_market_outcome", extra_parsed_key),
+            ("raw_parsed_divergence", raw_parsed_divergence),
+            ("invalid_reason", invalid_reason),
+            ("input_id_shift", identity_shift),
+            ("nested_real_url", nested_url),
+            ("missing_nested_key", missing_parsed_key),
+        ):
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp:
+                file, _ = write_synthetic_event(original, Path(tmp))
+                forged = copy.deepcopy(original)
+                mutation(forged)
+                with self.assertRaises(EventBlocked):
+                    write_synthetic_event(forged, Path(tmp))
+                payload = {"record": forged, "record_sha256": canonical_sha256(forged)}
+                file.write_bytes(canonical_json_bytes(payload) + b"\\n")
+                with self.assertRaises(EventBlocked):
+                    verify_synthetic_event(file)
+
+    def test_score_types_finiteness_and_action_writer_and_readback_fail_closed(self):
+        original = self.build()
+        def wrong_score(e): e["synthetic_scores"]["EUR"] = 123.0
+        def bool_score(e): e["synthetic_scores"]["EUR"] = True
+        def string_score(e): e["synthetic_scores"]["JPY"] = "0"
+        def nan_score(e): e["synthetic_scores"]["EUR"] = float("nan")
+        def infinity_score(e): e["synthetic_scores"]["JPY"] = float("inf")
+        def huge_score(e): e["synthetic_scores"]["EUR"] = 10 ** 400
+        def false_no_trade(e):
+            e["decision"] = "NO_TRADE"; e["is_no_trade"] = True
+        for label, mutation in (
+            ("altered_score", wrong_score),
+            ("boolean_score", bool_score),
+            ("string_score", string_score),
+            ("nan_score", nan_score),
+            ("infinite_score", infinity_score),
+            ("oversized_number", huge_score),
+            ("wrong_action_consistent_flag", false_no_trade),
+        ):
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp:
+                file, _ = write_synthetic_event(original, Path(tmp))
+                forged = copy.deepcopy(original); mutation(forged)
+                with self.assertRaises(EventBlocked):
+                    write_synthetic_event(forged, Path(tmp))
+                file.write_bytes(canonical_json_bytes(
+                    {"record": forged, "record_sha256": canonical_sha256(forged)}) + b"\\n")
+                with self.assertRaises(EventBlocked):
+                    verify_synthetic_event(file)
+
+    def test_no_trade_rehashed_direction_without_rescoring_is_rejected(self):
+        out = [json.dumps(dict(record_id="synthetic-1", EUR="UNCHANGED",
+                    JPY="UNCHANGED", reason_code_EUR="NONE", reason_code_JPY="NONE"))]
+        event = self.build(raw_outputs=out)
+        self.assertEqual(event["decision"], "NO_TRADE")
+        with tempfile.TemporaryDirectory() as tmp:
+            file, _ = write_synthetic_event(event, Path(tmp))
+            forged = copy.deepcopy(event)
+            forged["decision"] = "LONG_EURJPY"; forged["is_no_trade"] = False
+            file.write_bytes(canonical_json_bytes(
+                {"record": forged, "record_sha256": canonical_sha256(forged)}) + b"\\n")
+            with self.assertRaisesRegex(EventBlocked, "SYNTHETIC_DECISION_SCORE_MISMATCH"):
+                verify_synthetic_event(file)
+
+    def test_valid_direction_and_no_trade_round_trip(self):
+        out = [json.dumps(dict(record_id="synthetic-1", EUR="UNCHANGED",
+                    JPY="UNCHANGED", reason_code_EUR="NONE", reason_code_JPY="NONE"))]
+        for event in (self.build(), self.build(raw_outputs=out)):
+            with self.subTest(action=event["decision"]), tempfile.TemporaryDirectory() as tmp:
+                file, _ = write_synthetic_event(event, Path(tmp))
+                self.assertEqual(verify_synthetic_event(file), event)
+
+    def test_rehashed_semantically_valid_replacement_does_not_prove_authorship(self):
+        # A self-consistent full replacement still passes: SHA-256 is not
+        # an independent provenance seal or privileged-file immutability.
+        original = self.build()
+        out = [json.dumps(dict(record_id="synthetic-1", EUR="UNCHANGED",
+                    JPY="UNCHANGED", reason_code_EUR="NONE", reason_code_JPY="NONE"))]
+        replacement = self.build(raw_outputs=out)
+        with tempfile.TemporaryDirectory() as tmp:
+            file, _ = write_synthetic_event(original, Path(tmp))
+            file.write_bytes(canonical_json_bytes(
+                {"record": replacement, "record_sha256": canonical_sha256(replacement)}) + b"\\n")
+            self.assertEqual(verify_synthetic_event(file)["decision"], "NO_TRADE")
+            self.assertNotEqual(original["decision"], replacement["decision"])
+
 if __name__ == "__main__": unittest.main()
