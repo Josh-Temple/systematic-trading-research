@@ -170,6 +170,7 @@ def build_synthetic_event(*, event_date: date, issued_at: str, raw_records: list
         raw_ids.append(record["record_id"])
     if len(raw_ids) != len(set(raw_ids)):
         raise EventBlocked("DUPLICATE_RAW_RECORD_ID")
+    hashes = _candidate_hashes()
     retained = dedupe_headlines(raw_records)
     retained_ids = [r["record_id"] for r in retained]
     try:
@@ -178,7 +179,6 @@ def build_synthetic_event(*, event_date: date, issued_at: str, raw_records: list
         action = pair_action(eur, jpy)
     except (ValueError, TypeError, KeyError) as exc:
         raise EventBlocked("OUTPUT_PARSE_OR_SCORE_BLOCKED: " + str(exc)) from exc
-    hashes = _candidate_hashes()
     event_id = "SYNTHETIC-FXNS-" + event_date.strftime("%Y%m%d")
     return {
         "event_id": event_id, "version": version,
