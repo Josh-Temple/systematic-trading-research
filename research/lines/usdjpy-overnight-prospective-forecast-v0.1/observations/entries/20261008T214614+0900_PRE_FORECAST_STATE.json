@@ -1,0 +1,107 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261008T214614+0900-PRE_FORECAST_STATE",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-08T21:46:14+09:00",
+  "retrieved_at": "2026-10-08T21:47:01+09:00",
+  "checkpoint_type": "PRE_FORECAST_STATE",
+  "source_cutoff": "2026-10-08T21:46:14+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "NONCANONICAL_DELAYED_PUBLIC_QUOTES_NOT_DUKASCOPY",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Diamond/market lab: 158.24 at 19:17 JST; Investing: 158.24 as of 20:00:09 JST. Day low around 157.58-157.59. No verified price or canonical Dukascopy bid/ask at 21:46 or 22:00 JST."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_CURRENT",
+    "us_10y": "Prior Oct 7 NY close 5.28%; current 21:46 value UNKNOWN",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "UNKNOWN_CURRENT"
+  },
+  "policy_state": {
+    "fed": "September FOMC minutes from Oct 8 early morning previously described as hawkish, but any 21:30 U.S. jobless release result is UNVERIFIED here.",
+    "boj": "Oct 29-30 BOJ policy meeting ahead; no new verified BOJ policy surprise since last checkpoint.",
+    "japan_fx_authorities": "Upper-158/159 intervention sensitivity is an interpretation, not a new official announcement."
+  },
+  "macro_news_facts": [
+    "USDJPY public quote 158.24 at 19:17 JST (Diamond/market lab) and 158.24 at 20:00:09 JST (Investing); not qualifying bid/ask source or quote at nominal 22:00.",
+    "Public session low approximately 157.58-157.59 before price recovery into 158.2 area.",
+    "Oct 7 NY close around 158.08 (OANDA, Oct 8 06:20 JST report); U.S. 10-year yield around 5.28% at that time.",
+    "US weekly initial jobless claims scheduled for 21:30 with a 200K consensus; actual result not verified by examined sources. Do not invent the outcome."
+  ],
+  "scheduled_events_known": [
+    "2026-10-08 21:30 JST: U.S. weekly jobless claims (past nominal schedule time; result unknown at information cutoff).",
+    "2026-10-08 23:40 JST: Fed Kashkari Q&A.",
+    "2026-10-09 02:00 JST: U.S. Treasury 30-year bond auction.",
+    "2026-10-09 02:40 JST: Fed Musalem remarks."
+  ],
+  "source_refs": [
+    {
+      "source": "Diamond USDJPY page, quote 19:17 JST",
+      "url": "https://diamond.jp/list/market/chart-detail?=pairUSDJPY",
+      "retrieved_at": "2026-10-08T21:46:14+09:00",
+      "source_observed_at": "2026-10-08T19:17:00+09:00"
+    },
+    {
+      "source": "Investing USDJPY, observed quote 20:00:09 JST",
+      "url": "https://jp.investing.com/currencies/usd-jpy-historical-data",
+      "retrieved_at": "2026-10-08T21:46:14+09:00",
+      "source_observed_at": "2026-10-08T20:00:09+09:00"
+    },
+    {
+      "source": "Gaitame.com Oct 8 USDJPY evening outlook",
+      "url": "https://www.gaitame.com/media/entry/2026/10/08/161521",
+      "retrieved_at": "2026-10-08T21:46:14+09:00"
+    },
+    {
+      "source": "Kabutan/Fisco Oct 8 morning commentary",
+      "url": "https://s.kabutan.jp/news/n202610080185/",
+      "retrieved_at": "2026-10-08T21:46:14+09:00"
+    },
+    {
+      "source": "TradersWebFX Oct 8 calendar",
+      "url": "https://www.traderswebfx.jp/market_comment/daily_forecast/article/1211953",
+      "retrieved_at": "2026-10-08T21:46:14+09:00"
+    },
+    {
+      "source": "TradersWebFX jobless claims page without verified actual release",
+      "url": "https://www.traderswebfx.jp/economic_index/individual/392",
+      "retrieved_at": "2026-10-08T21:46:14+09:00"
+    }
+  ],
+  "facts": [
+    "The latest bounded public USDJPY references obtained before forecast issuance were around 158.24 at 19:17/20:00 JST, after a much lower intraday low.",
+    "Exact USDJPY quote at journal observation time and exact 22:00 Dukascopy bid/ask are not established.",
+    "Scheduled overnight Fed remarks and a U.S. long-bond auction pose event uncertainty."
+  ],
+  "interpretations": [
+    "The rebound is compatible with dollar-rate support but is balanced by upper-158 resistance and yen intervention sensitivity.",
+    "Working overnight view is near-neutral with a slight down tilt; this is not a validated predictor or trade signal.",
+    "Without the 21:30 U.S. claims actual and fresh valid 21:46 tick, interpretation confidence must remain LOW."
+  ],
+  "change_since_prior": "After Oct 8 08:21 previous journal, USDJPY reportedly dipped to the 157.58-157.59 range and recovered around 158.24 by 19:17/20:00. No source-qualified quote to compare at actual checkpoint.",
+  "base_case": "NEAR_NEUTRAL_TO_SLIGHT_USDJPY_DOWN; low confidence; target 22:00 JST Oct 8 -> 08:00 JST Oct 9.",
+  "alternative_case": "USDJPY_UP if yields rise after the U.S. Treasury auction or geopolitical risks weigh on JPY.",
+  "invalidation_conditions": [
+    "Sustained USDJPY advance through upper-158 resistance, with a verified rate-driven catalyst.",
+    "Unexpected auction outcome materially shifts long-term U.S. rates.",
+    "New authoritative Japanese intervention action or statement shifts price dynamics."
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "Nominal 22:00 JST cutoff: do not invent a qualified Dukascopy tick.",
+    "Oct 9 02:00 JST U.S. 30-year auction and yield response (AFTER forecast issuance, never retroactive input).",
+    "Oct 9 08:00 JST exact endpoint: formal score remains blocked without qualified reference data and human freeze."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "fc0af9a99aeb373148e03c8714f90fd1d5c00b859b7aabab5fef2a78f1f1b641"
+}
