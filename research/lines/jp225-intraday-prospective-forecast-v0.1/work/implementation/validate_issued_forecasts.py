@@ -10,7 +10,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from forecast_core import canonical_sha256
-from record_contract import validate_forecast_record
+from record_contract import validate_forecast_record, validate_review_record
 
 
 def main() -> None:
@@ -56,7 +56,21 @@ def main() -> None:
     for event_id, systems in sorted(by_event.items()):
         if systems != {"A1", "A2", "A3"}:
             raise ValueError(f"{event_id}: incomplete A1/A2/A3 event: {sorted(systems)}")
-    print(f"PASS: {len(paths)} records structurally checked / {len(by_event)} complete events; legacy hash warnings, if any, are not integrity passes")
+    review_paths = sorted(directory.glob("20??-??-??_review.json"))
+    for path in review_paths:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        validate_review_record(record)
+        event_date = path.name.split("_")[0]
+        expected_event = "XPF-JP225-" + event_date.replace("-", "")
+        if record["event_id"] != expected_event:
+            raise ValueError(f"{path.name}: review filename/event identity mismatch")
+        if expected_event not in by_event:
+            raise ValueError(f"{path.name}: review without issued forecast triplet")
+        if record["reviewed_at"][:10] < event_date:
+            raise ValueError(f"{path.name}: review predates the forecast event")
+        print(f"PASS {path.name}: review contract / event identity / formal scoring boundary")
+
+    print(f"PASS: {len(paths)} forecasts / {len(by_event)} complete events / {len(review_paths)} reviews; legacy hash warnings are not integrity passes")
 
 
 if __name__ == "__main__":
