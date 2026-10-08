@@ -6,6 +6,7 @@ import unittest
 from dataclasses import replace
 from datetime import date, timedelta
 from pathlib import Path
+from unittest.mock import patch
 
 from event_ledger import (EventBlocked, SyntheticSourceEvidence, associate_market_outcome,
                           build_synthetic_event, issue_formal_event, verify_synthetic_event,
@@ -82,6 +83,11 @@ class SyntheticEventLedgerTest(unittest.TestCase):
         self.blocked("model identity changed",visible_model="different-model")
         self.blocked("MODEL_CONFIG_CHANGED",visible_config="changed-config")
     def test_version_mismatch(self): self.blocked("VERSION_MISMATCH",version="SPEC-FXNS-001-v02")
+    def test_prompt_hash_mismatch_blocks_before_scoring(self):
+        with patch("event_ledger._candidate_hashes", side_effect=EventBlocked("PROMPT_SCHEMA_HASH_MISMATCH")), \
+             patch("event_ledger.daily_scores") as scores:
+            self.blocked("PROMPT_SCHEMA_HASH_MISMATCH")
+            scores.assert_not_called()
     def test_duplicate_raw_record_id(self):
         r=[self.records[0],dict(self.records[0])]
         self.blocked("DUPLICATE_RAW_RECORD_ID",raw_records=r,raw_count=2)
