@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import re
 from dataclasses import dataclass
@@ -306,6 +307,36 @@ def _validate_synthetic_record(record: dict, *, allow_blocked: bool = False):
         raise EventBlocked("INVALID_SYNTHETIC_DECISION")
     if type(record.get("is_no_trade")) is not bool or record["is_no_trade"] != (record["decision"] == "NO_TRADE"):
         raise EventBlocked("INCONSISTENT_NO_TRADE")
+
+    # Re-parse the *persisted* bytes with the existing frozen strict contract.
+    # The builder is not a trust boundary: direct writers and rehashed readback
+    # must reject extra nested keys, malformed JSON, and ID/enum divergences.
+    try:
+        reparsed = validate_batch(record["classification_raw"], ids)
+    except (ValueError, TypeError, KeyError) as exc:
+        raise EventBlocked("INVALID_SYNTHETIC_CLASSIFICATION_CONTRACT") from exc
+    if parsed != reparsed:
+        raise EventBlocked("SYNTHETIC_CLASSIFICATION_RAW_PARSED_MISMATCH")
+
+    # Exact recomputation uses the established arithmetic and action rule.
+    # No new tolerance, threshold, currency or scientific rule is introduced.
+    try:
+        expected_eur, expected_jpy = daily_scores(reparsed)
+        expected_action = pair_action(expected_eur, expected_jpy)
+    except (ValueError, TypeError, KeyError) as exc:
+        raise EventBlocked("SYNTHETIC_SCORE_RECOMPUTATION_BLOCKED") from exc
+    for currency, expected in (("EUR", expected_eur), ("JPY", expected_jpy)):
+        stored = record["synthetic_scores"][currency]
+        if type(stored) not in (int, float):  # bool is not a valid numeric score.
+            raise EventBlocked("INVALID_SYNTHETIC_SCORE_NUMBER")
+        try:
+            finite = math.isfinite(stored)
+        except (ValueError, TypeError, OverflowError) as exc:
+            raise EventBlocked("INVALID_SYNTHETIC_SCORE_NUMBER") from exc
+        if not finite or stored != expected:
+            raise EventBlocked("SYNTHETIC_SCORE_MISMATCH")
+    if record["decision"] != expected_action.value:
+        raise EventBlocked("SYNTHETIC_DECISION_SCORE_MISMATCH")
     cutoff = _time(record.get("information_cutoff"), "INFORMATION_CUTOFF")
     frozen_at = _time(record.get("frozen_at"), "FROZEN_AT")
     entry = _time(record.get("entry_target"), "ENTRY_TARGET")
