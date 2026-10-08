@@ -1,0 +1,194 @@
+{
+  "status": "ILLUSTRATIVE_FEASIBILITY_NOT_STRATEGY_RESULT",
+  "price_snapshot_date": "2026-10-02",
+  "currency": "JPY",
+  "assumptions": [
+    "Five equal capital sleeves; all active for lot-rounding illustration only",
+    "Floor to whole trading lots; residual stays cash",
+    "No transaction fees or execution price changes in lot-sizing illustration",
+    "No actual user's capital or trade instruction inferred",
+    "Twelve monthly subscriptions at currently published prices; no add-ons"
+  ],
+  "minimum_capital_one_lot_in_each_20pct_sleeve_jpy": 99100,
+  "annual_data_cost_jpy": {
+    "Light": 19800,
+    "Standard": 39600
+  },
+  "scenarios": [
+    {
+      "capital_jpy": 100000,
+      "all_five_sleeves_active_illustration": [
+        {
+          "code": "1306",
+          "lots": 4,
+          "units": 40,
+          "notional_jpy": 17208
+        },
+        {
+          "code": "2513",
+          "lots": 5,
+          "units": 5,
+          "notional_jpy": 17655
+        },
+        {
+          "code": "2510",
+          "lots": 2,
+          "units": 20,
+          "notional_jpy": 15780
+        },
+        {
+          "code": "2511",
+          "lots": 1,
+          "units": 10,
+          "notional_jpy": 11250
+        },
+        {
+          "code": "1540",
+          "lots": 1,
+          "units": 1,
+          "notional_jpy": 19820
+        }
+      ],
+      "invested_jpy": 81713,
+      "rounding_cash_jpy": 18287,
+      "rounding_cash_pct": 18.287,
+      "annual_data_cost_pct": {
+        "Light": 19.8,
+        "Standard": 39.6
+      }
+    },
+    {
+      "capital_jpy": 300000,
+      "all_five_sleeves_active_illustration": [
+        {
+          "code": "1306",
+          "lots": 13,
+          "units": 130,
+          "notional_jpy": 55926
+        },
+        {
+          "code": "2513",
+          "lots": 16,
+          "units": 16,
+          "notional_jpy": 56496
+        },
+        {
+          "code": "2510",
+          "lots": 7,
+          "units": 70,
+          "notional_jpy": 55230
+        },
+        {
+          "code": "2511",
+          "lots": 5,
+          "units": 50,
+          "notional_jpy": 56250
+        },
+        {
+          "code": "1540",
+          "lots": 3,
+          "units": 3,
+          "notional_jpy": 59460
+        }
+      ],
+      "invested_jpy": 283362,
+      "rounding_cash_jpy": 16638,
+      "rounding_cash_pct": 5.546,
+      "annual_data_cost_pct": {
+        "Light": 6.6,
+        "Standard": 13.2
+      }
+    },
+    {
+      "capital_jpy": 1000000,
+      "all_five_sleeves_active_illustration": [
+        {
+          "code": "1306",
+          "lots": 46,
+          "units": 460,
+          "notional_jpy": 197892
+        },
+        {
+          "code": "2513",
+          "lots": 56,
+          "units": 56,
+          "notional_jpy": 197736
+        },
+        {
+          "code": "2510",
+          "lots": 25,
+          "units": 250,
+          "notional_jpy": 197250
+        },
+        {
+          "code": "2511",
+          "lots": 17,
+          "units": 170,
+          "notional_jpy": 191250
+        },
+        {
+          "code": "1540",
+          "lots": 10,
+          "units": 10,
+          "notional_jpy": 198200
+        }
+      ],
+      "invested_jpy": 982328,
+      "rounding_cash_jpy": 17672,
+      "rounding_cash_pct": 1.7672,
+      "annual_data_cost_pct": {
+        "Light": 1.98,
+        "Standard": 3.96
+      }
+    },
+    {
+      "capital_jpy": 3000000,
+      "all_five_sleeves_active_illustration": [
+        {
+          "code": "1306",
+          "lots": 139,
+          "units": 1390,
+          "notional_jpy": 597978
+        },
+        {
+          "code": "2513",
+          "lots": 169,
+          "units": 169,
+          "notional_jpy": 596739
+        },
+        {
+          "code": "2510",
+          "lots": 76,
+          "units": 760,
+          "notional_jpy": 599640
+        },
+        {
+          "code": "2511",
+          "lots": 53,
+          "units": 530,
+          "notional_jpy": 596250
+        },
+        {
+          "code": "1540",
+          "lots": 30,
+          "units": 30,
+          "notional_jpy": 594600
+        }
+      ],
+      "invested_jpy": 2985207,
+      "rounding_cash_jpy": 14793,
+      "rounding_cash_pct": 0.4931,
+      "annual_data_cost_pct": {
+        "Light": 0.66,
+        "Standard": 1.32
+      }
+    }
+  ],
+  "does_not_estimate": [
+    "strategy_returns",
+    "bid_ask_spread",
+    "drawdown",
+    "tax",
+    "suitability"
+  ]
+}
