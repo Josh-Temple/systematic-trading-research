@@ -233,7 +233,7 @@ class SyntheticEventLedgerTest(unittest.TestCase):
                 with self.assertRaises(EventBlocked):
                     write_synthetic_event(forged, Path(tmp))
                 payload = {"record": forged, "record_sha256": canonical_sha256(forged)}
-                file.write_bytes(canonical_json_bytes(payload) + b"\\n")
+                file.write_bytes(canonical_json_bytes(payload) + b"\n")
                 with self.assertRaises(EventBlocked):
                     verify_synthetic_event(file)
 
@@ -262,7 +262,7 @@ class SyntheticEventLedgerTest(unittest.TestCase):
                 with self.assertRaises(EventBlocked):
                     write_synthetic_event(forged, Path(tmp))
                 file.write_bytes(canonical_json_bytes(
-                    {"record": forged, "record_sha256": canonical_sha256(forged)}) + b"\\n")
+                    {"record": forged, "record_sha256": canonical_sha256(forged)}) + b"\n")
                 with self.assertRaises(EventBlocked):
                     verify_synthetic_event(file)
 
@@ -276,7 +276,7 @@ class SyntheticEventLedgerTest(unittest.TestCase):
             forged = copy.deepcopy(event)
             forged["decision"] = "LONG_EURJPY"; forged["is_no_trade"] = False
             file.write_bytes(canonical_json_bytes(
-                {"record": forged, "record_sha256": canonical_sha256(forged)}) + b"\\n")
+                {"record": forged, "record_sha256": canonical_sha256(forged)}) + b"\n")
             with self.assertRaisesRegex(EventBlocked, "SYNTHETIC_DECISION_SCORE_MISMATCH"):
                 verify_synthetic_event(file)
 
@@ -298,7 +298,7 @@ class SyntheticEventLedgerTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             file, _ = write_synthetic_event(original, Path(tmp))
             file.write_bytes(canonical_json_bytes(
-                {"record": replacement, "record_sha256": canonical_sha256(replacement)}) + b"\\n")
+                {"record": replacement, "record_sha256": canonical_sha256(replacement)}) + b"\n")
             self.assertEqual(verify_synthetic_event(file)["decision"], "NO_TRADE")
             self.assertNotEqual(original["decision"], replacement["decision"])
 
