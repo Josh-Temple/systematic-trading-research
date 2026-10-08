@@ -1,0 +1,34 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261008",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-08T17:57:23+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "The pre-cutoff preliminary assessment was saved at 07:55:35 JST before the 08:00:00 information cutoff; the actual A1/A2/A3 forecast JSONs were issued at 08:21:45 JST and explicitly labeled late-issued.",
+    "The unchanged 07:55:35 preliminary forecasts were B0 p_up=0.50/0 bps; A1 0.46/-6 bps; A2 0.42/-12 bps; A3 0.44/-8 bps. No later market information was used to revise them.",
+    "No XM MT5 JP225Cash market prices or Bid/Ask quotes were fetched for this review, pursuant to the user's explicit instruction to defer actual XM acquisition.",
+    "No qualified exact-XM 09:00/15:30 result is available in this review; the formal start and end quotes, return, binary outcome and formal scores cannot be established."
+  ],
+  "interpretation": [
+    "This is a completed outcome-availability review, not a completed formal forecast-performance evaluation.",
+    "The separate PUBLIC_PROXY_REVIEW uses a different instrument (Nikkei 225 cash index) for exploratory diagnostics only; its values and scores are not eligible for the exact-XM formal score or later 60-event cohort."
+  ],
+  "error_attribution": [
+    "SOURCE_NOT_RETRIEVED_BY_USER_DIRECTION: XM data retrieval was intentionally skipped, not attempted and not asserted to have failed.",
+    "LATE_ISSUANCE_AFTER_0800 remains a forecast-protocol deviation; the 07:55 preliminary probabilities were preserved without post-cutoff re-inference.",
+    "FORECAST_ERROR_UNDETERMINED: Without an exact-XM outcome, no formal direction, magnitude, or probability error can be attributed."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "Specification PROPOSED_NOT_FROZEN / scientific status UNTESTED / formal scored cohort CLOSED / source readiness PARTIAL / action NO_TRADE.",
+    "Public cash-index context and explicitly nonformal proxy Brier/absolute-error diagnostics, if reviewed, reside only in forecasts/2026-10-08_PUBLIC_PROXY_REVIEW.md.",
+    "No source-retrieval failure, qualified data coverage, formal score, broker execution, or model performance is claimed."
+  ]
+}
