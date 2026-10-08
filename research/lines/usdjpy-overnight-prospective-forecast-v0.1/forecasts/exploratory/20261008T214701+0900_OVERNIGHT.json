@@ -1,0 +1,91 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261008-214701",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-08T21:47:01+09:00",
+  "information_cutoff": "2026-10-08T21:46:14+09:00",
+  "information_cutoff_basis": "Clock check captured 21:46:14 JST; forecast values were declared to the user before this GitHub persistence step. No subsequently retrieved market observations influence the prediction.",
+  "nominal_protocol_cutoff": "2026-10-08T22:00:00+09:00",
+  "target_start": "2026-10-08T22:00:00+09:00",
+  "target_end": "2026-10-09T08:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_12M59S; NO_QUALIFIED_START_QUOTE_OR_SOURCE; NOT_ELIGIBLE_FOR_FROZEN_BENCHMARK",
+  "system_identity": "EXPLORATORY_RESEARCHER_JUDGMENT_UNFROZEN",
+  "model_identity": "GPT-6",
+  "p_up": 0.48,
+  "forecast_return_bps": -3,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_DOWN",
+  "confidence": "LOW",
+  "top_drivers": [
+    "USDJPY recovered from an intraday public-session low around 157.58-157.59 toward approximately 158.24 by 19:17 and 20:00 JST, but these delayed public reference values are not exact cutoff ticks.",
+    "Overnight long-duration U.S. Treasury auction and Fed official remarks introduce two-sided yield risks; prior 10-year U.S. yield around 5.28% supports USD against JPY, without proving overnight direction.",
+    "Resistance/intervention concern in the upper 158-yen area limits confidence in sustained overnight upside.",
+    "Mixed Fed/BOJ policy expectations and oil/geopolitical uncertainty keep the directional estimate near neutral."
+  ],
+  "counterevidence": [
+    "The recovery from below 158 and historically elevated U.S. rates could extend upward, invalidating the slight-down interpretation.",
+    "Oil/geopolitical risks could weigh on JPY and lift USDJPY.",
+    "A disappointing or strong U.S. 30-year auction and intervening data may alter USDJPY sharply.",
+    "No verified actual USDJPY quote at the forecast time; no 21:30 U.S. jobless-claims result established from reviewed sources."
+  ],
+  "scheduled_catalysts_known_pre_cutoff": [
+    "2026-10-08 21:30 JST U.S. initial and continuing jobless claims scheduled. Actual result NOT VERIFIED in available sources.",
+    "2026-10-08 23:40 JST Minneapolis Fed Kashkari Q&A, from today's published schedule.",
+    "2026-10-09 02:00 JST U.S. Treasury 30-year bond auction, published schedule.",
+    "2026-10-09 02:40 JST St. Louis Fed Musalem remarks, published schedule."
+  ],
+  "scenario_map": {
+    "base": "Near-flat with a slight downside tilt by 08:00 JST; rate-driven upside and upper-158 resistance roughly offset.",
+    "upside": "Stronger U.S. rates or risk-driven yen selling extends USDJPY higher than its unknown 22:00 midpoint.",
+    "downside": "Yield relief or fading dollar momentum pushes USDJPY below its unknown 22:00 midpoint."
+  },
+  "source_refs": [
+    {
+      "name": "Investing USDJPY historical/live page",
+      "url": "https://jp.investing.com/currencies/usd-jpy-historical-data",
+      "observed_at": "2026-10-08T20:00:09+09:00",
+      "observed_public_quote": "158.24",
+      "qualifying_reference": false
+    },
+    {
+      "name": "Diamond/market lab USDJPY",
+      "url": "https://diamond.jp/list/market/chart-detail?=pairUSDJPY",
+      "observed_at": "2026-10-08T19:17:00+09:00",
+      "observed_public_quote": "158.24",
+      "qualifying_reference": false
+    },
+    {
+      "name": "Gaitame.com USDJPY outlook",
+      "url": "https://www.gaitame.com/media/entry/2026/10/08/161521",
+      "published_at": "2026-10-08",
+      "qualifying_reference": false
+    },
+    {
+      "name": "Kabutan / Fisco morning USDJPY outlook",
+      "url": "https://s.kabutan.jp/news/n202610080185/",
+      "published_at": "2026-10-08T08:48:00+09:00",
+      "qualifying_reference": false
+    },
+    {
+      "name": "Traders Web FX event calendar",
+      "url": "https://www.traderswebfx.jp/market_comment/daily_forecast/article/1211953",
+      "published_at": "2026-10-08",
+      "qualifying_reference": false
+    },
+    {
+      "name": "Traders Web FX jobless claims forecast/unconfirmed release",
+      "url": "https://www.traderswebfx.jp/economic_index/individual/392",
+      "actual_result_status": "UNVERIFIED",
+      "qualifying_reference": false
+    }
+  ],
+  "journal_state_id": "NOT_YET_RECORDED_AT_FORECAST_ISSUANCE",
+  "market_quote_at_issued_at": "UNKNOWN",
+  "qualified_start_22_00_bid_ask": "UNKNOWN",
+  "post_cutoff_data_allowed": false,
+  "scored_benchmark_effect": "NONE",
+  "formal_outcome_access": "CLOSED",
+  "broker_action_authorized": false,
+  "integrity_note": "Immutable original tracked by Git blob SHA and commit; no realized result or forecast score stored in this file. Any correction must be a separate append-only artifact."
+}
