@@ -302,4 +302,91 @@ class SyntheticEventLedgerTest(unittest.TestCase):
             self.assertEqual(verify_synthetic_event(file)["decision"], "NO_TRADE")
             self.assertNotEqual(original["decision"], replacement["decision"])
 
+
+    def test_outer_envelope_rejects_extra_missing_and_non_object(self):
+        event = self.build()
+        with tempfile.TemporaryDirectory() as tmp:
+            file, _ = write_synthetic_event(event, Path(tmp))
+            digest = canonical_sha256(event)
+            for extra in ("market_outcome", "approval", "source_pass"):
+                forged = {"record": event, "record_sha256": digest, extra: "synthetic-forged"}
+                with self.subTest(extra=extra):
+                    file.write_bytes(canonical_json_bytes(forged) + b"\n")
+                    with self.assertRaisesRegex(EventBlocked, "INVALID_LEDGER_ENVELOPE"):
+                        verify_synthetic_event(file)
+            for forged in ({"record": event}, {"record_sha256": digest},
+                           {"record": event, "record_sha256": digest, "extra": None},
+                           [], None, "not-an-envelope", 7):
+                with self.subTest(shape=type(forged).__name__):
+                    file.write_bytes(canonical_json_bytes(forged) + b"\n")
+                    with self.assertRaisesRegex(EventBlocked, "INVALID_LEDGER_ENVELOPE"):
+                        verify_synthetic_event(file)
+            forged = {"record": ["not", "a", "dict"], "record_sha256": digest}
+            file.write_bytes(canonical_json_bytes(forged) + b"\n")
+            with self.assertRaisesRegex(EventBlocked, "INVALID_LEDGER_RECORD"):
+                verify_synthetic_event(file)
+
+    def test_outer_envelope_rejects_invalid_digest_and_mismatch(self):
+        event = self.build()
+        with tempfile.TemporaryDirectory() as tmp:
+            file, _ = write_synthetic_event(event, Path(tmp))
+            expected = canonical_sha256(event)
+            for digest in (None, False, 1, "", "z"*64, "A"*64, "0"*63, "0"*65):
+                with self.subTest(digest=digest):
+                    file.write_bytes(canonical_json_bytes({"record": event,
+                        "record_sha256": digest}) + b"\n")
+                    with self.assertRaisesRegex(EventBlocked, "INVALID_LEDGER_RECORD_SHA256"):
+                        verify_synthetic_event(file)
+            mismatch = ("0" if expected[0] != "0" else "1") + expected[1:]
+            file.write_bytes(canonical_json_bytes({"record": event,
+                "record_sha256": mismatch}) + b"\n")
+            with self.assertRaisesRegex(EventBlocked, "LEDGER_TAMPER_DETECTED"):
+                verify_synthetic_event(file)
+
+    def test_outer_envelope_rejects_broken_or_duplicate_json_members(self):
+        event = self.build()
+        with tempfile.TemporaryDirectory() as tmp:
+            file, _ = write_synthetic_event(event, Path(tmp))
+            for payload in (b"{broken}\n", b"[] trailing\n",
+                            b'{"record": null, "record": null, "record_sha256": "0"}\n',
+                            b'{"record":{}, "record_sha256":"0", "record_sha256":"1"}\n'):
+                with self.subTest(payload=payload):
+                    file.write_bytes(payload)
+                    with self.assertRaises(EventBlocked):
+                        verify_synthetic_event(file)
+
+    def test_blocked_envelope_cannot_smuggle_decision_after_rehash(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            file = write_blocked_receipt(event_id="SYNTHETIC-FXNS-20261008",
+                reason="SOURCE_QUALIFICATION_BLOCKED", directory=Path(tmp))
+            original = verify_synthetic_event(file)
+            self.assertIsNone(original["decision"])
+            for forged in (
+                {"record": original, "record_sha256": canonical_sha256(original),
+                 "approval": True},
+                {"record": dict(original, decision="NO_TRADE"),
+                 "record_sha256": canonical_sha256(dict(original, decision="NO_TRADE"))},
+            ):
+                with self.subTest(fields=tuple(forged)):
+                    file.write_bytes(canonical_json_bytes(forged) + b"\n")
+                    with self.assertRaises(EventBlocked):
+                        verify_synthetic_event(file)
+
+    def test_cross_file_same_event_id_is_unresolved_design_boundary(self):
+        # Existing separate .json/.blocked.json namespaces are not globally
+        # exclusive. Record the conflict; do not silently set precedence.
+        event = self.build()
+        with tempfile.TemporaryDirectory() as tmp:
+            normal, _ = write_synthetic_event(event, Path(tmp))
+            blocked = write_blocked_receipt(event_id=event["event_id"],
+                reason="SOURCE_QUALIFICATION_BLOCKED", directory=Path(tmp))
+            self.assertNotEqual(normal, blocked)
+            self.assertEqual(verify_synthetic_event(normal)["decision"], "LONG_EURJPY")
+            self.assertIsNone(verify_synthetic_event(blocked)["decision"])
+            with self.assertRaises(FileExistsError):
+                write_synthetic_event(event, Path(tmp))
+            with self.assertRaises(FileExistsError):
+                write_blocked_receipt(event_id=event["event_id"], reason="RETRY",
+                    directory=Path(tmp))
+
 if __name__ == "__main__": unittest.main()
