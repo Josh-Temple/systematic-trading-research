@@ -389,13 +389,32 @@ def write_synthetic_event(event: dict, directory: Path):
     return file, hashlib.sha256(raw).hexdigest()
 
 
+def _ledger_object_without_duplicate_keys(pairs):
+    """Reject duplicate JSON members, including duplicate outer envelope members."""
+    obj = {}
+    for key, value in pairs:
+        if key in obj:
+            raise EventBlocked("LEDGER_DUPLICATE_JSON_KEY")
+        obj[key] = value
+    return obj
+
+
 def verify_synthetic_event(file: Path):
     raw = Path(file).read_bytes()
     if not raw.endswith(b"\n"):
         raise EventBlocked("LEDGER_INCOMPLETE_RECORD")
-    payload = json.loads(raw)
+    try:
+        payload = json.loads(raw, object_pairs_hook=_ledger_object_without_duplicate_keys)
+    except (ValueError, UnicodeError) as exc:
+        raise EventBlocked("INVALID_LEDGER_JSON") from exc
+    # SHA-256 checks record integrity only. It is not independent authorship proof.
+    if not isinstance(payload, dict) or set(payload) != {"record", "record_sha256"}:
+        raise EventBlocked("INVALID_LEDGER_ENVELOPE")
     record = payload["record"]
-    if payload.get("record_sha256") != canonical_sha256(record):
+    if not isinstance(record, dict):
+        raise EventBlocked("INVALID_LEDGER_RECORD")
+    digest = _sha(payload["record_sha256"], "LEDGER_RECORD")
+    if digest != canonical_sha256(record):
         raise EventBlocked("LEDGER_TAMPER_DETECTED")
     _validate_synthetic_record(record, allow_blocked=True)
     return record
