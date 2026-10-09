@@ -389,13 +389,34 @@ def write_synthetic_event(event: dict, directory: Path):
     return file, hashlib.sha256(raw).hexdigest()
 
 
+_LEDGER_ENVELOPE_KEYS = frozenset({"record", "record_sha256"})
+
+
+def _validate_ledger_envelope(payload):
+    """Reject untrusted outer shapes before the existing strict record checks.
+
+    SHA-256 detects inconsistent bytes; it is NOT an independent provenance
+    signature and cannot prevent coherent privileged-file replacement.
+    """
+    if not isinstance(payload, dict) or set(payload) != _LEDGER_ENVELOPE_KEYS:
+        raise EventBlocked("INVALID_LEDGER_ENVELOPE")
+    record = payload["record"]
+    if not isinstance(record, dict):
+        raise EventBlocked("INVALID_SYNTHETIC_RECORD")
+    stored = _sha(payload["record_sha256"], "LEDGER_RECORD")
+    if stored != canonical_sha256(record):
+        raise EventBlocked("LEDGER_TAMPER_DETECTED")
+    return record
+
+
 def verify_synthetic_event(file: Path):
     raw = Path(file).read_bytes()
     if not raw.endswith(b"\n"):
         raise EventBlocked("LEDGER_INCOMPLETE_RECORD")
-    payload = json.loads(raw)
-    record = payload["record"]
-    if payload.get("record_sha256") != canonical_sha256(record):
-        raise EventBlocked("LEDGER_TAMPER_DETECTED")
+    try:
+        payload = json.loads(raw)
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise EventBlocked("INVALID_LEDGER_JSON") from exc
+    record = _validate_ledger_envelope(payload)
     _validate_synthetic_record(record, allow_blocked=True)
     return record
