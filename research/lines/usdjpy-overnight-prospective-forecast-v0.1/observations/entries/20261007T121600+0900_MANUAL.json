@@ -1,0 +1,114 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261007T121600+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-07T12:16:00+09:00",
+  "retrieved_at": "2026-10-07T12:16:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-07T12:16:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "MULTI_SOURCE_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "10:00 JST public market report: USDJPY 158.42 after a 158.47 high; 10:07 report showed 158.49. Latest accessible noncanonical pages around the late morning showed roughly 158.3-158.4. Exact 12:16 qualified Bid/Ask unavailable."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_EXACT_12:16",
+    "us_10y": "about 5.30% in Reuters Asia market update, rebounding from overnight lows",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "about 3.07%-3.08% on current noncanonical market pages, below Oct 6 close 3.093%"
+  },
+  "policy_state": {
+    "fed": "October hike probability remains low relative to last week; FOMC minutes due 03:00 JST on 2026-10-08.",
+    "boj": "Ueda retained conditional tightening but did not create strong near-term hike repricing; stronger August real wages have not produced sustained yen strength.",
+    "japan_fx_authorities": "Intervention sensitivity is increasing as USDJPY moves into the upper-158 area."
+  },
+  "macro_news_facts": [
+    "USDJPY broke above the prior-day 158.25 high and reached at least 158.47-158.49 in Tokyo morning trading.",
+    "The move was supported by renewed rise in U.S. 10-year yields toward 5.30% and softer expectations for an imminent BOJ hike.",
+    "Brent crude rebounded to about $101.5-$101.7 and WTI to about $90.3, restoring some yen-negative terms-of-trade pressure.",
+    "Japan real wages were +1.5% y/y in August, but that yen-supportive macro signal did not prevent USDJPY from making a new local high.",
+    "Japan 10-year yield was around 3.07%-3.08% on noncanonical current market pages, below the prior day's 3.093% close."
+  ],
+  "scheduled_events_known": [
+    "2026-10-07 around 14:00 JST: BOJ Consumption Activity Index.",
+    "2026-10-07 14:00 JST: Japan preliminary coincident/leading indicators.",
+    "2026-10-08 03:00 JST: FOMC minutes for September 15-16 meeting."
+  ],
+  "source_refs": [
+    {
+      "source": "Traders Web Tokyo FX 10:06",
+      "ref_id": "turn765088search0",
+      "retrieved_at": "2026-10-07T12:16:00+09:00"
+    },
+    {
+      "source": "Fisco/Investing Tokyo FX 10:07",
+      "ref_id": "turn752560search0",
+      "retrieved_at": "2026-10-07T12:16:00+09:00"
+    },
+    {
+      "source": "Reuters global markets Oct 7",
+      "ref_id": "turn752560news28",
+      "retrieved_at": "2026-10-07T12:16:00+09:00"
+    },
+    {
+      "source": "Reuters oil Oct 7",
+      "ref_id": "turn380447news26",
+      "retrieved_at": "2026-10-07T12:16:00+09:00"
+    },
+    {
+      "source": "Reuters Japan real wages",
+      "ref_id": "turn380447news24",
+      "retrieved_at": "2026-10-07T12:16:00+09:00"
+    },
+    {
+      "source": "Investing Japan 10Y current/historical page",
+      "ref_id": "turn380447search4",
+      "retrieved_at": "2026-10-07T12:16:00+09:00"
+    },
+    {
+      "source": "Myfxbook USDJPY current page",
+      "ref_id": "turn752560search2",
+      "retrieved_at": "2026-10-07T12:16:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY broke above 158.25 and printed at least 158.47-158.49 during Tokyo morning.",
+    "U.S. 10-year yields rebounded to about 5.30%.",
+    "Oil prices rebounded above the prior evening levels.",
+    "Japan 10-year yields were not rising in tandem and appeared lower than the prior close.",
+    "The combination widened the directional pressure toward a weaker yen during the morning."
+  ],
+  "interpretations": [
+    "The 09:41 NEUTRAL_TO_SLIGHT_USDJPY_UP view received clear price confirmation after the pair broke the 158.25 resistance area.",
+    "The stronger real-wage release failed to generate sustained yen strength, which reinforces the interpretation of limited near-term BOJ-hike repricing.",
+    "The return of higher U.S. yields and higher oil adds two simultaneous yen-negative channels.",
+    "However, 158.5 and then 159 remain important resistance/intervention-risk zones, so upside conviction should not be escalated to high."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: USDJPY broke above yesterday's 158.25 high to 158.47-158.49 while U.S. 10-year yields and oil rebounded and Japan 10-year yields softened. The prior slight-up bias is now better confirmed.",
+  "base_case": "SLIGHT_USDJPY_UP into early afternoon, with 158.5-159 as the key resistance/intervention-risk zone.",
+  "alternative_case": "USDJPY_MEAN_REVERSION_DOWN if 158.5 fails decisively and U.S. yields roll back lower before the 14:00 Japan data.",
+  "invalidation_conditions": [
+    "Sustained move back below 158.1-158.2 with falling U.S. yields.",
+    "Fresh forceful intervention warning from Japanese authorities.",
+    "Unexpectedly hawkish BOJ-related repricing that lifts JGB yields and strengthens JPY."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "14:00 JST BOJ Consumption Activity Index / Japan coincident indicators.",
+    "Whether USDJPY can sustain trade above 158.25 and challenge 158.5.",
+    "Japan 10-year yield into Tokyo afternoon.",
+    "03:00 JST FOMC minutes."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "0ff03eef9da5fd1ee544b983013573ffeaa933022aef459e6b968298e248cdba"
+}

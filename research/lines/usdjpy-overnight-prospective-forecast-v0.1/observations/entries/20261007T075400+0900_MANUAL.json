@@ -1,0 +1,131 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261007T075400+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-07T07:54:00+09:00",
+  "retrieved_at": "2026-10-07T07:54:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-07T07:54:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Latest available early-morning public quotes: about 158.12-158.13 around 05:54-06:35 JST. Prior session close about 158.10; day range 157.77-158.25. Exact qualified 07:54 Bid/Ask unavailable."
+  },
+  "rates_state": {
+    "us_2y": "4.787% around 04:28 JST, down about 2.5 bp",
+    "us_10y": "5.265% around 04:28 JST, down about 4.0 bp",
+    "jp_2y": "UNKNOWN_PRE_TOKYO_OPEN",
+    "jp_10y": "about 3.078% around 03:02 JST market snapshot"
+  },
+  "policy_state": {
+    "fed": "October hold remains favored after weak payrolls. Bowman overnight remarks focused on bank supervision reform rather than monetary policy.",
+    "boj": "Ueda maintained conditional further-tightening guidance but did not signal an imminent October hike; market reaction showed limited yen support.",
+    "japan_fx_authorities": "Intervention sensitivity remains a material upside cap as USDJPY approaches the high-158s/159 area."
+  },
+  "macro_news_facts": [
+    "USDJPY ended the October 6 session around 158.10 after a 157.77-158.25 range.",
+    "Early-morning public quotes remained around 158.12-158.13 despite lower U.S. Treasury yields.",
+    "U.S. 2-year yield was about 4.787% and 10-year about 5.265% late New York, both lower on the day.",
+    "Reuters reported the broader dollar weakened while the yen still slipped slightly.",
+    "WTI was about $89.64 late New York after trading as low as the mid-$86s; Reuters put Brent around $100.58.",
+    "Fed Vice Chair for Supervision Bowman discussed supervisory-framework changes, not a new monetary-policy signal."
+  ],
+  "scheduled_events_known": [
+    "2026-10-07 08:50 JST: BOJ September operations / government transactions / monetary base-related releases.",
+    "2026-10-07 08:50 JST: MOF trade statistics for first 20 days of September and reserve-liquidity data.",
+    "2026-10-07 around 14:00 JST: BOJ Consumption Activity Index.",
+    "2026-10-08 03:00 JST: FOMC minutes for September 15-16 meeting."
+  ],
+  "source_refs": [
+    {
+      "source": "Minkabu NY late-session markets 04:38 JST",
+      "ref_id": "turn493745search0",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "Minkabu Oct 6 FX OHLC",
+      "ref_id": "turn206243search1",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "Investing USDJPY 06:35",
+      "ref_id": "turn142733search0",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "Reuters global markets Oct 6",
+      "ref_id": "turn493745news22",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "Reuters euro/dollar Oct 6",
+      "ref_id": "turn493745news21",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "Reuters oil Oct 6",
+      "ref_id": "turn306914news13",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "Reuters Bowman supervision remarks",
+      "ref_id": "turn306914news12",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "BOJ release calendar",
+      "ref_id": "turn768779search0",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "MOF weekly schedule",
+      "ref_id": "turn768779search1",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    },
+    {
+      "source": "Federal Reserve calendar",
+      "ref_id": "turn512250search0",
+      "retrieved_at": "2026-10-07T07:54:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY held around 158.1 into the Tokyo morning despite a decline in U.S. Treasury yields.",
+    "The dollar weakened against some major peers while USDJPY remained firm.",
+    "Oil stabilized below the earlier-week stress highs.",
+    "No overnight monetary-policy surprise from Bowman was identified.",
+    "The October 6 22:00 forecast event remains a missed cutoff with no forecast issued."
+  ],
+  "interpretations": [
+    "The most notable overnight signal is USDJPY resilience despite lower U.S. yields and a softer broad dollar.",
+    "This weakens the prior mild-down current-state bias and points to yen-specific softness, likely reflecting limited near-term BOJ-hike repricing and risk-on flows.",
+    "However, upside conviction should remain limited because 158.25-158.5 is nearby resistance and intervention sensitivity rises as the pair approaches 159.",
+    "Today's 08:50 releases are secondary compared with tonight's FOMC minutes, but they should still be preserved if they materially move rates or FX."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: USDJPY stayed near 158.1 overnight even as U.S. 2Y/10Y yields fell and the broader dollar softened. The prior NEUTRAL_TO_SLIGHT_USDJPY_DOWN state is no longer the best description.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_UP into the Tokyo open, with resistance around 158.25-158.5 and intervention sensitivity limiting conviction.",
+  "alternative_case": "USDJPY_DOWN if Tokyo trading finally transmits lower U.S. yields into the pair, especially with JGB yields firming or renewed intervention rhetoric.",
+  "invalidation_conditions": [
+    "Sustained break below roughly 157.8 with lower U.S. yields.",
+    "Clear hawkish BOJ-related repricing in Japan rates.",
+    "Fresh strong intervention warning from Japanese authorities."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "08:50 JST BOJ/MOF releases and any immediate FX/JGB response.",
+    "Whether 158.25-158.5 resistance holds during Tokyo trading.",
+    "Japan 10-year yield after market open.",
+    "2026-10-08 03:00 JST FOMC minutes."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "d0cd57e5b5a88e8ab91ab53b343746dc427cabcf9046f5d8d5b6603333d83058"
+}

@@ -1,0 +1,33 @@
+Synthetic pre-outcome validation
+Date: 2026-10-04
+Scope: USDJPY prospective forecast candidate helper only
+Market data accessed by test: NONE
+Scientific outcome calculated: NONE
+
+Command-equivalent:
+python -m unittest -v test_forecast_core.py
+
+Result:
+Ran 19 tests in 0.001s
+OK
+
+Covered:
+- timezone-aware quote validation
+- crossed quote rejection
+- Monday-Thursday overnight event boundary
+- Friday overnight rejection
+- Sunday weekly cutoff / Monday start / Friday end
+- non-Sunday weekly rejection
+- exact / 60s / 61s start quote boundary
+- exact / 60s / 61s end quote boundary
+- equal midpoint -> Y_up=0 and zero return
+- Brier arithmetic
+- probability bounds [0.01, 0.99]
+- absolute error arithmetic
+- post-cutoff information rejection
+- pre-cutoff knowledge of a future scheduled event allowed
+- canonical JSON SHA-256 key-order stability
+
+Environment note:
+The tests were executed in the assistant-side Python runtime as a synthetic check.
+This is not a GitHub Actions CI result.

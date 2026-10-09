@@ -1,0 +1,25 @@
+Live Market State Journal synthetic validation
+Date: 2026-10-05
+Scope: observation-entry validator only
+Market outcome access: NONE
+Scientific outcome calculated: NONE
+
+Local synthetic test result:
+12 tests PASS
+
+Covered:
+- valid entry acceptance
+- canonical SHA-256 key-order stability
+- post-hash tamper rejection
+- future source-cutoff rejection
+- retrieval-before-observation rejection
+- scored-forecast promotion rejection
+- retroactive post-cutoff supply rejection
+- journal-as-canonical-input substitution rejection
+- correction reference rules
+- valid correction acceptance
+- naive timestamp rejection
+
+Boundary:
+These tests validate journal integrity mechanics only.
+They do not establish forecast skill, source qualification, market edge, or trading readiness.

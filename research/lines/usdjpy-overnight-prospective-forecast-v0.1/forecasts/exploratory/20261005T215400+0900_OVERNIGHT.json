@@ -1,0 +1,52 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261005-215400",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-05T21:54:00+09:00",
+  "information_cutoff": "2026-10-05T21:54:00+09:00",
+  "nominal_protocol_cutoff": "2026-10-05T22:00:00+09:00",
+  "target_start": "2026-10-05T22:00:00+09:00",
+  "target_end": "2026-10-06T08:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_6_MINUTES_AND_UNQUALIFIED_REFERENCE_FEED; NOT ELIGIBLE FOR FROZEN BENCHMARK",
+  "system_identity": "EXPLORATORY_FULL_SYSTEM_ANALOGUE",
+  "model_identity": "GPT-5.6 Sol",
+  "p_up": 0.53,
+  "forecast_return_bps": 4.0,
+  "direction_label": "SLIGHT_USDJPY_UP",
+  "confidence": "LOW_TO_MEDIUM",
+  "top_drivers": [
+    "U.S. 10-year Treasury yield remains elevated near 5.277%, preserving dollar carry/rate support.",
+    "USDJPY repeatedly rebounded from intraday lows and remained near the upper half of today's 157.44-158.17 range in the latest verified quote.",
+    "Broad-dollar demand from European fiscal/political stress supported USD during the day."
+  ],
+  "counterevidence": [
+    "September U.S. payroll growth was weak and October Fed-hike expectations fell sharply.",
+    "Takaichi's fiscal-discipline message reduced one Japan-side yen-negative risk channel.",
+    "Oil retraced from the morning spike, reducing terms-of-trade pressure on JPY.",
+    "Japanese intervention risk remains an asymmetric cap if USDJPY accelerates upward."
+  ],
+  "scheduled_catalysts_known_pre_cutoff": [
+    "22:45 JST S&P Global U.S. services/composite PMI final.",
+    "23:00 JST ISM Services PMI; secondary consensus around 55."
+  ],
+  "scenario_map": {
+    "base": "Range-to-slight-up: USDJPY ends 08:00 modestly above its 22:00 midpoint, supported by high U.S. yields, but without a clean breakout.",
+    "upside": "Strong services/price data lift Treasury yields and push USDJPY above 158.17.",
+    "downside": "Weak services/employment data reinforce Fed-pause pricing, lower yields, and send USDJPY below 157.44."
+  },
+  "source_refs": [
+    "turn660169search3",
+    "turn746526news37",
+    "turn746526news36",
+    "turn746526news39",
+    "turn746526search1",
+    "turn120306news52"
+  ],
+  "journal_state_id": "STATE-USDJPY-20261005T215400+0900-PRE_FORECAST_STATE",
+  "post_cutoff_data_allowed": false,
+  "scored_benchmark_effect": "NONE",
+  "broker_action_authorized": false,
+  "forecast_hash": "30db806e7a773a5d5db6cc69705601430e0068f27c1691427e68c94c2c79e059"
+}

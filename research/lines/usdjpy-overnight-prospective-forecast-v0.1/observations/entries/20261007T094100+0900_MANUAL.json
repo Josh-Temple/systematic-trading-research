@@ -1,0 +1,114 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261007T094100+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-07T09:41:00+09:00",
+  "retrieved_at": "2026-10-07T09:41:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-07T09:41:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "8:00 JST OANDA report showed 158.17. Reuters wage-release report showed USDJPY around 158.08 after the 08:30 data. No sufficiently reliable 09:41 qualified Bid/Ask quote was captured."
+  },
+  "rates_state": {
+    "us_2y": "about 4.79% late New York context",
+    "us_10y": "about 5.27% late New York context",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "early JGB futures slightly higher, implying modestly softer yields; exact 09:41 cash yield not bound"
+  },
+  "policy_state": {
+    "fed": "October hold remains favored; FOMC minutes are due at 03:00 JST on 2026-10-08.",
+    "boj": "Ueda's conditional tightening guidance remains in force. August real wage growth strengthens the case that household purchasing power is improving, but no new BOJ policy signal was issued this morning.",
+    "japan_fx_authorities": "Intervention sensitivity remains relevant as USDJPY trades near the upper-158 area."
+  },
+  "macro_news_facts": [
+    "Japan real wages rose 1.5% year-on-year in August, the eighth consecutive monthly increase according to government data reported by Reuters.",
+    "USDJPY was 158.17 at 08:00 JST and around 158.08 in the Reuters wage-release report, indicating only a small yen-positive reaction.",
+    "BOJ released its scheduled September operations / government-transactions / monetary-base-related statistics at 08:50 JST.",
+    "JGB futures edged higher in early Tokyo trading, tracking gains in U.S. Treasuries.",
+    "Brent remained around the $100 area and WTI around $89-$90, below earlier-week stress highs."
+  ],
+  "scheduled_events_known": [
+    "2026-10-07 10:00 JST: BOJ ten-day balance-sheet report (September 30 position).",
+    "2026-10-07 around 14:00 JST: BOJ Consumption Activity Index.",
+    "2026-10-07 14:00 JST: Japan preliminary coincident/leading indicators.",
+    "2026-10-08 03:00 JST: FOMC minutes for September 15-16 meeting."
+  ],
+  "source_refs": [
+    {
+      "source": "OANDA Tokyo FX 08:06",
+      "ref_id": "turn168359search2",
+      "retrieved_at": "2026-10-07T09:41:00+09:00"
+    },
+    {
+      "source": "Reuters Japan real wages",
+      "ref_id": "turn562652news33",
+      "retrieved_at": "2026-10-07T09:41:00+09:00"
+    },
+    {
+      "source": "BOJ release calendar",
+      "ref_id": "turn874822search0",
+      "retrieved_at": "2026-10-07T09:41:00+09:00"
+    },
+    {
+      "source": "BOJ What's New",
+      "ref_id": "turn874822search4",
+      "retrieved_at": "2026-10-07T09:41:00+09:00"
+    },
+    {
+      "source": "WSJ JGB futures early Tokyo",
+      "ref_id": "turn707236news29",
+      "retrieved_at": "2026-10-07T09:41:00+09:00"
+    },
+    {
+      "source": "Reuters global markets Oct 6",
+      "ref_id": "turn707236news26",
+      "retrieved_at": "2026-10-07T09:41:00+09:00"
+    },
+    {
+      "source": "OANDA USDJPY daily outlook",
+      "ref_id": "turn168359search0",
+      "retrieved_at": "2026-10-07T09:41:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY remains near 158.1 after the Tokyo open and after stronger real-wage data.",
+    "The wage data were yen-supportive in principle, but the immediate FX move was small.",
+    "Early JGB futures were firmer rather than selling off, so Japan yields are not providing a fresh upside shock to JPY.",
+    "The pair has not yet broken yesterday's 158.25 high or the nearby 158.5 resistance area."
+  ],
+  "interpretations": [
+    "The 07:54 NEUTRAL_TO_SLIGHT_USDJPY_UP view remains broadly intact, but conviction should be reduced because stronger Japanese real wages add a legitimate yen-supportive input.",
+    "The failure of USDJPY to fall materially on favorable Japanese wage data again points to underlying yen weakness / limited near-term BOJ repricing.",
+    "A clean break above 158.25-158.5 would strengthen the upside case; failure there and a move below 157.9 would shift the state back toward neutral/down.",
+    "The next major global catalyst remains the FOMC minutes tonight; morning BOJ/MOF statistical releases appear secondary so far."
+  ],
+  "change_since_prior": "MODEST_CHANGE: stronger Japanese real-wage data caused only a small USDJPY dip from around 158.17 to roughly 158.08, while JGB futures were firm. The pair remains resilient near 158.1.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_UP, but with lower conviction than at 07:54 because the wage data strengthen the yen-supportive macro case.",
+  "alternative_case": "USDJPY_DOWN if 158.25-158.5 resistance holds and Tokyo trading transmits the stronger wage/BOJ-normalization story into firmer JPY.",
+  "invalidation_conditions": [
+    "Sustained break below 157.9 with stronger JGB yields or fresh BOJ-tightening repricing.",
+    "Fresh intervention warning from Japanese authorities.",
+    "A broad USD selloff ahead of the FOMC minutes."
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "Whether USDJPY retests 158.25-158.5 during Tokyo morning.",
+    "Current 10-year JGB cash yield once a timestamped quote is available.",
+    "14:00 JST BOJ Consumption Activity Index / Japan coincident indicators.",
+    "03:00 JST FOMC minutes."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "ce81c53499cc0a314edad37b95d38c3656746a36dae0c152f72d07c746e680b7"
+}

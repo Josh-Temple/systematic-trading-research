@@ -1,0 +1,96 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261006T073800+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-06T07:38:00+09:00",
+  "retrieved_at": "2026-10-06T07:38:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-06T07:38:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "TIMESTAMPED_PUBLIC_MARKET_REPORTS_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Latest sufficiently timestamped public FX report: New York 17:00 close 157.84-157.94; market summary close 157.91. MINKABU pair page refreshed at 07:02 but did not expose a reliable numeric live quote in retrieved text. Exact 07:38 qualified benchmark quote remains unavailable."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_EXACT_07:38; overnight context remained elevated",
+    "us_10y": "5.30% New York close, +0.03 percentage point on the day",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "UNKNOWN_PRE_TOKYO_OPEN_CURRENT"
+  },
+  "policy_state": {
+    "fed": "October hold remains favored after weak payrolls, while elevated yields and hot ISM prices preserve later tightening risk.",
+    "boj": "No new overnight policy action. Governor Ueda speaks at 15:35 JST today.",
+    "japan_fx_authorities": "Intervention sensitivity remains relevant around sharp yen weakening."
+  },
+  "macro_news_facts": [
+    "New York close USDJPY was about 157.91, only modestly above the prior New York close.",
+    "The full Monday range was 157.44-158.30, showing repeated failure to sustain either extreme.",
+    "U.S. 10-year Treasury yield closed around 5.30%, up about 3 bps on the day.",
+    "WTI crude closed around $89.43, down $1.68, materially below the Monday morning oil spike.",
+    "Reuters described the dollar and Treasury yields as firmer while oil eased; USDJPY nevertheless ended in the high-157s rather than near the session high."
+  ],
+  "scheduled_events_known": [
+    "2026-10-06 12:35 JST: Japan 10-year JGB auction.",
+    "2026-10-06 15:00 JST: Finance Minister Katayama speaks at National Securities Convention.",
+    "2026-10-06 15:35 JST: BOJ Governor Ueda speaks at National Securities Convention.",
+    "These events are after the 08:00 overnight endpoint."
+  ],
+  "source_refs": [
+    {
+      "source": "OANDA/Kyodo New York close 06:40 JST",
+      "url": "https://www.oanda.jp/lab-education/market_news/kn_2026100601000198/",
+      "retrieved_at": "2026-10-06T07:38:00+09:00"
+    },
+    {
+      "source": "OANDA/DZH NY market digest 06:20 JST",
+      "url": "https://www.oanda.jp/lab-education/market_news/mn_1037425_202610060620/",
+      "retrieved_at": "2026-10-06T07:38:00+09:00"
+    },
+    {
+      "source": "Minkabu USDJPY pair page 07:02 JST",
+      "url": "https://fx.minkabu.jp/pair/USDJPY",
+      "retrieved_at": "2026-10-06T07:38:00+09:00"
+    },
+    {
+      "source": "Reuters global markets 2026-10-05",
+      "url": "https://www.reuters.com/world/china/global-markets-global-markets-2026-10-05/",
+      "retrieved_at": "2026-10-06T07:38:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY ended the New York session around 157.91 after trading as high as 158.30 and as low as 157.44.",
+    "U.S. 10-year yield ended around 5.30%, higher on the day.",
+    "WTI crude ended around $89.43, materially below the Monday morning spike.",
+    "A qualified 07:38 USDJPY benchmark quote was not obtained."
+  ],
+  "interpretations": [
+    "The overnight path no longer looks clearly adverse to the original slight-up forecast: by the New York close USDJPY had recovered from the post-ISM drop and finished around 157.91.",
+    "However, because the exact 22:00 start quote and the current 07:38 qualified quote are unavailable, direction relative to the forecast target cannot yet be determined reliably.",
+    "The combination of higher U.S. yields and much lower oil is mixed for USDJPY: yields favor USD while lower oil reduces yen-negative terms-of-trade pressure.",
+    "With only 22 minutes to the endpoint, the appropriate state is near-neutral pending the actual 08:00 observation."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: after the 02:07 check, public end-of-New-York reports show USDJPY recovered to about 157.91 while U.S. 10-year yield closed near 5.30% and WTI fell to $89.43. The earlier provisional downside pressure on the forecast has eased.",
+  "base_case": "NEUTRAL_INTO_ENDPOINT: original forecast remains frozen; current path does not justify calling either success or failure before 08:00.",
+  "alternative_case": "A final move above the 22:00 start would support the original slight-up direction; a move below it would not.",
+  "invalidation_conditions": [
+    "NOT_APPLICABLE_TO_ORIGINAL_FORECAST_AFTER_CUTOFF"
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "08:00 JST endpoint quote.",
+    "Preserve exact timestamp/source for endpoint if obtainable.",
+    "After 08:00 perform exploratory evaluation only; do not promote to the frozen cohort."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "eed53a1803763d8a4ab536a0a88b98fe6912305bd085c16d60d746c553c4f137"
+}

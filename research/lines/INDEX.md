@@ -53,6 +53,10 @@ The architecture and packet work have separate branches. For the pre-outcome arc
 | JP225 intraday prospective forecasts — `research/lines/jp225-intraday-prospective-forecast-v0.1/` | `research/jp225-intraday-prospective-forecast-v0.1` | [CURRENT](https://github.com/Josh-Temple/systematic-trading-research/blob/research/jp225-intraday-prospective-forecast-v0.1/research/lines/jp225-intraday-prospective-forecast-v0.1/CURRENT.md), [PR #62](https://github.com/Josh-Temple/systematic-trading-research/pull/62) |
 | Relative monetary-policy stance — `research/lines/fx-monetary-policy-alignment-v0.1/` | `research/fx-monetary-policy-alignment-v0.1` | [CURRENT](https://github.com/Josh-Temple/systematic-trading-research/blob/research/fx-monetary-policy-alignment-v0.1/research/lines/fx-monetary-policy-alignment-v0.1/CURRENT.md), [PR #43](https://github.com/Josh-Temple/systematic-trading-research/pull/43) |
 
+### USDJPY research-line specification pointers
+
+The branch-only USDJPY forecast line has two proposed, not-yet-frozen specifications: `research/lines/usdjpy-overnight-prospective-forecast-v0.1/specifications/SPEC-USDJPY-FORECAST-001-v01.md` and `research/lines/usdjpy-overnight-prospective-forecast-v0.1/specifications/SPEC-USDJPY-WEEKLY-001-v01.md`. A PR or this routing entry does not authorize scored forecasts; inspect branch-local `CURRENT.md` and source/readiness gates.
+
 ### Deferred source route
 
 `research/lines/jp225-intraday-momentum-v0.1/` is preserved on `research/jp225-intraday-momentum-v0.1` via [closed, unmerged PR #59](https://github.com/Josh-Temple/systematic-trading-research/pull/59). Follow its [CURRENT](https://github.com/Josh-Temple/systematic-trading-research/blob/research/jp225-intraday-momentum-v0.1/research/lines/jp225-intraday-momentum-v0.1/CURRENT.md) for its incident and source boundaries. The main-branch [free-source route decision](jp225-ema-timeofday-v0.1/work/source-research/FREE_SOURCE_ROUTE_DECISION_2026-10-05.md) takes precedence for source acquisition policy. This is separate from the exact-XM EMA and prospective-forecast lines.

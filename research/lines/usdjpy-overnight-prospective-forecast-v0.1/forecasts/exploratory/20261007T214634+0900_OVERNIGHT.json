@@ -1,0 +1,54 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261007-214634",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-07T21:46:34+09:00",
+  "information_cutoff": "2026-10-07T21:46:34+09:00",
+  "nominal_protocol_cutoff": "2026-10-07T22:00:00+09:00",
+  "target_start": "2026-10-07T22:00:00+09:00",
+  "target_end": "2026-10-08T08:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_13M26S_AND_UNQUALIFIED_REFERENCE_FEED; NOT ELIGIBLE FOR FROZEN BENCHMARK",
+  "system_identity": "EXPLORATORY_FULL_SYSTEM_ANALOGUE",
+  "model_identity": "GPT-5.6 Sol",
+  "p_up": 0.55,
+  "forecast_return_bps": 6,
+  "direction_label": "SLIGHT_USDJPY_UP",
+  "confidence": "LOW",
+  "top_drivers": [
+    "U.S. long-end Treasury yields remain elevated, with the 10-year around 5.3% and the 30-year near multi-decade highs, preserving dollar rate support.",
+    "Brent crude is back above $100, restoring some yen-negative terms-of-trade pressure.",
+    "USDJPY recovered into the 158.3 area after falling below 158, showing resilience despite Japan-side wage and BOJ-normalization support.",
+    "The broad U.S. dollar was firmer ahead of the FOMC minutes."
+  ],
+  "counterevidence": [
+    "The 158.50-158.51 area rejected price once already today, so upside resistance is active.",
+    "Japan 10-year yields are also higher, providing some yen support through the rate channel.",
+    "Japanese intervention sensitivity rises as USDJPY approaches 159.",
+    "The 03:00 JST FOMC minutes could be less hawkish than current long-yield pricing and trigger a dollar/yield reversal."
+  ],
+  "scheduled_catalysts_known_pre_cutoff": [
+    "2026-10-08 03:00 JST FOMC minutes for the September 15-16 meeting.",
+    "2026-10-08 04:00 JST Federal Reserve G.19 Consumer Credit release."
+  ],
+  "scenario_map": {
+    "base": "Range-to-slight-up: USDJPY ends 08:00 modestly above its 22:00 level, with high U.S. yields and oil outweighing Japan-side support.",
+    "upside": "Hawkish FOMC minutes or continued long-yield pressure pushes USDJPY sustainably above 158.5 toward 159.",
+    "downside": "FOMC minutes are less hawkish than priced, Treasury yields fall, and USDJPY mean-reverts below 158.0-158.1."
+  },
+  "source_refs": [
+    "turn151182news26",
+    "turn151182news24",
+    "turn880611news26",
+    "turn151182search35",
+    "turn880611search1",
+    "turn880611search5",
+    "turn151182search0"
+  ],
+  "journal_state_id": "STATE-USDJPY-20261007T214100+0900-PRE_FORECAST_STATE",
+  "post_cutoff_data_allowed": false,
+  "scored_benchmark_effect": "NONE",
+  "broker_action_authorized": false,
+  "forecast_hash": "dbc74e7c26d35f48eef7e25c4f4aa58f63b3ea8c0edac88c9625486d2b9623ec"
+}
