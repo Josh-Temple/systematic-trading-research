@@ -440,7 +440,7 @@ class SyntheticEventLedgerTest(unittest.TestCase):
             file, _ = write_synthetic_event(event, Path(tmp))
             for label, serialized in cases:
                 with self.subTest(case=label):
-                    file.write_bytes(serialized.encode("utf-8") + b"\\n")
+                    file.write_bytes(serialized.encode("utf-8") + b"\n")
                     with self.assertRaisesRegex(EventBlocked, "DUPLICATE_LEDGER_JSON_MEMBER"):
                         verify_synthetic_event(file)
 
@@ -455,7 +455,7 @@ class SyntheticEventLedgerTest(unittest.TestCase):
             serialized = (
                 f'{{"record":{duplicate_nested},"record_sha256":"{digest}"}}'
             )
-            file.write_bytes(serialized.encode("utf-8") + b"\\n")
+            file.write_bytes(serialized.encode("utf-8") + b"\n")
             with self.assertRaisesRegex(EventBlocked, "DUPLICATE_LEDGER_JSON_MEMBER"):
                 verify_synthetic_event(file)
         with tempfile.TemporaryDirectory() as tmp:
@@ -468,7 +468,7 @@ class SyntheticEventLedgerTest(unittest.TestCase):
             serialized = (
                 f'{{"record":{serialized_record},"record_sha256":"{digest}","record_sha256":"{digest}"}}'
             )
-            file.write_bytes(serialized.encode("utf-8") + b"\\n")
+            file.write_bytes(serialized.encode("utf-8") + b"\n")
             with self.assertRaisesRegex(EventBlocked, "DUPLICATE_LEDGER_JSON_MEMBER"):
                 verify_synthetic_event(file)
 
