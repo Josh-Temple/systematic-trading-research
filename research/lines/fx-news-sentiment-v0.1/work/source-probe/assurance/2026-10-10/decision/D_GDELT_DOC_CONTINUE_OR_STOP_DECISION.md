@@ -18,7 +18,7 @@
 
 保存された負の証拠：`runtime-20261007-exact/manifest.json`（blob `d9ecb57f880a407bcfb55faf5e8bfd9018c5de09`、HTTP200、raw 5962 bytes、SHA256 `17904b568f8bffc0d9f0c3048444b62c51a03e5200fc6ec4d50778fdabc2ed7d`、元の`domain/URL mismatch`を保持）、`runtime-20261007-cap10/manifest.json`（blob `fe99b74c6e4eeccb5000a6845a901d7b92c38086`、HTTP429、raw 444 bytes、SHA256 `44c03f8dd984184218c90dc7e64aed9e6e2d8b17426feb5aa7933b3c44df64c6`）。raw blobはそれぞれ `ff5159d91bc2ead99bbd0a669e8c8079f585d9a1`、`faca354e1d0c6bf1e7fe7a7990b6015df6023b55`。別のoffline replayの12→10は旧raw/manifestのエラーを遡及修正しない。前回B #75ではrawの独立SHA照合2/2一致を報告済み。**今回Dはhashを独立再計算していない。**
 
-固定候補：`(euro OR yen OR "European Central Bank" OR "Bank of Japan") sourcelang:english`、24時間、`mode=artlist`、`sort=dateasc`、`MAXRECORDS=250`、08:00 JST cutoff。既存の[Source Contract](../../../../SOURCE_CONTRACT.md)と[PR #81判定](https://github.com/Josh-Temple/systematic-trading-research/pull/81)に従い、変更しない。GALの `date` 説明をDOCの `seendate` に流用しない。追加HTTP 200一件、または時間内の取得receipt一件だけでは(b)(c)(d)(e)を閉じない。
+固定候補：`(euro OR yen OR "European Central Bank" OR "Bank of Japan") sourcelang:english`、24時間、`mode=artlist`、`sort=dateasc`、`MAXRECORDS=250`、08:00 JST cutoff。既存の[Source Contract](../../../../../SOURCE_CONTRACT.md)と[PR #81判定](https://github.com/Josh-Temple/systematic-trading-research/pull/81)に従い、変更しない。GALの `date` 説明をDOCの `seendate` に流用しない。追加HTTP 200一件、または時間内の取得receipt一件だけでは(b)(c)(d)(e)を閉じない。
 
 ## 2. 人間に求める**一件の判断**（未決・未承認）
 
