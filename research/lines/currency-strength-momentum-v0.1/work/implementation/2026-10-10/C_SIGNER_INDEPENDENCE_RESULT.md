@@ -19,6 +19,7 @@
 4. Unchanged identity/content constraints include the outer I2 signature binding E-envelope bytes and D code hashes, `gate_status=PASS`/human freeze checks, and current I2/E status requirements. No new algorithm, alternate source or outcome override.
 
 ## Execution evidence and explicit limitations
+- An isolated local Python 3.13.5 smoke check of the **new synthetic I RSA fixture** verified a 2048-bit modulus and PKCS#1 v1.5 SHA-256 signature arithmetic: **PASS (fixture only)**. This did **not import or invoke csm.py** and does not count as any candidate unittest/production-path result.
 - Remote GitHub source, current PR snapshots, full original code/test blobs and changed-path comparison: **READ**.
 - Candidate `csm.py` and `test_csm.py` saved and separately fetched: **SAVED / READBACK**.
 - `python3 -m py_compile csm.py test_csm.py`: **NOT_EXECUTED**.
