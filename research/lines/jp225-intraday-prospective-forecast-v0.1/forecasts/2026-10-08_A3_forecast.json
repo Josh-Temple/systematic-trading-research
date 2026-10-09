@@ -1,0 +1,41 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261008",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261008-0800-amended",
+  "model_identifier": "UNOBSERVED_IN_PRE_CUTOFF_ASSESSMENT",
+  "information_cutoff": "2026-10-08T08:00:00+09:00",
+  "issued_at": "2026-10-08T08:21:45+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.44,
+  "forecast_return_bps": -8,
+  "top_drivers": [
+    "The pre-cutoff A2 context was modestly bearish owing to lower Nikkei futures, weaker U.S. equities and SOX, and the FOMC valuation headwind.",
+    "The pre-cutoff assessment classified exact-XM JP225 EMA research as UNTESTED / WAITING_FOR_XM_STAGE1_DATA and the US-lead reversal proxy as NOT_SUPPORTED; neither is treated as a validated edge."
+  ],
+  "counterevidence": [
+    "Lower oil and a weak yen mitigate negative market context.",
+    "The overnight decline may already be priced into the 09:00 opening, and no validated exact-XM research establishes additional intraday continuation.",
+    "Exact XM cutoff data were unavailable; this is not an established 09:00-15:30 predictor."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/542b8ac951719672ff9e356300f6b8974b8fe293/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-08_PRE_CUTOFF_ASSESSMENT.md",
+    "https://minkabu.jp/news/4631563",
+    "https://www.reuters.com/business/wall-st-futures-slip-yields-oil-rebound-fed-minutes-focus-2026-10-07/",
+    "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260916.htm",
+    "https://indexes.nasdaq.com/Index/Overview/sox",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md"
+  ],
+  "canonical_sha256": "5bc8648ce3c4ab3cb08c4972096b2852bbd26ec79e18bf48f12637f321395914"
+}

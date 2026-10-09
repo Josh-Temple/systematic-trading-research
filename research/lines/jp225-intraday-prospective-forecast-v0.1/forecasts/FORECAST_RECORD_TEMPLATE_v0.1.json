@@ -1,0 +1,21 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-YYYYMMDD",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "system_id": "A1|A2|A3",
+  "forecast_system_version": "string",
+  "model_identifier": "string_or_unavailable",
+  "information_cutoff": "YYYY-MM-DDT08:00:00+09:00",
+  "issued_at": "ISO-8601",
+  "p_up": 0.5,
+  "forecast_return_bps": 0.0,
+  "top_drivers": [],
+  "counterevidence": [],
+  "invalidation_conditions": [],
+  "source_refs": [],
+  "exact_xm_input_status": "AVAILABLE|UNAVAILABLE|PARTIAL",
+  "protocol_deviations": [],
+  "action_status": "NO_TRADE",
+  "canonical_sha256": "populate_after_canonicalization"
+}

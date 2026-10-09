@@ -1,0 +1,36 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261009",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-09T21:58:18+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "The exploratory event was registered before the 08:00 JST information cutoff (recorded 07:49:42 JST); the pre-cutoff candidate probabilities and return forecasts were committed before cutoff at 07:51:35 JST.",
+    "The A1/A2/A3 formal JSON forecast records were actually issued at 12:37:25 JST, after the fixed 08:00 cutoff and after the 09:00 target start; this is an explicitly late-issued exploratory event.",
+    "The pre-cutoff fixed forecasts were B0 0.50/0 bps; A1 0.48/-4 bps; A2 0.44/-10 bps; A3 0.46/-7 bps and were not changed after the cutoff.",
+    "The research owner explicitly deferred actual XM MT5 JP225Cash price retrieval, and no XM Bid/Ask outcome was retrieved or authenticated for the 09:00 and 15:30 endpoints.",
+    "No qualified exact-XM outcome is available; the formal binary direction, start/end quote, return and scores therefore remain unavailable."
+  ],
+  "interpretation": [
+    "This is an outcome-source-availability review and process-integrity check, not formal evidence that any model predicts the XM JP225Cash target.",
+    "A separate public Nikkei 225 cash-index comparison may be used as nonformal diagnostic context only; it is not the specified XM Bid/Ask source and cannot enter the scored cohort.",
+    "A pre-cutoff assessment stored before 08:00 is valuable as immutable evidence, but it does not eliminate the separate protocol deviation that actual formal forecast issuance occurred after the 09:00 target start."
+  ],
+  "error_attribution": [
+    "SOURCE_NOT_RETRIEVED_BY_USER_DIRECTION: XM was intentionally not requested, so no source-retrieval-failure claim is made.",
+    "LATE_ISSUANCE_AFTER_0800 and ISSUED_AFTER_0900_TARGET_START are recorded process deviations.",
+    "XM forecast error and XM probability calibration are UNDETERMINED in the absence of qualified exact-XM quotes."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "The only allowed scored outcome reference is exact XM MT5 JP225Cash with qualified 09:00/15:30 Bid/Ask midpoints. Do not backfill from another provider.",
+    "Any public index proxy values and nonformal diagnostic scores must be recorded separately in 2026-10-09_PUBLIC_PROXY_REVIEW.md.",
+    "SPEC PROPOSED_NOT_FROZEN; science UNTESTED; scored cohort CLOSED; source readiness PARTIAL; NO_TRADE; no retrospective change to forecasts."
+  ]
+}

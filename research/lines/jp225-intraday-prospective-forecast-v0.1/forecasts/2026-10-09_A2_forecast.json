@@ -1,0 +1,40 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261009",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261009-0800-precutoff",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-09T08:00:00+09:00",
+  "issued_at": "2026-10-09T12:37:25+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "ISSUED_AFTER_0900_TARGET_START",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.44,
+  "forecast_return_bps": -10,
+  "top_drivers": [
+    "Pre-cutoff U.S. technology shares were weaker: Nasdaq roughly -1.25% and Philadelphia Semiconductor Index around -3.68%.",
+    "Oil rose to WTI USD 91.49; USDJPY ended the prior New York session around 157.88, modestly strengthening the yen.",
+    "Nikkei futures night weakness suggested adverse Japanese opening conditions, not itself a session return forecast."
+  ],
+  "counterevidence": [
+    "The negative overnight gap may already be priced into the Japanese 09:00 opening, limiting intraday continuation inference.",
+    "Dow was modestly positive and U.S. ten-year yield fell to about 5.22%, mitigating a uniformly risk-off reading."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/f1713e620c8c558cbc4726d0f6e8f899bd3f690e/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-09_PRE_CUTOFF_ASSESSMENT.md",
+    "https://www.oanda.jp/lab-education/market_news/mn_1038097_202610090620/",
+    "https://www.newsweekjapan.jp/articles/-/336421",
+    "https://www.oanda.jp/lab-education/market_news/kn_2026100901000920/",
+    "https://minkabu.jp/news/4632451"
+  ],
+  "canonical_sha256": "62f85bd726dc809e9c3f852aa51a1f377de35c577d43eb01ca0f011bd864e392"
+}

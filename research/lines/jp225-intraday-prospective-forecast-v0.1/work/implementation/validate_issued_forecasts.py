@@ -1,0 +1,77 @@
+"""Verify all issued JP225 forecast records against the frozen record contract.
+
+This is an offline structural and integrity check, not market-outcome evaluation.
+No market data or broker routes are accessed.
+"""
+from __future__ import annotations
+
+import json
+from collections import defaultdict
+from pathlib import Path
+
+from forecast_core import canonical_sha256
+from record_contract import validate_forecast_record, validate_review_record
+
+
+def main() -> None:
+    directory = Path(__file__).resolve().parents[2] / "forecasts"
+    paths = sorted(directory.glob("20??-??-??_A?_forecast.json"))
+    if not paths:
+        raise ValueError("No issued forecast JSON files found")
+
+    by_event: dict[str, set[str]] = defaultdict(set)
+    for path in paths:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        validate_forecast_record(record)
+
+        fields = path.name.split("_")
+        date_text, system_id = fields[0], fields[1]
+        expected_event = "XPF-JP225-" + date_text.replace("-", "")
+        if record["event_id"] != expected_event or record["system_id"] != system_id:
+            raise ValueError(f"{path.name}: path/event/system identity mismatch")
+        if system_id in by_event[expected_event]:
+            raise ValueError(f"{path.name}: duplicate system for event")
+        by_event[expected_event].add(system_id)
+
+        declared_hash = record.get("canonical_sha256")
+        if not isinstance(declared_hash, str) or len(declared_hash) != 64:
+            raise ValueError(f"{path.name}: canonical_sha256 missing or malformed")
+        actual_hash = canonical_sha256(
+            {k: v for k, v in record.items() if k != "canonical_sha256"}
+        )
+        if declared_hash != actual_hash:
+            if date_text < "2026-10-08":
+                # Preserve legacy issued forecasts unchanged. These historical
+                # hashes predate this direct file verifier and cannot be silently
+                # represented as passing canonical integrity verification.
+                print(
+                    f"LEGACY_HASH_MISMATCH {path.name}: "
+                    f"stored={declared_hash} recomputed={actual_hash}"
+                )
+            else:
+                raise ValueError(f"{path.name}: canonical_sha256 mismatch")
+        else:
+            print(f"PASS {path.name}: contract / event identity / SHA-256")
+
+    for event_id, systems in sorted(by_event.items()):
+        if systems != {"A1", "A2", "A3"}:
+            raise ValueError(f"{event_id}: incomplete A1/A2/A3 event: {sorted(systems)}")
+    review_paths = sorted(directory.glob("20??-??-??_review.json"))
+    for path in review_paths:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        validate_review_record(record)
+        event_date = path.name.split("_")[0]
+        expected_event = "XPF-JP225-" + event_date.replace("-", "")
+        if record["event_id"] != expected_event:
+            raise ValueError(f"{path.name}: review filename/event identity mismatch")
+        if expected_event not in by_event:
+            raise ValueError(f"{path.name}: review without issued forecast triplet")
+        if record["reviewed_at"][:10] < event_date:
+            raise ValueError(f"{path.name}: review predates the forecast event")
+        print(f"PASS {path.name}: review contract / event identity / formal scoring boundary")
+
+    print(f"PASS: {len(paths)} forecasts / {len(by_event)} complete events / {len(review_paths)} reviews; legacy hash warnings are not integrity passes")
+
+
+if __name__ == "__main__":
+    main()

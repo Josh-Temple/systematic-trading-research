@@ -1,0 +1,30 @@
+name: JP225 prospective forecast synthetic guards
+
+on:
+  push:
+    paths:
+      - 'research/lines/jp225-intraday-prospective-forecast-v0.1/**'
+      - '.github/workflows/jp225-prospective-forecast-synthetic.yml'
+  pull_request:
+    paths:
+      - 'research/lines/jp225-intraday-prospective-forecast-v0.1/**'
+      - '.github/workflows/jp225-prospective-forecast-synthetic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test deterministic forecast core
+        run: python research/lines/jp225-intraday-prospective-forecast-v0.1/work/implementation/test_forecast_core.py
+      - name: Test append-only record contract
+        run: python research/lines/jp225-intraday-prospective-forecast-v0.1/work/implementation/test_record_contract.py
+      - name: Validate actual issued forecast files and canonical hashes
+        run: python research/lines/jp225-intraday-prospective-forecast-v0.1/work/implementation/validate_issued_forecasts.py
