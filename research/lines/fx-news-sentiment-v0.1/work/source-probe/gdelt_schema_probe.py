@@ -132,8 +132,11 @@ def main():
         m.update(status='SCHEMA_PROBE_PASS_SOURCE_NOT_QUALIFIED',
                  article_count=summary['article_count'], article_keys=summary['article_keys'])
     except (ValueError, OSError, urllib.error.URLError) as error:
-        m.update(status='SOURCE_QUALIFICATION_BLOCKED', error_type=type(error).__name__, error=str(error),
-                 retrieval_completed_at=datetime.now(UTC).isoformat())
+        # Preserve the actual completion stamp when bytes were already received.
+        # Transport failure has no response-completion stamp; record the failure time.
+        if 'retrieval_completed_at' not in m:
+            m['retrieval_completed_at'] = datetime.now(UTC).isoformat()
+        m.update(status='SOURCE_QUALIFICATION_BLOCKED', error_type=type(error).__name__, error=str(error))
     (out / 'manifest.json').write_text(json.dumps(m, indent=2, sort_keys=True) + '\n', encoding='utf-8')
     print(json.dumps({k: v for k, v in m.items() if k not in ('response_headers',)}, indent=2))
     return 0 if m['status'] == 'SCHEMA_PROBE_PASS_SOURCE_NOT_QUALIFIED' else 2
