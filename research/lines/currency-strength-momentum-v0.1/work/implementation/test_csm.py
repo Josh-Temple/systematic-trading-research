@@ -582,6 +582,89 @@ class GateAndReceiptTests(unittest.TestCase):
         )
         self.assertEqual(accepted["gate_status"], "PASS")
 
+
+    def test_signed_e_and_i_fixture_keys_are_independent(self) -> None:
+        lock = synthetic_source_lock()
+        gate, keys, raw = synthetic_gate_receipt(lock)
+        self.assertNotEqual(keys["auditor-test-key-001"]["principal_id"],
+                            keys["integrator-test-key-001"]["principal_id"])
+        self.assertNotEqual(int(keys["auditor-test-key-001"]["n_hex"], 16),
+                            int(keys["integrator-test-key-001"]["n_hex"], 16))
+        self.assertEqual(validate_test_gate(gate, lock, raw, keys)["gate_status"], "PASS")
+
+    def test_signed_gate_rejects_same_e_i_principal_despite_valid_signatures(self) -> None:
+        lock = synthetic_source_lock()
+        gate, original_keys, raw = synthetic_gate_receipt(lock)
+        keys = json.loads(json.dumps(original_keys))
+        keys["auditor-test-key-001"]["principal_id"] = "integrator-principal-001"
+        e_payload = gate["payload"]["independent_audit_attestation"]["payload"]
+        e_payload["signer_principal_id"] = "integrator-principal-001"
+        e_signed = sign_envelope(e_payload, "auditor-test-key-001")
+        gate["payload"]["independent_audit_attestation"] = e_signed
+        gate["payload"]["independent_audit_envelope_sha256"] = csm.sha256_bytes(
+            csm.canonical_json_bytes(e_signed))
+        gate = sign_gate_payload(gate["payload"])
+        # Both role-specific signatures verify; separation must still fail.
+        csm._verify_signed_envelope(
+            e_signed, keys, required_role="independent_auditor", now=TEST_NOW)
+        csm._verify_signed_envelope(
+            gate, keys, required_role="integrator", now=TEST_NOW)
+        with self.assertRaisesRegex(csm.GateError, "share signing principal"):
+            validate_test_gate(gate, lock, raw, keys)
+
+    def test_signed_gate_rejects_same_public_key_behind_distinct_key_ids(self) -> None:
+        lock = synthetic_source_lock()
+        gate, original_keys, raw = synthetic_gate_receipt(lock)
+        keys = json.loads(json.dumps(original_keys))
+        # Deliberately alias the RSA modulus under a different key ID and principal,
+        # with a valid signature from the matching synthetic E private exponent.
+        keys["integrator-test-key-001"]["n_hex"] = (
+            "000" + keys["auditor-test-key-001"]["n_hex"])
+        gate = sign_envelope(gate["payload"], "integrator-test-key-001",
+                             rsa_signer_key_id="auditor-test-key-001")
+        csm._verify_signed_envelope(
+            gate["payload"]["independent_audit_attestation"], keys,
+            required_role="independent_auditor", now=TEST_NOW)
+        csm._verify_signed_envelope(
+            gate, keys, required_role="integrator", now=TEST_NOW)
+        with self.assertRaisesRegex(csm.GateError, "share RSA modulus/public key"):
+            validate_test_gate(gate, lock, raw, keys)
+
+    def test_signed_gate_rejects_role_swap_revocation_and_future_validity(self) -> None:
+        lock = synthetic_source_lock()
+        gate, original_keys, raw = synthetic_gate_receipt(lock)
+        for label, target, change, expected in (
+            ("role swap", "auditor-test-key-001", {"role": "integrator"}, "role is not trusted"),
+            ("revoked", "integrator-test-key-001", {"revoked": True}, "role is not trusted"),
+            ("future", "auditor-test-key-001",
+             {"valid_from": "2026-10-02T08:00:00+09:00"}, "exceeds signing key validity"),
+        ):
+            with self.subTest(case=label):
+                keys = json.loads(json.dumps(original_keys))
+                keys[target].update(change)
+                with self.assertRaisesRegex(csm.GateError, expected):
+                    validate_test_gate(gate, lock, raw, keys)
+
+    def test_signed_gate_rejects_stale_i2_and_e_expected_identities(self) -> None:
+        lock = synthetic_source_lock()
+        gate, keys, raw = synthetic_gate_receipt(lock)
+        stale_i2 = dict(TEST_CURRENT_I2_GATE)
+        stale_i2["head_sha"] = "f" * 40
+        with self.assertRaisesRegex(csm.GateError, "expected I2 gate"):
+            validate_test_gate(gate, lock, raw, keys, expected_current_i2_gate=stale_i2)
+        stale_e = dict(TEST_E_AUDIT)
+        stale_e["head_sha"] = "e" * 40
+        with self.assertRaisesRegex(csm.GateError, "expected E audit"):
+            validate_test_gate(gate, lock, raw, keys, expected_e_audit=stale_e)
+
+    def test_signed_gate_rejects_mutated_e_signature(self) -> None:
+        lock = synthetic_source_lock()
+        gate, keys, raw = synthetic_gate_receipt(lock)
+        gate["payload"]["independent_audit_attestation"]["signature"]["signature_b64"] = (
+            base64.b64encode(b"\x00" * 256).decode("ascii"))
+        with self.assertRaisesRegex(csm.GateError, "signature verification failed"):
+            validate_test_gate(gate, lock, raw, keys)
+
     def test_gate_rejects_arbitrary_signing_key_and_bad_signature(self) -> None:
         lock = synthetic_source_lock()
         gate, keys, raw = synthetic_gate_receipt(lock)
@@ -999,6 +1082,11 @@ TEST_RSA_D = int(
     "4bf6a04b53c75aef72776d96ba22e9814166eebcea65cde7988c9ec3c1099a3fe6bbf873123edc4cdd44e17f227e1e1ece53702398be03bb2b4c638f4d7922c218211d94301c67b310964d7abae6010d64413331c9c61962202587b7e633af0185801b5b657ee55f96fa4ac3fe6256d0ff84d1a121461d83668d3030a6d08fc3394dc7a94ed00c9bfaecd94c8ce147c3c154d534b7163f36b2ca8f929ff20ca69ace7d6197c527a4cb5fc773ae19668945df5a1436cea37b561c560566d360737f660c73921e06c46a5bfed26936be53dc751dbfe2a911f88eeb1bc1847754e759899e84280df1cfa055a555e60c20dab7d60dd25b662790b50443f017946a7d",
     16,
 )
+# Test-only RSA identity, generated independently of TEST_RSA_N. Never provision
+# either toy private exponent as a production credential.
+TEST_INTEGRATOR_RSA_N = int("e3f8587d9958561bcdf7d45ab93d08c4dd3e44be1ea0beedc9eb17d20f55d6b30c8ce0ff0b8df7f7bd1ce0d523fc9b3fd90ab007dcfce615becd47f1870df6b21208f662f03c32f7bf9537bfe5d89d4d2cad7086f70994143c06ef24b49499976d23b00bf840d02066220d99cf6773e32fba2f58e103f73854a5526f82243a0f767072afec3c3755ace9c7d4a8fb44152dbc074bf6e8293a544c80bb091fbf7a5f5b4d3aa599786eec6f5ee55075dc0db237816d6da5ac0f7a2488a5cd8cfe91f23bf8e334dd95627356e48f9bb41562e72cc49fff6e0cd7b046fbf05b66486de24525c9bf09c4c35d1a11350a6007cf3cbb791c264d0bdab44bdaed55ca9cbf", 16)
+TEST_INTEGRATOR_RSA_D = int("3bf574a8cc2d3cb0a1729e6aa22fd85f96e52ac56a5ed2f8cdd3c4771e4b7065b55654532061dda74e190b5563daaba6965a46443b2e5501c12652d6c6b3b87fcb588a1d299c5bb767af4273796b88abe4a555645a132ddc489176528c204d69536e407e55740e8986f34bea796f773e78ae1a87e0dedf25f4b56ac223538de5462483723791fc3877512cb7959a2bd1d61d432db5a0134dec419538f84d8fb83b931822d2d36eb7d9c1c2fc335de4f6d84833127c1f76440139a08b578a03bcb0e393ec7db9a532a28be9ace1f75c824ec01863ae5bbe04d610b18934b3b5a5805628bb9b8541817e722e6a07aa504549364670513498ef47ecaef6ba5136a9", 16)
+
 TEST_NOW = datetime.fromisoformat("2026-10-02T07:00:00+09:00")
 TEST_CURRENT_I2_GATE = {
     "pr_number": 37,
@@ -1041,7 +1129,7 @@ TEST_TRUSTED_KEYS = {
     },
     "integrator-test-key-001": {
         "role": "integrator", "principal_id": "integrator-principal-001",
-        "n_hex": format(TEST_RSA_N, "x"), "e": 65537, "revoked": False,
+        "n_hex": format(TEST_INTEGRATOR_RSA_N, "x"), "e": 65537, "revoked": False,
         "valid_from": "2026-01-01T00:00:00Z", "valid_until": "2027-01-01T00:00:00Z",
     },
 }
@@ -1051,6 +1139,7 @@ def sign_envelope(
     payload: dict[str, object], key_id: str, *,
     issued_at: str = "2026-10-02T06:00:00+09:00",
     expires_at: str = "2026-10-02T18:00:00+09:00",
+    rsa_signer_key_id: str | None = None,
 ) -> dict[str, object]:
     signature_doc = {
         "key_id": key_id,
@@ -1060,10 +1149,17 @@ def sign_envelope(
     }
     message = csm.canonical_json_bytes({"payload": payload, **signature_doc})
     digest_info = csm.RSA_SHA256_DIGEST_INFO_PREFIX + hashlib.sha256(message).digest()
-    size = (TEST_RSA_N.bit_length() + 7) // 8
+    signer_id = rsa_signer_key_id or key_id
+    if signer_id == "auditor-test-key-001":
+        rsa_n, rsa_d = TEST_RSA_N, TEST_RSA_D
+    elif signer_id == "integrator-test-key-001":
+        rsa_n, rsa_d = TEST_INTEGRATOR_RSA_N, TEST_INTEGRATOR_RSA_D
+    else:
+        raise ValueError("unknown synthetic signing key")
+    size = (rsa_n.bit_length() + 7) // 8
     padding_len = size - len(digest_info) - 3
     encoded = b"\x00\x01" + b"\xff" * padding_len + b"\x00" + digest_info
-    signature = pow(int.from_bytes(encoded, "big"), TEST_RSA_D, TEST_RSA_N).to_bytes(size, "big")
+    signature = pow(int.from_bytes(encoded, "big"), rsa_d, rsa_n).to_bytes(size, "big")
     return {"payload": payload, "signature": {
         **signature_doc,
         "signature_b64": base64.b64encode(signature).decode("ascii"),
