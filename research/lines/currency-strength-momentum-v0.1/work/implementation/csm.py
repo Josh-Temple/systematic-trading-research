@@ -630,6 +630,24 @@ def validate_gate_receipt(
     trusted_integrator = key_store.get(str(receipt["signature"].get("key_id")), {})
     if payload.get("integrator_principal_id") != trusted_integrator.get("principal_id"):
         raise GateError("integrator identity does not match the trusted signer")
+
+    # Each signature is already verified above against its trusted role, principal,
+    # validity interval, and key. Independence must bind the *verified* signers:
+    # distinct key IDs alone do not guarantee distinct principals or RSA keys.
+    e_signature = e_envelope["signature"]
+    i_signature = receipt["signature"]
+    e_key_id = _require_identity(e_signature.get("key_id"), "E signing key ID")
+    i_key_id = _require_identity(i_signature.get("key_id"), "I signing key ID")
+    e_key = key_store[e_key_id]
+    i_key = key_store[i_key_id]
+    if e_key_id == i_key_id:
+        raise GateError("integrator and E auditor share signing key ID")
+    if e_key["principal_id"] == i_key["principal_id"]:
+        raise GateError("integrator and E auditor share signing principal")
+    # Reject key aliases, including noncanonical hex strings representing the
+    # same modulus. A shared modulus cannot establish independent key custody.
+    if int(str(e_key["n_hex"]), 16) == int(str(i_key["n_hex"]), 16):
+        raise GateError("integrator and E auditor share RSA modulus/public key")
     return payload
 
 
