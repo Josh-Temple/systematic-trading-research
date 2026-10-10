@@ -1,0 +1,29 @@
+# E — CSM post-C #100 independent audit HOLD closure (2026-10-10 JST)
+
+## Decision: BLOCKED / HOLD_NO_MERGE / NOT_RERUN
+
+**CSM is NOT merged.** This E-only documentary receipt closes the post-C procedural handoff but not CSM runtime assurance. HYP-CSM-002 remains `UNTESTED`; I2 and market-outcome access remain CLOSED. No source, gate, code, workflow, `main`, real market data, XM, or trading changes are authorized.
+
+### Procedural sequence and received independent D
+
+- Candidate [PR #90](https://github.com/Josh-Temple/systematic-trading-research/pull/90), OPEN/Draft, head `94e7719839dcacf281d7d479c597222582f0d920`, target tree `32e851594810e51a3aefd05ca7cdc17af341885d`. Implementation and tests remain unmerged.
+- Saved C [PR #100](https://github.com/Josh-Temple/systematic-trading-research/pull/100), OPEN/Draft, head `9d431397932f3ac5fcf781d912212af1cf11eda5`, report tree `22cc72f0b0ab912ddeb967f474e7397a89f5260f`, one allowlisted report file `research/lines/currency-strength-momentum-v0.1/work/implementation/2026-10-10/exact-checkout-execution/C_EXACT_CHECKOUT_EXECUTION_RECEIPT.md` with Git blob `77ae8da0da43078b12c45e0359ae4ba6f326ffa4`. Report and blob directly read by E.
+- C #100 explicitly **NOT_EXECUTED / BLOCKED_ENVIRONMENT** because complete exact-head local Git checkout and isolated runtime-local metadata rehash were not established. Its reported Git DNS acquisition failed (exit 128); neither `py_compile` nor `unittest` ran: **testsRun=0; fail/error/skip=NOT_OBSERVED**, not observed zero failures, and the 62 test definitions are not passes.
+- Separate *post-C* independent D [PR #102](https://github.com/Josh-Temple/systematic-trading-research/pull/102) was saved after C report creation: OPEN/Draft, head `119239ad86b20578fb9e7559abfd967cf7eeb97a`, tree `3f94c6936afb5f405f9886361ffb898cd03b817e`, only report path `research/lines/currency-strength-momentum-v0.1/work/independent-audit/2026-10-10/post-c100-runtime-independent/D_POST_C100_INDEPENDENT_RUNTIME_AUDIT.md`, blob `7a4a1a124047396557c907419a43b5a92fb31399`. E remote-read its actual report. D's outcome **BLOCKED / NOT_RERUN / HOLD_NO_MERGE**; older #93 pre-dates #100 and is not used as post-C evidence.
+- B [PR #101](https://github.com/Josh-Temple/systematic-trading-research/pull/101) separately received for FXNS, report blob `330b67fa0ec9a94f6f0ed5a8cd26c757bc798796`, `PASS_SCOPED` for FXNS PR #99 only; it does not confer CSM acceptance.
+
+### Exact CSM identities and limits
+
+- #90 code/test/fixture/config/runbook Git blobs, as independently recorded in D's remote read: `csm.py=cc3b788d637d0bacf63d9642788a196a1feaac56`; `test_csm.py=9e0ce5025d986f2e6f6e8c4487e4e0671dd67282`; `fixtures/toy_cases.json=4e925eabb4d88772806f0e109c15680f17d73a31`; `config.json=a1c1e140f8c0844fc554ae6fcd975bcb5e610770`; `RUNBOOK.md=4168e0010060586e0301aa221ec653913ea721ea`. These are *remote code identities*, not runtime local checkout proof.
+- PR #35 metadata-only remote blobs per independent D: `source-lock.json=81bd315cd8301142e5e8ffcbfcb43bf89f99e5bf`; `probe-metadata.json=21aa9149b7b7db9b07f1aa3f4bf0312675a166bd`; `expected-calendar.json=6ed720353472ba6f35391936c536d46fb6ae8c66`. D reports remote UTF-8 SHA-256 respectively `ebfa5782568709ac026bd614f3a86494e2119ab73611b92c5ff740ef94118a71`, `1a698a4cd6ffd26afd11ef40a1e23936216614b705bb9955b1bd15d4d6631533`, `6f0b54411037c65e0e6b054018bd8a5745e54853bf13af30b1e6252ef7b778d4` (matched). **Not a runtime-local metadata file rehash**.
+- Actual gate [PR #37](https://github.com/Josh-Temple/systematic-trading-research/pull/37) head `9162cae4f2e64ee3da07517f12a16092cc170161`; E fetched `research/lines/currency-strength-momentum-v0.1/work/integration/gate.json` by the *current integration branch ref*, Git blob `19442215345b35b0db3910c01acd910a5d57889b`. Parsed actual JSON: **`state=BLOCKED`, `gate_status=CLOSED`, `market_outcome_access=false`**. No gate write.
+- Static definitions include distinct-principal / distinct-RSA-modulus E/I acceptance, rejecting same-principal and same modulus under different IDs, role/time/revocation/stale/tampered/closed-gate negatives; **no actual #90 Python execution**, CI or test log establishes their behavior.
+- A future successful synthetic run would still not prove separate production E/I people and current signer identity, key custody, protected trust store, OS ACL/sandbox, append-only attempt/access logs, restart/readback, source full history and vintages, calendar authority, named operator, prior exposure disclosures, independent current E, human signoff or economic outcomes.
+
+### Required next work and non-authorizations
+
+1. Supply one genuine verified complete Git checkout for exact #90 candidate with local `git rev-parse HEAD`, `HEAD^{tree}`, `git ls-tree` and blob checks in a network-denied Python 3.12+ environment. Do not replace it with partial or manually reconstructed files.
+2. Verify three metadata-only files as *actual runtime-local read-only files* against SHA-256; review the full import/test call graph; then and only then run the existing `py_compile` and `unittest -v` with exact full commands, timing, exit, positive/negative test logs, test counts and identities. Record a **new C execution receipt**, not an alteration of #100.
+3. Obtain another independent D *after the new C*. No #90/#34/#37/#53, source, code, workflow, gate, main or CSM evidence PR merge until separate authorizations. Keep source and outcome access gated.
+
+**E disposition: CSM_HOLD_NO_MERGE.** This E-only Draft receipt is documentary, based on the current I2 branch head; it does not modify the CSM gate or synthetic signer code. FXNS PR #99's separate research-only merge does not affect this CSM status.
