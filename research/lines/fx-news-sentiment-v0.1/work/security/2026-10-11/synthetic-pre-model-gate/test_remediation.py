@@ -189,7 +189,7 @@ class RemediationAdversarialSyntheticTests(unittest.TestCase):
                 self.inside.set()
                 if not self.release.wait(3):
                     raise RuntimeError("synthetic timeout")
-                super().publish(content)
+                return super().publish(content)
         b,_,r=fixture(); sink=SlowSink();b=Boundary(b.policy,sink,r)
         with ThreadPoolExecutor(max_workers=2) as pool:
             one=pool.submit(b.run,request(),metadata())
