@@ -1,3 +1,21 @@
+# A — PR #117 eight-findings revision: NEW candidate test receipt (NOT EXECUTED)
+
+**AUTHOR_TESTS_NOT_EXECUTED / D_WAITING / PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE**
+
+- New branch: `work/fxns-pr117-eight-findings-a-20261012` (isolated branch created from exact PR #117 head `8f69bded3be746f9f6b6fd1011ea8676f5d32877`).
+- First A commit: `bff9d1bc3546e57e6a8a9bebf5effe398a0869b0`; tree: `ac7d7a2a9bac9a72530383d2d81da6d5224957fc`; parent `8f69bded3be746f9f6b6fd1011ea8676f5d32877`.
+- Remote code identities after first commit: `safe_boundary.py` Git blob `c7eafacc6968f9d0a3aac17a6bbcb5a8acc24d8e`, SHA-256 `532db4ce21aa4a6c7633fc4da31f7c371302c690f1798a5778969fa43ceb2880`, 19375 bytes; `test_remediation.py` blob `e8e070ab74ade1a43d2856808ecaec089953fb7a`, SHA-256 `fe796702764637e18749c8a09cd02db8d6610cd4d6ffeada641e1317219be499`, 11788 bytes; `test_eight_findings.py` blob `e86d41c82ed6eb35d71c39bbc8becb27d0b1630e`, SHA-256 `ab4fd1ca6e0ddef495d579f1f1dae7007ad5c179a6903e9b9400d80afb0bc463`, 10425 bytes.
+- Unchanged inherited `test_safe_boundary.py`: blob `a3caa8bda1eccae0b7e8ed01ff40b6cc42fb27d3`, SHA-256 `7d60393dde7b7cfaac665604920c1e6c2cf89ef732b96e678c1a16ba6376c527`, 8473 bytes.
+- Offline Python runtime / version: `NOT_EXECUTED / NOT_MEASURED`. OS-network deny: `NOT_VERIFIED`. No CI / Actions dispatch, real-source ingest, broker, real GitHub wire test, actual model input, merge, or trading executed.
+- New candidate tests: original T01-T22 (22), former A-reconstructed R01-R14 (14), A01-A12 (12), new A-reconstructed D01-D21 (21, including two explicit limitation demonstrations), A13-A20 (8): **77 defined scenarios, ZERO new verified PASS**.
+- Proposed commands (not yet executed): `python -B -m unittest -v test_safe_boundary`, `python -B -m unittest -v test_remediation`, `python -B -m unittest -v test_eight_findings`, and `python -B -m py_compile` on those four Python files with `PYTHONDONTWRITEBYTECODE=1`.
+- Actual exit code/case-level observed PASS/FAIL/ERROR/SKIP, stdout/stderr SHA-256: `NOT_AVAILABLE — TESTS_NOT_RUN`. Do not substitute the predecessor's 48/48 PASS.
+- Important limitations: fictional memory append/ACK does not prove actual host delivery, durable log, process independence, excerpt signer identity, or Work tool restrictions. D independent work is **NOT_AUTHORIZED_TO_START** on test definitions alone.
+
+---
+
+## Historical PR #117 predecessor receipt (not new-sha acceptance)
+
 # A — PR #110 complete-fictional offline remediation local test receipt
 
 **Author-side only. D independent verification NOT_EXECUTED. PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE.**
