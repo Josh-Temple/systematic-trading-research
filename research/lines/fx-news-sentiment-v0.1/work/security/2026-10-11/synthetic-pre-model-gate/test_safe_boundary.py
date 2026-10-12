@@ -1,14 +1,10 @@
-"""Completely fictional, offline test fixtures for D #109 T01-T22."""
-
+"""T01-T22 originally accepted synthetic scenarios; fixtures upgraded for explicit approval."""
 import copy
 from hashlib import sha256
 import json
 import unittest
+from safe_boundary import ApprovedDocument, Boundary, DeliverySink, Policy, ReceiptSink, BoundaryStopped
 
-from safe_boundary import (ApprovedDocument, Boundary, DeliverySink, Policy,
-                           ReceiptSink, BoundaryStopped)
-
-# Deliberately fictional identifiers; no actual source record or market data.
 REPO = "fixture.example/sandbox"
 HEAD = "a" * 40
 BASE = "b" * 40
@@ -17,29 +13,27 @@ SAFE_BYTES = b"FICTIONAL SCHEMA: columns alpha,beta."
 MARKER = "SYNTHETIC_FORBIDDEN_MARKER"
 FIELDS = ["number", "state", "draft", "merged", "head_oid", "base_oid", "head_repo", "base_repo"]
 PATH_FIELDS = ["path", "blob_oid"]
-
+EXCERPT = "Approved schema has two fictional columns."
 
 def fixture():
-    approval = ApprovedDocument(PATH, sha256(SAFE_BYTES).hexdigest(),
-                                "Approved schema has two fictional columns.")
-    p = Policy(REPO, 7, HEAD, BASE, frozenset({PATH}), {PATH: approval})
+    approval = ApprovedDocument(PATH, sha256(SAFE_BYTES).hexdigest(), EXCERPT,
+                                approval_id="SYNTH-APPROVAL-001",
+                                excerpt_sha256=sha256(EXCERPT.encode()).hexdigest())
+    p = Policy(REPO, 7, HEAD, BASE, frozenset({PATH}), {PATH: approval},
+               expected_blob_oids={PATH: "c"*40})
     delivery, receipts = DeliverySink(), ReceiptSink()
     return Boundary(p, delivery, receipts), delivery, receipts
 
-
 def request(op="PR_METADATA"):
     return {"operation": op, "repository": REPO, "pr_number": 7, "head_oid": HEAD}
-
 
 def item():
     return {"number": 7, "state": "OPEN", "draft": True, "merged": False,
             "head_oid": HEAD, "base_oid": BASE, "head_repo": REPO, "base_repo": REPO}
 
-
 def page(items=None, cursor=None, next_cursor=None):
     return {"items": [item()] if items is None else items, "complete": True,
             "cursor": cursor, "next_cursor": next_cursor}
-
 
 def metadata():
     return {"operation": "PR_METADATA", "repository": REPO, "pr_number": 7,
@@ -47,21 +41,18 @@ def metadata():
             "requested_fields": FIELDS.copy(), "pages": [page()],
             "complete": True, "errors": [], "content_type": "application/json"}
 
-
 def paths():
     x = metadata()
     x["operation"] = "FILE_PATHS"
     x["requested_fields"] = PATH_FIELDS.copy()
-    x["pages"] = [page([{"path": PATH, "blob_oid": "c" * 40}])]
+    x["pages"] = [page([{"path": PATH, "blob_oid": "c"*40}])]
     return x
-
 
 def document(body=SAFE_BYTES):
     return {"operation": "SAFE_DOCUMENT", "repository": REPO,
             "pr_number": 7, "head_oid": HEAD, "post_head_oid": HEAD,
             "path": PATH, "body": body, "content_type": "text/plain",
             "complete": True, "errors": []}
-
 
 class BoundarySyntheticTests(unittest.TestCase):
     def setUp(self):
@@ -71,7 +62,6 @@ class BoundarySyntheticTests(unittest.TestCase):
         self.assertIsNone(self.b.run(req, res))
         self.assertEqual(self.delivery.delivered, [])
         self.assertTrue(any(x["state"] == "BLOCKED" for x in self.receipts.receipts))
-        # Public-facing receipts contain only small fixed enums and identifiers.
         self.assertNotIn(MARKER, repr(self.receipts.receipts))
         self.assertNotIn("http", repr(self.receipts.receipts))
 
@@ -93,11 +83,10 @@ class BoundarySyntheticTests(unittest.TestCase):
 
     def test_T05_second_page_not_released_early(self):
         res = paths(); res["pages"] = [page([{"path": PATH, "blob_oid": "c"*40}], next_cursor="page2"),
-                                         page([{"path": "outside/forbidden.txt", "blob_oid": "c"*40}], cursor="page2")]
+                                        page([{"path": "outside/forbidden.txt", "blob_oid": "c"*40}], cursor="page2")]
         self.blocked(request("FILE_PATHS"), res)
 
     def test_T06_post_delivery_redaction_is_not_prevention(self):
-        # Only fictional test trace; does not actually deliver forbidden data.
         self.assertFalse(self.b.check_prior_delivery(was_delivered=True, rendered_masked=True))
         self.assertEqual(self.receipts.receipts[-1]["state"], "EXPOSURE_REPORTED")
         self.assertEqual(self.delivery.delivered, [])
@@ -106,8 +95,7 @@ class BoundarySyntheticTests(unittest.TestCase):
         class ExplodingState:
             def __hash__(self):
                 raise RuntimeError(MARKER)
-        res = metadata()
-        res["pages"][0]["items"][0]["state"] = ExplodingState()
+        res = metadata(); res["pages"][0]["items"][0]["state"] = ExplodingState()
         self.blocked(request(), res)
         self.assertEqual(self.receipts.receipts[-1]["reason"], "UPSTREAM_FAILURE")
 
@@ -127,17 +115,16 @@ class BoundarySyntheticTests(unittest.TestCase):
         self.blocked(request(), res)
 
     def test_T11_document_hash_mismatch_same_ref(self):
-        res = document(SAFE_BYTES + b"changed")
-        self.blocked(request("SAFE_DOCUMENT"), res)
+        self.blocked(request("SAFE_DOCUMENT"), document(SAFE_BYTES + b"changed"))
 
     def test_T12_head_drifts_during_page_walk(self):
-        res = paths(); res["post_head_oid"] = "d" * 40
+        res = paths(); res["post_head_oid"] = "d"*40
         self.blocked(request("FILE_PATHS"), res)
 
     def test_T13_truncation_or_cursor_loop(self):
         res = paths(); res["pages"][0]["next_cursor"] = "page2"
         self.blocked(request("FILE_PATHS"), res)
-        b, sink, r = fixture()
+        b, sink, _ = fixture()
         res = paths(); res["complete"] = False
         self.assertIsNone(b.run(request("FILE_PATHS"), res))
         self.assertFalse(sink.delivered)
@@ -185,17 +172,16 @@ class BoundarySyntheticTests(unittest.TestCase):
         self.assertEqual(len(self.delivery.delivered), 1)
         self.assertEqual(self.delivery.delivered, [out])
         self.assertEqual(json.loads(out)["items"][0]["state"], "OPEN")
-        self.assertNotIn("body", out.decode("utf-8"))
-        self.assertNotIn(MARKER, out.decode("utf-8"))
-        self.assertIsNone(self.b.run(request(), metadata()))  # No duplicate release
+        self.assertNotIn("body", out.decode())
+        self.assertNotIn(MARKER, out.decode())
+        self.assertIsNone(self.b.run(request(), metadata()))
         self.assertEqual(len(self.delivery.delivered), 1)
         b, sink, receipts = fixture()
         approved = b.run(request("SAFE_DOCUMENT"), document())
         self.assertEqual(len(sink.delivered), 1)
         self.assertIn(b"approved_excerpt", approved)
         self.assertNotIn(SAFE_BYTES, approved)
-        self.assertTrue(all(x["state"] == "RELEASED" for x in receipts.receipts))
-
+        self.assertEqual([x["state"] for x in receipts.receipts], ["RESERVED", "RELEASED"])
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
