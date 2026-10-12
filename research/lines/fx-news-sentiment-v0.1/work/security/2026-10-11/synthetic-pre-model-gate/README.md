@@ -1,83 +1,35 @@
-# Synthetic pre-model read boundary (candidate, unmerged)
+# Synthetic pre-model read boundary — remediation candidate (UNMERGED)
 
-**Status: OFFLINE SYNTHETIC PROTOTYPE ONLY; NOT DEPLOYED OR SECURITY ACCEPTED.**
+**Status: AUTHOR-SIDE OFFLINE SYNTHETIC PASS ONLY / INDEPENDENT D PENDING / PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE.**
 
-This is a standalone, standard-library Python sketch translating D's independent
-[#109 audit](https://github.com/Josh-Temple/systematic-trading-research/pull/109)
-T01–T22 into an executable, isolated proof of behavior. It does not modify
-`fxns.py`, `event_ledger.py`, an actual GitHub connector, a Research Work tool,
-a workflow, access permissions, a source contract, or the CSM gate.
+This candidate descends from PR #110 exact commit `0faf05b453c5d7897c3566d871591b2926ba928e`. The user gave **separate, explicit approval** on 2026-10-12 for changes **only within the original `synthetic-pre-model-gate` folder** and for completely fictional offline tests in a new branch. It does not authorize use of real GitHub API traffic, actual model input, historical FX/news/ECB information, Work host permissions, CI/Actions, or merge. The four original files are preserved in PR #110; only a separate child branch is modified.
 
-## Reproduce (local offline only)
+## Changes from #110
+
+- **In-process atomicity:** the synthetic `DeliverySink` now owns one RLock and a reservation registry shared by `Boundary` instances that use that exact same sink object. Reservation, attempted publish and state transition take place within that lock. The key includes fixed policy/repository/PR/head, trusted fictional request ID, operation, and approved document path. Concurrent calls on one sink cannot release the same key twice. **Separate sinks, separate processes, restart and lost registry are NOT protected.** A real deployment MUST fail closed without an authoritative persistent registry; this prototype is not a deployment.
+- **Receipt semantics:** `RESERVED` precedes publish; a normal synthetic sink return simulates ACK and is followed by `RELEASED`. An exception before or after publish is conservatively `UNKNOWN`, with **no retry**. Failure of the post-publish receipt leaves internal state UNKNOWN; an already delivered item is not relabeled BLOCKED. These are memory-only receipts, not independent durable evidence or actual delivery confirmation.
+- **Trusted approval inputs:** `ApprovedDocument` requires explicit synthetic `approval_id` and exact SHA-256 of safe excerpt; mapping is copied and immutable after policy creation. Initial raw-body digest is also checked. **A matching digest or syntactically valid fabricated approval does NOT prove genuine reviewer identity, ownership, independence, material suitability, signatures, or custody.** That external requirement remains NOT_VERIFIED.
+- **Metadata and Git identity:** reject logically inconsistent OPEN/merged/draft combinations. `FILE_PATHS` requires a prior trusted exact path-to-blob OID mapping; unexpected mode/tree fields are rejected, **but external tree/mode provenance is not authenticated here**. Reject free-text/oversized `policy_id` at policy construction and reject unexpected fields/type confusion.
+- **Request API change:** a synthetic `approved_request_id` may be passed in addition to the original exact four request keys; `request_id` remains unapproved. It is a test identifier only, **not a signed authorization**. Two approved fictional documents can have distinct release identities. The original 22 tests retain their names and safety objectives; their approval fixture now supplies trusted synthetic approval/hash and blob mapping, and T22 expects the new `RESERVED` then `RELEASED` state sequence instead of only RELEASED. This is a deliberately documented API/test-fixture change, not a silent relaxation.
+
+## Author-side tests (Python 3.13.5, standard library only)
+
+In the source folder, do not run network or model connectors:
 
 ```sh
-cd research/lines/fx-news-sentiment-v0.1/work/security/2026-10-11/synthetic-pre-model-gate
-PYTHONDONTWRITEBYTECODE=1 python -m unittest -v test_safe_boundary
-PYTHONDONTWRITEBYTECODE=1 python -m py_compile safe_boundary.py test_safe_boundary.py
+PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_safe_boundary
+PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_remediation
+python -m py_compile safe_boundary.py test_safe_boundary.py test_remediation.py
 ```
 
-No `pip install`, network, credentials, GitHub API, real headlines, live source,
-market data, broker, or actual model input. Tests use only made-up identifiers
-and synthetic markers. A `DeliverySink` emulates the model input; a `ReceiptSink`
-emulates durable audit (in-memory only).
+Case-level receipts, shell exit codes, and stdout/stderr SHA-256 are in `TEST_RECEIPT.md`. Observed **22 original T-case scenarios + 14 author-reconstructed R-case scenarios + 12 additional author cases = 48/48 local synthetic cases PASS**, zero failures/errors/skips; `py_compile` succeeded. R-tests **were reimplemented from #114's textual specifications**, not the unpublished original test source; even identical R labels do not mean identical bytes or independent verification. R11's local PASS means *approval input constraints exist*, not that an actual safe excerpt was independently approved. A's tests are **not an independent D acceptance**.
 
-## Behavior in tested scope
+No live source was read, contacted or staged by the tests. OS network-namespace restriction could **not** be established here (`unshare -n` failed with operation not permitted), so **host-level network denial remains NOT_VERIFIED**. The Python test cases use only fictional in-memory objects and no network APIs. No CI was dispatched; `[skip ci]` on the proposed commit does not constitute a passing CI job.
 
-- Reject all request operations except three literal operations; reject unapproved
-  repo/PR/commit and unapproved response fields, types, content/media, incomplete
-  paginated results, moving HEAD, unexpected documents, and errors.
-- For `PR_METADATA`, require strict selection of a fixed metadata-only schema;
-  emit verified enums and exact configured identities, never input body/title.
-  This **does not** implement a wire-level GitHub GraphQL query.
-- For `FILE_PATHS`, require each path to be in an exact allowlist; do not emit
-  even earlier pages until the whole result validates.
-- For `SAFE_DOCUMENT`, verify raw *fictional* bytes against a preapproved
-  digest and release only a separately approved fixed excerpt, never raw bytes.
-  Safe-content approval is an external **trusted precondition**, not produced
-  by this code. SHA-256 alone does not prove reviewer independence or safety.
-- Commit a fixed-shape, data-free audit receipt before release; reject output
-  if audit append fails. In-memory receipt is neither tamper-proof nor durable.
-- Reject duplicate operation delivery within a single boundary instance.
-  The prototype does not implement distributed exactly-once semantics.
-- Report known previous delivery as an exposure even when presentation was
-  subsequently masked.
+## Mandatory external acceptance before any expansion
 
-## T01–T22 mapping and confidence
+1. A separate D reviews exact new head/tree/file identities and independently executes T01–T22, R01–R14 equivalents **and at least 12 new unseen adversarial cases** in a documented isolated environment. Any failure means NEEDS_REVISION.
+2. Independently verify a model-inaccessible source-side broker, minimum-field GitHub query, host/tool/browser/shell/file/cache/OCR/network/multimodal denial, real custody of independently approved excerpt, durable audit/ACK and actual ingress. **No such host/security acceptance is claimed or authorized here.**
+3. Independently decide #106/#108, FXNS source contract/ledger migration, CSM supply/gate, real-source qualification and research cohort. Synthetic code PASS cannot unlock them.
 
-The unit test names map one-to-one to D #109's scenarios. **22/22 local
-synthetic unit tests passed** in the recorded container run. This is not a CI
-run, not GitHub Actions, not a real model/Work connector test, and not a live
-source suitability test.
-
-Coverage limitations, including those that a green test result MUST NOT hide:
-
-- **T01/T02/T04/T09/T10/T16:** test in-memory schema rejection, NOT source-side
-  field selection. A real API may already have delivered forbidden bytes to
-  an upstream host before this boundary.
-- **T05/T12/T13/T18:** exercise in-memory complete-page validation; do not prove
-  atomicity under concurrent production page retrieval or live streaming.
-- **T06:** an explicit post-delivery exposure trace is rejected as a clean pass;
-  no real LLM receives synthetic data.
-- **T07/T08/T21:** test exception text suppression, fixed receipt types, and
-  audit failure in an in-process surrogate, not a hardened logging subsystem.
-- **T14/T15/T17/T19/T20:** unsupported redirect, preview, cache, bypass,
-  and prompt-content *paths* are rejected within this API; no network egress,
-  OS capability, tool/connector bypass or platform-level input is controlled.
-- **T03/T11/T22:** document hash/approved excerpt and nominal release only.
-  Safe approval, non-free-text classification, reviewer role separation and
-  provenance are not established in code.
-
-## No deployment claim
-
-Real pre-model prevention would require (a) a trusted broker separate from
-research-model credentials, (b) exact GitHub source-side field selection,
-(c) approval of safe document excerpts by an authorized independent reviewer,
-(d) denial of connector/browser/shell/cache/preview bypass at the **host**
-permission level, (e) validated audit durability, and (f) independent tests
-with an externally observed actual delivery boundary. These are NOT available
-or proven in the current ChatGPT Work environment by this prototype.
-
-The research state remains `SOURCE_QUALIFICATION_BLOCKED`, formal cohort
-`CLOSED`, CSM I2 `BLOCKED/CLOSED/market_outcome_access=false`. No conclusion
-about real exposure impact, source qualification, model safety or market
-outcomes follows from these tests.
+**Gate remains FXNS `SOURCE_QUALIFICATION_BLOCKED / formal cohort CLOSED / HYP-FXNS UNTESTED / NO_QUALIFIED_ALTERNATIVE`; CSM I2 `BLOCKED / CLOSED / market_outcome_access=false / HYP-CSM-002 UNTESTED`; `PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE`.**
