@@ -41,6 +41,29 @@ def _valid_string(value: Any, pattern: re.Pattern[str]) -> bool:
     return type(value) is str and pattern.fullmatch(value) is not None
 
 
+def _valid_audit_semantics(entry: dict[str, str]) -> bool:
+    """Validate fictional receipt values, not just their Python types.
+
+    Historical entries do not have to refer to the current policy or operation:
+    a synthetic sink can contain prior events from another approved request.
+    This is NOT authentication of historical receipts or durable custody.
+    """
+    state, reason, operation = entry["state"], entry["reason"], entry["operation"]
+    if (state not in _STATES or reason not in _REASONS
+            or operation not in _OPS | {"DELIVERY_TRACE", "UNSUPPORTED"}
+            or not _valid_string(entry["policy_id"], _POLICY)):
+        return False
+    if state in {"RESERVED", "RELEASED"}:
+        return reason == "OK" and operation in _OPS
+    if state == "UNKNOWN":
+        return reason == "DELIVERY_UNKNOWN" and operation in _OPS
+    if state == "EXPOSURE_REPORTED":
+        return reason == "ALREADY_DELIVERED" and operation == "DELIVERY_TRACE"
+    # BLOCKED events cannot report successful delivery or a publish-ACK error.
+    return (state == "BLOCKED" and reason not in {"OK", "DELIVERY_UNKNOWN"}
+            and operation in _OPS | {"UNSUPPORTED"})
+
+
 @dataclass(frozen=True)
 class ApprovedDocument:
     path: str
@@ -131,7 +154,10 @@ class ReceiptSink:
             raise BoundaryStopped("INVALID_AUDIT_STATE")
         if not (_valid_string(policy_id, _POLICY) and type(operation) is str and operation in _OPS | {"DELIVERY_TRACE", "UNSUPPORTED"}):
             raise BoundaryStopped("BAD_STRUCTURE")
-        self.receipts.append({"state": state, "reason": reason, "policy_id": policy_id, "operation": operation})
+        entry = {"state": state, "reason": reason, "policy_id": policy_id, "operation": operation}
+        if not _valid_audit_semantics(entry):
+            raise BoundaryStopped("BAD_STRUCTURE")
+        self.receipts.append(entry)
 
 
 class Boundary:
@@ -172,7 +198,8 @@ class Boundary:
             return (type(entry) is dict and len(entry) == len(expected)
                     and all(type(key) is str and type(value) is str
                             for key, value in entry.items())
-                    and set(entry) == set(expected))
+                    and set(entry) == set(expected)
+                    and _valid_audit_semantics(entry))
 
         try:
             if (type(self.receipts.receipts) is not list
