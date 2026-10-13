@@ -166,15 +166,24 @@ class Boundary:
         """Verify observed synthetic memory side effects; not durable audit evidence."""
         expected = {"state": state, "reason": reason,
                     "policy_id": self.policy.policy_id, "operation": operation}
+        def valid_entry(entry: Any) -> bool:
+            # Verify exact built-in types *before* equality: foreign objects can
+            # implement __eq__ that fraudulently reports equality to strings.
+            return (type(entry) is dict and len(entry) == len(expected)
+                    and all(type(key) is str and type(value) is str
+                            for key, value in entry.items())
+                    and set(entry) == set(expected))
+
         try:
-            if type(self.receipts.receipts) is not list or any(type(e) is not dict for e in self.receipts.receipts):
+            if (type(self.receipts.receipts) is not list
+                    or not all(valid_entry(e) for e in self.receipts.receipts)):
                 return False
             before = [dict(e) for e in self.receipts.receipts]
             self.receipts.append(state=state, reason=reason, policy_id=self.policy.policy_id, operation=operation)
             after = self.receipts.receipts
             return (type(after) is list and len(after) == len(before) + 1
-                    and after[:-1] == before and type(after[-1]) is dict
-                    and after[-1] == expected)
+                    and all(valid_entry(e) for e in after)
+                    and after[:-1] == before and after[-1] == expected)
         except Exception:
             return False
 
