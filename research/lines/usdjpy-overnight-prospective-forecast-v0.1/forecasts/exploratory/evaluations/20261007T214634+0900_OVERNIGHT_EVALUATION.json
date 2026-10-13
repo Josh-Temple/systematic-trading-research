@@ -1,0 +1,93 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_EVALUATION_v0.1",
+  "evaluation_id": "XEV-USDJPY-20261007-214634",
+  "forecast_id": "XPF-USDJPY-20261007-214634",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "evaluated_at": "2026-10-08T08:21:56+09:00",
+  "status": "INDICATIVE_DIRECTIONAL_MISS_FORMAL_SCORE_UNAVAILABLE",
+  "status_qualification": "LIKELY_NOT_CONFIRMED_AT_EXACT_ENDPOINT; public observations before both target boundaries are not canonical",
+  "forecast_as_issued": {
+    "p_up": 0.55,
+    "forecast_return_bps": 6,
+    "direction_label": "SLIGHT_USDJPY_UP",
+    "confidence": "LOW",
+    "issued_at": "2026-10-07T21:46:34+09:00",
+    "information_cutoff": "2026-10-07T21:46:34+09:00",
+    "target_window": "2026-10-07T22:00:00+09:00 -> 2026-10-08T08:00:00+09:00",
+    "protocol_deviation": "EARLY_ISSUANCE_13M26S_AND_UNQUALIFIED_REFERENCE_FEED"
+  },
+  "source_gate": {
+    "specification_frozen": false,
+    "qualified_reference_feed_available": false,
+    "exact_start_tick_within_60s_available": false,
+    "exact_end_tick_within_60s_available": false,
+    "formal_binary_outcome_authorized": false,
+    "formal_brier_authorized": false,
+    "formal_continuous_return_authorized": false
+  },
+  "public_timestamped_evidence": {
+    "near_start": [
+      {
+        "time": "2026-10-07T21:26:00+09:00",
+        "usd_jpy": "158.28",
+        "source": "Minkabu FX/為替, published 21:50 quoting 21:26 observed value",
+        "url": "https://fx.minkabu.jp/news/381026",
+        "note": "34 minutes before 22:00; outside 60-second rule; no Bid/Ask/source match."
+      },
+      {
+        "time": "2026-10-07T22:34:00+09:00",
+        "usd_jpy": "158 yen range, no exact quote",
+        "source": "Minkabu NY-market commentary",
+        "url": "https://minkabu.jp/news/4631524",
+        "note": "34 minutes after start; corroborates 158 area but cannot replace cutoff tick."
+      }
+    ],
+    "near_end": [
+      {
+        "time": "2026-10-08T05:27:00+09:00",
+        "usd_jpy": "158.075 last reported matched exchange-traded quote",
+        "source": "Click365 market board, time-sensitive search snapshot",
+        "url": "https://sunward-t.jfx.jiji.com/market/fx/",
+        "note": "This is a distinct exchange-traded instrument, not an equivalent spot best Bid/Ask; do not use as endpoint or scored input."
+      },
+      {
+        "time": "2026-10-08T07:28:00+09:00",
+        "usd_jpy": "about 158.00",
+        "source": "Minkabu FX/為替 morning Tokyo report",
+        "url": "https://minkabu.jp/news/4631577",
+        "note": "32 minutes before endpoint; outside 60-second rule. Approximate commentary quote, not canonical."
+      }
+    ],
+    "endpoint_exact_0800": "NOT_ESTABLISHED",
+    "source_time_caveat": "The only defensible directional inference compares noncanonical points at 21:26 and 07:28, not the specified 22:00 and 08:00 mids."
+  },
+  "indicative_assessment": {
+    "direction_between_observed_public_points": "DOWN",
+    "forecast_direction_result": "MISS_LIKELY_NOT_FINAL",
+    "observed_public_price_change_jpy": "approximately -0.28 between 21:26 158.28 and 07:28 ~158.00; NOT a target-window return",
+    "indicative_return_bps_range": "NOT_AVAILABLE_FOR_DEFINED_TARGET",
+    "indicative_point_error_bps_range": "NOT_AVAILABLE_FOR_DEFINED_TARGET",
+    "illustrative_binary_outcome_if_down_confirmed": 0,
+    "illustrative_brier_if_y_up_0": 0.3025,
+    "neutral_brier_if_y_up_0": 0.25,
+    "illustrative_brier_delta_if_y_up_0": 0.0525,
+    "illustrative_brier_if_y_up_1": 0.2025,
+    "formal_y_up": "NOT_AVAILABLE",
+    "formal_realized_return_bps": "NOT_AVAILABLE",
+    "formal_brier": "NOT_AVAILABLE",
+    "scientific_score": "NOT_AVAILABLE"
+  },
+  "error_attribution_candidates_only": [
+    "U.S. Treasury 10-year yield declined from overnight highs following a strong auction; observed association is not proven causation.",
+    "FOMC minutes did not yield sustained upside in USDJPY despite the slightly hawkish year-end message.",
+    "Oil settled lower after reserve-release headlines, reducing an earlier potential yen-negative support.",
+    "Rejection near 158.50 and intervention sensitivity may have capped the rise, but are not causal findings."
+  ],
+  "lessons_for_challenger_only": [
+    "Record directional misses and missing exact endpoint quotes without post-hoc forecast modification.",
+    "Do not modify the candidate specification, timing, inputs or parameters based on this exploratory event."
+  ],
+  "benchmark_effect": "NONE_NOT_IN_COHORT",
+  "forecast_record_mutated": false,
+  "next_action": "Retain this append-only, bounded 08:00 post-endpoint evaluation as provisional; if a timestamp-proven 08:00 public observation later becomes available, record a new version/correction without rewriting this entry. Formal result still requires qualified reference feed and human freeze."
+}

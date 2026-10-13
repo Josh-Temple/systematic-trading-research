@@ -1,0 +1,74 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261005T232900+0900-EVENT_DRIVEN",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-05T23:29:00+09:00",
+  "retrieved_at": "2026-10-05T23:29:00+09:00",
+  "checkpoint_type": "EVENT_DRIVEN",
+  "source_cutoff": "2026-10-05T23:29:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "POST_CUTOFF_REACTION_NOT_YET_QUALIFIED",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Reliable timestamped post-ISM USDJPY quote not yet captured."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_POST_ISM_EXACT",
+    "us_10y": "UNKNOWN_POST_ISM_EXACT",
+    "jp_2y": "NOT_APPLICABLE_POST_TOKYO_CLOSE",
+    "jp_10y": "NOT_APPLICABLE_POST_TOKYO_CLOSE"
+  },
+  "policy_state": {
+    "fed": "No policy action; ISM showed softer activity but hotter prices.",
+    "boj": "NO_NEW_EVENT",
+    "japan_fx_authorities": "NO_NEW_EVENT"
+  },
+  "macro_news_facts": [
+    "U.S. September ISM Services PMI 54.9 versus 55.0 expected and 55.4 prior.",
+    "New Orders 59.8 versus 60.9 prior.",
+    "Prices 74.0.",
+    "Supplier Deliveries 53.2."
+  ],
+  "scheduled_events_known": [
+    "No additional major scheduled U.S. release identified before 08:00 JST endpoint."
+  ],
+  "source_refs": [
+    "Reuters ISM report 2026-10-05",
+    "Minkabu ISM release 2026-10-05 23:10 JST",
+    "ISM release calendar"
+  ],
+  "facts": [
+    "Headline activity was marginally softer than expected.",
+    "Price pressure was materially stronger.",
+    "The report was mixed rather than a clean weak-growth signal.",
+    "Immediate USDJPY and Treasury reaction remains unbound."
+  ],
+  "interpretations": [
+    "The 21:54 forecast's downside trigger was not cleanly met because inflation pressure was strong.",
+    "Headline softness is mildly USD-negative while hot prices can support yields and USD.",
+    "Forecast remains unchanged; this entry is post-cutoff context only."
+  ],
+  "change_since_prior": "POST_CUTOFF_EVENT: ISM 54.9 vs 55.0 expected; Prices 74.0.",
+  "base_case": "FORECAST_UNCHANGED_FOR_RECORD: p_up=0.53 / +4 bps.",
+  "alternative_case": "Market reaction depends on whether yields respond more to activity softness or inflation pressure.",
+  "invalidation_conditions": [
+    "NOT_APPLICABLE_TO_FROZEN_FORECAST_AFTER_CUTOFF"
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "Capture post-ISM USDJPY quote.",
+    "Capture U.S. 2Y/10Y reaction.",
+    "Evaluate after 08:00 JST."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "e8da1c5826b2b803167ff0059af238a81037edfa22ae0ecdbc3d6e50e311411c"
+}

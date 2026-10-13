@@ -1,0 +1,21 @@
+{
+  "record_type": "USDJPY_DUKASCOPY_BOUNDED_SOURCE_ACQUISITION_ATTESTATION_v0.1",
+  "status": "PENDING_HUMAN_LOCAL_EXECUTION",
+  "provider": "Dukascopy",
+  "platform": "JForex demo",
+  "account_identifier": "DO_NOT_RECORD",
+  "platform_version": null,
+  "collector_file": "JForexUsdJpyBoundedSource.java",
+  "collector_sha256": null,
+  "instrument": "Instrument.USDJPY",
+  "predeclared_start_utc": "2024-01-15T12:59:00Z",
+  "predeclared_end_utc": "2024-01-15T13:01:00Z",
+  "retrieved_at_utc": null,
+  "source_session_and_instrument_verified": false,
+  "output_file_sha256": null,
+  "structural_probe_receipt_sha256": null,
+  "provider_license_and_retention_review": "NOT_REVIEWED",
+  "market_outcome_access": "CLOSED",
+  "formal_source_gate_status": "BLOCKED",
+  "notes": "No passwords/tokens/prices/returns/trading outcomes in this attestation. Preserve separately verifiable acquisition evidence where permitted."
+}
