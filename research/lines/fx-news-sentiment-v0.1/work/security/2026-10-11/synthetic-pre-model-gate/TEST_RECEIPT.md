@@ -1,3 +1,167 @@
+# FXNS PR #119 — A author-side observed synthetic test receipt (2026-10-13 JST)
+
+**AUTHOR_SYNTHETIC_TESTS_PASS_SCOPED — 77/77 PASS; compile PASS. Independent D NOT_EXECUTED. PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE.**
+
+This section supersedes the older, explicitly preserved pre-execution snapshot below for the current **author-side** test observation. It does not certify real Work host access controls, durable delivery/append, cross-process exactly-once, approved excerpt custody, real-source access or research readiness.
+
+## Identity and evidence
+
+- Repository: `Josh-Temple/systematic-trading-research`; PR: #119; branch: `work/fxns-pr117-eight-findings-a-20261012`; Draft, not merged at the time of this receipt update.
+- **Exact tested source HEAD**: `3e45c2a98ab030d3a9536b169154e9855493289c`.
+- Tested commit tree: `6f9c43a7529183a966e2adc9a2323b84f2141140`; parent: `111fa5e4adfd8bd168eb6495f53dd8039edbdbc0`; PR base: `8f69bded3be746f9f6b6fd1011ea8676f5d32877`.
+- Author Work evidence: ChatGPT Library `/Broad Trade Research/fxns_pr119_A_author_77_test_retry_20261013.zip` (41,667-byte ZIP, SHA-256 `b72c8a96d5f14b85aab4466f24920a6b6ba153be6f5b877a715d61776c673600`). Read and independently cross-checked by receipt-writing chat on 2026-10-13 JST. Contains `evidence/execution.json`, `evidence/{0..3}.{stdout,stderr}`, `evidence/identity.json`, author report, verified 6-file input snapshot, and author local receipt candidate.
+- Original six input Git blobs and source bytes were compared to fixed GitHub PR #119 HEAD. This **receipt file** is expected to acquire a different Git blob/branch HEAD as a consequence of the approved documentation-only update; the four Python code/test blobs must remain unchanged.
+- Authorization: User explicitly approved **only** updating PR #119 `TEST_RECEIPT.md` to reflect recorded 77 tests and verifying the update on 2026-10-13. No code/test/README, CI, research branch/main, other PR, source or gate changes authorized.
+
+### Exact file identities at the tested HEAD
+
+| File | Bytes | Git blob SHA-1 | byte SHA-256 |
+| --- | ---: | --- | --- |
+| `safe_boundary.py` | 19375 | `c7eafacc6968f9d0a3aac17a6bbcb5a8acc24d8e` | `532db4ce21aa4a6c7633fc4da31f7c371302c690f1798a5778969fa43ceb2880` |
+| `test_safe_boundary.py` | 8473 | `a3caa8bda1eccae0b7e8ed01ff40b6cc42fb27d3` | `7d60393dde7b7cfaac665604920c1e6c2cf89ef732b96e678c1a16ba6376c527` |
+| `test_remediation.py` | 11788 | `e8e070ab74ade1a43d2856808ecaec089953fb7a` | `fe796702764637e18749c8a09cd02db8d6610cd4d6ffeada641e1317219be499` |
+| `test_eight_findings.py` | 10425 | `e86d41c82ed6eb35d71c39bbc8becb27d0b1630e` | `ab4fd1ca6e0ddef495d579f1f1dae7007ad5c179a6903e9b9400d80afb0bc463` |
+| `README.md` | 9000 | `326308931acfdb466661d4180ec41690fd03556e` | `8e05d10080a3a8fd1d474e689581c7cf97257a69fa11450612868402366f4abe` |
+| `TEST_RECEIPT.md` | 13707 | `9d7db1359ee515ab77b54ff24bf96bf084b24f9d` | `34b7f5a04838c7473bccf0ee89cbf31a59c45ca0579b1b5d04d3f725aea3786a` |
+
+## Observed author-side execution (from checked original logs)
+
+- Python: **3.12.14**, Linux 6.18.44 x86_64, standard library only, `python -B`, `PYTHONDONTWRITEBYTECODE=1`.
+- Exact working directory in Work run: `/workspace/scratch/551bc67b4375/fxns_a/verified`; local scratch `__pycache__` cleaned.
+- Source files were fixed before execution. No code or test expectations edited.
+- Observed individual cases: T 22, R 14, A01–A12 12, reconstructed D01–D21 21, A13–A20 8 = **77 PASS**, 0 FAIL, 0 ERROR, 0 SKIP.
+- OS egress deny: `unshare -n -- true` exited 1, Operation not permitted; **NETWORK_OS_ISOLATION_NOT_VERIFIED**. No live network probe.
+- The synthetic D20/D21 demonstrate limitations and cannot prove independent custody or true cross-process exactly-once.
+
+| Invocation (`PYTHONDONTWRITEBYTECODE=1 python -B -m ...`) | Exit | Cases | stdout bytes / SHA-256 | stderr bytes / SHA-256 |
+| --- | ---: | ---: | --- | --- |
+| `unittest -v test_safe_boundary` | 0 | 22 | 0 / `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` | 3043 / `13cd904eea72a0fcbabc2f05e57c7fc8e6d4182ebf1b9fd16bd7ed07a48298fd` |
+| `unittest -v test_remediation` | 0 | 26 | 0 / `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` | 3709 / `d96000a31be6852737266a73b5d753881344a7f623365b8094531e4055c22b1c` |
+| `unittest -v test_eight_findings` | 0 | 29 | 0 / `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` | 3893 / `97e7725f02d0a8dc8dcf8dce6d7fa116d6ca590f6cd052467cd043b299736465` |
+| `py_compile safe_boundary.py test_safe_boundary.py test_remediation.py test_eight_findings.py` | 0 | 0 | 0 / `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` | 0 / `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+
+For all four invocations, the raw stdout/stderr archived bytes reproduce the hashes above and all 77 archived case names/statuses match the source test method names and `unittest -v` output. The compile succeeded separately and has zero unittest cases.
+
+## All 77 case outcomes, author-side ONLY
+
+### test_safe_boundary.py (22 PASS)
+
+- `test_T01_out_of_scope_pr`: PASS
+- `test_T02_forbidden_pr_fields`: PASS
+- `test_T03_doc_new_version_requires_approval`: PASS
+- `test_T04_search_snippet_is_forbidden`: PASS
+- `test_T05_second_page_not_released_early`: PASS
+- `test_T06_post_delivery_redaction_is_not_prevention`: PASS
+- `test_T07_upstream_exception_never_echoed`: PASS
+- `test_T08_raw_evidence_cannot_be_written_to_public_receipt`: PASS
+- `test_T09_nested_encoded_unexpected_field`: PASS
+- `test_T10_unexpected_free_text_inside_known_field`: PASS
+- `test_T11_document_hash_mismatch_same_ref`: PASS
+- `test_T12_head_drifts_during_page_walk`: PASS
+- `test_T13_truncation_or_cursor_loop`: PASS
+- `test_T14_unapproved_redirect_source`: PASS
+- `test_T15_multimodal_or_preview_payload`: PASS
+- `test_T16_graphql_partial_with_error`: PASS
+- `test_T17_unvalidated_cache_read_not_allowed`: PASS
+- `test_T18_streamed_unvalidated_first_chunk`: PASS
+- `test_T19_direct_connector_bypass_not_supported`: PASS
+- `test_T20_prompt_injection_cannot_change_policy`: PASS
+- `test_T21_audit_failure_prevents_release`: PASS
+- `test_T22_approved_metadata_and_excerpt_exactly_once`: PASS
+
+### test_remediation.py (26 PASS)
+
+- `test_R01_race_same_sink_same_op`: PASS
+- `test_R02_partial_publish_unknown_no_retry`: PASS
+- `test_R03_pre_publish_error_no_false_released`: PASS
+- `test_R04_approval_mapping_mutation_rejected`: PASS
+- `test_R05_new_boundary_same_sink_cannot_duplicate`: PASS
+- `test_R06_unapproved_request_id`: PASS
+- `test_R07_nested_state_type`: PASS
+- `test_R08_late_page_unapproved`: PASS
+- `test_R09_cursor_loop`: PASS
+- `test_R10_large_fictional_document`: PASS
+- `test_R11_trusted_approval_input_required`: PASS
+- `test_R12_policy_id_reject_free_text`: PASS
+- `test_R13_logical_metadata_contradiction`: PASS
+- `test_R14_expected_blob_pair_mismatch`: PASS
+- `test_A01_three_concurrent`: PASS
+- `test_A02_same_request_different_operation`: PASS
+- `test_A03_different_document_same_operation`: PASS
+- `test_A04_distinct_trusted_request_ids`: PASS
+- `test_A05_delayed_ack_no_concurrent_duplicate`: PASS
+- `test_A06_before_publish_failure`: PASS
+- `test_A07_after_publish_failure_and_retry`: PASS
+- `test_A08_audit_failure_after_publish`: PASS
+- `test_A09_registry_unknown_disclosed_no_global_guarantee`: PASS
+- `test_A10_deep_mutable_policy_reference`: PASS
+- `test_A11_path_blob_and_extra_mode_tree`: PASS
+- `test_A12_large_partial_stream_type_mix`: PASS
+
+### test_eight_findings.py (29 PASS)
+
+- `test_D01_duplicate_file_identity_across_pages`: PASS
+- `test_D02_duplicate_file_identity_same_page`: PASS
+- `test_D03_duplicate_metadata_identity`: PASS
+- `test_D04_noop_publish_no_ack`: PASS
+- `test_D05_noop_audit_return`: PASS
+- `test_D06_equal_but_nonstring_head_repo`: PASS
+- `test_D07_equal_but_nonstring_base_repo`: PASS
+- `test_D08_equal_but_nonstring_post_head`: PASS
+- `test_D09_cursor_object_rejected`: PASS
+- `test_D10_boolean_pr_number_rejected`: PASS
+- `test_D11_bool_or_nonstring_blob_rejected`: PASS
+- `test_D12_mutating_input_mapping_does_not_rewrite_approval`: PASS
+- `test_D13_bytearray_body_rejected`: PASS
+- `test_D14_unsafe_request_id_rejected`: PASS
+- `test_D15_audit_failure_no_retry_after_publish`: PASS
+- `test_D16_valid_closed_unmerged_metadata`: PASS
+- `test_D17_merged_and_draft_inconsistent`: PASS
+- `test_D18_unknown_nested_field_rejected`: PASS
+- `test_D19_shared_registry_no_duplicate`: PASS
+- `test_D20_fabricated_approval_not_independent_custody`: PASS
+- `test_D21_separate_sinks_not_exactly_once`: PASS
+- `test_A13_distinct_approved_file_paths`: PASS
+- `test_A14_unduplicated_single_metadata`: PASS
+- `test_A15_valid_sink_ack_exact`: PASS
+- `test_A16_delivery_recorded_ack_missing`: PASS
+- `test_A17_release_audit_noop_after_publish`: PASS
+- `test_A18_unicode_path_policy_rejected`: PASS
+- `test_A19_foreign_object_envelope_repo_rejected`: PASS
+- `test_A20_noop_publish_explicit_fake_ack`: PASS
+
+
+## Remaining conditions / explicit HOLD
+
+- This receipt is **author-side evidence**, not a separate D audit. D must retrieve the final current PR #119 HEAD and this receipt independently, re-run the 77 cases, then design/run **at least 12 independent new synthetic negative tests** in a separate Chat.
+- No real host ingress/egress enforcement, independently attested durable ACK/audit, external-source qualification or actual delivery evidence has been provided.
+- FXNS: `SOURCE_QUALIFICATION_BLOCKED / formal cohort CLOSED / HYP-FXNS UNTESTED / PROPOSED_NOT_FROZEN / NO_QUALIFIED_ALTERNATIVE`.
+- CSM I2: `BLOCKED / CLOSED / market_outcome_access=false`. #106/#108 human final disposition PENDING.
+- No CI/Actions, real-source, broker, market data, trading, merge, or research-gate change performed.
+- All findings limited to the recorded, wholly fictional local synthetic tests. **PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE**.
+
+---
+
+## Historical pre-execution receipt (preserved verbatim; statuses below were true only before the A run)
+
+# A — PR #117 eight-findings revision: NEW candidate test receipt (NOT EXECUTED)
+
+**AUTHOR_TESTS_NOT_EXECUTED / D_WAITING / PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE**
+
+- New branch: `work/fxns-pr117-eight-findings-a-20261012` (isolated branch created from exact PR #117 head `8f69bded3be746f9f6b6fd1011ea8676f5d32877`).
+- First A commit: `bff9d1bc3546e57e6a8a9bebf5effe398a0869b0`; tree: `ac7d7a2a9bac9a72530383d2d81da6d5224957fc`; parent `8f69bded3be746f9f6b6fd1011ea8676f5d32877`.
+- Remote code identities after first commit: `safe_boundary.py` Git blob `c7eafacc6968f9d0a3aac17a6bbcb5a8acc24d8e`, SHA-256 `532db4ce21aa4a6c7633fc4da31f7c371302c690f1798a5778969fa43ceb2880`, 19375 bytes; `test_remediation.py` blob `e8e070ab74ade1a43d2856808ecaec089953fb7a`, SHA-256 `fe796702764637e18749c8a09cd02db8d6610cd4d6ffeada641e1317219be499`, 11788 bytes; `test_eight_findings.py` blob `e86d41c82ed6eb35d71c39bbc8becb27d0b1630e`, SHA-256 `ab4fd1ca6e0ddef495d579f1f1dae7007ad5c179a6903e9b9400d80afb0bc463`, 10425 bytes.
+- Unchanged inherited `test_safe_boundary.py`: blob `a3caa8bda1eccae0b7e8ed01ff40b6cc42fb27d3`, SHA-256 `7d60393dde7b7cfaac665604920c1e6c2cf89ef732b96e678c1a16ba6376c527`, 8473 bytes.
+- Offline Python runtime / version: `NOT_EXECUTED / NOT_MEASURED`. OS-network deny: `NOT_VERIFIED`. No CI / Actions dispatch, real-source ingest, broker, real GitHub wire test, actual model input, merge, or trading executed.
+- New candidate tests: original T01-T22 (22), former A-reconstructed R01-R14 (14), A01-A12 (12), new A-reconstructed D01-D21 (21, including two explicit limitation demonstrations), A13-A20 (8): **77 defined scenarios, ZERO new verified PASS**.
+- Proposed commands (not yet executed): `python -B -m unittest -v test_safe_boundary`, `python -B -m unittest -v test_remediation`, `python -B -m unittest -v test_eight_findings`, and `python -B -m py_compile` on those four Python files with `PYTHONDONTWRITEBYTECODE=1`.
+- Actual exit code/case-level observed PASS/FAIL/ERROR/SKIP, stdout/stderr SHA-256: `NOT_AVAILABLE — TESTS_NOT_RUN`. Do not substitute the predecessor's 48/48 PASS.
+- Important limitations: fictional memory append/ACK does not prove actual host delivery, durable log, process independence, excerpt signer identity, or Work tool restrictions. D independent work is **NOT_AUTHORIZED_TO_START** on test definitions alone.
+
+---
+
+## Historical PR #117 predecessor receipt (not new-sha acceptance)
+
 # A — PR #110 complete-fictional offline remediation local test receipt
 
 **Author-side only. D independent verification NOT_EXECUTED. PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE.**

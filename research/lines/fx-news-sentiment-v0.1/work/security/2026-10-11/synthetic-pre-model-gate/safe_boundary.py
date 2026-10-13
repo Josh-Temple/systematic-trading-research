@@ -19,6 +19,8 @@ _HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 _POLICY = re.compile(r"SYNTHETIC-[A-Z0-9-]{1,48}\Z")
 _APPROVAL = re.compile(r"SYNTH-[A-Z0-9-]{1,48}\Z")
 _REQUEST_ID = re.compile(r"SYN-[A-Za-z0-9_-]{1,32}\Z")
+_PATH = re.compile(r"[A-Za-z0-9._/-]{1,256}\Z")
+_REPOSITORY = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 _METADATA_FIELDS = frozenset({"number", "state", "draft", "merged", "head_oid", "base_oid", "head_repo", "base_repo"})
 _PATH_FIELDS = frozenset({"path", "blob_oid"})
 _ENVELOPE_FIELDS = frozenset({"operation", "repository", "pr_number", "head_oid", "post_head_oid", "requested_fields", "pages", "complete", "errors", "content_type"})
@@ -56,8 +58,8 @@ class ApprovedDocument:
                 and type(self.safe_excerpt) is str
                 and _valid_string(self.excerpt_sha256, re.compile(r"[0-9a-f]{64}\Z"))
                 and sha256(self.safe_excerpt.encode("utf-8")).hexdigest() == self.excerpt_sha256
-                and type(self.path) is str and self.path
-                and self.media_type == "text/plain"):
+                and _valid_string(self.path, _PATH) and ".." not in self.path.split("/")
+                and type(self.media_type) is str and self.media_type == "text/plain"):
             raise BoundaryStopped("UNAPPROVED_CONTENT")
 
 
@@ -77,12 +79,12 @@ class Policy:
 
     def __post_init__(self):
         if not (_valid_string(self.policy_id, _POLICY)
-                and type(self.repository) is str and 0 < len(self.repository) <= 128
+                and _valid_string(self.repository, _REPOSITORY) and len(self.repository) <= 128
                 and type(self.pr_number) is int and self.pr_number > 0
                 and _valid_string(self.head_oid, _HEX40)
                 and _valid_string(self.base_oid, _HEX40)
                 and type(self.allowed_paths) is frozenset
-                and all(type(p) is str and p and len(p) <= 256 for p in self.allowed_paths)
+                and all(_valid_string(p, _PATH) and ".." not in p.split("/") for p in self.allowed_paths)
                 and all(type(x) is int and 0 < x <= 100000 for x in (self.max_pages, self.max_items, self.max_bytes))):
             raise BoundaryStopped("BAD_STRUCTURE")
         docs = dict(self.approved_documents)
@@ -96,6 +98,13 @@ class Policy:
         object.__setattr__(self, "expected_blob_oids", MappingProxyType(blobs))
 
 
+@dataclass(frozen=True)
+class DeliveryAck:
+    """In-memory fictional acknowledgment. Never a real host delivery ACK."""
+    index: int
+    content_sha256: str
+
+
 @dataclass
 class DeliverySink:
     """Synthetic in-memory surrogate. A shared sink is the SAME registry scope."""
@@ -103,9 +112,11 @@ class DeliverySink:
     _lock: RLock = field(default_factory=RLock, repr=False)
     _operations: dict[tuple[str, ...], str] = field(default_factory=dict, repr=False)
 
-    def publish(self, content: bytes) -> None:
+    def publish(self, content: bytes) -> DeliveryAck:
+        if type(content) is not bytes:
+            raise BoundaryStopped("BAD_STRUCTURE")
         self.delivered.append(content)
-        # A normal return emulates an ACK ONLY in this fictional test sink.
+        return DeliveryAck(len(self.delivered) - 1, sha256(content).hexdigest())
 
 
 @dataclass
@@ -116,9 +127,9 @@ class ReceiptSink:
     def append(self, *, state: str, reason: str, policy_id: str, operation: str) -> None:
         if not self.available:
             raise BoundaryStopped("AUDIT_UNAVAILABLE")
-        if state not in _STATES or reason not in _REASONS:
+        if type(state) is not str or type(reason) is not str or state not in _STATES or reason not in _REASONS:
             raise BoundaryStopped("INVALID_AUDIT_STATE")
-        if not (_valid_string(policy_id, _POLICY) and operation in _OPS | {"DELIVERY_TRACE", "UNSUPPORTED"}):
+        if not (_valid_string(policy_id, _POLICY) and type(operation) is str and operation in _OPS | {"DELIVERY_TRACE", "UNSUPPORTED"}):
             raise BoundaryStopped("BAD_STRUCTURE")
         self.receipts.append({"state": state, "reason": reason, "policy_id": policy_id, "operation": operation})
 
@@ -138,7 +149,7 @@ class Boundary:
         self._check(operation in _OPS, "EXTERNAL_ACCESS")
         self._check(type(request) is dict and set(request) in ({"operation", "repository", "pr_number", "head_oid"},
                          {"operation", "repository", "pr_number", "head_oid", "approved_request_id"}), "BAD_STRUCTURE")
-        self._check(request["operation"] == operation and type(request["repository"]) is str
+        self._check(type(request["operation"]) is str and request["operation"] == operation and type(request["repository"]) is str
                     and request["repository"] == self.policy.repository
                     and type(request["pr_number"]) is int and request["pr_number"] == self.policy.pr_number
                     and type(request["head_oid"]) is str and request["head_oid"] == self.policy.head_oid,
@@ -152,9 +163,18 @@ class Boundary:
         return reason if reason in _REASONS else "BAD_STRUCTURE"
 
     def _audit(self, state: str, reason: str, operation: str) -> bool:
+        """Verify observed synthetic memory side effects; not durable audit evidence."""
+        expected = {"state": state, "reason": reason,
+                    "policy_id": self.policy.policy_id, "operation": operation}
         try:
+            if type(self.receipts.receipts) is not list or any(type(e) is not dict for e in self.receipts.receipts):
+                return False
+            before = [dict(e) for e in self.receipts.receipts]
             self.receipts.append(state=state, reason=reason, policy_id=self.policy.policy_id, operation=operation)
-            return True
+            after = self.receipts.receipts
+            return (type(after) is list and len(after) == len(before) + 1
+                    and after[:-1] == before and type(after[-1]) is dict
+                    and after[-1] == expected)
         except Exception:
             return False
 
@@ -190,8 +210,21 @@ class Boundary:
                     return None
                 self.deliveries._operations[key] = "RESERVED"
                 try:
-                    self.deliveries.publish(content)
+                    if type(self.deliveries.delivered) is not list or any(type(x) is not bytes for x in self.deliveries.delivered):
+                        raise BoundaryStopped("DELIVERY_UNKNOWN")
+                    before = self.deliveries.delivered.copy()
+                    ack = self.deliveries.publish(content)
+                    self._check(type(ack) is DeliveryAck
+                                and type(ack.index) is int and ack.index == len(before)
+                                and _valid_string(ack.content_sha256, re.compile(r"[0-9a-f]{64}\Z"))
+                                and ack.content_sha256 == sha256(content).hexdigest()
+                                and type(self.deliveries.delivered) is list
+                                and len(self.deliveries.delivered) == len(before) + 1
+                                and self.deliveries.delivered[:-1] == before
+                                and type(self.deliveries.delivered[-1]) is bytes
+                                and self.deliveries.delivered[-1] == content, "DELIVERY_UNKNOWN")
                 except Exception:
+                    # Absent/uncertain ACK or partial/no-op delivery is UNKNOWN / NO_RETRY.
                     self.deliveries._operations[key] = "UNKNOWN"
                     self._audit("UNKNOWN", "DELIVERY_UNKNOWN", operation)
                     return None
@@ -212,17 +245,17 @@ class Boundary:
 
     def _shared(self, data: dict[str, Any], fields: frozenset[str]) -> None:
         self._check(set(data) == fields, "UNAPPROVED_FIELD")
-        self._check(data["repository"] == self.policy.repository and
+        self._check(type(data["repository"]) is str and data["repository"] == self.policy.repository and
                     type(data["pr_number"]) is int and data["pr_number"] == self.policy.pr_number and
-                    data["head_oid"] == self.policy.head_oid, "BAD_TARGET")
-        self._check(data["post_head_oid"] == self.policy.head_oid, "VERSION_DRIFT")
+                    type(data["head_oid"]) is str and data["head_oid"] == self.policy.head_oid, "BAD_TARGET")
+        self._check(type(data["post_head_oid"]) is str and data["post_head_oid"] == self.policy.head_oid, "VERSION_DRIFT")
         self._check(type(data["complete"]) is bool and data["complete"], "INCOMPLETE")
         self._check(type(data["errors"]) is list and not data["errors"], "UPSTREAM_FAILURE")
-        self._check(data["content_type"] == ("application/json" if "pages" in data else "text/plain"), "BAD_STRUCTURE")
+        self._check(type(data["content_type"]) is str and data["content_type"] == ("application/json" if "pages" in data else "text/plain"), "BAD_STRUCTURE")
 
     def _paged(self, operation: str, data: dict[str, Any]) -> bytes:
         self._shared(data, _ENVELOPE_FIELDS)
-        self._check(data["operation"] == operation, "BAD_TARGET")
+        self._check(type(data["operation"]) is str and data["operation"] == operation, "BAD_TARGET")
         expected = _METADATA_FIELDS if operation == "PR_METADATA" else _PATH_FIELDS
         fields = data["requested_fields"]
         self._check(type(fields) is list and len(fields) == len(expected)
@@ -231,6 +264,7 @@ class Boundary:
         self._check(type(pages) is list and 1 <= len(pages) <= self.policy.max_pages, "INCOMPLETE")
         outputs: list[dict[str, Any]] = []
         seen: set[str] = set()
+        seen_items: set[tuple[Any, ...]] = set()
         for ix, page in enumerate(pages):
             self._check(type(page) is dict and set(page) == _PAGE_FIELDS, "UNAPPROVED_FIELD")
             self._check(type(page["complete"]) is bool and page["complete"], "INCOMPLETE")
@@ -254,10 +288,13 @@ class Boundary:
                                 and item["state"] in {"OPEN", "CLOSED"} and type(item["state"]) is str
                                 and not (item["state"] == "OPEN" and item["merged"])
                                 and not (item["merged"] and item["draft"])
-                                and item["head_oid"] == self.policy.head_oid
-                                and item["base_oid"] == self.policy.base_oid
-                                and item["head_repo"] == self.policy.repository
-                                and item["base_repo"] == self.policy.repository, "BAD_TARGET")
+                                and type(item["head_oid"]) is str and item["head_oid"] == self.policy.head_oid
+                                and type(item["base_oid"]) is str and item["base_oid"] == self.policy.base_oid
+                                and type(item["head_repo"]) is str and item["head_repo"] == self.policy.repository
+                                and type(item["base_repo"]) is str and item["base_repo"] == self.policy.repository, "BAD_TARGET")
+                    identity = (item["number"], item["head_oid"], item["base_oid"], item["head_repo"], item["base_repo"])
+                    self._check(identity not in seen_items, "BAD_STRUCTURE")
+                    seen_items.add(identity)
                     outputs.append({"number": self.policy.pr_number, "state": item["state"], "draft": item["draft"],
                                     "merged": item["merged"], "head_oid": self.policy.head_oid, "base_oid": self.policy.base_oid})
                 else:
@@ -265,13 +302,16 @@ class Boundary:
                                 and item["path"] in self.policy.expected_blob_oids
                                 and _valid_string(item["blob_oid"], _HEX40)
                                 and item["blob_oid"] == self.policy.expected_blob_oids[item["path"]], "BAD_TARGET")
+                    identity = (item["path"], item["blob_oid"])
+                    self._check(identity not in seen_items, "BAD_STRUCTURE")
+                    seen_items.add(identity)
                     outputs.append({"approved_path": item["path"], "blob_oid": self.policy.expected_blob_oids[item["path"]]})
         self._check(len(outputs) > 0, "INCOMPLETE")
         return json.dumps({"operation": operation, "items": outputs}, sort_keys=True, separators=(",", ":")).encode()
 
     def _document(self, data: dict[str, Any]) -> bytes:
         self._shared(data, _DOC_FIELDS)
-        self._check(data["operation"] == "SAFE_DOCUMENT", "BAD_TARGET")
+        self._check(type(data["operation"]) is str and data["operation"] == "SAFE_DOCUMENT", "BAD_TARGET")
         path = data["path"]
         self._check(type(path) is str and path in self.policy.allowed_paths and path in self.policy.approved_documents, "BAD_TARGET")
         approved = self.policy.approved_documents[path]

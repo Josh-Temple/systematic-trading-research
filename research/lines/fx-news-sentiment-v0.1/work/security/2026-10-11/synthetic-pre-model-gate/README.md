@@ -1,3 +1,5 @@
+> **PR #117 eight-findings follow-up (2026-10-12): CODE_SAVED / AUTHOR_TESTS_NOT_EXECUTED / INDEPENDENT_D_WAITING / PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE.** This notice supersedes the inherited author-side PASS status of PR #117 for the NEW candidate. See the appended supplement and the updated TEST_RECEIPT.md. No local Python execution or independent security acceptance is claimed for this revision.
+
 # Synthetic pre-model read boundary — remediation candidate (UNMERGED)
 
 **Status: AUTHOR-SIDE OFFLINE SYNTHETIC PASS ONLY / INDEPENDENT D PENDING / PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE.**
@@ -33,3 +35,27 @@ No live source was read, contacted or staged by the tests. OS network-namespace 
 3. Independently decide #106/#108, FXNS source contract/ledger migration, CSM supply/gate, real-source qualification and research cohort. Synthetic code PASS cannot unlock them.
 
 **Gate remains FXNS `SOURCE_QUALIFICATION_BLOCKED / formal cohort CLOSED / HYP-FXNS UNTESTED / NO_QUALIFIED_ALTERNATIVE`; CSM I2 `BLOCKED / CLOSED / market_outcome_access=false / HYP-CSM-002 UNTESTED`; `PLATFORM_NOT_ENFORCED / HOLD_NO_MERGE`.**
+
+
+## PR #117 D01-D08 follow-up: new branch, NOT YET ACCEPTED (2026-10-12)
+
+- Base: PR #117 branch at exact head `8f69bded3be746f9f6b6fd1011ea8676f5d32877`; original PR #110, #117, main and research branch were not modified.
+- New author branch: `work/fxns-pr117-eight-findings-a-20261012`; isolated synthetic code only.
+- D01-D03: reject repeated approved file `(path, blob_oid)` and repeated PR metadata identity, across all pages before a release; distinct approved file identities remain allowed.
+- D04: `publish()` normal return is insufficient. The fictional in-memory `DeliveryAck` includes a byte digest and index; the boundary checks it against the actual append and unchanged previous list. Missing or forged acknowledgments become `UNKNOWN`, without retry. This is **not a real host delivery acknowledgment**.
+- D05: `append()` normal return is insufficient. The boundary checks an exact additional in-memory receipt and unchanged prior entries. Unrecorded `RESERVED` prohibits delivery; an unrecorded `RELEASED` keeps the identity `UNKNOWN` without retry. No durable append-only store is implemented.
+- D06-D08 and related cases: strict concrete types for repository/head/base identity, operation and MIME fields; ASCII policy paths/identities. Retained older T07 exception containment. No source-side field selection or Work-host enforcement is implemented.
+- Existing `test_remediation.py` SlowSink fixture now **returns** its superclass's explicit fictional ACK. This is a declared fixture/API contract update; the test's success expectations are unchanged.
+- New `test_eight_findings.py`: 29 **A-authored test definitions**, comprising D01-D21 reconstructed equivalents/limits (21) and A13-A20 (8). Unpublished earlier D fixture is unavailable and is **not byte-identical or an independent D audit**.
+- All Python tests and compilation for the new revision are **NOT_EXECUTED** as of this receipt. Previous PR #117 counts (T22 + R14 + A12 = 48) are historical evidence **for the previous SHA only**, and cannot be carried forward as a new PASS.
+
+Recommended offline commands after exact-file checkout, with a verified isolated Python >=3.12 runtime (standard library only):
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_safe_boundary
+PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_remediation
+PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_eight_findings
+PYTHONDONTWRITEBYTECODE=1 python -B -m py_compile safe_boundary.py test_safe_boundary.py test_remediation.py test_eight_findings.py
+```
+
+OS network deny, actual model ingress ACK, persistent audit, independent approval custody and real adapter rejection remain `NOT_VERIFIED`. D must **WAIT** until A's new exact full head, source hashes and real passing author-run receipt are submitted. Do not merge, qualify any real source, open a research cohort, or execute trading.
