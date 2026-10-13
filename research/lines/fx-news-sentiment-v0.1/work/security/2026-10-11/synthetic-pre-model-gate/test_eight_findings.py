@@ -231,5 +231,59 @@ class EightFindingsSynthetic(unittest.TestCase):
         self.assertEqual(list(sink._operations.values()), ["UNKNOWN"])
 
 
+
+    def test_A21_forged_current_audit_values(self):
+        """Audit append cannot pretend success using an object whose equality always succeeds."""
+        class AlwaysEqual:
+            def __eq__(self, other):
+                return True
+
+        class ForgedReceipt(ReceiptSink):
+            def append(self, *, state, reason, policy_id, operation):
+                self.receipts.append({"state": AlwaysEqual(), "reason": AlwaysEqual(),
+                                      "policy_id": AlwaysEqual(), "operation": AlwaysEqual()})
+
+        sink, delivery = ForgedReceipt(), DeliverySink()
+        self.blocked("PR_METADATA", metadata(), sink=delivery, receipts=sink)
+        self.assertEqual(delivery.delivered, [])
+        self.assertNotIn("RELEASED", list(delivery._operations.values()))
+
+    def test_A22_forged_preexisting_audit_history(self):
+        """Preexisting records must not contain non-string values, even when no new record is forged."""
+        class AlwaysEqual:
+            def __eq__(self, other):
+                return True
+
+        policy, _, _ = fixture()
+        earlier = {"state": AlwaysEqual(), "reason": "OK",
+                   "policy_id": policy.policy.policy_id, "operation": "PR_METADATA"}
+        receipts = ReceiptSink(receipts=[earlier])
+        b, delivery, _ = self.blocked("PR_METADATA", metadata(), receipts=receipts)
+        self.assertEqual(delivery.delivered, [])
+        self.assertNotIn("RELEASED", list(delivery._operations.values()))
+
+    def test_A23_valid_historical_audit_still_accepted(self):
+        """Strict checking must not break a valid previous receipt from a trusted synthetic sink."""
+        b, delivery, receipts = fixture()
+        receipts.receipts.append({"state": "BLOCKED", "reason": "BAD_TARGET",
+                                  "policy_id": b.policy.policy_id, "operation": "PR_METADATA"})
+        out = b.run(request(), metadata())
+        self.assertIsNotNone(out)
+        self.assertEqual(len(delivery.delivered), 1)
+        self.assertEqual(receipts.receipts[-1]["state"], "RELEASED")
+
+    def test_A24_audit_receipt_invalid_key_type_fails_closed(self):
+        """A foreign, equality-spoofing key cannot substitute for an approved audit field."""
+        class TrickyKey:
+            def __hash__(self):
+                return hash("state")
+            def __eq__(self, other):
+                return other == "state"
+        class ForgedReceipt(ReceiptSink):
+            def append(self, *, state, reason, policy_id, operation):
+                self.receipts.append({TrickyKey(): state, "reason": reason,
+                                      "policy_id": policy_id, "operation": operation})
+        self.blocked("PR_METADATA", metadata(), receipts=ForgedReceipt())
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
