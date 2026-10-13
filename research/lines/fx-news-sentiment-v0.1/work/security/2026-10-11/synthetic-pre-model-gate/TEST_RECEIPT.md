@@ -60,6 +60,100 @@ A **new independent D Chat** must re-fetch the final A HEAD and local evidence, 
 
 FXNS `SOURCE_QUALIFICATION_BLOCKED / formal cohort CLOSED / HYP-FXNS UNTESTED / PROPOSED_NOT_FROZEN / NO_QUALIFIED_ALTERNATIVE`. CSM I2 `BLOCKED / CLOSED / market_outcome_access=false`. #106/#108 disposition PENDING. All real source/host/science/market/trading gates remain closed.
 
+## Named post-fix author case observations (81 individual PASS)
+
+All 81 names below were checked against the saved `unittest -v` original stderr output, with 0 FAIL, 0 ERROR, 0 SKIP. These are **author-side synthetic** observations only and are not post-fix independent D acceptance.
+
+### test_safe_boundary.py (22/22 PASS from saved author stdout/stderr)
+
+- `test_T01_out_of_scope_pr`: PASS
+- `test_T02_forbidden_pr_fields`: PASS
+- `test_T03_doc_new_version_requires_approval`: PASS
+- `test_T04_search_snippet_is_forbidden`: PASS
+- `test_T05_second_page_not_released_early`: PASS
+- `test_T06_post_delivery_redaction_is_not_prevention`: PASS
+- `test_T07_upstream_exception_never_echoed`: PASS
+- `test_T08_raw_evidence_cannot_be_written_to_public_receipt`: PASS
+- `test_T09_nested_encoded_unexpected_field`: PASS
+- `test_T10_unexpected_free_text_inside_known_field`: PASS
+- `test_T11_document_hash_mismatch_same_ref`: PASS
+- `test_T12_head_drifts_during_page_walk`: PASS
+- `test_T13_truncation_or_cursor_loop`: PASS
+- `test_T14_unapproved_redirect_source`: PASS
+- `test_T15_multimodal_or_preview_payload`: PASS
+- `test_T16_graphql_partial_with_error`: PASS
+- `test_T17_unvalidated_cache_read_not_allowed`: PASS
+- `test_T18_streamed_unvalidated_first_chunk`: PASS
+- `test_T19_direct_connector_bypass_not_supported`: PASS
+- `test_T20_prompt_injection_cannot_change_policy`: PASS
+- `test_T21_audit_failure_prevents_release`: PASS
+- `test_T22_approved_metadata_and_excerpt_exactly_once`: PASS
+
+### test_remediation.py (26/26 PASS from saved author stdout/stderr)
+
+- `test_R01_race_same_sink_same_op`: PASS
+- `test_R02_partial_publish_unknown_no_retry`: PASS
+- `test_R03_pre_publish_error_no_false_released`: PASS
+- `test_R04_approval_mapping_mutation_rejected`: PASS
+- `test_R05_new_boundary_same_sink_cannot_duplicate`: PASS
+- `test_R06_unapproved_request_id`: PASS
+- `test_R07_nested_state_type`: PASS
+- `test_R08_late_page_unapproved`: PASS
+- `test_R09_cursor_loop`: PASS
+- `test_R10_large_fictional_document`: PASS
+- `test_R11_trusted_approval_input_required`: PASS
+- `test_R12_policy_id_reject_free_text`: PASS
+- `test_R13_logical_metadata_contradiction`: PASS
+- `test_R14_expected_blob_pair_mismatch`: PASS
+- `test_A01_three_concurrent`: PASS
+- `test_A02_same_request_different_operation`: PASS
+- `test_A03_different_document_same_operation`: PASS
+- `test_A04_distinct_trusted_request_ids`: PASS
+- `test_A05_delayed_ack_no_concurrent_duplicate`: PASS
+- `test_A06_before_publish_failure`: PASS
+- `test_A07_after_publish_failure_and_retry`: PASS
+- `test_A08_audit_failure_after_publish`: PASS
+- `test_A09_registry_unknown_disclosed_no_global_guarantee`: PASS
+- `test_A10_deep_mutable_policy_reference`: PASS
+- `test_A11_path_blob_and_extra_mode_tree`: PASS
+- `test_A12_large_partial_stream_type_mix`: PASS
+
+### test_eight_findings.py (33/33 PASS from saved author stdout/stderr)
+
+- `test_D01_duplicate_file_identity_across_pages`: PASS
+- `test_D02_duplicate_file_identity_same_page`: PASS
+- `test_D03_duplicate_metadata_identity`: PASS
+- `test_D04_noop_publish_no_ack`: PASS
+- `test_D05_noop_audit_return`: PASS
+- `test_D06_equal_but_nonstring_head_repo`: PASS
+- `test_D07_equal_but_nonstring_base_repo`: PASS
+- `test_D08_equal_but_nonstring_post_head`: PASS
+- `test_D09_cursor_object_rejected`: PASS
+- `test_D10_boolean_pr_number_rejected`: PASS
+- `test_D11_bool_or_nonstring_blob_rejected`: PASS
+- `test_D12_mutating_input_mapping_does_not_rewrite_approval`: PASS
+- `test_D13_bytearray_body_rejected`: PASS
+- `test_D14_unsafe_request_id_rejected`: PASS
+- `test_D15_audit_failure_no_retry_after_publish`: PASS
+- `test_D16_valid_closed_unmerged_metadata`: PASS
+- `test_D17_merged_and_draft_inconsistent`: PASS
+- `test_D18_unknown_nested_field_rejected`: PASS
+- `test_D19_shared_registry_no_duplicate`: PASS
+- `test_D20_fabricated_approval_not_independent_custody`: PASS
+- `test_D21_separate_sinks_not_exactly_once`: PASS
+- `test_A13_distinct_approved_file_paths`: PASS
+- `test_A14_unduplicated_single_metadata`: PASS
+- `test_A15_valid_sink_ack_exact`: PASS
+- `test_A16_delivery_recorded_ack_missing`: PASS
+- `test_A17_release_audit_noop_after_publish`: PASS
+- `test_A18_unicode_path_policy_rejected`: PASS
+- `test_A19_foreign_object_envelope_repo_rejected`: PASS
+- `test_A20_noop_publish_explicit_fake_ack`: PASS
+- `test_A21_forged_current_audit_values`: PASS
+- `test_A22_forged_preexisting_audit_history`: PASS
+- `test_A23_valid_historical_audit_still_accepted`: PASS
+- `test_A24_audit_receipt_invalid_key_type_fails_closed`: PASS
+
 ---
 
 ## Historical PR #119 author test receipt (unchanged, preserved verbatim)
