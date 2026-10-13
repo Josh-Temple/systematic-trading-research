@@ -285,5 +285,66 @@ class EightFindingsSynthetic(unittest.TestCase):
                                       "policy_id": policy_id, "operation": operation})
         self.blocked("PR_METADATA", metadata(), receipts=ForgedReceipt())
 
+    def _malformed_history_should_reject(self, changes):
+        """An existing fictional audit receipt is untrusted until its semantics are checked."""
+        b, delivery, _ = fixture()
+        receipt = {"state": "BLOCKED", "reason": "BAD_TARGET",
+                   "policy_id": b.policy.policy_id, "operation": "PR_METADATA"}
+        receipt.update(changes)
+        receipts = ReceiptSink(receipts=[receipt])
+        out = Boundary(b.policy, delivery, receipts).run(request(), metadata())
+        self.assertIsNone(out)
+        self.assertEqual(delivery.delivered, [])
+        self.assertNotIn("RELEASED", list(delivery._operations.values()))
+        self.assertEqual(len(receipts.receipts), 1)
+
+    def test_A25_history_state_outside_enumeration(self):
+        self._malformed_history_should_reject({"state": "RELEASED_WITHOUT_AUDIT"})
+
+    def test_A26_history_reason_outside_enumeration(self):
+        self._malformed_history_should_reject({"reason": "INVENTED_SUCCESS"})
+
+    def test_A27_history_operation_outside_enumeration(self):
+        self._malformed_history_should_reject({"operation": "INVENTED_OPERATION"})
+
+    def test_A28_history_policy_id_invalid_syntax(self):
+        self._malformed_history_should_reject({"policy_id": "invalid-policy-id"})
+
+    def test_A29_history_reservation_with_bad_reason(self):
+        self._malformed_history_should_reject({"state": "RESERVED", "reason": "BAD_TARGET"})
+
+    def test_A30_history_unknown_with_ok_reason(self):
+        self._malformed_history_should_reject({"state": "UNKNOWN", "reason": "OK"})
+
+    def test_A31_history_released_from_valid_other_operation(self):
+        b, delivery, _ = fixture()
+        prior = {"state": "RELEASED", "reason": "OK",
+                 "policy_id": b.policy.policy_id, "operation": "FILE_PATHS"}
+        receipts = ReceiptSink(receipts=[prior])
+        result = Boundary(b.policy, delivery, receipts).run(request(), metadata())
+        self.assertIsNotNone(result)
+        self.assertEqual(len(delivery.delivered), 1)
+        self.assertEqual([e["state"] for e in receipts.receipts[-2:]], ["RESERVED", "RELEASED"])
+
+    def test_A32_history_other_valid_policy_id_not_incorrectly_rejected(self):
+        b, delivery, _ = fixture()
+        prior = {"state": "BLOCKED", "reason": "BAD_TARGET",
+                 "policy_id": "SYNTHETIC-POLICY-OTHER", "operation": "PR_METADATA"}
+        receipts = ReceiptSink(receipts=[prior])
+        result = Boundary(b.policy, delivery, receipts).run(request(), metadata())
+        self.assertIsNotNone(result)
+        self.assertEqual(len(delivery.delivered), 1)
+
+    def test_A33_history_exposure_operation_mismatch(self):
+        self._malformed_history_should_reject({"state": "EXPOSURE_REPORTED", "reason": "ALREADY_DELIVERED"})
+
+    def test_A34_history_unsupported_blocking_remains_allowed(self):
+        b, delivery, _ = fixture()
+        prior = {"state": "BLOCKED", "reason": "EXTERNAL_ACCESS",
+                 "policy_id": b.policy.policy_id, "operation": "UNSUPPORTED"}
+        receipts = ReceiptSink(receipts=[prior])
+        self.assertIsNotNone(Boundary(b.policy, delivery, receipts).run(request(), metadata()))
+        self.assertEqual(len(delivery.delivered), 1)
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
