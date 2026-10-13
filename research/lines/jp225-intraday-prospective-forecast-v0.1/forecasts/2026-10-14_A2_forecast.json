@@ -1,0 +1,39 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261014",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261014-0800-amended",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-14T08:00:00+09:00",
+  "issued_at": "2026-10-14T08:00:56.398+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.49,
+  "forecast_return_bps": -2,
+  "top_drivers": [
+    "The Oct 13 New York close published 05:32 JST showed Dow 51,670.10 (-0.35%), Nasdaq 27,204.38 (-0.15%) and S&P 500 near flat (-0.02%).",
+    "The 06:21 JST NY digest gave USDJPY about 158.33 (yen firmer versus prior day), WTI Nov crude near USD 94.14 (higher) and U.S. ten-year yield near 5.21% (lower).",
+    "OSE overnight Nikkei futures were modestly higher, signaling an opening context that could offset some global risk aversion."
+  ],
+  "counterevidence": [
+    "Negative U.S. technology performance does not imply Japanese 09:00-15:30 continuation down once the opening reprices overnight news.",
+    "S&P 500 finished almost flat and lower U.S. Treasury yield moderates high-rate pressure; weak absolute JPY can support Japanese exporters.",
+    "No qualified data-driven mapping of these pre-cutoff features into the intraday direction is available."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/5c841d151b150afdbd2670887e74d7b45f62620d/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-14_PRE_CUTOFF_ASSESSMENT.md",
+    "https://minkabu.jp/news/4634615",
+    "https://www.myforex.com/ja/news/dzh261014050.html",
+    "https://www.zaikei.co.jp/article/20261014/873307.html",
+    "https://minkabu.jp/news/4634620"
+  ],
+  "canonical_sha256": "14cc307a39414f98a8f1a806047fc21d0afe350c4f60c432fc626eeebe33fb60"
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261014",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261014-0800-amended",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-14T08:00:00+09:00",
+  "issued_at": "2026-10-14T08:00:56.398+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.5,
+  "forecast_return_bps": 0,
+  "top_drivers": [
+    "Pre-cutoff positive Japan overnight futures and small negative U.S. equity/yen/oil effects offered mixed evidence for a 09:00-15:30 move.",
+    "Repository status at pinned main SHA retains exact-XM JP225 EMA UNTESTED / WAITING_FOR_XM_STAGE1_DATA and US-lead reversal STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015; no validated model establishes directional edge."
+  ],
+  "counterevidence": [
+    "Public overnight future data are not exact XM inputs, and a positive opening gap cannot by itself prove further intraday upside.",
+    "Neither negative proxy research results nor missing exact XM market data demonstrate that the U.S.-equity downside must continue or reverse in Japan.",
+    "A3 is neutral because it has no qualified evidence for stronger sign inference; this is a subjective exploratory decision, not learned calibration or demonstrated B0 equivalence."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/5c841d151b150afdbd2670887e74d7b45f62620d/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-14_PRE_CUTOFF_ASSESSMENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md",
+    "https://minkabu.jp/news/4634615",
+    "https://minkabu.jp/news/4634620"
+  ],
+  "canonical_sha256": "36220f03c3402d408fe3f212bfb0ba0f8cc9302a50c12b2d2333f79ce3582c39"
+}
