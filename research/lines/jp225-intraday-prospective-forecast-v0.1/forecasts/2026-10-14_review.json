@@ -1,0 +1,40 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261014",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-14T20:56:17+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "The scheduled JPX cash-equity session 2026-10-14 was eligible for an exploratory 09:00-15:30 JST forecast event.",
+    "Pre-registration was committed to GitHub on 2026-10-14 07:52:53 JST (c91afbb0f3d07699498d6fd9409a9c6eadff4ff4); its file's earlier indicative registered_at 07:52:00 is corrected by the separately preserved pre-cutoff assessment.",
+    "B0/A1/A2/A3 numerical predictions were frozen at GitHub commit 5c841d151b150afdbd2670887e74d7b45f62620d at 07:54:33 JST before the 08:00 information cutoff.",
+    "Issued A1/A2/A3 forecast JSONs were committed atomically at 08:01:02 JST (f4e81827cee0b462bfb7fa386e46ca59149dfebc), before 09:00. Their internal issued_at field is 08:00:56.398 JST; actual GitHub publication is evidenced by the later commit time.",
+    "Unchanged frozen forecasts: B0 P(up)=0.50, 0 bps; A1 P(up)=0.52, +3 bps; A2 P(up)=0.49, -2 bps; A3 P(up)=0.50, 0 bps.",
+    "The research owner has deferred exact XM MT5 JP225Cash price acquisition. No qualified XM Bid/Ask 09:00 and 15:30 midpoint endpoints were acquired for this event.",
+    "Public Nikkei 225 cash-index figures for this session were published after the close and are eligible only for a distinct nonformal public-proxy review. They are not exact XM market outcomes."
+  ],
+  "interpretation": [
+    "Formal exact-XM forecast performance remains not measurable because neither endpoint quote was qualified or acquired; correct issue-process records do not establish scientific skill.",
+    "Public cash-index outcome comparisons may be described separately as nonformal exploratory diagnostics, never entered into this formal record as return, y_up or score.",
+    "Frozen subjective probabilities must not be re-estimated from this or preceding exploratory proxy event outcomes."
+  ],
+  "error_attribution": [
+    "EXACT_XM_OUTCOME_NOT_ACQUIRED_BY_OWNER_DIRECTION: this is source unavailability by deliberate deferral, not evidence of a failed XM provider request.",
+    "FORMAL_XM_FORECAST_ERROR_UNDETERMINED: exact XM JP225Cash start/end quotes and returns remain unavailable.",
+    "A1 target-only qualification remains unmet because actual 08:00 XM JP225Cash input was missing, despite pre-cutoff public futures context."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "Scientific status UNTESTED; specification PROPOSED_NOT_FROZEN; source readiness PARTIAL; scored 60-event cohort CLOSED; trading NO_TRADE.",
+    "Formal start_quote, end_quote, realized_return_bps and y_up remain null, scores must be empty.",
+    "This review was generated post-15:30 JST, without mutating the pre-issued forecasts or using public prices as a substitute for the designated instrument.",
+    "Oct 6 legacy hash mismatch observations remain separate, unresolved; do not misrepresent as clean integrity PASS.",
+    "See 2026-10-14_PUBLIC_PROXY_REVIEW.md for separate post-close public Nikkei official OHLC and nonformal proxy error measures."
+  ]
+}
