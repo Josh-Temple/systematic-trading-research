@@ -1,0 +1,39 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261013",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261013-0800-amended",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-13T08:00:00+09:00",
+  "issued_at": "2026-10-13T08:00:01+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "CONFLICTING_PUBLIC_FUTURES_QUOTE_UNQUALIFIED",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.47,
+  "forecast_return_bps": -6,
+  "top_drivers": [
+    "The Oct 12 NY close published at 06:20 JST Oct 13 had Nasdaq 27,245.90 (-120.27) while Dow was 51,850.55 (+195.60), a mixed market.",
+    "WTI Nov futures rose to USD 93.74 (+1.89), with geopolitical and inflation risks.",
+    "The public futures opening context was adverse, but the large opening gap need not continue after 09:00."
+  ],
+  "counterevidence": [
+    "Dow advanced while tech declined, and USDJPY around 158.61 reflects weak yen, potentially supporting exporters.",
+    "Opening gap and public futures source discrepancies limit confidence in continuation.",
+    "The U.S. Treasury cash market was closed for a holiday; no fresh valid U.S. 10-year closing yield is asserted."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/5804cc24264bf4a72746515bf74042fb3ef52b53/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-13_PRE_CUTOFF_ASSESSMENT.md",
+    "https://www.traderswebfx.jp/news/article/1214941",
+    "https://www.newsweekjapan.jp/articles/-/336644",
+    "https://port.jpx.co.jp/jpxhp/main/index.aspx?F=future"
+  ],
+  "canonical_sha256": "d6915802ab7f6055d2bc360644d9046cd8b722d940c1cf2480c2d59e997a0e9c"
+}

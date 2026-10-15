@@ -1,0 +1,40 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261009",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261009-0800-precutoff",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-09T08:00:00+09:00",
+  "issued_at": "2026-10-09T12:37:25+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "ISSUED_AFTER_0900_TARGET_START",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.46,
+  "forecast_return_bps": -7,
+  "top_drivers": [
+    "Fixed pre-cutoff cross-market context was mildly bearish, led by U.S. technology, SOX, Japanese overnight futures and oil strength.",
+    "Repository evidence preserved untested XM JP225 EMA and unsupported proxy hypotheses; no validated rule establishes strong intraday continuation."
+  ],
+  "counterevidence": [
+    "Opening price may already reflect overnight declines; a daytime rebound remains possible.",
+    "JP225 EMA research stays UNTESTED / WAITING_FOR_XM_STAGE1_DATA; US-lead reversal stays STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015.",
+    "A3's moderation of A2 bearishness is an exploratory subjective judgment, not an estimated model edge."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/f1713e620c8c558cbc4726d0f6e8f899bd3f690e/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-09_PRE_CUTOFF_ASSESSMENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md",
+    "https://minkabu.jp/news/4632451",
+    "https://www.oanda.jp/lab-education/market_news/mn_1038097_202610090620/"
+  ],
+  "canonical_sha256": "51d07bee54faaa4e3706ce9e54fe85cf24daba6ba49aba74b33bdf0f6219614c"
+}

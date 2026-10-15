@@ -1,0 +1,38 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261013",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261013-0800-amended",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-13T08:00:00+09:00",
+  "issued_at": "2026-10-13T08:00:01+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "CONFLICTING_PUBLIC_FUTURES_QUOTE_UNQUALIFIED",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.48,
+  "forecast_return_bps": -4,
+  "top_drivers": [
+    "The frozen A2 context showed oil-related headwinds and mixed U.S. markets, not a validated directional signal for the Japanese post-opening session.",
+    "Source-qualified repository status: exact-XM JP225 EMA remained UNTESTED / WAITING_FOR_XM_STAGE1_DATA and the US-lead reversal proxy was STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015."
+  ],
+  "counterevidence": [
+    "Negative and untested historical repository results do not establish a continuation or reversal advantage.",
+    "Overnight downside can be absorbed by the 09:00 opening; positive Dow and weak JPY temper the risk-off hypothesis.",
+    "The near-neutral 0.48 probability is a subjective exploratory heuristic, not model calibration or empirically estimated skill."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/5804cc24264bf4a72746515bf74042fb3ef52b53/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-13_PRE_CUTOFF_ASSESSMENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md",
+    "https://www.traderswebfx.jp/news/article/1214941"
+  ],
+  "canonical_sha256": "8063b37175e25a902626bc7827a2b10a5de38c54a10dc4040573a9d6fd6d9059"
+}
