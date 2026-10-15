@@ -1,0 +1,41 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261015",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-15T23:01:04+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "2026-10-15 was a scheduled JPX cash-equity trading day. The prescribed target is exact XM MT5 JP225Cash 09:00-15:30 JST Bid/Ask midpoint return, not Nikkei published cash-index proxy or previous-close-to-close performance.",
+    "At fresh read, PR #62 remained Open/Draft and the 2026-10-15 A1/A2/A3 records were present at immutable commit 0ba67e8ea223bf6bcc7906d03e7a06a916e2cb66; both push and PR GitHub Action runs for that commit succeeded.",
+    "No pre-08:00 Oct 15 pre-registration or quantitative forecast snapshot existed. The event is explicitly LATE_ISSUANCE_AFTER_0800, NO_PRE_CUTOFF_PRE_REGISTRATION and NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT.",
+    "The immutable A1/A2/A3 forecast record issued_at is 2026-10-15T08:12:21.546+09:00; actual GitHub commit was 08:12:27 JST, before the 09:00 target-window opening.",
+    "Frozen late-issued subjective numbers: B0 p_up 0.50, 0 bps; A1 p_up 0.49, -3 bps; A2 p_up 0.45, -12 bps; A3 p_up 0.47, -7 bps.",
+    "Exact XM MT5 JP225Cash 09:00/15:30 Bid/Ask quotes were not obtained, preserving the research owner's source-acquisition deferral.",
+    "Official post-close Nikkei 225 cash-index OHLC and corresponding nonformal proxy calculations are held separately in 2026-10-15_PUBLIC_PROXY_REVIEW.md and are NOT an exact XM outcome."
+  ],
+  "interpretation": [
+    "An explicitly late-issued, source-incomplete, exploratory event does not establish valid formal forecast-skill evidence, regardless of later price direction.",
+    "Unobtained exact-XM quotes prohibit calculating or recording formal realized_return_bps, y_up, Brier or MAE.",
+    "Past exploratory public-index observations cannot justify revising forecasts, sources, features, timings or model weights."
+  ],
+  "error_attribution": [
+    "EXACT_XM_SOURCE_NOT_ACQUIRED_BY_OWNER_DIRECTION, not SOURCE_RETRIEVAL_FAILED.",
+    "FORMAL_XM_PREDICTION_ERROR_UNDETERMINED: no qualified exact XM 09:00 and 15:30 quotes.",
+    "PROCESS_DEVIATIONS: invocation after 08:00; pre-cutoff pre-registration missing; pre-cutoff quantitative snapshot missing; pre-cutoff-published reports were retrieved after 08:00.",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE, so A1 is public proxy context rather than a qualified target-only XM model."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "Permanent EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT status; formal 60-event cohort CLOSED.",
+    "SPEC PROPOSED_NOT_FROZEN; research UNTESTED; source readiness PARTIAL; NO_TRADE.",
+    "Formal null/empty outcomes retained even if separately published Nikkei cash index prices are known after session.",
+    "No changes to original A1/A2/A3 JSONs, pre-issue process evidence or SHA-256.",
+    "Legacy Oct 6 hash-integrity warnings remain unresolved, despite current runs passing."
+  ]
+}
