@@ -1,0 +1,40 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261016",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-late-20261016",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-16T08:00:00+09:00",
+  "issued_at": "2026-10-16T08:06:56.165+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.5,
+  "forecast_return_bps": 0,
+  "top_drivers": [
+    "Pre-cutoff 06:20 JST digest: Dow 52,177.69 up 556.21, Nasdaq 26,713.03 up only 20.16; US 10Y 5.06 percent down 0.13 percentage points.",
+    "WTI Nov crude rose 2.88 USD to 97.97 and USDJPY fell to 158.00 versus prior 158.33, both limiting unequivocal bullish interpretation.",
+    "OSE December Nikkei future finished 65,520, up 720 at 06:00 JST, indicating a possible opening rebound."
+  ],
+  "counterevidence": [
+    "US technology strength was very small relative to Dow; crude rise can pressure Japanese importers.",
+    "Yen strengthening and a large futures gap can counteract opening strength, leaving post-09:00 return uncertain.",
+    "No causally identified or trained feature-return coefficients or exact broker inputs exist."
+  ],
+  "source_refs": [
+    "https://www.oanda.jp/lab-education/market_news/mn_1039183_202610160620/",
+    "https://s.minkabu.jp/news/4637080",
+    "https://kumanichi.com/articles/2047105"
+  ],
+  "invalidation_conditions": [],
+  "canonical_sha256": "9748011eb80d2ad6b28e8cf523a15f5b7d75083a4d4ed0a6c1a996f4c21acc06cbbb9d5d629a292a9159015a152fecd8673326678eb44a87db0c2e0d47b5481dae5f9156cf6c85d32f73477d6d1826ca8b43d457e360b5961c4560026f196331d94ebeb10cc4a611261dc1f25815a7be70b7ed67a1513c6944f93635720dcdfdb467369eca320b7534e0d42e49c7d9bd87abb9f2c463a2fcec3fc3f327277f6d610bebf27420b49ed1fd8a33e4773594092197f61b530c95869d6342eee52e4f1107668921fba37b43ab9fb675a9f91d86305019d7cd817307fe00ff379f513f66b651a8764ab842a4b06be1c3578c15d2962a531e039f40857b7beea29bf2de"
+}

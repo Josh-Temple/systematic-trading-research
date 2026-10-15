@@ -1,0 +1,39 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261016",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-late-20261016",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-16T08:00:00+09:00",
+  "issued_at": "2026-10-16T08:06:56.165+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.5,
+  "forecast_return_bps": 0,
+  "top_drivers": [
+    "Overnight Japanese futures and Dow recovery support opening risk sentiment, while yen strength, oil and weak Nasdaq contribution limit a clear post-open sign.",
+    "Pinned repository main reports JP225 exact XM EMA UNTESTED / WAITING_FOR_XM_STAGE1_DATA and US lead proxy STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015; neither is evidence of a validated directional edge."
+  ],
+  "counterevidence": [
+    "A positive futures night session predicts neither cash continuation nor a rebound after the opening.",
+    "Subjective 50 percent does not imply proven calibration or a profitable neutral trading strategy."
+  ],
+  "source_refs": [
+    "https://s.minkabu.jp/news/4637080",
+    "https://www.oanda.jp/lab-education/market_news/mn_1039183_202610160620/",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md"
+  ],
+  "invalidation_conditions": [],
+  "canonical_sha256": "c36201b556e704b81a1cdffdbdce1446ee634dbbe7d7fc48894e206bd9250498cbbb9d5d629a292a9159015a152fecd8673326678eb44a87db0c2e0d47b5481dae5f9156cf6c85d32f73477d6d1826ca8b43d457e360b5961c4560026f196331d94ebeb10cc4a611261dc1f25815a7be70b7ed67a1513c6944f93635720dcdfdb467369eca320b7534e0d42e49c7d9bd87abb9f2c463a2fcec3fc3f327277f6d610bebf27420b49ed1fd8a33e4773594092197f61b530c95869d6342eee52e4f1107668921fba37b43ab9fb675a9f91d86305019d7cd817307fe00ff379f513f66b651a8764ab842a4b06be1c3578c15d2962a531e039f40857b7beea29bf2de"
+}
