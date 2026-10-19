@@ -1,0 +1,40 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261020",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-late-exploratory-20261020",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-20T08:00:00+09:00",
+  "issued_at": "2026-10-20T08:40:47.923+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_POST_CUTOFF",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT",
+    "BRANCH_VALIDATOR_BLOCKED_BY_IMMUTABLE_20261016_CORRUPTED_RECORDS"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.5,
+  "forecast_return_bps": 0,
+  "top_drivers": [
+    "06:20 JST New York close report: Nasdaq 26,430.89 up 290.86 (+1.11%), S&P 500 7,690.73 up 31.29, offset by Dow 51,966.03 down 36.38.",
+    "Pre-08:00 digest has USDJPY near 158.50, US 10-year Treasury yield about 5.14% higher, and WTI November at USD 103.66, up 2.25. The risk/recovery and inflation/rate headwinds are mixed."
+  ],
+  "counterevidence": [
+    "A rally in US Nasdaq does not imply same-day post-open JP225 appreciation; OSE and CME futures are modestly negative relative to their own benchmarks.",
+    "Oil/geopolitical risk, elevated US yields and weaker absolute yen may have different sector impacts, with no fitted direction model.",
+    "Public source publication is timestamped before 08:00 but retrieved after cutoff without immutable raw page capture; no exact-XM input."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://minkabu.jp/news/4638731",
+    "https://www.oanda.jp/lab-education/market_news/mn_1039622_202610200620/",
+    "https://minkabu.jp/news/4638712"
+  ],
+  "canonical_sha256": "1424370cd465e8767b1578e0e306fdd89713a75905ad4c5f43817e7239a5f40c"
+}
