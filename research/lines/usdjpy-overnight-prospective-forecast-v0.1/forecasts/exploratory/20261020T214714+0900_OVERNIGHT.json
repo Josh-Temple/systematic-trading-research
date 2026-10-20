@@ -1,0 +1,114 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261020-214714",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-20T21:47:14+09:00",
+  "information_cutoff": "2026-10-20T21:46:42+09:00",
+  "information_cutoff_basis": "Latest time confirmation preceding the first user-visible forecast: 2026-10-20T21:46:42+09:00. Probabilities and point forecast published in user-facing response before writing to GitHub. All cited observations are published and reported before cutoff.",
+  "target_start": "2026-10-20T22:00:00+09:00",
+  "target_end": "2026-10-21T08:00:00+09:00",
+  "nominal_protocol_cutoff": "2026-10-20T22:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_12M46S; UNQUALIFIED_REFERENCE_BID_ASK; PROPOSED_SPEC_NOT_FROZEN; EXPERIMENTAL_NONCOHORT_ONLY",
+  "system_identity": "UNFROZEN_DISCRETIONARY_EXPLORATORY_RESEARCHER_JUDGMENT_NOT_A1_A2_A3",
+  "model_identity": "GPT-6",
+  "p_up": 0.48,
+  "forecast_return_bps": -3,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_DOWN",
+  "confidence": "LOW",
+  "no_trade_recommendation": true,
+  "pre_cutoff_price_context": {
+    "reference_instrument": "USDJPY_PUBLIC_QUOTES_NONCANONICAL",
+    "2026-10-20T10:00:00+09:00": 158.58,
+    "2026-10-20T15:00:00+09:00": 158.16,
+    "2026-10-20T17:00:00+09:00": 158.08,
+    "2026-10-20T20:00:00+09:00": 158.16,
+    "2026-10-20T21:10:00+09:00": 158.12,
+    "at_information_cutoff_verified_best_bid": null,
+    "at_information_cutoff_verified_best_ask": null,
+    "at_22h_target_start_midpoint": null,
+    "price_reference_not_mixed_with_formal_return": true
+  },
+  "pre_cutoff_evidence": [
+    "TradersWeb Oct 20 15:09 JST reported USDJPY 158.16 at 15:00 and that UST 10-year yield had declined toward the 5.11% area, pressuring USDJPY.",
+    "TradersWeb Oct 20 20:06 JST reported USDJPY 158.16 at 20:00 versus 158.08 at 17:00, with range-bound trade near 158.10.",
+    "Nikkeiyosoku.com public snapshot showed USDJPY 158.12 at 21:10 JST; this page is mutable and not a qualified source.",
+    "Reuters Oct 20 reported yen up approx 0.2% near 158.14 USDJPY after a strong Japanese 20-year government bond auction.",
+    "Reuters Oct 20 reported the BOJ may hold policy rate at its Oct 30 meeting, while potentially increasing FY2027 inflation forecast.",
+    "Reuters Oct 20 reported elevated crude prices and geopolitical uncertainty, creating both USD support and liquidity/volatility risk."
+  ],
+  "counterevidence_and_uncertainty": [
+    "BOJ hold-rate expectations and persistent oil-price inflation could limit yen gains or restart USDJPY upside.",
+    "The USDJPY pair rebounded from around 158.04 to the 158.10–158.16 range by 20:00–21:10, providing limited near-term upside momentum.",
+    "US housing starts/permits scheduled for 21:30 JST; the observed release outcomes were NOT verified at issuance, so not included.",
+    "US pending home sales release scheduled for 23:00 JST, inside target interval; no outcome available pre-cutoff.",
+    "There is no qualified Dukascopy best Bid/Ask feed or frozen specification; 0.48 and -3 bps are subjective uncalibrated forecasts."
+  ],
+  "known_future_events": [
+    {
+      "at": "2026-10-20T23:00:00+09:00",
+      "event": "US September pending home sales index (scheduled)",
+      "consensus": "-1.0% month-over-month (calendar source)",
+      "realized_result": null
+    },
+    {
+      "at": "2026-10-21T08:50:00+09:00",
+      "event": "Japan September trade statistics, outside forecast end",
+      "realized_result": null
+    }
+  ],
+  "source_refs": [
+    {
+      "source": "Traders Web FX, Tokyo 10:00 and 15:00 October 20",
+      "urls": [
+        "https://www.traderswebfx.jp/news/article/1216204",
+        "https://www.traderswebfx.jp/news/article/1216162"
+      ],
+      "nature": "public pre-cutoff commentary"
+    },
+    {
+      "source": "Traders Web FX, European session 20:06 October 20",
+      "url": "https://www.traderswebfx.jp/news/article/1216260",
+      "nature": "public pre-cutoff commentary"
+    },
+    {
+      "source": "Nikkeiyosoku USDJPY public display 21:10 October 20",
+      "url": "https://nikkeiyosoku.com/",
+      "nature": "mutable public quoted rate; not archived raw"
+    },
+    {
+      "source": "Reuters, yen firm Oct 20",
+      "url": "https://www.reuters.com/world/asia-pacific/dollar-euro-drift-yen-slips-markets-seek-direction-2026-10-20/",
+      "nature": "public pre-cutoff journalism"
+    },
+    {
+      "source": "Reuters, BOJ stance October 20",
+      "url": "https://www.reuters.com/world/asia-pacific/bank-japan-may-raise-inflation-forecast-stand-pat-rates-sources-say-2026-10-20/",
+      "nature": "public pre-cutoff journalism"
+    },
+    {
+      "source": "Traders Web Oct 20 US calendar at 20:30",
+      "url": "https://www.traderswebfx.jp/news/article/1216194",
+      "nature": "pre-cutoff calendar"
+    },
+    {
+      "source": "Isec Oct 20 economic calendar",
+      "url": "https://www.isec.jp/cfd/weekly_calendar/",
+      "nature": "public scheduled releases"
+    }
+  ],
+  "scenario_map": {
+    "base": "Overnight near-flat / slightly softer USDJPY as the domestic bond auction and weaker USD/rate trend partially offset oil-related dollar support.",
+    "upside": "BOJ-hold expectations, oil/geopolitical demand for USD or surprise pending-home-sales outcome reverse the decline; the slight-down call misses.",
+    "downside": "Falling U.S. yields or renewed JPY demand extend the Oct 20 intraday downswing."
+  },
+  "no_outcome_access_during_issuance": true,
+  "source_gate": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "scientific_spec_status": "PROPOSED_NOT_FROZEN",
+  "scored_benchmark_effect": "NONE",
+  "formal_outcome_access": "CLOSED",
+  "broker_action_authorized": false,
+  "source_snapshot_limitation": "Mutable source pages cited with observation times, but no durable raw page-byte snapshots; exact source-qualified 22:00 and 08:00 midpoint unknown.",
+  "integrity_note": "Keep original content immutable. Any subsequent observation/error attribution must be append-only and separate from official cohort/score."
+}
