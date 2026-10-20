@@ -1,0 +1,42 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261021",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261021-late-exploratory",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-21T08:00:00+09:00",
+  "issued_at": "2026-10-21T08:20:06.058+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_POST_CUTOFF",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT",
+    "BRANCH_VALIDATOR_BLOCKED_BY_IMMUTABLE_20261016_CORRUPTED_RECORDS"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.51,
+  "forecast_return_bps": 2,
+  "top_drivers": [
+    "The 06:07 JST U.S. closing report: Dow 52,495.88 (+529.85) while Nasdaq 26,424.82 (-6.07), mixed across sectors.",
+    "The 06:20 JST NY digest: USDJPY about 158.17 (-0.33 yen), U.S. 10-year yield about 5.11% (-0.03pp), WTI Nov oil about USD101.79 (-USD1.87), potentially easing cross-market risk pressure.",
+    "Public Osaka overnight future ended at 65,210 (+810), offering positive opening context only."
+  ],
+  "counterevidence": [
+    "The Nasdaq closed fractionally lower and semiconductor/AI related shares remained mixed; U.S. Dow strength is not a validated predictor of JP225 post-09:00 continuation.",
+    "The yen strengthened versus USD, which may offset overseas equity and lower oil/rate support for Japanese equities.",
+    "Pre-08:00 reports were retrieved after the 08:00 information cutoff, without point-in-time archived raw webpage bytes or exact XM inputs."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://s.kabutan.jp/news/n202610210075/",
+    "https://www.oanda.jp/lab-education/market_news/mn_1039843_202610210620/",
+    "https://minkabu.jp/news/4639425",
+    "https://finance.yahoo.co.jp/news/detail/db6f7323101a0265d59fcc9d17377ccfdd21699b"
+  ],
+  "canonical_sha256": "b3279b07c3c7ce652c9dc07cbcf5e83e670c89e62524b17b7458a1b4198dbe77"
+}

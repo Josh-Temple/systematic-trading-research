@@ -1,0 +1,43 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261021",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261021-late-exploratory",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-21T08:00:00+09:00",
+  "issued_at": "2026-10-21T08:20:06.058+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_POST_CUTOFF",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT",
+    "BRANCH_VALIDATOR_BLOCKED_BY_IMMUTABLE_20261016_CORRUPTED_RECORDS"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.51,
+  "forecast_return_bps": 2,
+  "top_drivers": [
+    "Mixed overseas cues, positive Osaka overnight futures and lower oil/yields weakly favor positive sentiment around Japan's open, but do not establish the later intraday direction.",
+    "Pinned repository main retains JP225 XM EMA UNTESTED / WAITING_FOR_XM_STAGE1_DATA and US-lead opening reversal STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015, so no validated strategy evidence supports a large conditional deviation from neutral."
+  ],
+  "counterevidence": [
+    "The overnight futures gap can be absorbed in the opening or reversed, and the 09:00-15:30 return need not match the pre-opening overnight change.",
+    "NASDAQ/semiconductor hesitation and stronger JPY provide offsetting evidence. The 0.51 probability is purely subjective and uncalibrated.",
+    "Repository integrity remains BLOCKED because original Oct 16 A1/A2/A3 issued JSON SHA-256 fields are malformed; the new record cannot repair or overrule this defect."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://minkabu.jp/news/4639425",
+    "https://s.kabutan.jp/news/n202610210075/",
+    "https://www.oanda.jp/lab-education/market_news/mn_1039843_202610210620/",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/1fb1570ffb26f5d51fa3ddbf43680c69211b394f/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-16_INTEGRITY_FAILURE_RECEIPT.md"
+  ],
+  "canonical_sha256": "09b321414e6ad3c3f3dd12849440339ed88196af20f189a077cbeed385cf7157"
+}
