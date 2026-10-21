@@ -1,0 +1,43 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261022",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261022-late-interim-US-snapshots",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-22T08:00:00+09:00",
+  "issued_at": "2026-10-22T08:08:01.372+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_AFTER_0800_WITHOUT_RAW_0800_SNAPSHOTS",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT",
+    "US_MARKET_EARLY_INTRASESSION_QUOTES_NOT_FINAL_US_CLOSE",
+    "BRANCH_VALIDATOR_BLOCKED_BY_20261016_INVALID_SHA256_FIELDS"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.51,
+  "forecast_return_bps": 2,
+  "top_drivers": [
+    "Pre-08:00 timestamped NY interim equity strength and modest positive CME Nikkei futures premium suggest some opening support but not post-opening continuation.",
+    "Pinned repository state: exact XM JP225 EMA UNTESTED / WAITING_FOR_XM_STAGE1_DATA; US lead reversal STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015. Neither qualifies a stronger directional tilt."
+  ],
+  "counterevidence": [
+    "Positive overseas futures prices can be incorporated into the 09:00 opening and reverse by 15:30.",
+    "U.S. stock figures are interim snapshots, not final closing observations. There is no validated statistical JP225 forecasting edge.",
+    "October 16 A1/A2/A3 original issued JSON SHA digests are malformed (512 hex chars); full-branch CI remains BLOCKED_INTEGRITY. New 64-character hashes are not a repair."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://fx.minkabu.jp/news/382254",
+    "https://fx.minkabu.jp/news/382250",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/04a1cfe8e988c2fc166a680b78f6aed111793d92/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-16_INTEGRITY_FAILURE_RECEIPT.md"
+  ],
+  "canonical_sha256": "2a159178df2c409422708f8aafbb692da805d3f6a3ebb7fa751cdfee5ecee22f"
+}
