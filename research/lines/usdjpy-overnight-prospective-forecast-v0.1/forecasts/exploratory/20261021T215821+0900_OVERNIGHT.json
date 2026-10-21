@@ -1,0 +1,105 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261021-215821",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-21T21:58:21+09:00",
+  "information_cutoff": "2026-10-21T21:57:56+09:00",
+  "information_cutoff_basis": "All included market/news observations retrieved before 2026-10-21T21:57:56+09:00. The forecast of p_up 0.49 and -2 bps was displayed in the user-facing message before repository write. No post-cutoff outcomes are used.",
+  "nominal_protocol_cutoff": "2026-10-21T22:00:00+09:00",
+  "target_start": "2026-10-21T22:00:00+09:00",
+  "target_end": "2026-10-22T08:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_1M39S; QUALIFIED_BID_ASK_UNAVAILABLE; SPEC_PROPOSED_NOT_FROZEN; NOT_FORMAL_COHORT",
+  "system_identity": "UNFROZEN_DISCRETIONARY_EXPLORATORY_RESEARCHER_JUDGMENT_NOT_A1_A2_A3",
+  "model_identity": "GPT-6",
+  "p_up": 0.49,
+  "forecast_return_bps": -2,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_DOWN",
+  "confidence": "LOW",
+  "price_reference_context": {
+    "instrument": "USDJPY_PUBLIC_NONCANONICAL_QUOTES",
+    "tokyo_intraday_low": 158.03,
+    "tokyo_intraday_high": 158.39,
+    "observed_20261021_1700_jst": "158.10-158.20 commentary reference",
+    "observed_20261021_1955_jst": 158.05,
+    "observed_20261021_2040_jst": 157.94,
+    "observed_20261021_204832_jst": 157.96,
+    "exact_bid_at_215756": null,
+    "exact_ask_at_215756": null,
+    "exact_220000_dukas_mid": null,
+    "qualification": "UNQUALIFIED_PUBLIC_INDICATIVE_PRICES"
+  },
+  "top_drivers": [
+    "Intraday USDJPY fell from 158.39 to 158.03, and evening public indicative observations were 158.05 at 19:55 and 157.94-157.96 at 20:40-20:48 JST, suggesting modest yen strength by the issuance information cutoff.",
+    "Lower US Treasury yields pressure USD, while Japanese policy expectations for a December BOJ rate increase support JPY.",
+    "Counteracting these, Middle East tensions and a more than $2 rise in oil prices can increase USD safe-haven demand and Japan's energy-import concerns.",
+    "Net assessment nearly balanced; the weak subjective direction is USDJPY down with low confidence."
+  ],
+  "counterevidence": [
+    "Reuters reported the dollar broadly steadied amid geopolitical risks and higher oil prices, not an unambiguous broad USD decline.",
+    "Japanese import costs and geopolitical disruptions may weaken JPY instead of strengthening it.",
+    "USDJPY already slipped into the high 157s; a mean-reverting rebound is plausible.",
+    "Pre-cutoff information does not include qualified best Bid/Ask at 22:00; 0.49 and -2bps are not calibrated and do not establish an edge."
+  ],
+  "scenario_map": {
+    "base": "Range-bound or marginal decline of USDJPY by next 08:00 JST.",
+    "upside": "Oil and geopolitical developments trigger broad USD buying, raising USDJPY above its unknown qualified 22:00 midpoint.",
+    "downside": "US yield weakness or BOJ hawkish expectations drive additional USDJPY decline."
+  },
+  "source_refs": [
+    {
+      "title": "Investing USDJPY historical page",
+      "url": "https://jp.investing.com/currencies/usd-jpy-historical-data",
+      "observed_at": "2026-10-21T20:48:32+09:00",
+      "price": 157.96,
+      "nature": "mutable public indicative quoted rate"
+    },
+    {
+      "title": "Yahoo Japan USDJPY daily/history",
+      "url": "https://finance.yahoo.co.jp/quote/USDJPY%3DX/history",
+      "observed_at": "2026-10-21T20:40:00+09:00",
+      "price": 157.94,
+      "nature": "mutable public indicative quoted rate"
+    },
+    {
+      "title": "Diamond Online FX chart snapshot",
+      "url": "https://diamond.jp/list/market/chart-detail?pair=USDJPY",
+      "observed_at": "2026-10-21T19:55:00+09:00",
+      "price": 158.05,
+      "nature": "public noncanonical FX quote"
+    },
+    {
+      "title": "Fisco October 21 Tokyo FX report",
+      "url": "https://minkabu.jp/news/4639959",
+      "published_at": "2026-10-21T16:14:00+09:00",
+      "nature": "pre-cutoff market commentary"
+    },
+    {
+      "title": "Reuters dollar markets and Middle East tension",
+      "url": "https://www.reuters.com/world/africa/dollar-back-foot-us-yields-crude-prices-dip-aussie-buoyed-by-hawkish-rba-2026-10-21/",
+      "published_date": "2026-10-21",
+      "nature": "pre-cutoff financial news"
+    },
+    {
+      "title": "Reuters October 20 survey of BOJ rate expectations",
+      "url": "https://www.reuters.com/world/asia-pacific/boj-raise-rates-150-december-sticking-quarterly-pace-2026-10-20/",
+      "published_date": "2026-10-20",
+      "nature": "published before forecast"
+    },
+    {
+      "title": "Reuters October 21 oil price jump",
+      "url": "https://www.reuters.com/business/energy/oil-rises-middle-east-supply-worries-2026-10-21/",
+      "published_date": "2026-10-21",
+      "nature": "pre-cutoff financial news"
+    }
+  ],
+  "source_snapshot_limitation": "Web pages are mutable and their raw bytes were not archived. Observed quote times are not the issued timestamp, and no qualified 22:00 starting midpoint is available. Do not assume quotes are simultaneous or canonical.",
+  "scored_benchmark_effect": "NONE",
+  "source_gate": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "scientific_spec_status": "PROPOSED_NOT_FROZEN",
+  "formal_outcome_access": "CLOSED",
+  "broker_action_authorized": false,
+  "post_cutoff_data_allowed": false,
+  "integrity_note": "Immutably preserve original forecast blob, record post-target comparisons separately, do not reclassify or backfill formal benchmarks."
+}
