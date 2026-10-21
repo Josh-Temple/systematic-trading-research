@@ -1,0 +1,41 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261021",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-21T21:59:15.139+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "2026-10-21 is a scheduled JPX cash-equity trading day. The fixed research target would be exact XM MT5 JP225Cash qualified Bid/Ask midpoint log return 09:00 to 15:30 JST, not the public Nikkei cash-index proxy and not previous-close-to-close.",
+    "Fresh read of GitHub PR #62 at review start showed the original 2026-10-21 A1/A2/A3 forecast JSONs at commit 8584b9fcfc312ebd896dac3da07b4cf27dddc2e9 (actual 2026-10-21 08:20:14 JST), before the 09:00 target opening.",
+    "Original forecast JSON issued_at 2026-10-21T08:20:06.058+09:00 differs from actual GitHub publication time 08:20:14 JST; both are preserved without conflation.",
+    "No 2026-10-21 pre-08:00 pre-registration or pre-cutoff quantitative freeze was present. Dated pre-08:00 reports were accessed after the 08:00 information cutoff with no original point-in-time 08:00 raw page captures. Explicit source/late protocol deviations remain in the immutable issued records.",
+    "The pre-open subjective forecasts were B0 neutral p_up=0.50, return 0bps; A1 p_up=0.52, return +3bps; A2 p_up=0.51, return +2bps; A3 p_up=0.51, return +2bps.",
+    "Qualified exact XM JP225Cash Bid/Ask 09:00/15:30 endpoint ticks were not obtained. This is a standing intentional owner source deferral, not a documented XM retrieval failure.",
+    "Published Nikkei official Oct 21 cash-index OHLC and separately calculated, nonformal proxy scores belong in 2026-10-21_PUBLIC_PROXY_REVIEW.md only, not in this formal exact-XM review.",
+    "PR #62's current CI remains failing in the issued-file integrity validation stage due to the immutable 2026-10-16 forecast A1/A2/A3 malformed 512-hex-character SHA-256 fields; official failure evidence is preserved in 2026-10-16_INTEGRITY_FAILURE_RECEIPT.md."
+  ],
+  "interpretation": [
+    "The Oct 21 issue is a late, source-incomplete exploratory dry run; it cannot count as an on-time frozen forecast or an eligible observation for the 60-event formal scored cohort.",
+    "No exact XM qualified outcome means no formal realized intraday return, directional outcome, Brier score or MAE can be estimated, regardless of the separately published public Nikkei cash-index figures.",
+    "New correctly formatted hashes or append-only reviews cannot retroactively repair the Oct 16 corrupted issuance or establish calibrated forecast advantage."
+  ],
+  "error_attribution": [
+    "EXACT_XM_OUTCOME_NOT_ACQUIRED_BY_OWNER_DIRECTION, not SOURCE_RETRIEVAL_FAILED.",
+    "FORMAL_OUTCOME_AND_SCORES_BLOCKED_MISSING_QUALIFIED_XM_BID_ASK_ENDPOINTS.",
+    "LATE_ISSUANCE_AFTER_0800; NO_PRE_CUTOFF_PRE_REGISTRATION; NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT; PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_POST_CUTOFF.",
+    "EXISTING_20261016_INVALID_CANONICAL_SHA256_LENGTH blocks branch CI; neither validator weakening nor original forecast mutation authorized."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "Scientific status UNTESTED, specification PROPOSED_NOT_FROZEN, scored 60-event cohort CLOSED, NO_TRADE.",
+    "Formal start_quote, end_quote, realized_return_bps, y_up remain null; scores remain an empty object.",
+    "No trading, model tuning, features, source substitutions, parameter/threshold optimization or outcome re-use.",
+    "Do not mutate issued forecasts, their hashes, or the Oct 16 independent failure receipt. Public cash-index source and proxy results are recorded separately after close."
+  ]
+}
