@@ -1,0 +1,43 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261023",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261023-late-insufficient-qualified-timely-inputs",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-23T08:00:00+09:00",
+  "issued_at": "2026-10-23T08:05:28.715+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "NO_TIME_QUALIFIED_CURRENT_DATE_MARKET_REPORT_AVAILABLE_AT_0800",
+    "PRIOR_DATE_REPORT_NOT_CURRENT_TRADING_DAY_INPUT",
+    "20261023_OVERNIGHT_SOURCE_PUBLICATION_TIMESTAMP_UNVERIFIED_AND_EXCLUDED",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_DATA_NOT_SUBSTITUTED_FOR_QUALIFIED_XM",
+    "BRANCH_CI_BLOCKED_BY_UNMODIFIED_20261016_INVALID_SHA256"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.5,
+  "forecast_return_bps": 0,
+  "top_drivers": [
+    "A1 lacks qualified Oct 23 08:00 exact-XM market inputs, and A2 lacks timestamp-proven Oct 23 current overnight news; a neutral no-edge fallback prevents fabricated input substitution.",
+    "Pinned GitHub main confirms exact XM JP225 EMA UNTESTED / WAITING_FOR_XM_STAGE1_DATA and US lead proxy STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015, neither of which supports a validated direction."
+  ],
+  "counterevidence": [
+    "Neutral fallback does not imply little actual market risk, a narrow outcome distribution, or forecast calibration.",
+    "The underlying Oct 16 original issued forecast files have 512-character invalid SHA fields; full-branch CI remains BLOCKED_INTEGRITY and this separate new issue does not repair it.",
+    "An undated-in-publication-time Oct 23 night-futures blog claims sharp weakness, but its pre-cutoff publication provenance is not established; using it after the fact would violate the prospective input gate."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/6c1f499343dd189855b240bba52aebbdac34d5eb/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-16_INTEGRITY_FAILURE_RECEIPT.md",
+    "https://n225data.blog.fc2.com/?date=20261023"
+  ],
+  "canonical_sha256": "b30d7db020b1b109d72d12e097ac2dbd4200697916484a6b1c8f8fb736c8e916"
+}
