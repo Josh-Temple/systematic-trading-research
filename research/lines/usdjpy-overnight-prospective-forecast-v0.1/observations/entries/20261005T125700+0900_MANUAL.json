@@ -1,0 +1,126 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261005T125700+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-05T12:57:00+09:00",
+  "retrieved_at": "2026-10-05T12:57:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-05T12:57:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "MULTI_SOURCE_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "OANDA/DZH: 08:00 157.75, morning high 157.98; 10:00 157.72 after 157.61 low. Gaitame's 11:30 update described USDJPY in the mid-157s. Exact 12:57 qualified benchmark quote unavailable."
+  },
+  "rates_state": {
+    "us_2y": "LATEST_CONTEXT: slightly below recent highs after weaker U.S. payrolls; exact 12:57 value not bound",
+    "us_10y": "LATEST_CONTEXT: slightly below recent highs; exact 12:57 value not bound",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "about 3.10% in early Tokyo trade; noncanonical market source"
+  },
+  "policy_state": {
+    "fed": "Target range remains 3.75%-4.00%; market pricing favors an October hold after weak payrolls.",
+    "boj": "Policy guidance around 1.25%; Deputy Governor Uchida said AI-related demand/financial easing can affect the natural rate and highlighted inflation/market risks, consistent with continued tightening debate.",
+    "japan_fx_authorities": "Recent intervention warning remains relevant; fiscal-policy messaging is also being watched for bond/yen effects."
+  },
+  "macro_news_facts": [
+    "USDJPY failed to sustain the early move toward 158.00 and weakened during Tokyo morning trading.",
+    "Reuters latest oil update: Brent fell to about $101.59 and WTI to about $90.12 after higher Middle East exports and a coordinated G7 release of emergency stocks, reversing the early-morning rise above $103.",
+    "Reuters global-markets update: U.S. 2Y/10Y yields edged back from recent highs and the dollar weakened against major currencies after weak payrolls reduced Fed hike expectations.",
+    "Japan 10-year JGB yield was around 3.10% in early Tokyo trade, roughly steady.",
+    "BOJ published its October current-account-balance projection this morning; no immediate monetary-policy change accompanied the release."
+  ],
+  "scheduled_events_known": [
+    "2026-10-05 later today: Prime Minister Takaichi policy speech / extraordinary Diet session remains a fiscal and bond-market watch item.",
+    "2026-10-05 14:00 JST: BOJ Output Gap, Potential Growth Rate, and Labor Market Indicators.",
+    "2026-10-06 15:35 JST: BOJ Governor Ueda speech at National Securities Convention.",
+    "2026-10-07 14:00 ET: FOMC minutes for September 15-16 meeting."
+  ],
+  "source_refs": [
+    {
+      "source": "OANDA/DZH Tokyo FX 08:00",
+      "ref_id": "turn488003search1",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "OANDA/DZH Tokyo FX 10:00",
+      "ref_id": "turn488003search0",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "Gaitame noon USDJPY live summary 11:30",
+      "ref_id": "turn129055search4",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "Reuters oil latest 2026-10-05",
+      "ref_id": "turn488003news37",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "Reuters global markets 2026-10-05",
+      "ref_id": "turn676105news35",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "Reuters BOJ Uchida 2026-10-05",
+      "ref_id": "turn676105news37",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "Investing Japan 10Y yield",
+      "ref_id": "turn140001search4",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "BOJ What's New 2026-10-05",
+      "ref_id": "turn140001search0",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    },
+    {
+      "source": "Reuters/Takaichi pre-speech fiscal context",
+      "ref_id": "turn676105news39",
+      "retrieved_at": "2026-10-05T12:57:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY failed below 158.00 and traded lower during the Tokyo morning, reaching at least the mid-157s in available noncanonical reports.",
+    "Brent reversed from the early-morning $103.06 area to about $101.59 in Reuters' later update.",
+    "U.S. Treasury yields eased slightly from recent highs in the latest global-markets update.",
+    "Japan 10-year JGB yield was around 3.10% and broadly steady in early Tokyo trade.",
+    "BOJ published scheduled statistics and Deputy Governor Uchida spoke today; there was no surprise policy-rate change."
+  ],
+  "interpretations": [
+    "Two morning yen-negative forces weakened: the oil spike partially reversed and USDJPY itself failed to hold near 158.00.",
+    "The price action is more consistent with the earlier slight-USDJPY-down scenario than with the alternative USDJPY-up scenario.",
+    "However, broad-dollar support from still-high U.S. yields and Japan fiscal/bond uncertainty prevents upgrading this to a high-conviction yen-strengthening call.",
+    "The next major domestic information risk is the combination of Takaichi fiscal messaging and tomorrow's Ueda speech."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: USDJPY weakened from the early 157.7-157.9 area toward the mid-157s and failed to clear 158.00; Brent reversed from about $103.06 to about $101.59, reducing the yen-negative oil shock identified at 07:37.",
+  "base_case": "SLIGHT_USDJPY_DOWN: the morning evidence now modestly favors yen strength / USDJPY softness, but within a range rather than a strong trend.",
+  "alternative_case": "USDJPY_UP_RESUMPTION: renewed U.S. yield rise, stronger dollar safe-haven demand, or fiscal/bond stress in Japan pushes USDJPY back above 158.00.",
+  "invalidation_conditions": [
+    "Sustained USDJPY break above 158.00-158.20 with rising U.S. yields.",
+    "A renewed Brent surge above the morning high accompanied by broad yen weakness.",
+    "Fiscal headlines materially steepen JGB yields while USDJPY rises rather than falls."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "14:00 JST BOJ output gap/potential growth/labor-market indicators.",
+    "Prime Minister Takaichi policy speech and JGB response.",
+    "15:00 JST TOKYO_CLOSE_STATE.",
+    "Whether USDJPY holds below 157.7 or retests 158.00.",
+    "Whether Brent remains near $101-102 or re-accelerates."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "ad6deee2b1c3428fc640db5e2866fe9f329d474fe545987f2682007c1543f8ed"
+}

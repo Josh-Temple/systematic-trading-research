@@ -1,0 +1,99 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261006T020700+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-06T02:07:00+09:00",
+  "retrieved_at": "2026-10-06T02:07:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-06T02:07:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "MULTI_SOURCE_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "23:15 JST post-ISM report: USDJPY fell from 158.30 to 158.12. SMBC retail FX page at 01:05 JST showed USD TTB 157.51 / TTS 158.01, implying a rough spread midpoint of 157.76; this is not a qualified spot benchmark quote."
+  },
+  "rates_state": {
+    "us_2y": "4.833% at 00:02 JST market snapshot; later reporting showed about 4.856%",
+    "us_10y": "5.320% at 00:02 JST market snapshot; later reporting showed about 5.333%",
+    "jp_2y": "NOT_APPLICABLE_POST_TOKYO_CLOSE",
+    "jp_10y": "3.089% at 00:02 JST market snapshot"
+  },
+  "policy_state": {
+    "fed": "October hold remains the dominant near-term expectation, but post-ISM Treasury yields moved higher as hot prices offset the mild headline miss.",
+    "boj": "No new overnight BOJ policy action captured; Ueda speech remains scheduled for 15:35 JST later today.",
+    "japan_fx_authorities": "No new intervention headline captured in this check."
+  },
+  "macro_news_facts": [
+    "ISM Services was 54.9 versus 55.0 expected; Prices rose to 74.0.",
+    "USDJPY initially fell from 158.30 to 158.12 after the ISM release.",
+    "U.S. Treasury yields later rose: 10-year around 5.32%-5.33%, 2-year around 4.83%-4.86%.",
+    "WTI was about $90.67 at 00:02 JST and Reuters later reported WTI about $90.22 / Brent about $101.15 as Middle East exports and stock releases eased supply fears.",
+    "SMBC 01:05 JST USD retail FX rates imply a rough center near 157.76, materially below the immediate post-ISM 158.12 level, but this is not a qualified benchmark quote."
+  ],
+  "scheduled_events_known": [
+    "No major U.S. scheduled release identified before the 08:00 JST endpoint.",
+    "2026-10-06 15:35 JST: BOJ Governor Ueda speech, after this overnight horizon."
+  ],
+  "source_refs": [
+    {
+      "source": "Minkabu/FISCO post-ISM market reaction",
+      "url": "https://minkabu.jp/news/4629938",
+      "retrieved_at": "2026-10-06T02:07:00+09:00"
+    },
+    {
+      "source": "Minkabu NY markets 00:12",
+      "url": "https://fx.minkabu.jp/news/380786",
+      "retrieved_at": "2026-10-06T02:07:00+09:00"
+    },
+    {
+      "source": "SMBC real-time FX 01:05 result surfaced by search",
+      "url": "https://www.smbc.co.jp/ex/ExchangeServlet?ScreenID=real&a8=KrA0DrUo2L8pjzgCZjBMppIMq.zJ8oIsAj_CszIFMF4o2LAX79TKcLTLGLZsasTBcFbMIvAycrA01s00000024868001",
+      "retrieved_at": "2026-10-06T02:07:00+09:00"
+    },
+    {
+      "source": "Reuters oil via Euronext",
+      "url": "https://live.euronext.com/en/financial-news/oil-slips-rise-middle-east-crude-exports-and-g7-stocks-release",
+      "retrieved_at": "2026-10-06T02:07:00+09:00"
+    },
+    {
+      "source": "WSJ Treasury yields",
+      "url": "https://www.wsj.com/livecoverage/stock-market-today-dow-sp-500-nasdaq-10-05-2026/card/u-s-treasury-yields-climb-after-early-softness-5J951K7855hVaUHHiXsa",
+      "retrieved_at": "2026-10-06T02:07:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY's first reaction to ISM was downward from 158.30 to 158.12.",
+    "Treasury yields subsequently rose rather than fell.",
+    "Oil remained below the early-Monday spike.",
+    "A later noncanonical bank FX proxy was consistent with USDJPY being below 158 and around the high-157s."
+  ],
+  "interpretations": [
+    "The original slight-up forecast is currently not receiving clean price confirmation.",
+    "The key surprise is that higher Treasury yields have not translated into sustained USDJPY upside so far.",
+    "That divergence suggests Japan-side support, intervention sensitivity, or broader dollar/flow effects are offsetting rate support.",
+    "Because the exact qualified 22:00 start and current spot quotes are unavailable, this is only a provisional path assessment and not a forecast score."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: immediate post-ISM USDJPY softened and later noncanonical pricing is consistent with the pair trading below 158, while U.S. Treasury yields rose. The original slight-up forecast is provisionally under pressure.",
+  "base_case": "FORECAST_RECORD_UNCHANGED; CURRENT_PATH_BIAS=NEUTRAL_TO_SLIGHT_USDJPY_DOWN until 08:00 endpoint, because price has not confirmed the post-ISM yield rise.",
+  "alternative_case": "USDJPY recovers before 08:00 if high U.S. yields regain dominance and the pair retakes the 158.1-158.3 area.",
+  "invalidation_conditions": [
+    "NOT_APPLICABLE_TO_ORIGINAL_FORECAST_AFTER_CUTOFF"
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "Capture a better timestamped USDJPY quote before 08:00 without changing the forecast.",
+    "Track whether U.S. 10-year remains above ~5.32%.",
+    "At/after 08:00 obtain endpoint and conduct exploratory evaluation only."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "3b21672e3371c857792233071322533c01cb66d4ee091f4cc0b78fdb32e9e5b2"
+}

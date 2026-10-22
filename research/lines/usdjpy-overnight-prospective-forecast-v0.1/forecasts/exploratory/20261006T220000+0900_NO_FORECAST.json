@@ -1,0 +1,16 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_EVENT_v0.1",
+  "event_id": "XPF-EVENT-USDJPY-20261006-220000",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "nominal_cutoff": "2026-10-06T22:00:00+09:00",
+  "nominal_horizon_end": "2026-10-07T08:00:00+09:00",
+  "status": "NO_FORECAST_ISSUED_CUTOFF_PASSED",
+  "reason": "The prospective forecast was not issued by the nominal 22:00 cutoff. By the 22:18 review, post-cutoff information was already available, so issuing a forecast would violate outcome-blind prospective timing.",
+  "forecast_values": "NOT_APPLICABLE",
+  "scored_benchmark_effect": "NONE",
+  "exploratory_score_authorized": false,
+  "retroactive_forecast_authorized": false,
+  "operational_interpretation": "MISSED_CUTOFF_NEGATIVE_OPERATIONAL_RESULT",
+  "next_action": "Preserve this missed event and issue the next eligible forecast prospectively before cutoff."
+}

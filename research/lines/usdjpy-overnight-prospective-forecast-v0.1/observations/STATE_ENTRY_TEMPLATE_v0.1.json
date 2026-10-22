@@ -1,0 +1,48 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-YYYYMMDDTHHMMSS+0900-<TYPE>",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "YYYY-MM-DDTHH:MM:SS+09:00",
+  "retrieved_at": "YYYY-MM-DDTHH:MM:SS+09:00",
+  "checkpoint_type": "MORNING_STATE|TOKYO_CLOSE_STATE|PRE_FORECAST_STATE|EVENT_DRIVEN|MANUAL|CORRECTION",
+  "source_cutoff": "YYYY-MM-DDTHH:MM:SS+09:00",
+  "market_open_state": "OPEN|CLOSED|PARTIAL|UNKNOWN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "UNKNOWN",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "UNKNOWN"
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN",
+    "us_10y": "UNKNOWN",
+    "jp_2y": "UNKNOWN",
+    "jp_10y": "UNKNOWN"
+  },
+  "policy_state": {
+    "fed": "UNKNOWN",
+    "boj": "UNKNOWN",
+    "japan_fx_authorities": "UNKNOWN"
+  },
+  "macro_news_facts": [],
+  "scheduled_events_known": [],
+  "source_refs": [],
+  "facts": [],
+  "interpretations": [],
+  "change_since_prior": "UNKNOWN",
+  "base_case": "UNKNOWN",
+  "alternative_case": "UNKNOWN",
+  "invalidation_conditions": [],
+  "confidence": "LOW|LOW_TO_MEDIUM|MEDIUM|MEDIUM_TO_HIGH|HIGH|UNKNOWN",
+  "next_watch_items": [],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "TO_BE_COMPUTED"
+}

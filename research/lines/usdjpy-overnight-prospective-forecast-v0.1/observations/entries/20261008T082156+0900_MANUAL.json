@@ -1,0 +1,80 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261008T082156+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-08T08:21:56+09:00",
+  "retrieved_at": "2026-10-08T08:21:56+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-08T08:21:56+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "As of post-08:00 source review, nearest reliable publicly timestamped evidence found is USDJPY 158.28 at 21:26 JST Oct 7 and around 158.00 at 07:28 JST Oct 8; precise qualified 22:00 and 08:00 Bid/Ask tick/mid unavailable. Do not infer the 08:00 quote."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_CURRENT",
+    "us_10y": "Prior 07:52 journal ~5.276%-5.29% after strong auction; not newly verified at 08:21",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "UNKNOWN_CURRENT"
+  },
+  "policy_state": {
+    "fed": "FOMC minutes released at 03:00 JST; no post-cutoff news retrofitted to forecast.",
+    "boj": "No new BOJ signal independently established at this checkpoint.",
+    "japan_fx_authorities": "Intervention sensitivity near 159 remains an interpretation, not a new authority statement."
+  },
+  "macro_news_facts": [
+    "Minkabu report timestamped Oct 7 21:50 quotes USDJPY 158.28 at 21:26 JST.",
+    "Minkabu report timestamped Oct 8 07:28 quotes USDJPY about 158.00.",
+    "No validated exact 08:00 JST historical Bid/Ask quote was retrieved.",
+    "Forecast XPF-USDJPY-20261007-214634 was already fixed before FOMC minutes; it was not edited."
+  ],
+  "scheduled_events_known": [
+    "2026-10-08 08:00 JST target already elapsed.",
+    "2026-10-08 08:50 JST Japan balance-of-payments related publication; after this journal checkpoint."
+  ],
+  "source_refs": [
+    {
+      "source": "Minkabu NY FX pivot, Oct 7 21:50 (value 21:26 JST)",
+      "url": "https://fx.minkabu.jp/news/381026",
+      "retrieved_at": "2026-10-08T08:21:56+09:00"
+    },
+    {
+      "source": "Minkabu Tokyo FX morning, Oct 8 07:28",
+      "url": "https://minkabu.jp/news/4631577",
+      "retrieved_at": "2026-10-08T08:21:56+09:00"
+    }
+  ],
+  "facts": [
+    "Target endpoint time has passed, but its exact qualifying quote remains unavailable.",
+    "The two timestamped noncanonical observations are lower at 07:28 (about 158.00) than at 21:26 (158.28).",
+    "Neither observation meets the candidate 60-second start/end quote rule."
+  ],
+  "interpretations": [
+    "The original slightly-up overnight forecast is directionally likely wrong on available nearby public observations; final target-window direction remains unconfirmed.",
+    "This is an exploratory post-cutoff interpretation, not a qualified market outcome or a scored research result."
+  ],
+  "change_since_prior": "08:00 endpoint has elapsed; the 07:52 pre-endpoint concern is now preserved as an outcome-limited exploratory evaluation, still without exact endpoint reference quote.",
+  "base_case": "POST_ENDPOINT_INDICATIVE_DOWN_VS_NEAR_START_PUBLIC_OBSERVATION; unconfirmed at exact 08:00",
+  "alternative_case": "An unobserved sharp move around endpoint cannot be categorically excluded without timestamp-proven 08:00 data.",
+  "invalidation_conditions": [
+    "A later legitimately obtained, timestamp-proven 08:00 public observation higher than the near-start public context would invalidate the provisional miss inference; do not overwrite this journal."
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "08:30 JST regular MORNING_STATE checkpoint if a live observation is made.",
+    "Bounded reference-feed qualification, separately from observational price tracking.",
+    "No broker action; formal scoring and spec freeze remain blocked."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "b9bd6c48a4cbdbf888ffc47fc0cdd0e23064f86ac40ca4becbd794810f4a526d"
+}

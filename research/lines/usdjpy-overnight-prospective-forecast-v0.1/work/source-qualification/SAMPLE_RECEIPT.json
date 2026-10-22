@@ -1,0 +1,17 @@
+{
+  "record_type": "USDJPY_DUKASCOPY_SOURCE_SAMPLE_RECEIPT_v0.1",
+  "status": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "provider": "Dukascopy",
+  "instrument": "Instrument.USDJPY",
+  "candidate_route": "JFOREX_HISTORY_GETTICKS_DEMO",
+  "predeclared_start_utc": "2024-01-15T12:59:00Z",
+  "predeclared_end_utc": "2024-01-15T13:01:00Z",
+  "real_sample_loaded": false,
+  "source_session_verified": false,
+  "raw_sha256": null,
+  "decoded_record_count": null,
+  "source_gate_passed": false,
+  "market_outcome_access": "CLOSED",
+  "scientific_effect": "NONE",
+  "reason": "JForex session and actual raw data not available in this runtime; official S3 Requester Pays not used."
+}
