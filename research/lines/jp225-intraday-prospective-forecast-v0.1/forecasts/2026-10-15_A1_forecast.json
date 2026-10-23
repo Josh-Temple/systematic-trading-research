@@ -1,0 +1,35 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261015",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261015-late",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-15T08:00:00+09:00",
+  "issued_at": "2026-10-15T08:12:21.546+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PUBLISHED_PRE_CUTOFF_SOURCES_RETRIEVED_POST_CUTOFF",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.49,
+  "forecast_return_bps": -3,
+  "top_drivers": [
+    "06:03 JST published Osaka Dec Nikkei futures report: 06:00 JST overnight close 66,480, down 1,680 vs previous futures settlement."
+  ],
+  "counterevidence": [
+    "Negative futures opening gap is not a predictor of signed 09:00 to 15:30 intraday return.",
+    "08:00 exact XM JP225Cash Bid/Ask and 1h/4h/24h lookback inputs were not acquired; this is proxy-only."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://minkabu.jp/news/4635705"
+  ],
+  "canonical_sha256": "901b8721eb29793d199ad8fc7dd6652de45087ed88ae8adc9ad58ae057dac73d"
+}

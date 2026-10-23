@@ -1,0 +1,44 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261006",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261006-0800-amended",
+  "model_identifier": "GPT-5.6 Sol",
+  "information_cutoff": "2026-10-06T08:00:00+09:00",
+  "issued_at": "2026-10-06T08:22:44+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.58,
+  "forecast_return_bps": 13,
+  "top_drivers": [
+    "U.S. equities closed higher before the cutoff, with Nasdaq +1.05% and technology leadership supportive for Japan's large semiconductor/AI names.",
+    "USDJPY was around 157.99 at 06:10 JST, leaving the yen weak enough to be broadly supportive for exporters.",
+    "WTI was down about 2.17% at 05:55 JST, reducing one near-term cost/inflation headwind.",
+    "Osaka/CME Nikkei futures were around 70,180-70,185 near 06:00 JST, above the prior cash close."
+  ],
+  "counterevidence": [
+    "U.S. 10-year Treasury yields remained around 5.31%, a valuation headwind for equities.",
+    "The Nikkei cash index had surged 2.40% on the prior day, so a high opening can create profit-taking and reduce same-day continuation.",
+    "The known BOJ governor appearance was scheduled for 15:35 JST, just after the 15:30 endpoint, so it is not a direct in-window event but may still affect positioning near the close."
+  ],
+  "invalidation_conditions": [
+    "USDJPY strengthens materially in the yen direction before/after the open despite the 08:00 cutoff context.",
+    "Japanese semiconductor leaders fail to follow the U.S. technology lead after the open.",
+    "Long-term yields rise further and dominate the risk-on impulse."
+  ],
+  "source_refs": [
+    "https://minkabu.jp/news/4629968",
+    "https://nikkeiyosoku.com/",
+    "https://nikkei225minisaki.seesaa.net/article/521720127.html?seesaa_related=category",
+    "https://www.e-stat.go.jp/release-calendar?endDay=31&endMonth=10&endYear=2026&startDay=3&startMonth=10&startYear=2026",
+    "https://www.fxcomp-plus.com/parts/marketCalendarToDayWindow.jsp?DAY=20261006"
+  ],
+  "canonical_sha256": "10468c6cbb8913376d2e2ef9a223369b1648bae9cff7c7fd0154c6a6f3e85286"
+}

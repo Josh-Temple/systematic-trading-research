@@ -1,0 +1,40 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261022",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-22T21:55:15.810+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "October 22 2026 is a scheduled JPX cash equity day. The designated target is exact XM MT5 JP225Cash Bid/Ask midpoint 09:00 to 15:30 JST, not public cash Nikkei 225 previous-close or open-to-close price observations.",
+    "At GitHub fresh read, PR #62 remained OPEN and DRAFT with head 13e39df0fd7d2ad670c896b9d312d522ad090045, originally issued 2026-10-22 08:08:11 JST, before the 09:00 session start but after the 08:00 data cutoff.",
+    "All original 2026-10-22 A1/A2/A3 issued forecasts were present, with issued_at 2026-10-22T08:08:01.372+09:00. A1 p_up=0.51 forecast_return_bps=+2, A2 p_up=0.52 forecast_return_bps=+4, A3 p_up=0.51 forecast_return_bps=+2; B0 0.50/0.",
+    "There was no pre-08:00 pre-registration or quantitative freeze for October 22. Sources with reported publication times before 08:00 were retrieved after cutoff without original point-in-time webpage snapshots. Intra-session U.S. equity quotes were not a verified full-session U.S. closing tape.",
+    "No qualified exact XM MT5 JP225Cash 09:00 and 15:30 Bid/Ask quotes have been obtained by the owner's deliberate source-acquisition deferral, not due to an observed retrieval failure.",
+    "The current public Nikkei cash-index OHLC values were confirmed post-close on Monex Securities 2026-10-22 history; a matching close was published 2026-10-22 by Nihon Shoken Shimbun. As of review the official Nikkei Indexes history was still dated 2026-10-21 and did not yet contain an Oct 22 row.",
+    "All publicly observed Nikkei Oct 22 index prices, log returns, public-proxy comparisons, and descriptive errors are documented only in the separate 2026-10-22_PUBLIC_PROXY_REVIEW.md; no public proxy is treated as exact XM outcome.",
+    "The original issued Oct 16 A1/A2/A3 JSONs have malformed 512-character canonical_sha256 fields (64-character valid hash required); full-branch GitHub CI fails at the issued-forecast/hash validator. This review does not modify or conceal the invalid original issuances."
+  ],
+  "interpretation": [
+    "Without exact qualified XM JP225Cash endpoints, no formal return, direction, Brier, MAE, trading performance or calibrated model performance can be calculated.",
+    "This is an explicitly late exploratory dry run, not a valid on-time pre-cutoff, formally scored prospective event.",
+    "A single public-index proxy shock cannot validate or invalidate model ranking in the proposed formal 60-event cohort or justify post-outcome tuning."
+  ],
+  "error_attribution": [
+    "EXACT_XM_OUTCOME_UNAVAILABLE_OWNER_DEFERRED_ACQUISITION, not SOURCE_RETRIEVAL_FAILED.",
+    "PROCESS_LATE_ISSUANCE_AFTER_0800, NO_PRE_CUTOFF_PRE_REGISTRATION, NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT, PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_AFTER_0800_WITHOUT_RAW_0800_SNAPSHOTS.",
+    "20261016_INVALID_CANONICAL_SHA256_LENGTH_512_CHARS blocks branch CI; preserve original immutable files and the separate integrity failure receipt."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "Current scientific status UNTESTED; proposed specification PROPOSED_NOT_FROZEN; score cohort CLOSED; NO_TRADE.",
+    "Formal return/label/score fields remain null/empty by contract, even if public cash-index proxy prices are independently visible.",
+    "Preserve all prior forecast JSONs, their digests, commit chronology, and original Oct 16 integrity failure; do not silently edit or weaken validators.",
+    "Official Nikkei Indexes Oct 22 row pending as of review; proxy review names the contemporaneously available Monex Securities source and matching close from NSJ, and qualifies source status."
+  ]
+}

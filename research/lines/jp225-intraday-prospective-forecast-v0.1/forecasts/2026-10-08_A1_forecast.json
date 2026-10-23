@@ -1,0 +1,34 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261008",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261008-0800-amended",
+  "model_identifier": "UNOBSERVED_IN_PRE_CUTOFF_ASSESSMENT",
+  "information_cutoff": "2026-10-08T08:00:00+09:00",
+  "issued_at": "2026-10-08T08:21:45+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.46,
+  "forecast_return_bps": -6,
+  "top_drivers": [
+    "Osaka Nikkei 225 futures night session closed at 69,790 at 06:00 JST, -570 versus prior settlement, below the prior cash close."
+  ],
+  "counterevidence": [
+    "The night-session weakness could be incorporated into the 09:00 opening; the forecast is for 09:00-15:30, not the overnight move.",
+    "Exact XM JP225Cash cutoff data and deterministic 1h/4h/24h features were unavailable; A1 is a proxy-only exploratory dry run."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/542b8ac951719672ff9e356300f6b8974b8fe293/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-08_PRE_CUTOFF_ASSESSMENT.md",
+    "https://minkabu.jp/news/4631563"
+  ],
+  "canonical_sha256": "8a797f78ecb795bb1987214985c885c725b13557d345526699d4aabfc052e054"
+}

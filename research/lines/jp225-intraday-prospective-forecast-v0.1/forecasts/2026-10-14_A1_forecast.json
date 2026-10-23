@@ -1,0 +1,35 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261014",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261014-0800-amended",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-14T08:00:00+09:00",
+  "issued_at": "2026-10-14T08:00:56.398+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.52,
+  "forecast_return_bps": 3,
+  "top_drivers": [
+    "The 06:00 JST Osaka Nikkei 225 Dec 2026 future overnight close was 68,100, +140 versus prior futures settlement, publicly reported 06:03 JST.",
+    "A 05:32 JST report placed CME Nikkei futures near 68,235 at a different venue and time, so it was not merged with the 06:00 OSE quote as a like-for-like tick."
+  ],
+  "counterevidence": [
+    "A positive overnight futures price vs prior Japanese cash close may be priced into the 09:00 cash opening, leaving post-opening direction uncertain.",
+    "Qualified XM JP225Cash 08:00 Bid/Ask and 1h/4h/24h features were not collected; this is not exact-XM target-only A1."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/5c841d151b150afdbd2670887e74d7b45f62620d/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-14_PRE_CUTOFF_ASSESSMENT.md",
+    "https://minkabu.jp/news/4634620",
+    "https://minkabu.jp/news/4634615"
+  ],
+  "canonical_sha256": "6be8cb3c7976ba014bad85d5b2cb8cae76e4de401cfe10922acbbe97a92ba5f7"
+}

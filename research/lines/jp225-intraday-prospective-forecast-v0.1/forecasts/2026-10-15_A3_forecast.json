@@ -1,0 +1,39 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261015",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261015-late",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-15T08:00:00+09:00",
+  "issued_at": "2026-10-15T08:12:21.546+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PUBLISHED_PRE_CUTOFF_SOURCES_RETRIEVED_POST_CUTOFF",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A3",
+  "p_up": 0.47,
+  "forecast_return_bps": -7,
+  "top_drivers": [
+    "US equity weakness and large OSE futures gap create negative opening context but no validated sign for post-opening return.",
+    "Pinned repository: XM JP225 EMA UNTESTED / WAITING_FOR_XM_STAGE1_DATA and US-lead reversal STOPPED / USLEAD_PROXY_NOT_SUPPORTED_2015."
+  ],
+  "counterevidence": [
+    "Existing negative and untested studies cannot establish today will continue lower or rebound.",
+    "The p_up estimate is subjective and uncalibrated, with no measured intraday edge."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://minkabu.jp/news/4635705",
+    "https://fx.minkabu.jp/news/381582",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-ema-timeofday-v0.1/CURRENT.md",
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/33f3c1e5c9d4dca323618e7ac1fcadc85a338fa3/research/lines/jp225-us-lead-reversal-v0.1/CURRENT.md"
+  ],
+  "canonical_sha256": "aa788ed3ff7120dc2b54c6e9b87a879afb0c2a62af0eed8e2bbc012e1cd70bf9"
+}

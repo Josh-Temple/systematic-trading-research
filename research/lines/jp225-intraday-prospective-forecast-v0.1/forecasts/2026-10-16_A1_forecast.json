@@ -1,0 +1,35 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261016",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-late-20261016",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-16T08:00:00+09:00",
+  "issued_at": "2026-10-16T08:06:56.165+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.51,
+  "forecast_return_bps": 2,
+  "top_drivers": [
+    "OSE Dec Nikkei future 06:00 JST night close 65,520, up 720 versus preceding futures settlement as published 06:03 JST."
+  ],
+  "counterevidence": [
+    "The futures 1,094.05 premium versus prior cash close may be absorbed in the 09:00 opening and says little about 09:00 to 15:30 return.",
+    "No qualified XM JP225Cash 08:00 bid/ask or 1h/4h/24h lookbacks were acquired; this is proxy-only A1, not a qualified target-only estimate."
+  ],
+  "source_refs": [
+    "https://s.minkabu.jp/news/4637080"
+  ],
+  "invalidation_conditions": [],
+  "canonical_sha256": "cccaf0c231c721b11062c1f54b72fff45b9b4b299bfe3c253ba334492f0fd51bcbbb9d5d629a292a9159015a152fecd8673326678eb44a87db0c2e0d47b5481dae5f9156cf6c85d32f73477d6d1826ca8b43d457e360b5961c4560026f196331d94ebeb10cc4a611261dc1f25815a7be70b7ed67a1513c6944f93635720dcdfdb467369eca320b7534e0d42e49c7d9bd87abb9f2c463a2fcec3fc3f327277f6d610bebf27420b49ed1fd8a33e4773594092197f61b530c95869d6342eee52e4f1107668921fba37b43ab9fb675a9f91d86305019d7cd817307fe00ff379f513f66b651a8764ab842a4b06be1c3578c15d2962a531e039f40857b7beea29bf2de"
+}

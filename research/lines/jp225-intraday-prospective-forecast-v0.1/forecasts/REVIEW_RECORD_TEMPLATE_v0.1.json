@@ -1,0 +1,26 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-YYYYMMDD",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "ISO-8601_after_15_30_JST",
+  "exact_xm_outcome_status": "AVAILABLE|MARKET_OUTCOME_UNAVAILABLE|SOURCE_RETRIEVAL_FAILED",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {
+    "B0_brier": null,
+    "A1_brier": null,
+    "A2_brier": null,
+    "A3_brier": null,
+    "A1_mae_bps": null,
+    "A2_mae_bps": null,
+    "A3_mae_bps": null
+  },
+  "facts": [],
+  "interpretation": [],
+  "error_attribution": [],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": []
+}

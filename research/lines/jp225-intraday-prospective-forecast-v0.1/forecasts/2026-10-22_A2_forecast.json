@@ -1,0 +1,39 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261022",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261022-late-interim-US-snapshots",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-22T08:00:00+09:00",
+  "issued_at": "2026-10-22T08:08:01.372+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_AFTER_0800_WITHOUT_RAW_0800_SNAPSHOTS",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT",
+    "US_MARKET_EARLY_INTRASESSION_QUOTES_NOT_FINAL_US_CLOSE",
+    "BRANCH_VALIDATOR_BLOCKED_BY_20261016_INVALID_SHA256_FIELDS"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.52,
+  "forecast_return_bps": 4,
+  "top_drivers": [
+    "03:14 JST report (03:04 observation): NY Dow 52,780.72 (+284.84, +0.54%) and Nasdaq 26,740.73 (+315.91, +1.20%) at an INTRASESSION point, NOT verified U.S. session final closes.",
+    "Same dated report: CME Nikkei future 65,070 (+290 vs Osaka), European DAX 25,645.04 (+1.35%), December WTI 96.90 (-0.94%), US ten-year yield 5.107% (near flat)."
+  ],
+  "counterevidence": [
+    "A U.S. intraday rebound and oil decrease are opening context, not a trained intraday Japanese signal.",
+    "These reports were retrieved after cutoff without raw 08:00 source pages. No verified final Wall Street closing prices or qualified XM 08:00 quotes were obtained."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://fx.minkabu.jp/news/382254",
+    "https://fx.minkabu.jp/news/382250"
+  ],
+  "canonical_sha256": "ac2646efb4a78a794012077158ef9e8e936ee80de993c5f3844d1ed39c98a681"
+}

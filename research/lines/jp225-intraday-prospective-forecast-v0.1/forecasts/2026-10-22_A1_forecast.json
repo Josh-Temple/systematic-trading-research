@@ -1,0 +1,39 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261022",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261022-late-interim-US-snapshots",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-22T08:00:00+09:00",
+  "issued_at": "2026-10-22T08:08:01.372+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_AFTER_0800_WITHOUT_RAW_0800_SNAPSHOTS",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT",
+    "US_MARKET_EARLY_INTRASESSION_QUOTES_NOT_FINAL_US_CLOSE",
+    "BRANCH_VALIDATOR_BLOCKED_BY_20261016_INVALID_SHA256_FIELDS"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.51,
+  "forecast_return_bps": 2,
+  "top_drivers": [
+    "03:14 JST published U.S. intraday market snapshot reported CME Nikkei future 65,070 (+290 versus Osaka reference), observation 03:04 JST.",
+    "02:27 JST published previous intraday snapshot reported CME Nikkei 65,140 (+360 versus Osaka reference) at 02:17 JST."
+  ],
+  "counterevidence": [
+    "Public CME intraday prices are neither certified 06:00 Osaka overnight close nor exact XM JP225Cash 08:00 tick/lookback.",
+    "A positive overseas futures quote need not imply positive Japanese 09:00-15:30 post-opening return; opening gap absorption is possible."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://fx.minkabu.jp/news/382254",
+    "https://fx.minkabu.jp/news/382250"
+  ],
+  "canonical_sha256": "05cd3664e0fa18b05dcf81b6dc5be54003b27808e8959c7cfe7462ea56b04876"
+}

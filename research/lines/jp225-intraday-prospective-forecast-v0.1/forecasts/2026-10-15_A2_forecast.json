@@ -1,0 +1,39 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261015",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261015-late",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-15T08:00:00+09:00",
+  "issued_at": "2026-10-15T08:12:21.546+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PUBLISHED_PRE_CUTOFF_SOURCES_RETRIEVED_POST_CUTOFF",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A2",
+  "p_up": 0.45,
+  "forecast_return_bps": -12,
+  "top_drivers": [
+    "05:36 JST report: Oct 14 US Nasdaq -1.88%, S&P 500 -1.11%, Dow -0.09%.",
+    "06:20 JST New York recap: stronger-than-expected US CPI, WTI USD 95.09 (+0.95), and negative Nikkei overnight futures."
+  ],
+  "counterevidence": [
+    "Overnight news may already be priced at the Japanese cash open.",
+    "US ten-year yield was 5.19%, down 0.02 percentage points, and USDJPY was near 158.33, flat vs prior close."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://minkabu.jp/news/4635705",
+    "https://fx.minkabu.jp/news/381582",
+    "https://www.oanda.jp/lab-education/market_news/mn_1038953_202610150620/",
+    "https://s.kabutan.jp/news/n202610150055/"
+  ],
+  "canonical_sha256": "ec561112b9bd8e3ed691ab54416362ac0e3a2ac558e992bdaff7dffc5f684a03"
+}

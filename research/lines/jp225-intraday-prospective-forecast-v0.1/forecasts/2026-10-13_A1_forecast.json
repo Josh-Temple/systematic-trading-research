@@ -1,0 +1,38 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261013",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261013-0800-amended",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-13T08:00:00+09:00",
+  "issued_at": "2026-10-13T08:00:01+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN",
+    "CONFLICTING_PUBLIC_FUTURES_QUOTE_UNQUALIFIED",
+    "PRE_CUTOFF_ASSESSMENT_TRANSCRIBED_WITHOUT_NEW_INFERENCE"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.49,
+  "forecast_return_bps": -2,
+  "top_drivers": [
+    "Pre-08:00 JPX/QUICK public OSE Nikkei future showed 68,380 at 06:00 JST, -1,090 versus its reference settlement; this is opening risk context only.",
+    "A timestamped 06:23 JST report showed CME225 yen futures 68,380, -1,090 versus Osaka previous daytime quote; no exact-XM target-market features were observed."
+  ],
+  "counterevidence": [
+    "Futures negative gap is likely reflected in the 09:00 cash opening; it does not establish signed 09:00-15:30 return.",
+    "Conflicting public 06:00 Nikkei mini quotes, 68,995 versus 68,350, mean futures snapshots are unqualified as precise signal inputs.",
+    "Exact XM JP225Cash 08:00 Bid/Ask and 1h/4h/24h features are unavailable. A1 is a proxy-only heuristic."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://github.com/Josh-Temple/systematic-trading-research/blob/5804cc24264bf4a72746515bf74042fb3ef52b53/research/lines/jp225-intraday-prospective-forecast-v0.1/forecasts/2026-10-13_PRE_CUTOFF_ASSESSMENT.md",
+    "https://port.jpx.co.jp/jpxhp/main/index.aspx?F=future",
+    "https://www.traders.co.jp/news/article/1_2206428",
+    "https://s.kabutan.jp/futures/%E6%97%A5%E7%B5%8C225%E5%85%88%E7%89%A9%E3%83%9F%E3%83%8B/"
+  ],
+  "canonical_sha256": "e14ea4f17f3ad169a8a9a9f9ad396e28e08d9bed03cf0d28b356f1a0cbeede6d"
+}

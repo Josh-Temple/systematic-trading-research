@@ -1,0 +1,37 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261006",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-dryrun-20261006-0800-amended",
+  "model_identifier": "GPT-5.6 Sol",
+  "information_cutoff": "2026-10-06T08:00:00+09:00",
+  "issued_at": "2026-10-06T08:22:44+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_MARKET_CONTEXT_USED_FOR_EXPLORATORY_DRY_RUN"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.53,
+  "forecast_return_bps": 4,
+  "top_drivers": [
+    "Osaka Nikkei 225 futures night session ended 70,180 at 06:00 JST, +90 versus prior settlement and 233.14 points above the prior cash close.",
+    "A public futures page reported the last pre-cutoff trade at 07:58 JST around 70,192.5, indicating no strong additional acceleration after the night-session close."
+  ],
+  "counterevidence": [
+    "The prior cash session had already risen 2.40%, increasing the risk that overnight strength is mostly reflected in the 09:00 opening level rather than in 09:00-15:30 continuation.",
+    "Exact XM JP225Cash 08:00 Bid/Ask and 1h/4h/24h features were unavailable, so A1 is only an exploratory proxy implementation."
+  ],
+  "invalidation_conditions": [
+    "Opening strength is immediately rejected after 09:00 and the index fails to hold around the prior-day high / 70,000 area.",
+    "Public proxy context diverges materially from exact XM JP225Cash once exact data become available."
+  ],
+  "source_refs": [
+    "https://minkabu.jp/news/4629968",
+    "https://nikkeifutures.org/"
+  ],
+  "canonical_sha256": "896dc8c36fd59288043a6d5d5c16077c90650fe9ad7b7b95fe7ebb4534f7a7ec"
+}

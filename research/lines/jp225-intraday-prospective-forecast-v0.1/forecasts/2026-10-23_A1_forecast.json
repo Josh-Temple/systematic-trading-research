@@ -1,0 +1,40 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261023",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261023-late-insufficient-qualified-timely-inputs",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-23T08:00:00+09:00",
+  "issued_at": "2026-10-23T08:05:28.715+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "NO_TIME_QUALIFIED_CURRENT_DATE_MARKET_REPORT_AVAILABLE_AT_0800",
+    "PRIOR_DATE_REPORT_NOT_CURRENT_TRADING_DAY_INPUT",
+    "20261023_OVERNIGHT_SOURCE_PUBLICATION_TIMESTAMP_UNVERIFIED_AND_EXCLUDED",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_DATA_NOT_SUBSTITUTED_FOR_QUALIFIED_XM",
+    "BRANCH_CI_BLOCKED_BY_UNMODIFIED_20261016_INVALID_SHA256"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.5,
+  "forecast_return_bps": 0,
+  "top_drivers": [
+    "No time-qualified Oct 23 exact XM 08:00 JP225Cash Bid/Ask snapshot or required 1h/4h/24h retrospective quotes were available.",
+    "Oct 23 06:00 OSE night futures numbers can be found on a dated blog page but its pre-08:00 publication time and immutable original bytes are not established, so that report is EXCLUDED from the canonical A1 input."
+  ],
+  "counterevidence": [
+    "The Japanese cash opening-gap environment may be materially non-neutral, but its size does not determine the 09:00-15:30 signed change.",
+    "Reporting p_up=0.50 and 0bps is an input-insufficiency neutral fallback, not an empirically calibrated price prediction."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://n225data.blog.fc2.com/?date=20261023",
+    "https://indexes.nikkei.co.jp/nkave/statistics"
+  ],
+  "canonical_sha256": "d22c005f284fbf39b58d0088abd7f735478088f674e4f7a74b62bcf0e502c6dd"
+}

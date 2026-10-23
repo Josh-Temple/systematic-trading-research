@@ -1,0 +1,33 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261006",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-06T22:19:56+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "Qualified exact XM MT5 JP225Cash 09:00/15:30 Bid/Ask outcome data were not available, so no formal outcome or score was computed.",
+    "Official Nikkei 225 public cash-index data for 2026-10-06: 09:00 open 69,954.61; close 70,683.98; high 70,798.62 at 15:17; low 69,813.16 at 09:02.",
+    "The public cash-index proxy implies a 09:00-to-close log return of approximately +103.72 bps and an up outcome."
+  ],
+  "interpretation": [
+    "The public proxy direction is consistent with A1/A2/A3, including the frozen A3 mildly bullish forecast.",
+    "A3 forecast magnitude (+9 bps) materially underpredicted the public cash-index proxy move (+103.72 bps).",
+    "A single exploratory proxy observation does not establish calibration, forecast skill, or a tradable edge."
+  ],
+  "error_attribution": [
+    "The pre-cutoff positive U.S. technology / weak-yen / positive-futures context was directionally consistent with the public proxy outcome.",
+    "The morning profit-taking concern appeared intraday but did not dominate the final session outcome.",
+    "Exact-XM source missingness prevents formal scoring and comparison."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "Public Nikkei 225 observations are diagnostic proxy context only and are not substituted for the required exact XM JP225Cash outcome.",
+    "Nonformal proxy diagnostics are preserved separately in 2026-10-06_PUBLIC_PROXY_REVIEW.md."
+  ]
+}

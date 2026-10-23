@@ -1,0 +1,37 @@
+{
+  "schema_version": "JP225_FORECAST_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261021",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "forecast_system_version": "candidate-v0.1-20261021-late-exploratory",
+  "model_identifier": "GPT-6",
+  "information_cutoff": "2026-10-21T08:00:00+09:00",
+  "issued_at": "2026-10-21T08:20:06.058+09:00",
+  "exact_xm_input_status": "UNAVAILABLE",
+  "protocol_deviations": [
+    "LATE_ISSUANCE_AFTER_0800",
+    "NO_PRE_CUTOFF_PRE_REGISTRATION",
+    "NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT",
+    "PRE_CUTOFF_PUBLISHED_SOURCES_RETRIEVED_POST_CUTOFF",
+    "EXACT_XM_0800_INPUT_UNAVAILABLE",
+    "PUBLIC_NON_XM_PROXY_CONTEXT",
+    "BRANCH_VALIDATOR_BLOCKED_BY_IMMUTABLE_20261016_CORRUPTED_RECORDS"
+  ],
+  "action_status": "NO_TRADE",
+  "system_id": "A1",
+  "p_up": 0.52,
+  "forecast_return_bps": 3,
+  "top_drivers": [
+    "A dated 06:03 JST report states Osaka Dec-2026 Nikkei futures ended the 06:00 JST overnight session at 65,210, +810 vs previous futures settlement.",
+    "The futures quote was 1,134.58 above prior Nikkei 225 cash close 64,075.42, indicating an opening gap, not a qualified post-open predictor."
+  ],
+  "counterevidence": [
+    "Positive futures versus prior cash close is primarily 09:00 opening context. The sign of the 09:00-15:30 move is unknown.",
+    "Exact XM MT5 JP225Cash 08:00 Bid/Ask and pre-cutoff 1h/4h/24h lookbacks are not qualified or acquired; A1 uses public non-XM proxy information only."
+  ],
+  "invalidation_conditions": [],
+  "source_refs": [
+    "https://minkabu.jp/news/4639425"
+  ],
+  "canonical_sha256": "7438da4c7cac58b9961bd00fb41575e4bb8af8293bb280ee138ac78965150559"
+}
