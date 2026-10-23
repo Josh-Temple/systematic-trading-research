@@ -1,0 +1,41 @@
+{
+  "schema_version": "JP225_REVIEW_RECORD_v0.1",
+  "event_id": "XPF-JP225-20261023",
+  "research_line_id": "RL-JP225-PROSPECTIVE-001",
+  "cohort_status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "reviewed_at": "2026-10-23T22:26:42.935+09:00",
+  "exact_xm_outcome_status": "MARKET_OUTCOME_UNAVAILABLE",
+  "start_quote": null,
+  "end_quote": null,
+  "realized_return_bps": null,
+  "y_up": null,
+  "scores": {},
+  "facts": [
+    "Fri Oct 23 2026 was a regular JPX cash trading day; prescribed target is qualified exact XM MT5 JP225Cash Bid/Ask midpoint 09:00→15:30 JST, not prior-cash-close→today's close and not the public Nikkei index.",
+    "Fresh GitHub read found PR #62 OPEN/DRAFT at 8096bca567e4fd86434c0ecafa2ba56b47f8504b; it held A1/A2/A3 Oct 23 original forecast JSON, originally committed at 2026-10-23 08:05:37 JST, before 09:00 but AFTER strict 08:00 information cutoff.",
+    "The original three JSON files each declare issued_at 2026-10-23T08:05:28.715+09:00, p_up=0.50 and forecast_return_bps=0; neutral benchmark B0 also p_up=0.50 and 0bps. Values were frozen at commit and not changed by review.",
+    "There was no Oct 23 pre-08:00 pre-registration or quantitative forecast freeze. Publication before 08:00 of a purported same-day overnight market article could not be independently proven; it was explicitly EXCLUDED. Current-date, timestamp-qualified exact-XM and A2 overnight inputs were unavailable. A1/A2/A3 are missing-input neutral fallback records, not empirically calibrated models.",
+    "Exact qualified XM MT5 JP225Cash 09:00 and 15:30 Bid/Ask tick data were not acquired by owner direction, which is not a logged broker retrieval failure.",
+    "Dated post-close 2026-10-23 articles by Kabutan (16:28), Kyodo (15:35), and Nihon Shoken Shimbun report today's public Nikkei 225 close 62,693.16 and prev-close difference -214.68; Kabutan also prints open 62,667.05, high 62,786.89, low 61,462.61. This public cash-index source and its NONFORMAL open→close log return belong ONLY in 2026-10-23_PUBLIC_PROXY_REVIEW.md.",
+    "At review time official Nikkei Indexes daily OHLC site updated only through Oct 22; dynamic Monex/Investing/Kabutan price-history screens carry mutually inconsistent interim Oct 23 values. These interim screens were EXCLUDED as final close and are not a qualifying source to replace confirmed post-close articles.",
+    "Original 2026-10-16 issued A1/A2/A3 malformed 512-character canonical_sha256 fields persist, versus required 64 hexadecimal characters. The full PR CI fails in the issued-forecast integrity validator; originals and failure receipt are preserved."
+  ],
+  "interpretation": [
+    "With exact XM qualified 09:00/15:30 outcomes missing, no formal direction, formal Brier/MAE, formal intraday log return, hit rate, calibration or tradable-performance inference is available.",
+    "Today's three neutral 0bps forecasts are missing-data fallbacks, not signed direction calls. Any public-index proxy result cannot be used to claim that a neutral prediction correctly forecast UP, DOWN, or a precise 0bps outcome.",
+    "The Oct 23 issuance was after 08:00 and cannot be included in an eventual frozen, scored 60-event prospective sample. Later public index outcome does not justify model source/feature/timing/threshold changes."
+  ],
+  "error_attribution": [
+    "EXACT_XM_SOURCE_NOT_ACQUIRED_OWNER_DEFERRED, not SOURCE_RETRIEVAL_FAILED.",
+    "LATE_ISSUANCE_AFTER_0800; NO_PRE_CUTOFF_PRE_REGISTRATION; NO_PRE_CUTOFF_QUANTITATIVE_SNAPSHOT; NO_TIME_QUALIFIED_CURRENT_DATE_MARKET_INPUTS; PRE0800_SOURCE_PUBLICATION_UNVERIFIED_AND_EXCLUDED.",
+    "PUBLIC_INDEX_SOURCE_PROVIDER_FRESHNESS_GAP: official 2026-10-23 daily OHLC not yet updated at review, independently dated post-close news corroborates close and open; stale intraday financial screens excluded.",
+    "20261016_INVALID_CANONICAL_SHA256_LENGTH causes existing branch CI failure; preserving original evidence must precede independently reviewed remediation."
+  ],
+  "rule_change": "NONE_FROM_SINGLE_DRY_RUN",
+  "notes": [
+    "Research UNTESTED; SPEC PROPOSED_NOT_FROZEN; formal prospective 60-event scored cohort CLOSED; no live/paper broker action, NO_TRADE.",
+    "Keep original issued forecast JSON bytes, SHA values, source receipt and immutable issuance Git commit unchanged.",
+    "Formal start_quote/end_quote/realized_return_bps/y_up null and scores={} even though separately published public Nikkei cash-index index data can be read.",
+    "Review was performed after 15:30 JST using reports explicitly published after market close; these reports were NOT used to produce the morning forecast."
+  ]
+}
