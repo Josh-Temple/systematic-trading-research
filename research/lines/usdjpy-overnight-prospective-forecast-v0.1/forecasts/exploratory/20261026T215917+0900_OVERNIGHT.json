@@ -1,0 +1,81 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261026-215917",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-26T21:59:17+09:00",
+  "issued_at_basis": "Pre-commit local-time witness; final issuance attested by GitHub commit, not claimed to be exact execution millisecond",
+  "information_cutoff": "2026-10-26T21:58:48+09:00",
+  "target_start": "2026-10-26T22:00:00+09:00",
+  "target_end": "2026-10-27T08:00:00+09:00",
+  "nominal_protocol_cutoff": "2026-10-26T22:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_BEFORE_22H; QUALIFIED_REFERENCE_FEED_UNAVAILABLE; SPEC_PROPOSED_NOT_FROZEN; EXCLUDED_FROM_ALL_FORMAL_COHORTS",
+  "model_identity": "GPT-6",
+  "system_identity": "UNFROZEN_DISCRETIONARY_EXPLORATORY_JUDGEMENT_NOT_A1_A2_A3",
+  "p_up": 0.51,
+  "forecast_return_bps": 2,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_UP",
+  "confidence": "LOW",
+  "prediction_values_were_user_visible_before_commit": true,
+  "reference_context": {
+    "instrument": "USDJPY",
+    "source_qualified": false,
+    "2026-10-26T15:00:00+09:00": "Reuters 157.09 bid/157.11 ask",
+    "2026-10-26T19:48:00+09:00": "Diamond 157.38 public reference",
+    "2026-10-26T21:10:00+09:00": "Diamond 157.49 bid/157.50 ask",
+    "intraday_low_20261026": 156.65,
+    "exact_2200_dukas_bid": null,
+    "exact_2200_dukas_ask": null,
+    "exact_0800_dukas_bid": null,
+    "exact_0800_dukas_ask": null
+  },
+  "hypothesis": "Following a rebound from Tokyo intraday 156.65 to 157.49-157.50 around 21:10 JST, mild upside persistence may continue overnight, but imminent central bank decisions constrain directional conviction.",
+  "supports": [
+    "Reuters 15:00 report 157.09/157.11; 21:10 public quote 157.49/157.50 suggests intraday upward momentum",
+    "Fisco 17:18 reports afternoon recovery associated with higher oil prices and US bond yields",
+    "Reuters Oct 26 broad markets notes strengthening USD versus JPY and euro, though without qualified contemporaneous price"
+  ],
+  "counterevidence": [
+    "US 10y rates dipped as low as around 4.96% during Tokyo morning and USDJPY fell to 156.65; downside risk is material",
+    "Federal Reserve, ECB and BOJ policy meetings and market positioning can cause reversals",
+    "Oil prices and Middle East diplomatic headlines have two-sided effects on USDJPY",
+    "At 21:10 the pair was near the daily high 157.50, leaving a potential near-term retracement",
+    "51% and +2bps are subjective and uncalibrated, not evidence of predictive edge"
+  ],
+  "event_risks": [
+    "Multiple central-bank decisions later this week; do not incorporate outcomes released after the information cutoff"
+  ],
+  "source_refs": [
+    {
+      "url": "https://diamond.jp/list/market/chart-detail?=pairUSDJPY",
+      "recorded_quote_local": "2026-10-26T21:10:00+09:00",
+      "bid": 157.49,
+      "ask": 157.5,
+      "nature": "mutable public reference, not qualified Dukascopy"
+    },
+    {
+      "url": "https://www.newsweekjapan.jp/articles/-/338029",
+      "published": "2026-10-26T16:02:00+09:00",
+      "nature": "Reuters prior to cutoff"
+    },
+    {
+      "url": "https://s.kabutan.jp/news/n202610260890/",
+      "published": "2026-10-26T17:18:00+09:00",
+      "nature": "Fisco prior to cutoff"
+    },
+    {
+      "url": "https://www.reuters.com/world/asia-pacific/global-markets-pix-2026-10-26/",
+      "published_date": "2026-10-26",
+      "nature": "Reuters prior to cutoff; publication minute not established"
+    }
+  ],
+  "source_snapshot_limitation": "No byte-archived source snapshots; web quotes are mutable and not qualified source. Do not use for formal realized outcomes.",
+  "no_formal_scoring": true,
+  "formal_outcome_access": "CLOSED",
+  "scored_benchmark_effect": "NONE",
+  "source_gate": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "scientific_spec_status": "PROPOSED_NOT_FROZEN",
+  "broker_action_authorized": false,
+  "integrity_note": "Forecast preserved in GitHub commit. Never overwrite this pre-cutoff record or backfill; append post-endpoint review separately. This is not a trade instruction."
+}
