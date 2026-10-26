@@ -1,0 +1,20 @@
+{
+  "type": "ExploratoryForecastIssuanceTimingAudit",
+  "forecast_id": "XPF-USDJPY-20261026-215917",
+  "related_forecast_path": "research/lines/usdjpy-overnight-prospective-forecast-v0.1/forecasts/exploratory/20261026T215917+0900_OVERNIGHT.json",
+  "forecast_commit": "8b8066deba43adf1b273a5b0711fdd8d388558db",
+  "forecast_blob": "f87cfedbf2ea51c8d7134b81dea16ac47758f7a5",
+  "formal_nominal_cutoff": "2026-10-26T22:00:00+09:00",
+  "user_visible_forecast_values_before_cutoff": {
+    "p_up": 0.51,
+    "forecast_return_bps": 2,
+    "estimated_presented_by": "2026-10-26T21:59:17+09:00",
+    "evidence_nature": "User-visible chat message; exact UI publication timestamp cannot be independently established by GitHub."
+  },
+  "github_commit_timestamp_utc": "2026-10-26T13:00:04Z",
+  "github_commit_timestamp_jst": "2026-10-26T22:00:04+09:00",
+  "github_commit_after_cutoff_seconds": 4,
+  "disposition": "LATE_GITHUB_PERSISTENCE; PRE_CUTOFF_CHAT_FORECAST_NOT_FULLY_GITHUB_PERSISTED_BY_DEADLINE; EXPLORATORY_ONLY; FORMAL_COHORT_EXCLUDED",
+  "integrity": "Do not modify, move, or backdate original forecast. This audit is a separate append-only disclosure of GitHub commit timestamp. No market outcomes were accessed to prepare this audit.",
+  "notes": "The forecast's issued_at field is a pre-commit local-time witness, not proof of GitHub commitment by that time. Commit timestamp is controlling for GitHub persistence. Treat GitHub issuance gate as missed; do not pretend pre-cutoff repository capture."
+}
