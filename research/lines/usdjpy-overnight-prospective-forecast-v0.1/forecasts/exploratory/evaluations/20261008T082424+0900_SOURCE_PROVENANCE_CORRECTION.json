@@ -1,0 +1,32 @@
+{
+  "schema_version": "EXPLORATORY_EVALUATION_CORRECTION_v0.1",
+  "correction_id": "XEV-CORRECTION-USDJPY-20261008-082424",
+  "corrects_evaluation_id": "XEV-USDJPY-20261007-214634",
+  "recorded_at": "2026-10-08T08:24:24+09:00",
+  "reason": "Source retrieval consistency check after append-only evaluation creation",
+  "correction_type": "RETRACT_UNVERIFIABLE_AUXILIARY_SOURCE",
+  "retracted_evidence": {
+    "location": "public_timestamped_evidence.near_end[0]",
+    "source": "Click365 market board https://sunward-t.jfx.jiji.com/market/fx/",
+    "original_claim": "2026-10-08 05:27 last exchange-traded USDJPY quote 158.075",
+    "issue": "The search snapshot showed an Oct 8 live board, while subsequently opening the same URL resolved a cached Jul 9 board. The URL does not preserve a stable historical Oct 8 observation. It is in any event an exchange-traded instrument, not the candidate spot reference feed.",
+    "use_for_evaluation": "EXCLUDED_FROM_ALL_DIRECTION_RETURN_AND_SCORE_INFERENCE"
+  },
+  "remaining_valid_public_evidence": [
+    {
+      "source": "Minkabu FX report timestamped 2026-10-07 21:50, spot context at 21:26: 158.28",
+      "url": "https://fx.minkabu.jp/news/381026"
+    },
+    {
+      "source": "Minkabu report timestamped 2026-10-08 07:28, about 158.00",
+      "url": "https://minkabu.jp/news/4631577"
+    }
+  ],
+  "status_after_correction": "INDICATIVE_DIRECTIONAL_MISS_FORMAL_SCORE_UNAVAILABLE",
+  "status_qualification": "LIKELY_NOT_CONFIRMED_AT_EXACT_ENDPOINT",
+  "formal_realized_return": "NOT_AVAILABLE",
+  "formal_brier": "NOT_AVAILABLE",
+  "scientific_effect": "NONE_NOT_IN_COHORT",
+  "historical_evaluation_mutated": false,
+  "forecast_mutated": false
+}

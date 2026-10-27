@@ -1,0 +1,118 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261006T221800+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-06T22:18:00+09:00",
+  "retrieved_at": "2026-10-06T22:18:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-06T22:18:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "USDJPY reached 158.24 during Ueda's speech at 15:44. BOJ 17:00 reference was 158.10-158.13; Yahoo Finance showed 158.07 at 20:30. Exact qualified 22:18 Bid/Ask unavailable."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_EXACT_22:18",
+    "us_10y": "Tuesday trading showed yields easing from recent highs; exact 22:18 yield not bound",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "10-year auction average yield 3.101%; post-auction secondary close not bound"
+  },
+  "policy_state": {
+    "fed": "October hold remains favored. Williams' 22:05 JST event is a moderation role with no prepared monetary-policy text expected.",
+    "boj": "Ueda reiterated that policy rates would continue to be raised if the outlook is realized and emphasized inflation anchoring and upside risks, but did not signal an October hike specifically.",
+    "japan_fx_authorities": "Intervention sensitivity remains relevant; no new intervention action captured."
+  },
+  "macro_news_facts": [
+    "Ueda reiterated conditional further rate hikes and emphasized keeping inflation anchored around 2%.",
+    "USDJPY rose to 158.24 during the Ueda speech, so the remarks were not interpreted as a strong new hawkish surprise.",
+    "BOJ 17:00 reference was 158.10-158.13; Yahoo Finance showed 158.07 at 20:30.",
+    "U.S. August trade deficit widened 13.7% to $105.6bn versus $102.0bn expected.",
+    "Brent fell to about $98.62 and WTI to about $87.60 as supply concerns eased.",
+    "Official New York Fed schedule says Williams' 09:05 ET event is a moderated discussion and text is not expected."
+  ],
+  "scheduled_events_known": [
+    "2026-10-06 23:45 JST: Fed Vice Chair Bowman speech.",
+    "2026-10-07 14:00 ET: FOMC minutes."
+  ],
+  "source_refs": [
+    {
+      "source": "BOJ Ueda speech page",
+      "url": "https://www.boj.or.jp/about/press/koen_2026/ko261006a.htm",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    },
+    {
+      "source": "Reuters Ueda analysis",
+      "url": "https://www.reuters.com/world/asia-pacific/boj-chief-calls-more-focus-anchoring-inflation-around-target-2026-10-06/",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    },
+    {
+      "source": "Minkabu Ueda FX reaction",
+      "url": "https://fx.minkabu.jp/news/380858",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    },
+    {
+      "source": "Minkabu BOJ 17:00 FX reference",
+      "url": "https://minkabu.jp/news/4630591",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    },
+    {
+      "source": "Yahoo Finance USDJPY 20:30",
+      "url": "https://finance.yahoo.co.jp/quote/USDJPY%3DX/history",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    },
+    {
+      "source": "Reuters U.S. trade balance",
+      "url": "https://www.reuters.com/business/us-trade-deficit-widens-august-amid-strong-imports-2026-10-06/",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    },
+    {
+      "source": "Reuters oil",
+      "url": "https://www.reuters.com/business/energy/oil-prices-slip-traders-weigh-strong-mideast-exports-against-gulf-tensions-2026-10-06/",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    },
+    {
+      "source": "New York Fed Williams schedule",
+      "url": "https://www.newyorkfed.org/press",
+      "retrieved_at": "2026-10-06T22:18:00+09:00"
+    }
+  ],
+  "facts": [
+    "Ueda maintained a conditional tightening bias but did not provide a specific October hike signal.",
+    "USDJPY did not fall on Ueda's speech; it briefly rose to 158.24 and later traded around 158.07 by 20:30.",
+    "The U.S. trade deficit was wider than expected.",
+    "Oil and Treasury yields were lower than the prior day's stress levels.",
+    "The 22:00 overnight forecast cutoff passed without an on-time prospective forecast being issued."
+  ],
+  "interpretations": [
+    "Ueda's policy direction is medium-horizon yen-supportive, but the immediate market reaction shows the speech was not a new hawkish surprise.",
+    "Lower oil and softer U.S. yields modestly support JPY, while USDJPY resilience around 158 shows rate/dollar support remains meaningful.",
+    "Current state is balanced with a mild downside tilt for USDJPY.",
+    "Post-cutoff information must not be used to fabricate a 22:00 forecast.",
+    "The missed cutoff is an operational negative result and should be preserved explicitly."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: after the 16:01 state, Ueda's full message remained conditionally hawkish but USDJPY held firm; later oil and U.S. yields softened, the U.S. trade deficit widened, and the 22:00 forecast cutoff passed without an on-time forecast.",
+  "base_case": "CURRENT_STATE_ONLY=NEUTRAL_TO_SLIGHT_USDJPY_DOWN; no retrospective overnight forecast is authorized for the 2026-10-06 22:00 cutoff.",
+  "alternative_case": "USDJPY_UP if U.S. yields re-accelerate and the market continues to discount near-term BOJ tightening.",
+  "invalidation_conditions": [
+    "NOT_APPLICABLE_TO_MISSED_FORECAST_CUTOFF"
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "23:45 JST Fed Bowman communication.",
+    "Overnight U.S. yield reaction.",
+    "Tomorrow morning 08:00 should be journal-only for this missed forecast event, not scored as if a forecast existed.",
+    "Prepare next eligible prospective forecast on time at the next Monday-Thursday 22:00 cutoff."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "523c94c107657b165a1cc361fc4661e747937ae2ba828522ac7b6b55794d897f"
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261022-215538",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-22T21:55:38+09:00",
+  "information_cutoff": "2026-10-22T21:54:56+09:00",
+  "nominal_protocol_cutoff": "2026-10-22T22:00:00+09:00",
+  "target_start": "2026-10-22T22:00:00+09:00",
+  "target_end": "2026-10-23T08:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_4M22S; ORIGINAL_22H_MIDPOINT_UNKNOWN; QUALIFIED_SOURCE_GATE_BLOCKED; HUMAN_SPEC_PROPOSED_NOT_FROZEN; EXCLUDED_FROM_ALL_FORMAL_COHORTS",
+  "system_identity": "UNFROZEN_DISCRETIONARY_EXPLORATORY_RESEARCHER_JUDGMENT_NOT_A1_A2_A3",
+  "model_identity": "GPT-6",
+  "p_up": 0.52,
+  "forecast_return_bps": 4,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_UP",
+  "confidence": "LOW",
+  "information_cutoff_basis": "Time confirmed by local time tool prior to authoring user-visible forecast, which displayed p_up 0.52 and +4 bps before this write. All market information in this record retrieved before that timestamp.",
+  "price_reference_context": {
+    "instrument": "USDJPY_PUBLIC_NONCANONICAL_QUOTES",
+    "2026-10-22T10:05:00+09:00": 158.17,
+    "2026-10-22T12:21:00+09:00": "intraday low 157.67 up to 12:21 JST",
+    "2026-10-22T16:11:00+09:00": 156.94,
+    "2026-10-22T21:54:56+09:00": "approx 156.8 cited by Reuters in current Oct 22 report, exact quote and observation time UNVERIFIED",
+    "exact_bid_at_issue": null,
+    "exact_ask_at_issue": null,
+    "qualified_220000_mid": null,
+    "reference_feed_qualified": false
+  },
+  "hypothesis": "A sharp same-day USDJPY drop near 0.9% may be followed by a mild overnight mean-reversion bounce; the expected rise is small and speculative.",
+  "pre_cutoff_evidence": [
+    "Fisco 10:05 JST reported 158.17 after earlier high of 158.25.",
+    "Fisco 12:21 JST reported drop to 157.67 as US Treasury yields declined, a strong yen/macro impulse.",
+    "Exchange-traded Click 365 USDJPY last trade at 16:11 JST was 156.940, more than 1 yen below the day's open.",
+    "Reuters Oct 22 coverage reported yen up about 0.9%, USDJPY near 156.8, amid safe-haven demand, declining Treasury yields and reduced Fed tightening bets.",
+    "October 22 US jobless claims at 21:30 JST: realized result NOT VERIFIED and NOT used.",
+    "US leading indicators scheduled for 23:00 JST (after forecast issuance, within target).",
+    "Japan September CPI scheduled for October 23 at 08:30 JST (AFTER the target ends)."
+  ],
+  "mechanisms_supporting_upside": [
+    "Potential mild mean-reversion after the unusually rapid intraday fall, without making it a validated signal.",
+    "BOJ rate-hold expectations for the October policy meeting could limit further JPY appreciation.",
+    "In high risk-off markets dollar safe-haven demand can recover even if JPY had dominated earlier; this is uncertain."
+  ],
+  "counterevidence_and_risks": [
+    "Safe-haven JPY strength may persist into New York trading due to global risk aversion and unstable equity prices.",
+    "Lower US Treasury yields and fewer priced-in US hikes could sustain USD selling.",
+    "The strong intraday momentum and event-driven flow undermine any simple mean-reversion assumption.",
+    "No verified contemporaneous qualified reference bid/ask, and no measured calibration or historical skill; the edge cannot be inferred from the 52% subjective number.",
+    "No observed release result for the 21:30 US jobless claims, so unexpected news and/or price jumps may invalidate discretionary judgement."
+  ],
+  "scenarios": {
+    "base": "Near-neutral with a slight upward USDJPY drift from the unknown 22:00 reference midpoint to 08:00 after an unusually large sell-off.",
+    "upside": "Short covering/bond yield rebound increases USDJPY by more than the modest base-case point prediction.",
+    "downside": "Risk-off yen demand and further US Treasury-yield declines sustain USDJPY downtrend; directional forecast misses."
+  },
+  "data_lineage": [
+    {
+      "source": "Fisco 10:05 JST Tokyo FX, Oct 22",
+      "url": "https://kabuyoho.ifis.co.jp/index.php?action=tp1&nid=0009340020261022020&sa=fisco_news",
+      "nature": "pre-issuance public report"
+    },
+    {
+      "source": "Fisco 12:21 JST Tokyo FX, Oct 22",
+      "url": "https://kabuyoho.ifis.co.jp/index.php?action=tp1&nid=0009340020261022023&sa=fisco_news",
+      "nature": "pre-issuance public report"
+    },
+    {
+      "source": "Click 365 exchange FX displayed 16:11 JST quote",
+      "url": "https://sunward-t.jfx.jiji.com/market/fx/",
+      "nature": "mutable market table; snapshot retrieved by search and not independently archived"
+    },
+    {
+      "source": "Reuters Oct 22 Yen rally safe haven",
+      "url": "https://www.reuters.com/world/asia-pacific/dip-dollar-takes-breather-with-fed-focus-2026-10-22/",
+      "nature": "public financial journalism, exact intraday quote time unverified"
+    },
+    {
+      "source": "Oct 22 FX economic calendar",
+      "url": "https://www.fxcomp-plus.com/parts/marketCalendarToDayWindow.jsp",
+      "nature": "scheduled releases, pre-issuance"
+    },
+    {
+      "source": "OANDA economic calendar October 22 and October 23",
+      "url": "https://www.oanda.jp/lab-education/calendar/",
+      "nature": "schedule, mutable"
+    }
+  ],
+  "source_snapshot_limitation": "Quotes from different sources are not contemporaneous; some sites are mutable; raw page bytes and timestamped qualified ticks are NOT archived. A search result for Click 365 was as of Oct 22 16:11 JST, but opening that dynamic page displayed stale July data; therefore quote comes from search snapshot only. Reuters coverage was retrieved before forecast, but exact publication time and quote time unverified.",
+  "post_cutoff_data_allowed": false,
+  "scored_benchmark_effect": "NONE",
+  "source_gate": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "scientific_spec_status": "PROPOSED_NOT_FROZEN",
+  "formal_outcome_access": "CLOSED",
+  "broker_action_authorized": false,
+  "integrity_note": "Do not backfill or overwrite this forecast. Preserve commit/blob SHA. Use a separate append-only nonprotocol review after the target end if public observations become available."
+}

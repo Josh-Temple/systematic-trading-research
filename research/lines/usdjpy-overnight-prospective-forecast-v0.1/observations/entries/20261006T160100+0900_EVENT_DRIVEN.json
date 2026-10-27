@@ -1,0 +1,83 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261006T160100+0900-EVENT_DRIVEN",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-06T16:01:00+09:00",
+  "retrieved_at": "2026-10-06T16:01:00+09:00",
+  "checkpoint_type": "EVENT_DRIVEN",
+  "source_cutoff": "2026-10-06T16:01:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "PUBLIC_TIMESTAMPED_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Before Ueda speech, USDJPY was 158.07 at 15:00 JST after reaching 158.22. Another public market source showed 158.09 at 14:58. No sufficiently reliable post-15:35 timestamped USDJPY quote was captured by 16:01, so the immediate speech reaction remains UNKNOWN."
+  },
+  "rates_state": {
+    "us_2y": "4.816% at prior New York close; current intraday exact value not bound",
+    "us_10y": "rose into the 5.32% area before the Ueda speech according to 15:00 market reporting",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "10-year auction average yield 3.101%; secondary-market post-speech yield reaction not reliably bound"
+  },
+  "policy_state": {
+    "fed": "High U.S. long yields continue to support USD despite reduced near-term hike expectations.",
+    "boj": "At 15:38-15:39 JST, Ueda said Japan's economy is recovering gradually despite some weak spots and that Tankan business sentiment is favorable. No explicit new acceleration of the rate-hike timetable was captured in retrieved remarks by 16:01.",
+    "japan_fx_authorities": "Intervention sensitivity remains relevant near the 158-159 area.",
+    "japan_fiscal": "A solid 10-year JGB auction earlier today reduced immediate disorderly bond-demand concerns."
+  },
+  "macro_news_facts": [
+    "USDJPY rose from around 158.00 at 12:00 to 158.22 intraday and was 158.07 at 15:00 before Ueda's speech.",
+    "Ueda's retrieved 15:38-15:39 remarks said the economy is recovering gradually and Tankan business sentiment is favorable.",
+    "A same-day Reuters sources report said the BOJ may soon signal underlying inflation has reached the 2% target, consistent with readiness for another rate increase, but this was background reporting and not the captured speech text.",
+    "No reliable post-speech USDJPY or JGB secondary-market reaction was captured by 16:01."
+  ],
+  "scheduled_events_known": [
+    "2026-10-06 21:30 JST: U.S. August trade balance.",
+    "2026-10-06 22:05 JST: New York Fed President Williams discussion.",
+    "2026-10-06 23:45-23:46 JST: Fed speakers including Bowman.",
+    "2026-10-07 02:00 JST: U.S. 3-year Treasury auction.",
+    "2026-10-07 02:15 JST: Kansas City Fed President Schmid discussion."
+  ],
+  "source_refs": [
+    "TradersWebFX 2026-10-06 15:08 Tokyo FX summary: USDJPY 158.07 at 15:00, high 158.22",
+    "Minkabu 2026-10-06 15:38: Ueda said economy recovering gradually",
+    "Minkabu 2026-10-06 15:39: Ueda said Tankan business sentiment favorable",
+    "Reuters 2026-10-06: BOJ may signal underlying inflation has reached 2% target, sources say",
+    "BOJ official schedule: Ueda speech at 15:35 JST"
+  ],
+  "facts": [
+    "USDJPY strengthened into the Ueda event compared with the 12:12 observation.",
+    "The first retrieved Ueda remarks were economically constructive but did not contain a newly captured explicit rate-hike timing signal.",
+    "The immediate post-speech FX and JGB reactions remain unbound."
+  ],
+  "interpretations": [
+    "The earlier NEUTRAL_TO_SLIGHT_USDJPY_DOWN intraday bias weakened because USDJPY rose to 158.22 before the speech.",
+    "The captured Ueda remarks are not sufficient to classify the speech as materially hawkish or dovish.",
+    "The correct current stance is neutral pending a reliable post-speech market reaction and fuller policy wording.",
+    "For tonight's forecast, the tension remains high U.S. yields/dollar strength versus BOJ normalization/intervention risk."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: USDJPY strengthened from the upper-157s to as high as 158.22 ahead of Ueda's speech. Initial speech snippets were constructive on the economy but did not yet provide a captured explicit acceleration in tightening. Immediate post-speech reaction remains UNKNOWN.",
+  "base_case": "NEUTRAL_PENDING_UEDA_REACTION: do not infer a fresh directional edge until post-speech FX/JGB reaction and fuller policy language are captured.",
+  "alternative_case": "USDJPY_UP if the speech is ultimately interpreted as cautious on additional hikes and U.S. yields remain high; USDJPY_DOWN if fuller remarks strengthen near-term BOJ tightening expectations.",
+  "invalidation_conditions": [
+    "Sustained move above 158.22-158.30 with no stronger BOJ tightening signal.",
+    "Sustained move below 157.77 with a rise in JGB yields and stronger tightening expectations."
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "Obtain fuller Ueda speech text from BOJ or reliable timestamped source.",
+    "Capture post-speech USDJPY quote.",
+    "Capture post-speech 10-year JGB secondary-market yield.",
+    "Reassess before 21:30 PRE_FORECAST_STATE / tonight's overnight forecast."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "40784877d5c327460e92a02baeaafa6d156a43ae754156ca9bee701ab7748745"
+}
