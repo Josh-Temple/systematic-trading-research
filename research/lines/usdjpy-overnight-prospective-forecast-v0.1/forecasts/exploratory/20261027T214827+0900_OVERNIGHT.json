@@ -1,0 +1,132 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261027-214827",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-27T21:48:27+09:00",
+  "issuance_time_basis": "Local-time witness immediately before GitHub write; GitHub commit time to be verified independently after write",
+  "information_cutoff": "2026-10-27T21:47:43+09:00",
+  "nominal_protocol_cutoff": "2026-10-27T22:00:00+09:00",
+  "target_start": "2026-10-27T22:00:00+09:00",
+  "target_end": "2026-10-28T08:00:00+09:00",
+  "protocol_deviation": "PRE_CUTOFF_EXPLORATORY_ISSUANCE; SOURCE_FEED_NOT_QUALIFIED; SPEC_NOT_FROZEN; NO_FORMAL_COHORT_ELIGIBILITY",
+  "system_identity": "UNFROZEN_DISCRETIONARY_EXPLORATORY_RESEARCHER_JUDGMENT_NOT_A1_A2_A3",
+  "model_identity": "GPT-6",
+  "p_up": 0.51,
+  "forecast_return_bps": 2,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_UP",
+  "confidence": "LOW",
+  "prediction_values_user_visible_before_git_commit": true,
+  "pre_cutoff_quote_context": {
+    "instrument": "USDJPY",
+    "reference_status": "PUBLIC_PRICE_REPORTS_ONLY; NOT_DUKASCOPY_QUALIFIED",
+    "latest_exactly_timed_quote_at_issue": null,
+    "quote_at_20261027T0800_jst": 157.49,
+    "quote_at_20261027T1000_jst": 157.63,
+    "quote_at_20261027T1200_jst": 157.7,
+    "intraday_high_to_noon": 157.76,
+    "reuters_quoted_price_during_20261027": "157.73 reported without a precise quote timestamp; do not present as live 21:48 price",
+    "at_target_start_2200_qualified_best_bid": null,
+    "at_target_start_2200_qualified_best_ask": null,
+    "at_target_end_0800_qualified_best_bid": null,
+    "at_target_end_0800_qualified_best_ask": null
+  },
+  "hypothesis": "Small overnight USDJPY positive drift may persist as equity-market calm, recent broad USD firmness and pre-FOMC positioning offset Japanese rate-hike expectations and USDJPY resistance around 158.00. Confidence is low; no validated edge.",
+  "supporting_evidence": [
+    "DZH/TradersWeb morning report showed 08:00 USDJPY 157.49; 10:00 157.63 and midday 157.70 with an intraday high 157.76.",
+    "Reuters October 27 coverage said the dollar firmed against yen, euro and sterling amid steadier equities, with USDJPY around 157.73 at an unspecified report observation time.",
+    "FOMC Oct 27–28, ECB and BOJ decision week supports constrained positioning before results; no central bank outcomes observed before information cutoff."
+  ],
+  "counterevidence": [
+    "USDJPY gains lost momentum after midday high 157.76; US 10-year yields eased from roughly 4.99% to 4.97% in late morning.",
+    "BOJ future rate hike expectations and Japanese intervention sensitivity may promote yen strength.",
+    "157.9–158.2 area may cap upside; technical resistance is commentary, not validated.",
+    "US September durable goods report scheduled at 21:30 JST was not verified at issuance; released outcomes are not incorporated.",
+    "US consumer confidence and new home sales due 23:00 JST and 5-year auction due Oct 28 02:00 JST might reverse direction.",
+    "Unqualified endpoints and lack of trained/calibrated forecast system make 51% and +2bps subjective, not evidence of predictive power."
+  ],
+  "known_scheduled_catalysts": [
+    {
+      "at": "2026-10-27T21:30:00+09:00",
+      "event": "US September durable goods orders",
+      "realized": "NOT_VERIFIED_OR_USED",
+      "period_relation": "before forecast nominal start but unavailable to the forecaster"
+    },
+    {
+      "at": "2026-10-27T22:00:00+09:00",
+      "event": "US FHFA home price index and Case-Shiller prices",
+      "realized": "NOT_AVAILABLE_AT_CUTOFF",
+      "period_relation": "at forecast start"
+    },
+    {
+      "at": "2026-10-27T23:00:00+09:00",
+      "event": "US Conference Board consumer confidence, new-home sales, Richmond Fed manufacturing",
+      "realized": "NOT_AVAILABLE_AT_CUTOFF",
+      "period_relation": "within overnight target"
+    },
+    {
+      "at": "2026-10-28T02:00:00+09:00",
+      "event": "US 5y Treasury auction",
+      "realized": "NOT_AVAILABLE_AT_CUTOFF",
+      "period_relation": "within overnight target"
+    },
+    {
+      "at": "2026-10-29T03:00:00+09:00",
+      "event": "Expected Fed October policy decision",
+      "realized": "NOT_AVAILABLE_AT_CUTOFF",
+      "period_relation": "after overnight target; dates from public calendar"
+    }
+  ],
+  "scenario_map": {
+    "base": "Near-flat with a tiny upward USDJPY bias to the next 08:00 JST based on broad dollar support and relatively calmer equities.",
+    "upside": "US data surprise and/or Treasury auction yield increase boosts USDJPY more than +2bps.",
+    "downside": "Lower US yields, yen support from BOJ expectations, equity risk-off or intervention commentary push USDJPY negative; base directional call misses."
+  },
+  "source_refs": [
+    {
+      "title": "DZH/TradersWeb Oct 27 Tokyo FX 08:00",
+      "url": "https://www.traderswebfx.jp/news/article/1217351",
+      "observed_at": "2026-10-27T08:00:00+09:00",
+      "nature": "public market commentary"
+    },
+    {
+      "title": "OANDA/DZH Oct 27 Tokyo FX 10:00",
+      "url": "https://www.oanda.jp/lab-education/market_news/mn_1040752_202610271003/",
+      "observed_at": "2026-10-27T10:00:00+09:00",
+      "nature": "public market commentary"
+    },
+    {
+      "title": "OANDA/DZH Oct 27 Tokyo FX 12:00",
+      "url": "https://www.oanda.jp/lab-education/market_news/mn_1040769_202610271219/",
+      "observed_at": "2026-10-27T12:00:00+09:00",
+      "nature": "public market commentary"
+    },
+    {
+      "title": "Reuters October 27 dollar and central bank decisions",
+      "url": "https://www.reuters.com/world/asia-pacific/yen-slips-ahead-central-bank-bonanza-dollar-firms-tech-rebound-2026-10-27/",
+      "observed_at": "2026-10-27 (minute unspecified)",
+      "nature": "public Reuters report published before cutoff, timestamp not granular"
+    },
+    {
+      "title": "Gaitame Oct 27 evening market outlook",
+      "url": "https://www.gaitame.com/media/entry/2026/10/27/164105",
+      "published_at": "2026-10-27T16:41:05+09:00",
+      "nature": "analyst outlook, pre-cutoff"
+    },
+    {
+      "title": "DZH Oct 27 scheduled economic events",
+      "url": "https://www.traderswebfx.jp/news/article/1217187",
+      "published_at": "2026-10-27T06:15:00+09:00",
+      "nature": "published economic event schedule"
+    }
+  ],
+  "source_snapshot_limitations": "Public articles and quote pages are mutable, raw source bytes not archived. Quote timestamps and providers differ, making cross-provider historical returns invalid. Reuters quote of 157.73 cannot be used as a contemporaneous 21:48 or 22:00 reference.",
+  "formal_outcome_access": "CLOSED",
+  "source_gate": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "scientific_spec_status": "PROPOSED_NOT_FROZEN",
+  "scored_benchmark_effect": "NONE",
+  "broker_action_authorized": false,
+  "post_cutoff_data_used": false,
+  "integrity_note": "Do not overwrite or backdate this forecast. GitHub commit time controls repository persistence. Maintain separate append-only timing audit if late and separate outcome-blind/source-qualified post-endpoint review."
+}
