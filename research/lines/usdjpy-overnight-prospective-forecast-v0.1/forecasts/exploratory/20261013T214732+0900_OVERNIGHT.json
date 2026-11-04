@@ -1,0 +1,98 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261013-214732",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-13T21:47:32+09:00",
+  "information_cutoff": "2026-10-13T21:47:03+09:00",
+  "information_cutoff_basis": "All relevant web and GitHub evidence retrieved no later than 21:47:03 JST; the figures p_up=0.47 and forecast_return_bps=-4 were displayed to the user prior to GitHub writing.",
+  "nominal_protocol_cutoff": "2026-10-13T22:00:00+09:00",
+  "target_start": "2026-10-13T22:00:00+09:00",
+  "target_end": "2026-10-14T08:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_12M28S; SOURCE_GATE_BLOCKED; SCIENTIFIC_SPEC_PROPOSED_NOT_FROZEN; NOT_ELIGIBLE_FOR_FROZEN_BENCHMARK",
+  "system_identity": "UNFROZEN_EXPLORATORY_RESEARCHER_JUDGMENT_NOT_A1_A2_A3",
+  "model_identity": "GPT-6",
+  "p_up": 0.47,
+  "forecast_return_bps": -4,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_DOWN",
+  "confidence": "LOW",
+  "price_reference_context": {
+    "reference_instrument": "USDJPY_PUBLIC_NONCANONICAL_SPOT_COMMENTARY",
+    "prior_ny_close": "158.61-158.66 from Reuters afternoon report",
+    "observed_20261013_1500_jst": "158.23-158.25 Reuters",
+    "intraday_london_low": "around 157.83 Minkabu 20:00 report",
+    "observed_20261013_2000_jst": "early 158-yen area, not an exact bid/ask",
+    "exact_214703_bid": "UNKNOWN",
+    "exact_214703_ask": "UNKNOWN",
+    "exact_220000_mid": "UNKNOWN",
+    "qualified_dukas_bid_ask": "NOT_AVAILABLE"
+  },
+  "top_drivers": [
+    "USDJPY weakened from Reuters 09:00 quote 158.53/54 to 15:00 quote 158.23/25, with the London session reporting around 157.83 low before a rebound to the low 158-yen area by 20:00 JST.",
+    "Oil retreat, softer U.S. long-term Treasury yields and reduced geopolitical risk premium weakened broad USD on October 13.",
+    "U.S. Treasury 10-year yield fell to roughly 5.18% during Tokyo trading; relatively softer rate support offsets any bounce.",
+    "With the U.S. CPI due October 14 at 21:30 JST (after the 08:00 end), uncertainty and pre-release position management reduce confidence."
+  ],
+  "counterevidence": [
+    "Reported expectation that BOJ may leave rates unchanged in the upcoming October meeting triggered intraday yen-selling and could support USDJPY.",
+    "USDJPY returned to the low-158 area after the London low around 157.83, so a mean-reversion upside outcome remains plausible.",
+    "Reported customer order clusters included buys in 157.80/158.00/158.10 and sells above 158.40, creating possible range behavior; broker orders are not a complete market order book.",
+    "No verified live reference USDJPY best Bid/Ask at issuance or prospective 22:00 starting midpoint; 47% is not a calibrated forecast probability."
+  ],
+  "scheduled_catalysts_known_pre_cutoff": [
+    "U.S. September CPI is scheduled for October 14 at 08:30 ET = October 14 21:30 JST, which occurs AFTER this forecast's 08:00 end.",
+    "Federal Reserve October 2026 official calendar lists October 14 Beige Book at 14:00 ET, also AFTER this forecast end.",
+    "U.S. existing-home-sales report scheduled for October 13 at 10:00 ET = 23:00 JST, within this overnight interval; outcome not yet known at cutoff."
+  ],
+  "scenario_map": {
+    "base": "Near-range-bound/slightly lower USDJPY by the 08:00 JST target due to fading oil/yield-linked dollar demand.",
+    "upside": "BOJ rate-hold expectations and dollar short-covering carry USDJPY higher; this would be a directional miss for the slight-down forecast.",
+    "downside": "Renewed Treasury-yield decline or stronger yen demand extends the day's USDJPY downside."
+  },
+  "source_refs": [
+    {
+      "source": "Reuters October 13 Tokyo 15:00 USDJPY reporting via Newsweek Japan",
+      "url": "https://www.newsweekjapan.jp/articles/-/336732",
+      "published_at": "2026-10-13T15:21:00+09:00",
+      "source_observed_at": "2026-10-13T15:00:00+09:00"
+    },
+    {
+      "source": "MinKabu London FX session overview",
+      "url": "https://fx.minkabu.jp/news/381431",
+      "published_at": "2026-10-13T20:00:00+09:00"
+    },
+    {
+      "source": "Fisco London USDJPY early rebound",
+      "url": "https://jp.investing.com/news/forex-news/article-1709617",
+      "published_at": "2026-10-13T18:39:00+09:00"
+    },
+    {
+      "source": "Gaitame.com order information",
+      "url": "https://www.gaitame.com/media/entry/2026/10/13/171410",
+      "published_at": "2026-10-13T17:00:00+09:00"
+    },
+    {
+      "source": "Reuters October 13 dollar, oil and geopolitical report",
+      "url": "https://www.reuters.com/world/africa/dollar-holds-near-18-month-high-geopolitical-risks-rise-2026-10-13/",
+      "published_date": "2026-10-13"
+    },
+    {
+      "source": "NY Fed October 2026 economic release calendar",
+      "url": "https://www.newyorkfed.org/research/calendars/i-oct26.html"
+    },
+    {
+      "source": "Fed October 2026 calendar",
+      "url": "https://www.federalreserve.gov/newsevents/2026-october.htm"
+    }
+  ],
+  "source_snapshot_limitation": "News sources are mutable and no independent raw byte archives were captured. Prices are noncanonical and not exact endpoint bid/ask ticks.",
+  "journal_state_id": "NOT_AVAILABLE_FOR_OCT13_PRE_FORECAST",
+  "post_cutoff_data_allowed": false,
+  "scored_benchmark_effect": "NONE",
+  "source_gate": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "scientific_spec_status": "PROPOSED_NOT_FROZEN",
+  "formal_outcome_access": "CLOSED",
+  "broker_action_authorized": false,
+  "integrity_note": "Append-only forecast; original blob and commit must not be modified. Any evaluation must be stored as a separate artifact, not part of a formally scored cohort."
+}

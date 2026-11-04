@@ -1,0 +1,126 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261007T214100+0900-PRE_FORECAST_STATE",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-07T21:41:00+09:00",
+  "retrieved_at": "2026-10-07T21:41:00+09:00",
+  "checkpoint_type": "PRE_FORECAST_STATE",
+  "source_cutoff": "2026-10-07T21:41:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "MULTI_SOURCE_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "BOJ official 17:00 spot reference was 158.10-158.11 after a daily range of 158.04-158.51. Fisco reported an afternoon fall to 157.95. Investing showed 158.37 at 20:20:21 JST. Exact qualified 21:41 Bid/Ask unavailable."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_EXACT_21:41",
+    "us_10y": "about 5.325% in current U.S. market reporting; long-end yields rose sharply ahead of FOMC minutes",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "about 3.122% on noncanonical current market page, above Oct 6 close 3.093%"
+  },
+  "policy_state": {
+    "fed": "September 15-16 FOMC minutes due 2026-10-08 03:00 JST. October hike probability remains lower after soft jobs data, but December tightening remains priced as a material possibility.",
+    "boj": "Conditional tightening guidance remains intact, but the market has not materially repriced an imminent hike after Ueda's October 6 remarks.",
+    "japan_fx_authorities": "Intervention sensitivity remains elevated as USDJPY trades in the upper-158 area."
+  },
+  "macro_news_facts": [
+    "USDJPY reached 158.50-158.51 during Tokyo trading, then fell to around 157.95, and later recovered to 158.37 by 20:20 JST.",
+    "BOJ official 17:00 reference was 158.10-158.11; the official daily range was 158.04-158.51.",
+    "Japan August coincident index fell to 118.7 from 120.6 while the leading index rose to 118.0 from 117.6, a mixed domestic activity signal.",
+    "BOJ published the October 7 Consumption Activity Index update, but no exact value is bound in this entry.",
+    "U.S. 10-year yields rose to about 5.325% and the 30-year yield reached a fresh multi-decade high around 5.70%, increasing dollar-rate support.",
+    "Brent crude rose back above $100, around $101.5 in Reuters reporting, restoring some yen-negative terms-of-trade pressure.",
+    "Reuters reported the dollar index rising and the yen weakening ahead of the FOMC minutes."
+  ],
+  "scheduled_events_known": [
+    "2026-10-08 03:00 JST: FOMC minutes for the September 15-16 meeting.",
+    "2026-10-08 04:00 JST: Federal Reserve G.19 Consumer Credit release."
+  ],
+  "source_refs": [
+    {
+      "source": "BOJ Foreign Exchange Rates Oct 7",
+      "url": "https://www.boj.or.jp/en/statistics/market/forex/fxdaily/fxlist/fx261007.pdf",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "Fisco Tokyo FX 17:29",
+      "url": "https://jp.investing.com/news/forex-news/article-1703910",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "Investing USDJPY historical/current page",
+      "url": "https://jp.investing.com/currencies/usd-jpy-historical-data",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "OANDA Tokyo market digest 15:39",
+      "url": "https://www.oanda.jp/lab-education/market_news/mn_1037737_202610071539/",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "Reuters dollar/Fed minutes Oct 7",
+      "url": "https://www.reuters.com/world/asia-pacific/dollar-holds-losses-markets-await-fed-minutes-speakers-2026-10-07/",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "Reuters U.S. long-bond yields Oct 7",
+      "url": "https://www.reuters.com/business/us-30-year-bond-yield-hits-fresh-24-year-high-2026-10-07/",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "Reuters oil Oct 7",
+      "url": "https://www.reuters.com/business/energy/oil-prices-rise-storms-air-strikes-threaten-supply-2026-10-07/",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "Investing Japan 10Y current page",
+      "url": "https://ca.investing.com/rates-bonds/japan-10-year-bond-yield-historical-data",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    },
+    {
+      "source": "Federal Reserve calendar",
+      "url": "https://www.federalreserve.gov/newsevents.htm",
+      "retrieved_at": "2026-10-07T21:41:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY broke 158.5 intraday but could not sustain it, falling below 158 before recovering into the 158.3 area by 20:20.",
+    "Both U.S. long yields and Japanese 10-year yields were higher on the day, but U.S. long-end stress was more pronounced.",
+    "Oil was back above $100 Brent, adding a yen-negative terms-of-trade channel.",
+    "The dollar was firmer broadly ahead of FOMC minutes.",
+    "The exact qualified 21:41 USDJPY quote remains unavailable."
+  ],
+  "interpretations": [
+    "The morning upside signal has weakened but not disappeared: 158.5 acted as resistance, yet the pair recovered after an afternoon fall below 158.",
+    "Higher U.S. yields, higher oil and a firmer broad dollar keep the short-term balance tilted toward USDJPY upside.",
+    "Rising Japanese yields and intervention sensitivity near 159 are meaningful counterweights.",
+    "The FOMC minutes create substantial event risk inside the overnight horizon, so confidence should remain low.",
+    "A sustained break above 158.5 after cutoff would strengthen the upside scenario; a fall back below 158.0-158.1 would favor mean reversion."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: after the 12:16 state, USDJPY reached 158.50-158.51, reversed to about 157.95, then recovered to 158.37 by 20:20. U.S. long yields and oil rose materially, but 158.5 resistance held.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_UP into the 22:00 cutoff, with strong event risk from the 03:00 JST FOMC minutes.",
+  "alternative_case": "USDJPY_DOWN_MEAN_REVERSION if 158.5 resistance continues to hold and the FOMC minutes are less hawkish than current long-yield pricing.",
+  "invalidation_conditions": [
+    "Sustained move below 158.0-158.1 before/after cutoff with falling U.S. yields.",
+    "Fresh forceful intervention warning from Japanese authorities.",
+    "Clear FOMC-minutes evidence against additional tightening that pushes Treasury yields lower."
+  ],
+  "confidence": "LOW",
+  "next_watch_items": [
+    "22:00 JST nominal forecast cutoff and an exact pre-cutoff quote if obtainable.",
+    "Whether USDJPY is above or below 158.5 at cutoff.",
+    "03:00 JST FOMC minutes and immediate U.S. 2Y/10Y reaction.",
+    "04:00 JST U.S. consumer credit release."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "6aeefbd5211609e9abb21f7ab5c04549a3ac49d7ededaa506751e0a838cf15a4"
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261006T121200+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-06T12:12:00+09:00",
+  "retrieved_at": "2026-10-06T12:12:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-06T12:12:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "TIMESTAMPED_PUBLIC_MARKET_REPORTS_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "11:56 JST Tokyo morning report: USDJPY softened to about 157.77 and remained in the upper-157s. MUFG fixing at 10:06 JST was 157.96. Exact 12:12 qualified benchmark quote unavailable."
+  },
+  "rates_state": {
+    "us_2y": "4.816% at New York close (05:27 JST market report)",
+    "us_10y": "5.309% at New York close, +3.8 bp",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "CURRENT_MARKET_YIELD_UNBOUND; 10-year auction pending at 12:35 JST"
+  },
+  "policy_state": {
+    "fed": "October hold remains favored, while high long yields and hot ISM prices preserve later tightening risk.",
+    "boj": "No new policy action in Tokyo morning. Governor Ueda is scheduled to speak at 15:35 JST.",
+    "japan_fx_authorities": "Yen-weakness restraint/intervention sensitivity remains relevant above the current range.",
+    "japan_fiscal": "Takaichi fiscal-discipline messaging remains part of the Japan-side support backdrop."
+  },
+  "macro_news_facts": [
+    "USDJPY was about 157.77 at 11:56 JST after being around 157.90 shortly before the 08:00 endpoint.",
+    "MUFG's published fixing was 157.96 at 10:06 JST.",
+    "U.S. 2-year and 10-year Treasury yields ended New York at about 4.816% and 5.309%, respectively.",
+    "Brent was about $100.28 and WTI about $89.33 in Tuesday Asian trading, below Monday morning's oil spike.",
+    "Japan's Ministry of Finance announced a 10-year JGB auction with a 3.1% coupon and about JPY2.6 trillion planned issuance; result scheduled for 12:35 JST."
+  ],
+  "scheduled_events_known": [
+    "2026-10-06 12:35 JST: 10-year JGB auction result.",
+    "2026-10-06 15:35 JST: BOJ Governor Ueda speech.",
+    "2026-10-06 21:30 JST: U.S. August trade balance."
+  ],
+  "source_refs": [
+    {
+      "source": "Minkabu Tokyo FX morning 11:56 JST",
+      "url": "https://fx.minkabu.jp/news/380826",
+      "retrieved_at": "2026-10-06T12:12:00+09:00"
+    },
+    {
+      "source": "Minkabu USDJPY news / MUFG fixing",
+      "url": "https://fx.minkabu.jp/pair/USDJPY/news",
+      "retrieved_at": "2026-10-06T12:12:00+09:00"
+    },
+    {
+      "source": "Minkabu U.S. Treasury close",
+      "url": "https://fx.minkabu.jp/news/380800",
+      "retrieved_at": "2026-10-06T12:12:00+09:00"
+    },
+    {
+      "source": "Reuters oil Asia 2026-10-06",
+      "url": "https://www.reuters.com/business/energy/oil-prices-slip-traders-weigh-strong-mideast-exports-against-gulf-tensions-2026-10-06/",
+      "retrieved_at": "2026-10-06T12:12:00+09:00"
+    },
+    {
+      "source": "MOF 10-year JGB auction notice",
+      "url": "https://www.mof.go.jp/jgbs/auction/calendar/nyusatsu/offer20261006.htm",
+      "retrieved_at": "2026-10-06T12:12:00+09:00"
+    },
+    {
+      "source": "MOF weekly schedule",
+      "url": "https://www.mof.go.jp/english/public_relations/weekly_schedule/index.htm",
+      "retrieved_at": "2026-10-06T12:12:00+09:00"
+    },
+    {
+      "source": "OANDA USDJPY daily outlook",
+      "url": "https://www.oanda.jp/lab-education/market_news/2026_10_06_usdjpy/",
+      "retrieved_at": "2026-10-06T12:12:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY has drifted modestly lower in Tokyo morning trading, with a reported low around 157.77 by 11:56 JST.",
+    "The move is small relative to the prior day's 157.44-158.30 range.",
+    "U.S. long yields remain very high, which continues to support USD carry/rate demand.",
+    "Oil is materially below Monday morning's spike, reducing one yen-negative terms-of-trade pressure.",
+    "The 10-year JGB auction result and Ueda speech are still ahead and may materially change the Japan-rate narrative."
+  ],
+  "interpretations": [
+    "Since the 08:12 endpoint evaluation, the market has leaned slightly toward JPY strength, but not enough to call a new directional trend.",
+    "The strongest near-term tension remains high U.S. yields versus Japan-side support from lower oil, fiscal discipline, BOJ normalization risk and intervention sensitivity.",
+    "The 12:35 JGB auction is the next immediate test: weak demand/rising yields could increase Japan-side rate volatility, while a solid auction could reduce fiscal-duration stress.",
+    "Ueda's 15:35 speech is more important for the next overnight forecast than the small morning USDJPY drift."
+  ],
+  "change_since_prior": "MODEST_CHANGE: USDJPY moved from about 157.90 near the 08:00 endpoint to about 157.77 by 11:56, while oil remained softer and U.S. yields stayed elevated. Direction remains range-bound with a mild JPY-strengthening tilt.",
+  "base_case": "NEUTRAL_TO_SLIGHT_USDJPY_DOWN into early afternoon, pending the 10-year JGB auction and Ueda speech.",
+  "alternative_case": "USDJPY rebounds toward 158.0-158.3 if the JGB auction is disorderly or high U.S. yields reassert dominance.",
+  "invalidation_conditions": [
+    "Sustained USDJPY break above 158.0-158.3 after the JGB auction.",
+    "Sharp rise in Japan long yields accompanied by yen weakness rather than strength.",
+    "Renewed oil spike or new geopolitical supply shock."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "12:35 JST 10-year JGB auction result and bid metrics.",
+    "Japan 10-year yield reaction after auction.",
+    "15:00 JST Tokyo-close state.",
+    "15:35 JST Ueda speech and immediate USDJPY/JGB reaction."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "70ddc44ab9f2a66012d7d664d210cd2d7b74d0fccf6025c4229a2420c470b3c1"
+}

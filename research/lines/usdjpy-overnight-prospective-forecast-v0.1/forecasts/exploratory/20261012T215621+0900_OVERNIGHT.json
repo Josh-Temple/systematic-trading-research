@@ -1,0 +1,90 @@
+{
+  "schema_version": "EXPLORATORY_OVERNIGHT_FORECAST_v0.1",
+  "forecast_id": "XPF-USDJPY-20261012-215621",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "specification_id": "SPEC-USDJPY-FORECAST-001-v01",
+  "status": "EXPLORATORY_PROSPECTIVE_NOT_IN_COHORT",
+  "issued_at": "2026-10-12T21:56:21+09:00",
+  "information_cutoff": "2026-10-12T21:55:26+09:00",
+  "nominal_protocol_cutoff": "2026-10-12T22:00:00+09:00",
+  "target_start": "2026-10-12T22:00:00+09:00",
+  "target_end": "2026-10-13T08:00:00+09:00",
+  "protocol_deviation": "EARLY_ISSUANCE_3M39S; REFERENCE_FEED_UNQUALIFIED_AND_HUMAN_SPEC_NOT_FROZEN; EXCLUDE_FROM_ALL_FORMAL_COHORTS",
+  "system_identity": "UNFROZEN_EXPLORATORY_RESEARCHER_JUDGMENT_NOT_A3",
+  "model_identity": "GPT-6",
+  "p_up": 0.52,
+  "forecast_return_bps": 4,
+  "direction_label": "NEAR_NEUTRAL_SLIGHT_USDJPY_UP",
+  "confidence": "LOW",
+  "price_reference_context": {
+    "reference_instrument": "PUBLIC_USDJPY_NONCANONICAL_NOT_DUKASCOPY",
+    "quoted_price_20261012T204330_jst": 158.61,
+    "quoted_price_20261012T205800_jst": 158.58,
+    "exact_215526_bid": "UNKNOWN",
+    "exact_215526_ask": "UNKNOWN",
+    "exact_220000_mid": "UNKNOWN",
+    "provider_utc_tick_source": "UNQUALIFIED"
+  },
+  "top_drivers": [
+    "On October 12 USDJPY rebounded from an intraday low near 158.07 to near 158.48 by 17:08 JST according to Fisco, suggesting intraday USD resilience.",
+    "Investing public USDJPY quote was 158.61 at 20:43:30 JST, with the public technical-indicator snapshot at 20:58 JST near 158.58, a still elevated but not source-qualified reference.",
+    "The broad U.S. dollar has remained relatively firm amid inflation and geopolitical concerns, per October 12 Reuters reporting."
+  ],
+  "counterevidence": [
+    "158.60-158.70 area might act as near-term resistance after the daytime advance; short-term indicator readings are not a validated predictor.",
+    "Oct 12 U.S. Columbus Day / Indigenous Peoples' Day means U.S. bond markets are closed, constraining yield price discovery and possibly liquidity.",
+    "Geopolitical and crude-oil volatility can change USDJPY direction overnight; precise qualified bid/ask at issuance is unavailable.",
+    "Probability 0.52 and return +4bps are discretionary low-confidence assessments without calibration or a verified current 22:00 reference midpoint."
+  ],
+  "scheduled_catalysts_known_pre_cutoff": [
+    "2026-10-12 United States federal/bond-market holiday; U.S. equities open but bond market closed.",
+    "2026-10-14 U.S. September CPI anticipated (outside this overnight target)."
+  ],
+  "scenario_map": {
+    "base": "Near-flat with slight upside from pre-cutoff momentum and broad dollar firmness.",
+    "upside": "Dollar resilience persists and USDJPY extends above its latest public reference, potentially testing upper-158 levels.",
+    "downside": "Post-rebound reversal, yield/commodity/geopolitical shifts or holiday-thin trading lead to USDJPY ending below the unknown 22:00 midpoint."
+  },
+  "source_refs": [
+    {
+      "source": "Fisco, Tokyo market Oct 12 17:08 JST",
+      "url": "https://finance.yahoo.co.jp/news/detail/94597a0f17858aaceed231ecfb5854ffc2230673",
+      "publication_local": "2026-10-12T17:08:00+09:00",
+      "source_nature": "public commentary"
+    },
+    {
+      "source": "Investing public USDJPY historical/live page",
+      "url": "https://jp.investing.com/currencies/usd-jpy-historical-data",
+      "displayed_quote_local": "2026-10-12T20:43:30+09:00",
+      "quote": 158.61,
+      "source_nature": "public mutable quote page"
+    },
+    {
+      "source": "Investing USDJPY technical snapshot",
+      "url": "https://jp.investing.com/technical/usd-jpy-technical-analysis",
+      "snapshot_local": "2026-10-12T20:58:00+09:00",
+      "quote": 158.58,
+      "source_nature": "public technical page, noncanonical"
+    },
+    {
+      "source": "Reuters October 12 USD market report",
+      "url": "https://www.reuters.com/world/asia-pacific/dollar-stays-near-18-month-high-mideast-conflict-inflation-data-focus-2026-10-12/",
+      "published_date": "2026-10-12",
+      "source_nature": "public news"
+    },
+    {
+      "source": "Barron's U.S. bond-market holiday schedule",
+      "url": "https://www.barrons.com/articles/stock-market-open-closed-today-columbus-day-indigenous-peoples-day-e5ec6e4f",
+      "published_date": "2026-10-12",
+      "source_nature": "public market-hours context"
+    }
+  ],
+  "source_snapshot_limitation": "These web pages are mutable. Sources not independently captured as durable historical byte snapshots; no qualified best-bid/ask tick source acquired.",
+  "weekly_preview_relation": "Friday 2026-10-09 +5bps / p_up=0.52 nonprotocol weekly preview is independent and cannot be used as an overnight A1/A2/A3 input.",
+  "post_cutoff_data_allowed": false,
+  "scored_benchmark_effect": "NONE",
+  "source_gate": "BLOCKED_RETRIEVAL_ENVIRONMENT",
+  "formal_outcome_access": "CLOSED",
+  "broker_action_authorized": false,
+  "integrity_note": "Treat Git blob+commit as immutable primary forecast. Do not overwrite; later evaluation in separate append-only artifact."
+}

@@ -1,0 +1,123 @@
+{
+  "schema_version": "LIVE_MARKET_STATE_ENTRY_v0.1",
+  "state_id": "STATE-USDJPY-20261005T205000+0900-MANUAL",
+  "research_line_id": "RL-USDJPY-OVERNIGHT-001",
+  "observed_at": "2026-10-05T20:50:00+09:00",
+  "retrieved_at": "2026-10-05T20:50:00+09:00",
+  "checkpoint_type": "MANUAL",
+  "source_cutoff": "2026-10-05T20:50:00+09:00",
+  "market_open_state": "OPEN",
+  "price_state": {
+    "instrument": "USDJPY",
+    "reference_source": "TIMESTAMPED_PUBLIC_MARKET_REPORTS_EXPLORATORY_NONCANONICAL",
+    "bid": "UNKNOWN",
+    "ask": "UNKNOWN",
+    "mid": "UNKNOWN",
+    "bounded_context": "Verified public reports: 13:32 USDJPY 158.16 after a 158.17 high; 17:00 Tokyo close context about 157.65-157.67; 19:34 London report USDJPY about 157.93-157.95. No exact qualified 20:50 benchmark quote is available in this journal entry."
+  },
+  "rates_state": {
+    "us_2y": "UNKNOWN_EXACT_20:50",
+    "us_10y": "about 5.25% during London session; still elevated but slightly below recent highs",
+    "jp_2y": "UNKNOWN_CURRENT",
+    "jp_10y": "near multi-decade highs; exact 20:50 value not bound",
+    "jp_30y": "record 4.235% observed today before/around Takaichi policy speech"
+  },
+  "policy_state": {
+    "fed": "Target range remains 3.75%-4.00%; October hold is strongly favored after weak September payrolls.",
+    "boj": "Policy remains around 1.25%; further-tightening discussion remains live. Ueda speech on 2026-10-06 remains the next major BOJ communication risk.",
+    "japan_fx_authorities": "Intervention warnings remain a ceiling risk for rapid yen depreciation.",
+    "japan_fiscal": "Prime Minister Takaichi pledged fiscal discipline, control of new bond issuance, and response to market instability, partially easing immediate fiscal/yen concerns."
+  },
+  "macro_news_facts": [
+    "USDJPY rose to 158.17 during Tokyo afternoon as euro weakness triggered broad dollar buying.",
+    "By 17:00 JST USDJPY had fallen back to around 157.65-157.67 after Takaichi stressed fiscal sustainability and control of bond issuance.",
+    "At 19:34 JST USDJPY had rebounded to around 157.93-157.95, leaving the pair near the prior Friday close and without a clean directional break.",
+    "Oil eased as Middle East exports increased and G7 emergency-stock releases reduced immediate supply fears.",
+    "U.S. Treasury yields eased slightly from recent highs but remained elevated; 10-year yields were around the mid-5.2% area in London-session reporting.",
+    "Japan 30-year JGB yield hit a record 4.235%, showing fiscal-duration stress remains significant despite Takaichi's reassurance."
+  ],
+  "scheduled_events_known": [
+    "2026-10-05 23:00 JST (10:00 ET): U.S. ISM Services PMI for September scheduled.",
+    "2026-10-06 15:35 JST: BOJ Governor Ueda speech at National Securities Convention.",
+    "2026-10-07 14:00 ET: FOMC minutes for September 15-16 meeting."
+  ],
+  "source_refs": [
+    {
+      "source": "Minkabu Tokyo FX 13:32",
+      "ref_id": "turn262258search10",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    },
+    {
+      "source": "OANDA/Kyodo Tokyo FX 18:36",
+      "ref_id": "turn878459search5",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    },
+    {
+      "source": "Minkabu London FX 19:34",
+      "ref_id": "turn262258search9",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    },
+    {
+      "source": "Reuters Takaichi fiscal discipline",
+      "ref_id": "turn741370news49",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    },
+    {
+      "source": "Reuters global markets 2026-10-05",
+      "ref_id": "turn741370news48",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    },
+    {
+      "source": "Reuters oil exports/logistics 2026-10-05",
+      "ref_id": "turn531634news29",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    },
+    {
+      "source": "ISM official report release calendar",
+      "ref_id": "turn775946search0",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    },
+    {
+      "source": "Reuters BOJ Uchida 2026-10-05",
+      "ref_id": "turn775946news38",
+      "retrieved_at": "2026-10-05T20:50:00+09:00"
+    }
+  ],
+  "facts": [
+    "USDJPY traded as high as 158.17 today but failed to sustain the breakout.",
+    "Takaichi's fiscal-discipline remarks were followed by yen buying and USDJPY around 157.65-157.67 at 17:00.",
+    "USDJPY then rebounded to roughly 157.93-157.95 by 19:34.",
+    "Japan 30-year JGB yield reached a record 4.235%, so fiscal-duration stress has not disappeared.",
+    "U.S. ISM Services PMI is scheduled for 23:00 JST tonight."
+  ],
+  "interpretations": [
+    "The 12:57 SLIGHT_USDJPY_DOWN view was only partially supported: yen strength appeared after the 158.17 rejection and Takaichi speech, but it did not persist into London.",
+    "The intraday sequence now looks more like a two-way range than a clean yen-strengthening trend.",
+    "Dollar support from broad dollar strength and still-high U.S. yields is being offset by Japan fiscal-discipline messaging, BOJ tightening risk, intervention risk, and weaker U.S. labor data.",
+    "The next meaningful directional discriminator is tonight's ISM Services release; pre-release conviction should remain limited."
+  ],
+  "change_since_prior": "MATERIAL_CHANGE: after the 12:57 observation USDJPY first rallied through 158.00 to 158.17, then reversed to about 157.65 after Takaichi's fiscal-discipline message, and rebounded to around 157.94 by 19:34. The earlier slight-down view has weakened into a range/neutral state.",
+  "base_case": "NEUTRAL_RANGE: USDJPY remains broadly contained around the high-157s, with 158.17 as today's failed upside extension and roughly 157.4-157.6 as the intraday support zone before the 23:00 ISM catalyst.",
+  "alternative_case": "USDJPY_UP_BREAK: a strong ISM services result and/or renewed U.S. yield rise pushes the pair sustainably above today's 158.17 high toward the broader 158.4-158.6 resistance area.",
+  "invalidation_conditions": [
+    "Sustained post-ISM break above 158.17 with U.S. yields rising.",
+    "Break below today's 157.44 low with falling U.S. yields, which would restore a stronger yen-positive interpretation.",
+    "New intervention-related official communication or a material geopolitical/oil shock."
+  ],
+  "confidence": "LOW_TO_MEDIUM",
+  "next_watch_items": [
+    "23:00 JST U.S. ISM Services PMI and subindices, especially prices and employment.",
+    "Immediate U.S. 2Y/10Y yield reaction to ISM.",
+    "Whether USDJPY breaks 158.17 or 157.44 after the release.",
+    "21:30 JST PRE_FORECAST_STATE if a formal/manual observation is taken before the overnight candidate window.",
+    "2026-10-06 15:35 JST Ueda speech."
+  ],
+  "benchmark_relation": {
+    "is_scored_forecast": false,
+    "may_overwrite_frozen_forecast": false,
+    "may_supply_post_cutoff_information_retroactively": false,
+    "canonical_scored_input_substitute": false
+  },
+  "corrects_state_id": "NOT_APPLICABLE",
+  "entry_hash": "41a488bf14ce658f1da0e06ece57a632ebe5fadf668d1743ce2204f1bf8c5f72"
+}
